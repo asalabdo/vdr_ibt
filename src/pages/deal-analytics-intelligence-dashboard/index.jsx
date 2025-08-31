@@ -54,7 +54,7 @@ const DealAnalyticsIntelligenceDashboard = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="pt-16">
+      <main className="pt-4">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Page Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">

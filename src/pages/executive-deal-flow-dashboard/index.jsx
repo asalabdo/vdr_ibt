@@ -188,7 +188,7 @@ const ExecutiveDealFlowDashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="pt-16">
+      <main className="pt-4">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Global Controls */}
           <GlobalControls onFiltersChange={handleFiltersChange} />

@@ -118,3 +118,38 @@
     }
   }
 }
+
+/* Light theme overrides (applied when <html> has class "light") */
+:root.light {
+  --color-background: #f8fafc; /* slate-50 */
+  --color-foreground: #0f172a; /* slate-900 */
+  --color-card: #ffffff; /* white */
+  --color-card-foreground: #0f172a; /* slate-900 */
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+
+  --color-muted: #e6eef8; /* light muted */
+  --color-muted-foreground: #475569; /* slate-600 */
+
+  --color-primary: #1e40af; /* keep primary blue */
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #64748b;
+  --color-secondary-foreground: #0f172a;
+
+  --color-accent: #0ea5e9;
+  --color-accent-foreground: #0f172a;
+
+  --color-success: #059669;
+  --color-success-foreground: #ecfdf5;
+  --color-warning: #d97706;
+  --color-warning-foreground: #fffbeb;
+  --color-error: #dc2626;
+  --color-error-foreground: #fff1f2;
+
+  --color-border: rgba(2,6,23,0.06);
+  --color-input: #f1f5f9;
+  --color-ring: #0ea5e9;
+
+  --radius: 0.5rem;
+}

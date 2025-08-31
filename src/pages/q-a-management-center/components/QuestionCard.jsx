@@ -97,7 +97,7 @@ const QuestionCard = ({ question, onSelect, isSelected, formatTimeAgo }) => {
         )}
 
         {/* Metadata */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-border">
+        <div className="flex items-center justify-between text-xs text-muted-foreground pt-4 border-t border-border">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Icon name="MessageSquare" size={12} />

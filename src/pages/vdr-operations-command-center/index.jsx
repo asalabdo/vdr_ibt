@@ -161,7 +161,7 @@ const VDROperationsCommandCenter = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="pt-16">
+      <div className="pt-7">
         {/* Control Bar */}
         <ControlBar
           selectedEnvironment={selectedEnvironment}

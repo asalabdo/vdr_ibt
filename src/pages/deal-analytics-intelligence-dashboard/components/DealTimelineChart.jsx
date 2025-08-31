@@ -105,7 +105,7 @@ const DealTimelineChart = () => {
                 {selectedMetric === 'success_rate' ? '%' : selectedMetric === 'avg_size' ? 'M' : selectedMetric === 'velocity' ? ' days' : ''}
               </span>
             </div>
-            <div className="border-t border-border pt-2">
+            <div className="border-t border-border pt-4">
               <p className="text-xs text-muted-foreground mb-1">Active Deals:</p>
               {data?.deals?.map((deal, index) => (
                 <div key={index} className="flex items-center justify-between text-xs">

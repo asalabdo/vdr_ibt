@@ -5,7 +5,7 @@ import Icon from '../../../components/AppIcon';
 
 const SystemSettings = () => {
   const [systemSettings, setSystemSettings] = useState({
-    companyName: 'VDR Analytics Corp',
+    companyName: 'VDR',
     supportEmail: 'support@vdranalytics.com',
     timezone: 'America/New_York',
     dateFormat: 'MM/DD/YYYY',
