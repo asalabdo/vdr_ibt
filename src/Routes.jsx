@@ -190,7 +190,7 @@ const Routes = () => {
                 <Route path="/compliance-security-monitoring-dashboard" element={<ComplianceSecurityMonitoringDashboard />} />
                 <Route path="/executive-deal-flow-dashboard" element={<ExecutiveDealFlowDashboard />} />
 
-                <Route path="/" element={<ComplianceSecurityMonitoringDashboard />} />
+                <Route path="/" element={<ExecutiveDealFlowDashboard />} />
                 <Route path="/data-rooms-management" element={<DataRoomsManagement />} />
                 <Route path="/q-a-management-center" element={<QAManagementCenter />} />
                 <Route path="/document-management-console" element={<DocumentManagementConsole />} />

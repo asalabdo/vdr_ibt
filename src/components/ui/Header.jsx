@@ -91,7 +91,7 @@ const Header = ({ onToggleSidebar }) => {
         <div className="flex items-center space-x-8 rtl:space-x-reverse">
           <div 
             className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer"
-            onClick={() => navigate('/executive-deal-flow-dashboard')}
+            onClick={() => navigate('/')}
           >
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Icon name="Database" size={20} color="var(--color-primary-foreground)" />
