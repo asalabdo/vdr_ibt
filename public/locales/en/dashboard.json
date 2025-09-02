@@ -1,20 +1,182 @@
 {
+  "title": "Executive Deal Flow Dashboard",
+  "subtitle": "Real-time insights into deal performance and pipeline health",
   "kpi": {
     "total_deal_value": "Total Deal Value",
     "active_transactions": "Active Transactions",
     "success_rate": "Success Rate",
-    "average_time_to_close": "Average Time to Close"
+    "average_time_to_close": "Average Time to Close",
+    "descriptions": {
+      "active_pipeline": "Active pipeline",
+      "faster_than_target": "Faster than target", 
+      "in_progress": "In progress",
+      "above_benchmark": "Above benchmark"
+    },
+    "units": {
+      "days": "days",
+      "million": "M",
+      "billion": "B"
+    }
   },
   "charts": {
     "deal_volume": "Deal Volume",
+    "deal_volume_title": "Deal Volume & Average Size",
+    "deal_volume_subtitle": "Monthly transaction analytics with trend analysis",
+    "avg_deal_size": "Avg Deal Size ($M)",
     "pipeline_funnel": "Pipeline Funnel", 
-    "performance_metrics": "Performance Metrics"
+    "performance_metrics": "Performance Metrics",
+    "labels": {
+      "volume": "Volume",
+      "average_size": "Average Deal Size",
+      "month": "Month",
+      "value": "Value"
+    }
+  },
+  "pipeline": {
+    "title": "Deal Pipeline",
+    "subtitle": "Stage-wise conversion analysis",
+    "deals": "deals",
+    "overall_conversion_rate": "Overall Conversion Rate",
+    "stages": {
+      "prospecting": "Prospecting",
+      "qualification": "Qualification", 
+      "proposal": "Proposal",
+      "negotiation": "Negotiation",
+      "closing": "Closing"
+    },
+    "metrics": {
+      "count": "Count",
+      "value": "Value",
+      "conversion_rate": "Conversion Rate"
+    }
+  },
+  "top_performing_rooms": {
+    "title": "Top Performing Rooms",
+    "subtitle": "Based on engagement & conversion",
+    "avg_success_rate": "Avg Success Rate",
+    "avg_close_time": "Avg Close Time",
+    "headers": {
+      "rank": "Rank",
+      "room": "Room",
+      "participants": "Participants", 
+      "active_users": "Active Users",
+      "avg_time": "Avg Time",
+      "score": "Score"
+    },
+    "labels": {
+      "deal_value": "Deal Value",
+      "participants": "participants",
+      "active": "active"
+    }
+  },
+  "executive_summary": {
+    "title": "Executive Summary",
+    "subtitle": "Key deals requiring attention",
+    "table": {
+      "deal_name": "Deal Name",
+      "value": "Value",
+      "status": "Status",
+      "priority": "Priority",
+      "projected_close": "Projected Close",
+      "progress": "Progress",
+      "actions": "Actions"
+    },
+    "headers": {
+      "deal": "Deal",
+      "company": "Company",
+      "value": "Value",
+      "type": "Type",
+      "status": "Status",
+      "priority": "Priority",
+      "timeline": "Timeline",
+      "progress": "Progress"
+    },
+    "deal_types": {
+      "ma": "M&A",
+      "strategic": "Strategic",
+      "partnership": "Partnership",
+      "acquisition": "Acquisition"
+    },
+    "priority_levels": {
+      "high": "High",
+      "medium": "Medium", 
+      "low": "Low"
+    },
+    "timeline_labels": {
+      "days_remaining": "days remaining",
+      "projected_close": "Projected Close"
+    }
   },
   "status": {
     "active": "Active",
     "pending": "Pending",
     "completed": "Completed",
     "critical": "Critical",
-    "on_track": "On Track"
+    "on_track": "On Track",
+    "attention": "Attention",
+    "live_data": "Live Data",
+    "last_updated": "Last updated: {{time}}",
+    "data_source": "Data source: VDR Core Analytics",
+    "active_sessions": "Active sessions: {{count}}"
+  },
+  "filters": {
+    "date_ranges": {
+      "q4_2024_current": "Q4 2024 (Current)",
+      "q3_2024": "Q3 2024",
+      "q2_2024": "Q2 2024", 
+      "q1_2024": "Q1 2024",
+      "fy_2024": "Full Year 2024",
+      "custom": "Custom Range"
+    },
+    "stages": {
+      "all": "All Stages"
+    },
+    "regions": {
+      "global": "Global",
+      "north_america": "North America",
+      "europe": "Europe",
+      "asia_pacific": "Asia Pacific",
+      "latin_america": "Latin America"
+    },
+    "placeholders": {
+      "select_period": "Select period",
+      "all_stages": "All stages",
+      "global": "Global"
+    }
+  },
+  "actions": {
+    "export": "Export",
+    "view_all": "View All",
+    "view_quarterly": "View Quarterly"
+  },
+  "time": {
+    "days": "days",
+    "vs_last_quarter": "vs last quarter",
+    "2_minutes_ago": "2 minutes ago"
+  },
+  "symbols": {
+    "arrow": "→",
+    "bullet": "•"
+  },
+  "common": {
+    "participants": "participants"
+  },
+  "controls": {
+    "filters": {
+      "date_range": "Date Range",
+      "stage": "Stage",
+      "region": "Region",
+      "all": "All"
+    },
+    "actions": {
+      "export": "Export",
+      "refresh": "Refresh",
+      "drill_down": "Drill Down"
+    }
+  },
+  "empty_states": {
+    "no_data": "No data available",
+    "loading": "Loading...",
+    "error": "Error loading data"
   }
 }

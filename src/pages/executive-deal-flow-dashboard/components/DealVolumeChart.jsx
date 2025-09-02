@@ -1,7 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const DealVolumeChart = ({ data, onDrillDown }) => {
+  const { t } = useTranslation('dashboard');
+
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload?.length) {
       return (
@@ -29,14 +32,14 @@ const DealVolumeChart = ({ data, onDrillDown }) => {
     <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">Deal Volume & Average Size</h3>
-          <p className="text-sm text-muted-foreground">Monthly transaction analytics with trend analysis</p>
+          <h3 className="text-lg font-semibold text-foreground">{t('charts.deal_volume_title', 'Deal Volume & Average Size')}</h3>
+          <p className="text-sm text-muted-foreground">{t('charts.deal_volume_subtitle', 'Monthly transaction analytics with trend analysis')}</p>
         </div>
         <button
           onClick={onDrillDown}
           className="text-sm text-primary hover:text-primary/80 transition-colors"
         >
-          View Quarterly →
+          {t('actions.view_quarterly', 'View Quarterly')} {t('symbols.arrow', '→')}
         </button>
       </div>
       
@@ -66,7 +69,7 @@ const DealVolumeChart = ({ data, onDrillDown }) => {
               yAxisId="left"
               dataKey="dealVolume" 
               fill="var(--color-primary)"
-              name="Deal Volume"
+              name={t('charts.deal_volume', 'Deal Volume')}
               radius={[2, 2, 0, 0]}
             />
             <Line 
@@ -75,7 +78,7 @@ const DealVolumeChart = ({ data, onDrillDown }) => {
               dataKey="avgDealSize" 
               stroke="var(--color-accent)"
               strokeWidth={3}
-              name="Avg Deal Size ($M)"
+              name={t('charts.avg_deal_size', 'Avg Deal Size ($M)')}
               dot={{ fill: 'var(--color-accent)', strokeWidth: 2, r: 4 }}
             />
           </ComposedChart>

@@ -1,7 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 
 const DealPipelineFunnel = ({ stages }) => {
+  const { t } = useTranslation('dashboard');
+  
   const getStageColor = (index) => {
     const colors = [
       'bg-blue-500',
@@ -23,8 +26,8 @@ const DealPipelineFunnel = ({ stages }) => {
     <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">Deal Pipeline</h3>
-          <p className="text-sm text-muted-foreground">Stage-wise conversion analysis</p>
+          <h3 className="text-lg font-semibold text-foreground">{t('pipeline.title', 'Deal Pipeline')}</h3>
+          <p className="text-sm text-muted-foreground">{t('pipeline.subtitle', 'Stage-wise conversion analysis')}</p>
         </div>
         <Icon name="Filter" size={16} className="text-muted-foreground" />
       </div>
@@ -32,12 +35,14 @@ const DealPipelineFunnel = ({ stages }) => {
         {stages?.map((stage, index) => (
           <div key={stage?.name} className="relative">
             <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <div className={`w-3 h-3 rounded-full ${getStageColor(index)}`} />
                 <span className="text-sm font-medium text-foreground">{stage?.name}</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-sm text-muted-foreground">{stage?.count} deals</span>
+              <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                <span className="text-sm text-muted-foreground">
+                  {stage?.count} {t('pipeline.deals', 'deals')}
+                </span>
                 <span className="text-sm font-medium text-foreground">${stage?.value}M</span>
               </div>
             </div>
@@ -69,7 +74,7 @@ const DealPipelineFunnel = ({ stages }) => {
       </div>
       <div className="mt-6 pt-4 border-t border-border">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Overall Conversion Rate</span>
+          <span className="text-muted-foreground">{t('pipeline.overall_conversion_rate', 'Overall Conversion Rate')}</span>
           <span className="font-medium text-success">
             {((stages?.[stages?.length - 1]?.count / stages?.[0]?.count) * 100)?.toFixed(1)}%
           </span>

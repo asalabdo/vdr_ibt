@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Header from '../../components/ui/Header';
 import KPICard from './components/KPICard';
 import DealVolumeChart from './components/DealVolumeChart';
@@ -8,6 +9,7 @@ import ExecutiveSummaryTable from './components/ExecutiveSummaryTable';
 import GlobalControls from './components/GlobalControls';
 
 const ExecutiveDealFlowDashboard = () => {
+  const { t, i18n } = useTranslation('dashboard');
   const [filters, setFilters] = useState({
     dateRange: 'Q4 2024',
     stage: 'all',
@@ -17,39 +19,39 @@ const ExecutiveDealFlowDashboard = () => {
   // Mock KPI data
   const kpiData = [
     {
-      title: 'Total Deal Value',
+      title: t('kpi.total_deal_value', 'Total Deal Value'),
       value: '$847.2M',
       change: '+12.4%',
       changeType: 'positive',
       icon: 'DollarSign',
-      subtitle: 'Active pipeline',
+      subtitle: t('kpi.descriptions.active_pipeline', 'Active pipeline'),
       trend: [65, 78, 82, 88, 92, 85, 90, 95]
     },
     {
-      title: 'Average Time to Close',
-      value: '18.5 days',
-      change: '-2.1 days',
+      title: t('kpi.average_time_to_close', 'Average Time to Close'),
+      value: `18.5 ${t('kpi.units.days', 'days')}`,
+      change: `-2.1 ${t('kpi.units.days', 'days')}`,
       changeType: 'positive',
       icon: 'Clock',
-      subtitle: 'Faster than target',
+      subtitle: t('kpi.descriptions.faster_than_target', 'Faster than target'),
       trend: [45, 52, 48, 42, 38, 35, 32, 30]
     },
     {
-      title: 'Active Transactions',
+      title: t('kpi.active_transactions', 'Active Transactions'),
       value: '142',
       change: '+8',
       changeType: 'positive',
       icon: 'Activity',
-      subtitle: 'In progress',
+      subtitle: t('kpi.descriptions.in_progress', 'In progress'),
       trend: [70, 75, 72, 78, 82, 85, 88, 90]
     },
     {
-      title: 'Success Rate',
+      title: t('kpi.success_rate', 'Success Rate'),
       value: '94.2%',
       change: '+1.8%',
       changeType: 'positive',
       icon: 'TrendingUp',
-      subtitle: 'Above benchmark',
+      subtitle: t('kpi.descriptions.above_benchmark', 'Above benchmark'),
       trend: [88, 89, 91, 92, 93, 94, 95, 94]
     }
   ];
@@ -66,11 +68,11 @@ const ExecutiveDealFlowDashboard = () => {
 
   // Mock pipeline data
   const pipelineStages = [
-    { name: 'Prospecting', count: 156, value: 425.8, conversionRate: 68 },
-    { name: 'Qualification', count: 106, value: 312.4, conversionRate: 72 },
-    { name: 'Proposal', count: 76, value: 245.6, conversionRate: 78 },
-    { name: 'Negotiation', count: 59, value: 198.2, conversionRate: 85 },
-    { name: 'Closing', count: 50, value: 168.9, conversionRate: 94 }
+    { name: t('pipeline.stages.prospecting', 'Prospecting'), count: 156, value: 425.8, conversionRate: 68 },
+    { name: t('pipeline.stages.qualification', 'Qualification'), count: 106, value: 312.4, conversionRate: 72 },
+    { name: t('pipeline.stages.proposal', 'Proposal'), count: 76, value: 245.6, conversionRate: 78 },
+    { name: t('pipeline.stages.negotiation', 'Negotiation'), count: 59, value: 198.2, conversionRate: 85 },
+    { name: t('pipeline.stages.closing', 'Closing'), count: 50, value: 168.9, conversionRate: 94 }
   ];
 
   // Mock top performing rooms
@@ -129,9 +131,9 @@ const ExecutiveDealFlowDashboard = () => {
       name: 'MegaCorp Acquisition',
       company: 'MegaCorp Industries',
       value: '$245.8M',
-      type: 'M&A',
-      status: 'Critical',
-      priority: 'High',
+      type: t('executive_summary.deal_types.ma', 'M&A'),
+      status: t('status.critical', 'Critical'),
+      priority: t('executive_summary.priority_levels.high', 'High'),
       projectedClose: '2024-12-15',
       daysRemaining: 14,
       progress: 78
@@ -141,9 +143,9 @@ const ExecutiveDealFlowDashboard = () => {
       name: 'European Expansion',
       company: 'EuroTech Solutions',
       value: '$156.2M',
-      type: 'Strategic',
-      status: 'Attention',
-      priority: 'High',
+      type: t('executive_summary.deal_types.strategic', 'Strategic'),
+      status: t('status.attention', 'Attention'),
+      priority: t('executive_summary.priority_levels.high', 'High'),
       projectedClose: '2024-12-28',
       daysRemaining: 27,
       progress: 65
@@ -153,9 +155,9 @@ const ExecutiveDealFlowDashboard = () => {
       name: 'Digital Transformation',
       company: 'CloudFirst Inc',
       value: '$89.4M',
-      type: 'Partnership',
-      status: 'On-Track',
-      priority: 'Medium',
+      type: t('executive_summary.deal_types.partnership', 'Partnership'),
+      status: t('status.on_track', 'On-Track'),
+      priority: t('executive_summary.priority_levels.medium', 'Medium'),
       projectedClose: '2025-01-10',
       daysRemaining: 40,
       progress: 82
@@ -165,9 +167,9 @@ const ExecutiveDealFlowDashboard = () => {
       name: 'Supply Chain Optimization',
       company: 'LogiFlow Systems',
       value: '$67.8M',
-      type: 'Acquisition',
-      status: 'On-Track',
-      priority: 'Medium',
+      type: t('executive_summary.deal_types.acquisition', 'Acquisition'),
+      status: t('status.on_track', 'On-Track'),
+      priority: t('executive_summary.priority_levels.medium', 'Medium'),
       projectedClose: '2025-01-22',
       daysRemaining: 52,
       progress: 71
@@ -190,6 +192,16 @@ const ExecutiveDealFlowDashboard = () => {
       <Header />
       <main className="pt-4">
         <div className="max-w-7xl mx-auto px-6 py-8">
+          {/* Page Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-foreground mb-2 rtl:text-right">
+              {t('title', 'Executive Deal Flow Dashboard')}
+            </h1>
+            <p className="text-muted-foreground rtl:text-right">
+              {t('subtitle', 'Real-time insights into deal performance and pipeline health')}
+            </p>
+          </div>
+
           {/* Global Controls */}
           <GlobalControls onFiltersChange={handleFiltersChange} />
 
