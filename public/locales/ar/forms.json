@@ -1,0 +1,17 @@
+{
+  "labels": {
+    "search": "بحث",
+    "filter": "فلتر",
+    "date_range": "نطاق التاريخ",
+    "status": "الحالة",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "submit": "إرسال",
+    "reset": "إعادة تعيين"
+  },
+  "placeholders": {
+    "search_placeholder": "البحث...",
+    "select_option": "اختر خيار",
+    "enter_value": "أدخل القيمة"
+  }
+}

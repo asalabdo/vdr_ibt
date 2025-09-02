@@ -1,0 +1,17 @@
+{
+  "labels": {
+    "search": "Search",
+    "filter": "Filter",
+    "date_range": "Date Range",
+    "status": "Status",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "reset": "Reset"
+  },
+  "placeholders": {
+    "search_placeholder": "Search...",
+    "select_option": "Select option",
+    "enter_value": "Enter value"
+  }
+}

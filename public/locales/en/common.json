@@ -1,0 +1,17 @@
+{
+  "header": {
+    "toggle_theme": "Toggle theme",
+    "toggle_language": "Toggle language",
+    "updated": "Updated"
+  },
+  "user": {
+    "profile_settings": "Profile Settings",
+    "dashboard_preferences": "Dashboard Preferences",
+    "notification_settings": "Notification Settings",
+    "help_support": "Help & Support",
+    "sign_out": "Sign Out"
+  },
+  "misc": {
+    "just_now": "Just now"
+  }
+}

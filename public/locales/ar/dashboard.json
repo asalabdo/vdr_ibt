@@ -1,0 +1,20 @@
+{
+  "kpi": {
+    "total_deal_value": "إجمالي قيمة الصفقات",
+    "active_transactions": "المعاملات النشطة",
+    "success_rate": "معدل النجاح",
+    "average_time_to_close": "متوسط وقت الإغلاق"
+  },
+  "charts": {
+    "deal_volume": "حجم الصفقات",
+    "pipeline_funnel": "قمع المبيعات",
+    "performance_metrics": "مقاييس الأداء"
+  },
+  "status": {
+    "active": "نشط",
+    "pending": "قيد الانتظار",
+    "completed": "مكتمل",
+    "critical": "حرج",
+    "on_track": "على المسار الصحيح"
+  }
+}

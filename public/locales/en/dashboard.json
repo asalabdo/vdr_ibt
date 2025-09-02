@@ -1,0 +1,20 @@
+{
+  "kpi": {
+    "total_deal_value": "Total Deal Value",
+    "active_transactions": "Active Transactions",
+    "success_rate": "Success Rate",
+    "average_time_to_close": "Average Time to Close"
+  },
+  "charts": {
+    "deal_volume": "Deal Volume",
+    "pipeline_funnel": "Pipeline Funnel", 
+    "performance_metrics": "Performance Metrics"
+  },
+  "status": {
+    "active": "Active",
+    "pending": "Pending",
+    "completed": "Completed",
+    "critical": "Critical",
+    "on_track": "On Track"
+  }
+}

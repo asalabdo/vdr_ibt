@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import Routes from "./Routes";
+import { useFont } from "./hooks/useFont";
 
 function App() {
+  const { i18n } = useTranslation();
+  const { fontClass, dirClass } = useFont();
+
+  useEffect(() => {
+    // Community Standard: Minimal DOM manipulation for semantic HTML only
+    const documentElement = document.documentElement;
+    
+    // Set semantic HTML attributes (SEO & accessibility)
+    documentElement.lang = i18n.language;
+    documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+  }, [i18n.language]);
+
+  // React Community Standard: Apply font via className wrapper
   return (
-    <Routes />
+    <div className={`${fontClass} ${dirClass}`}>
+      <Routes />
+    </div>
   );
 }
 

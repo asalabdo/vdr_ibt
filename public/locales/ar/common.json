@@ -1,0 +1,17 @@
+{
+  "header": {
+    "toggle_theme": "تبديل النمط",
+    "toggle_language": "تبديل اللغة",
+    "updated": "تم التحديث"
+  },
+  "user": {
+    "profile_settings": "إعدادات الملف الشخصي",
+    "dashboard_preferences": "تفضيلات لوحة القيادة",
+    "notification_settings": "إعدادات الإشعارات",
+    "help_support": "المساعدة والدعم",
+    "sign_out": "تسجيل الخروج"
+  },
+  "misc": {
+    "just_now": "الآن"
+  }
+}

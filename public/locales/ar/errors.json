@@ -1,0 +1,15 @@
+{
+  "messages": {
+    "network_error": "خطأ في الاتصال بالشبكة",
+    "loading_failed": "فشل في تحميل البيانات",
+    "access_denied": "تم رفض الوصول",
+    "not_found": "الصفحة غير موجودة",
+    "server_error": "خطأ داخلي في الخادم"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "invalid_email": "عنوان بريد إلكتروني غير صحيح",
+    "password_too_short": "كلمة المرور قصيرة جداً",
+    "passwords_dont_match": "كلمات المرور غير متطابقة"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "dashboard": "لوحة القيادة",
+    "workspace": "المساحة"
+  },
+  "routes": {
+    "home": "الرئيسية",
+    "executive_overview": "نظرة عامة تنفيذية",
+    "deal_intelligence": "ذكاء الصفقات",
+    "operations_center": "مركز العمليات",
+    "compliance_security": "الامتثال والأمن",
+    "data_rooms": "غرف البيانات",
+    "q_a_center": "مركز الأسئلة",
+    "document_console": "وحدة إدارة المستندات",
+    "users": "المستخدمون",
+    "roles_permissions": "الأدوار والصلاحيات",
+    "audit_logs": "سجلات التدقيق",
+    "settings": "الإعدادات"
+  }
+}
