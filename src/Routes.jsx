@@ -16,36 +16,37 @@ import AuditLogs from './pages/audit-logs';
 import Settings from './pages/settings';
 import Header from './components/ui/Header';
 import Icon from './components/AppIcon';
-import t from './utils/i18n';
-
-const routeSections = [
-  {
-    section: t('sections.dashboard'),
-    items: [
-      { label: t('routes.executive_overview'), path: '/executive-deal-flow-dashboard', icon: 'BarChart3' },
-      { label: t('routes.deal_intelligence'), path: '/deal-analytics-intelligence-dashboard', icon: 'TrendingUp' },
-      { label: t('routes.operations_center'), path: '/vdr-operations-command-center', icon: 'Monitor' },
-      { label: t('routes.compliance_security'), path: '/compliance-security-monitoring-dashboard', icon: 'Shield' },
-    ]
-  },
-  {
-    section: t('sections.workspace'),
-    items: [
-      { label: t('routes.home'), path: '/', icon: 'Home' },
-      { label: t('routes.data_rooms'), path: '/data-rooms-management', icon: 'Folder' },
-      { label: t('routes.q_a_center'), path: '/q-a-management-center', icon: 'MessageSquare' },
-      { label: t('routes.document_console'), path: '/document-management-console', icon: 'FileText' },
-      { label: t('routes.users'), path: '/users-management', icon: 'Users' },
-      { label: t('routes.roles_permissions'), path: '/roles-permissions', icon: 'Key' },
-      { label: t('routes.audit_logs'), path: '/audit-logs', icon: 'Clipboard' },
-      { label: t('routes.settings'), path: '/settings', icon: 'Settings' }
-    ]
-  }
-];
+import { useTranslation } from 'react-i18next';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
+  const { t } = useTranslation('navigation'); // Use navigation namespace for all routes/sections
   const [openSections, setOpenSections] = React.useState({ Dashboard: false }); // Dashboard hidden by default
+
+  const routeSections = [
+    {
+      section: t('sections.dashboard'),
+      items: [
+        { label: t('routes.executive_overview'), path: '/executive-deal-flow-dashboard', icon: 'BarChart3' },
+        { label: t('routes.deal_intelligence'), path: '/deal-analytics-intelligence-dashboard', icon: 'TrendingUp' },
+        { label: t('routes.operations_center'), path: '/vdr-operations-command-center', icon: 'Monitor' },
+        { label: t('routes.compliance_security'), path: '/compliance-security-monitoring-dashboard', icon: 'Shield' },
+      ]
+    },
+    {
+      section: t('sections.workspace'),
+      items: [
+        { label: t('routes.home'), path: '/', icon: 'Home' },
+        { label: t('routes.data_rooms'), path: '/data-rooms-management', icon: 'Folder' },
+        { label: t('routes.q_a_center'), path: '/q-a-management-center', icon: 'MessageSquare' },
+        { label: t('routes.document_console'), path: '/document-management-console', icon: 'FileText' },
+        { label: t('routes.users'), path: '/users-management', icon: 'Users' },
+        { label: t('routes.roles_permissions'), path: '/roles-permissions', icon: 'Key' },
+        { label: t('routes.audit_logs'), path: '/audit-logs', icon: 'Clipboard' },
+        { label: t('routes.settings'), path: '/settings', icon: 'Settings' }
+      ]
+    }
+  ];
 
   const toggleSection = (name) => {
     setOpenSections((prev) => ({ ...prev, [name]: !prev[name] }));

@@ -1,25 +1,18 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../AppIcon';
 import Button from './Button';
-import t from '../../utils/i18n';
 
 const LanguageToggle = ({ variant = 'ghost', size = 'sm' }) => {
-  // Get current language state based on document direction
-  const isRTL = document?.documentElement?.dir === 'rtl';
+  const { i18n, t } = useTranslation();
   
   const handleToggle = () => {
-    // Toggle language by changing document direction and language
-    const newDir = isRTL ? 'ltr' : 'rtl';
-    const newLang = isRTL ? 'en' : 'ar';
+    const newLanguage = i18n.language === 'en' ? 'ar' : 'en';
+    i18n.changeLanguage(newLanguage); // This handles localStorage automatically
     
-    document.documentElement.dir = newDir;
-    document.documentElement.lang = newLang;
-    
-    try {
-      localStorage.setItem('lang', newLang);
-    } catch (e) {
-      // ignore localStorage errors
-    }
+    // Update document direction for RTL support
+    document.documentElement.dir = newLanguage === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = newLanguage;
   };
 
   return (
@@ -35,7 +28,7 @@ const LanguageToggle = ({ variant = 'ghost', size = 'sm' }) => {
       {/* Language indicator */}
       <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
         <span className="text-[10px] font-semibold text-primary-foreground">
-          {isRTL ? 'ع' : 'EN'}
+          {i18n.language === 'ar' ? 'ع' : 'EN'}
         </span>
       </div>
     </button>

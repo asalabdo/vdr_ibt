@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Icon from '../AppIcon';
-import t from '../../utils/i18n';
 import Button from './Button';
 import LanguageToggle from './LanguageToggle';
 import DarkModeToggle from './DarkModeToggle';
@@ -12,30 +12,31 @@ const Header = ({ onToggleSidebar }) => {
   const userMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
 
 
   const navigationItems = [
     {
-      label: t('routes.executive_overview'),
+      label: t('navigation:routes.executive_overview'),
       path: '/executive-deal-flow-dashboard',
       icon: 'BarChart3',
       tooltip: t('header.toggle_theme')
     },
     {
-      label: t('routes.deal_intelligence'),
+      label: t('navigation:routes.deal_intelligence'),
       path: '/deal-analytics-intelligence-dashboard',
       icon: 'TrendingUp',
       tooltip: t('header.toggle_theme')
     },
     {
-      label: t('routes.operations_center'),
+      label: t('navigation:routes.operations_center'),
       path: '/vdr-operations-command-center',
       icon: 'Monitor',
       tooltip: t('header.toggle_theme')
     },
     {
-      label: t('routes.compliance_security'),
+      label: t('navigation:routes.compliance_security'),
       path: '/compliance-security-monitoring-dashboard',
       icon: 'Shield',
       tooltip: t('header.toggle_theme')
