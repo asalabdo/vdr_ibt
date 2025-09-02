@@ -1,13 +1,13 @@
 {
   "title": "لوحة قيادة تدفق الصفقات التنفيذية",
-  "subtitle": "رؤى فورية حول أداء الصفقات وصحة خط الأنابيب",
+  "subtitle": "رؤى فورية حول أداء الصفقات وصحة مسار الصفقات",
   "kpi": {
     "total_deal_value": "إجمالي قيمة الصفقات",
     "active_transactions": "المعاملات النشطة",
     "success_rate": "معدل النجاح",
-    "average_time_to_close": "متوسط وقت الإغلاق",
+    "average_time_to_close": "متوسط فترة إتمام الصفقة",
     "descriptions": {
-      "active_pipeline": "خط الأنابيب النشط",
+      "active_pipeline": "مسار الصفقات النشط",
       "faster_than_target": "أسرع من الهدف",
       "in_progress": "قيد التقدم",
       "above_benchmark": "أعلى من المعيار"
@@ -20,10 +20,10 @@
   },
   "charts": {
     "deal_volume": "حجم الصفقات",
-    "deal_volume_title": "حجم الصفقات والحجم المتوسط",
+    "deal_volume_title": "حجم الصفقات ومتوسط القيمة",
     "deal_volume_subtitle": "تحليلات المعاملات الشهرية مع تحليل الاتجاهات",
     "avg_deal_size": "متوسط حجم الصفقة (مليون $)",
-    "pipeline_funnel": "قمع خط الأنابيب",
+    "pipeline_funnel": "قمع مسار الصفقات",
     "performance_metrics": "مقاييس الأداء",
     "labels": {
       "volume": "الحجم",
@@ -33,12 +33,12 @@
     }
   },
   "pipeline": {
-    "title": "خط أنابيب الصفقات",
+    "title": "مسار الصفقات",
     "subtitle": "تحليل التحويل حسب المراحل",
     "deals": "صفقات",
     "overall_conversion_rate": "معدل التحويل الإجمالي",
     "stages": {
-      "prospecting": "البحث عن العملاء المحتملين",
+      "prospecting": "الاستطلاع",
       "qualification": "التأهيل",
       "proposal": "الاقتراح",
       "negotiation": "التفاوض",
@@ -51,7 +51,7 @@
     }
   },
   "top_performing_rooms": {
-    "title": "أفضل الغرف أداءً",
+    "title": "أفضل غرف البيانات أداءً",
     "subtitle": "بناءً على المشاركة والتحويل",
     "avg_success_rate": "متوسط معدل النجاح",
     "avg_close_time": "متوسط وقت الإغلاق",
@@ -112,8 +112,8 @@
     "pending": "قيد الانتظار",
     "completed": "مكتمل",
     "critical": "حرج",
-    "on_track": "على المسار الصحيح",
-    "attention": "يحتاج انتباه",
+    "on_track": "سير طبيعي",
+    "attention": "يتطلب متابعة",
     "live_data": "بيانات مباشرة",
     "last_updated": "آخر تحديث: {{time}}",
     "data_source": "مصدر البيانات: VDR Core Analytics",
@@ -151,7 +151,7 @@
   },
   "time": {
     "days": "أيام",
-    "vs_last_quarter": "مقابل الربع الماضي",
+    "vs_last_quarter": "مقارنة بالربع السابق",
     "2_minutes_ago": "منذ دقيقتين"
   },
   "symbols": {

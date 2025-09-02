@@ -56,7 +56,7 @@ const DealPipelineFunnel = ({ stages }) => {
               </div>
               
               {stage?.conversionRate && (
-                <div className="absolute -right-2 -top-1 bg-popover border border-border rounded px-2 py-1">
+                <div className="absolute -right-2 rtl:-left-2 rtl:right-auto -top-1 bg-popover border border-border rounded px-2 py-1">
                   <span className="text-xs font-medium text-popover-foreground">
                     {stage?.conversionRate}%
                   </span>

@@ -1,12 +1,12 @@
 {
   "labels": {
     "search": "بحث",
-    "filter": "فلتر",
+    "filter": "تصفية",
     "date_range": "نطاق التاريخ",
     "status": "الحالة",
     "save": "حفظ",
     "cancel": "إلغاء",
-    "submit": "إرسال",
+    "submit": "تأكيد",
     "reset": "إعادة تعيين"
   },
   "placeholders": {
