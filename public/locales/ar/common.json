@@ -12,6 +12,8 @@
     "sign_out": "تسجيل الخروج"
   },
   "misc": {
-    "just_now": "الآن"
+    "just_now": "الآن",
+    "minutes_ago": "د مضت",
+    "hours_ago": "س مضت"
   }
 }

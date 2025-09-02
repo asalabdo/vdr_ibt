@@ -12,6 +12,8 @@
     "sign_out": "Sign Out"
   },
   "misc": {
-    "just_now": "Just now"
+    "just_now": "Just now",
+    "minutes_ago": "m ago",
+    "hours_ago": "h ago"
   }
 }
