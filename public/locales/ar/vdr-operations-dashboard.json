@@ -1,0 +1,299 @@
+{
+  "title": "مركز قيادة عمليات VDR",
+  "subtitle": "مراقبة والتحكم في البنية التحتية لغرف البيانات الافتراضية في الوقت الفعلي",
+  
+  "system_metrics": {
+    "system_uptime": {
+      "title": "وقت تشغيل النظام",
+      "description": "إجمالي توفر النظام"
+    },
+    "active_users": {
+      "title": "المستخدمون النشطون", 
+      "description": "المستخدمون المتصلون حالياً"
+    },
+    "storage_used": {
+      "title": "التخزين المستخدم",
+      "description": "إجمالي استخدام التخزين"
+    },
+    "avg_response": {
+      "title": "متوسط الاستجابة",
+      "description": "متوسط وقت استجابة الخادم"
+    },
+    "security_incidents": {
+      "title": "الحوادث الأمنية",
+      "description": "الأحداث الأمنية المكتشفة"
+    },
+    "qa_resolution": {
+      "title": "حل الأسئلة والأجوبة",
+      "description": "معدل حل الأسئلة"
+    }
+  },
+
+  "active_data_rooms": {
+    "title": "غرف البيانات النشطة",
+    "subtitle": "غرف البيانات النشطة حالياً وحالتها",
+    "search_placeholder": "البحث في غرف البيانات أو المالكين أو المراحل...",
+    "new_room": "غرفة جديدة",
+    "showing_results": "عرض {{count}} من {{total}} غرفة بيانات",
+    "headers": {
+      "data_room": "غرفة البيانات",
+      "status": "الحالة", 
+      "users": "المستخدمون",
+      "documents": "المستندات",
+      "performance": "الأداء",
+      "last_activity": "آخر نشاط",
+      "actions": "الإجراءات"
+    },
+    "labels": {
+      "owner": "المالك",
+      "uptime": "وقت التشغيل",
+      "response": "الاستجابة"
+    },
+    "sample_data": {
+      "rooms": {
+        "techcorp_acquisition": "استحواذ تيك كورب",
+        "meddevice_merger": "اندماج الأجهزة الطبية", 
+        "fintech_partnership": "شراكة التكنولوجيا المالية",
+        "energy_sector_deal": "صفقة قطاع الطاقة",
+        "retail_chain_buyout": "شراء سلسلة متاجر التجزئة"
+      },
+      "phases": {
+        "due_diligence": "العناية الواجبة",
+        "final_review": "المراجعة النهائية",
+        "initial_review": "المراجعة الأولية",
+        "negotiation": "التفاوض"
+      }
+    }
+  },
+
+  "system_alerts": {
+    "title": "تنبيهات النظام",
+    "subtitle": "إشعارات وتحذيرات النظام في الوقت الفعلي",
+    "tabs": {
+      "all": "الكل",
+      "critical": "حرج", 
+      "warning": "تحذير",
+      "info": "معلومات"
+    },
+    "empty_state": "لا توجد تنبيهات للعرض",
+    "actions": {
+      "mark_all_read": "تمييز الكل كمقروء",
+      "view_history": "عرض التاريخ"
+    },
+    "severity_levels": {
+      "critical": "حرج",
+      "warning": "تحذير", 
+      "info": "معلومات"
+    },
+    "sample_alerts": {
+      "high_storage": {
+        "title": "تحذير من ارتفاع استخدام التخزين",
+        "message": "وصل استخدام التخزين إلى 68.4% في مجموعة الخوادم الأساسية. فكر في أرشفة المستندات القديمة أو توسيع سعة التخزين.",
+        "actions": {
+          "archive_old_files": "أرشفة الملفات القديمة"
+        }
+      },
+      "session_anomaly": {
+        "title": "تم اكتشاف شذوذ في جلسة المستخدم", 
+        "message": "تم اكتشاف نمط تسجيل دخول غير عادي للمستخدم john.doe@company.com من عدة مواقع جغرافية خلال 30 دقيقة.",
+        "actions": {
+          "investigate": "تحقق",
+          "block_user": "حظر المستخدم"
+        }
+      },
+      "backup_completed": {
+        "title": "تم إكمال النسخ الاحتياطي بنجاح",
+        "message": "تم إكمال عملية النسخ الاحتياطي اليومية بنجاح. تم نسخ جميع غرف البيانات احتياطياً إلى التخزين الثانوي."
+      },
+      "api_rate_limit": {
+        "title": "اقتراب حد معدل واجهة برمجة التطبيقات",
+        "message": "وصل حد معدل واجهة برمجة تطبيقات المستندات إلى 85% لغرفة بيانات استحواذ تيك كورب. يرجى النظر في تحسين طلبات العميل."
+      }
+    }
+  },
+
+  "user_sessions": {
+    "title": "جلسات المستخدمين الحديثة",
+    "subtitle": "جلسات المستخدمين النشطة والحديثة حالياً",
+    "tabs": {
+      "all": "الكل",
+      "active": "نشط",
+      "idle": "خامل", 
+      "ended": "منتهي"
+    },
+    "empty_state": "لا توجد جلسات للعرض",
+    "view_all_sessions": "عرض جميع الجلسات",
+    "session_details": {
+      "duration": "المدة",
+      "documents_viewed": "مستندات تم عرضها",
+      "last_activity": "آخر نشاط",
+      "device_types": {
+        "desktop": "سطح المكتب",
+        "mobile": "المحمول",
+        "tablet": "الجهاز اللوحي"
+      }
+    },
+    "user_roles": {
+      "deal_manager": "مدير الصفقات",
+      "legal_advisor": "مستشار قانوني", 
+      "financial_analyst": "محلل مالي",
+      "senior_analyst": "محلل أول",
+      "investment_manager": "مدير الاستثمار"
+    }
+  },
+
+  "system_performance": {
+    "title": "أداء النظام",
+    "subtitle": "مقاييس النظام في الوقت الفعلي ومؤشرات الأداء",
+    "metrics": {
+      "response_time": "وقت الاستجابة",
+      "cpu_usage": "استخدام المعالج",
+      "memory_usage": "استخدام الذاكرة", 
+      "network_io": "إدخال/إخراج الشبكة"
+    },
+    "labels": {
+      "current": "الحالي",
+      "average": "المتوسط",
+      "trend_increasing": "متزايد",
+      "trend_decreasing": "متناقص",
+      "trend_stable": "مستقر"
+    }
+  },
+
+  "user_activity_heatmap": {
+    "title": "خريطة حرارية لنشاط المستخدمين",
+    "subtitle": "أنماط النشاط عبر الفترات الزمنية",
+    "metrics": {
+      "sessions": "الجلسات النشطة",
+      "downloads": "التنزيلات",
+      "uploads": "التحميلات", 
+      "views": "مشاهدات المستندات"
+    },
+    "time_ranges": {
+      "1h": "ساعة",
+      "6h": "6 ساعات",
+      "24h": "24 ساعة",
+      "7d": "7 أيام"
+    },
+    "intensity": {
+      "less": "أقل",
+      "more": "أكثر"
+    },
+    "stats": {
+      "peak": "الذروة",
+      "last_updated": "آخر تحديث"
+    }
+  },
+
+  "control_bar": {
+    "title": "التحكم في العمليات",
+    "environment": {
+      "label": "البيئة",
+      "options": {
+        "production": "الإنتاج",
+        "staging": "التدريج", 
+        "development": "التطوير"
+      }
+    },
+    "refresh_interval": {
+      "label": "معدل التحديث",
+      "options": {
+        "30_seconds": "30 ثانية",
+        "1_minute": "دقيقة واحدة",
+        "5_minutes": "5 دقائق"
+      }
+    },
+    "search_placeholder": "البحث في جميع المقاييس والمستخدمين والمستندات...",
+    "connection_status": {
+      "connected": "متصل",
+      "connecting": "جاري الاتصال",
+      "disconnected": "غير متصل"
+    },
+    "actions": {
+      "export": "تصدير",
+      "configure": "تكوين",
+      "alerts": "التنبيهات"
+    }
+  },
+
+  "tabs": {
+    "user_activity": "نشاط المستخدمين",
+    "system_performance": "أداء النظام",
+    "document_access": "الوصول للمستندات"
+  },
+
+  "quick_actions": {
+    "title": "الإجراءات السريعة",
+    "create_data_room": "إنشاء غرفة بيانات جديدة",
+    "invite_users": "دعوة المستخدمين",
+    "export_report": "تصدير تقرير النظام",
+    "system_configuration": "تكوين النظام"
+  },
+
+  "status_footer": {
+    "last_updated": "آخر تحديث: {{time}}",
+    "environment": "البيئة: {{env}}",
+    "refresh_rate": "التحديث: كل {{interval}} ثانية",
+    "connection_status": "{{status}}"
+  },
+
+  "common": {
+    "actions": {
+      "refresh": "تحديث",
+      "export": "تصدير", 
+      "configure": "تكوين",
+      "view_details": "عرض التفاصيل",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "maintenance": "صيانة",
+      "idle": "خامل",
+      "ended": "منتهي"
+    },
+    "time_units": {
+      "ms": "مس",
+      "seconds": "ث", 
+      "minutes": "د",
+      "hours": "س",
+      "days": "ي"
+    },
+    "time_relative": {
+      "ago": "منذ"
+    },
+    "days": {
+      "mon": "الاثنين",
+      "tue": "الثلاثاء", 
+      "wed": "الأربعاء",
+      "thu": "الخميس",
+      "fri": "الجمعة",
+      "sat": "السبت",
+      "sun": "الأحد"
+    },
+    "sample_times": {
+      "2_min_ago": "منذ دقيقتين",
+      "5_min_ago": "منذ 5 دقائق",
+      "8_min_ago": "منذ 8 دقائق", 
+      "1_min_ago": "منذ دقيقة",
+      "1_hour_ago": "منذ ساعة",
+      "15_min_ago": "منذ 15 دقيقة",
+      "30_min_ago": "منذ 30 دقيقة",
+      "duration_2h_34m": "2س 34د",
+      "duration_1h_45m": "1س 45د", 
+      "duration_45m": "45د",
+      "duration_3h_12m": "3س 12د",
+      "duration_1h_23m": "1س 23د"
+    },
+    "labels": {
+      "docs": "مستندات",
+      "of": "من",
+      "sessions": "جلسات"
+    }
+  },
+
+  "empty_states": {
+    "coming_soon": "تحليلات الوصول للمستندات في الوقت الفعلي قادمة قريباً"
+  }
+}

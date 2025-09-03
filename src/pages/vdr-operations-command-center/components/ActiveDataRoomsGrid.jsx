@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 
 const ActiveDataRoomsGrid = () => {
+  const { t } = useTranslation('vdr-operations-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('activity');
   const [sortOrder, setSortOrder] = useState('desc');
@@ -12,78 +15,78 @@ const ActiveDataRoomsGrid = () => {
   const dataRooms = [
     {
       id: 'vdr-001',
-      name: 'TechCorp Acquisition',
+      name: t('active_data_rooms.sample_data.rooms.techcorp_acquisition'),
       status: 'active',
       users: 24,
       documents: 1247,
       storage: '2.4 GB',
-      lastActivity: '2 min ago',
+      lastActivity: tCommon('sample_times.2_min_ago'),
       responseTime: 145,
       uptime: 99.8,
       owner: 'Sarah Johnson',
       created: '2024-08-15',
       dealValue: '$125M',
-      phase: 'Due Diligence'
+      phase: t('active_data_rooms.sample_data.phases.due_diligence')
     },
     {
       id: 'vdr-002',
-      name: 'MedDevice Merger',
+      name: t('active_data_rooms.sample_data.rooms.meddevice_merger'),
       status: 'active',
       users: 18,
       documents: 892,
       storage: '1.8 GB',
-      lastActivity: '5 min ago',
+      lastActivity: tCommon('sample_times.5_min_ago'),
       responseTime: 98,
       uptime: 99.9,
       owner: 'Michael Chen',
       created: '2024-08-20',
       dealValue: '$89M',
-      phase: 'Final Review'
+      phase: t('active_data_rooms.sample_data.phases.final_review')
     },
     {
       id: 'vdr-003',
-      name: 'FinTech Partnership',
+      name: t('active_data_rooms.sample_data.rooms.fintech_partnership'),
       status: 'maintenance',
       users: 12,
       documents: 634,
       storage: '1.2 GB',
-      lastActivity: '1 hour ago',
+      lastActivity: tCommon('sample_times.1_hour_ago'),
       responseTime: 234,
       uptime: 98.5,
       owner: 'Emily Rodriguez',
       created: '2024-08-25',
       dealValue: '$45M',
-      phase: 'Initial Review'
+      phase: t('active_data_rooms.sample_data.phases.initial_review')
     },
     {
       id: 'vdr-004',
-      name: 'Energy Sector Deal',
+      name: t('active_data_rooms.sample_data.rooms.energy_sector_deal'),
       status: 'active',
       users: 31,
       documents: 1856,
       storage: '3.7 GB',
-      lastActivity: '1 min ago',
+      lastActivity: tCommon('sample_times.1_min_ago'),
       responseTime: 167,
       uptime: 99.7,
       owner: 'David Kim',
       created: '2024-08-10',
       dealValue: '$200M',
-      phase: 'Due Diligence'
+      phase: t('active_data_rooms.sample_data.phases.due_diligence')
     },
     {
       id: 'vdr-005',
-      name: 'Retail Chain Buyout',
+      name: t('active_data_rooms.sample_data.rooms.retail_chain_buyout'),
       status: 'active',
       users: 15,
       documents: 743,
       storage: '1.5 GB',
-      lastActivity: '8 min ago',
+      lastActivity: tCommon('sample_times.8_min_ago'),
       responseTime: 112,
       uptime: 99.6,
       owner: 'Lisa Wang',
       created: '2024-08-28',
       dealValue: '$67M',
-      phase: 'Negotiation'
+      phase: t('active_data_rooms.sample_data.phases.negotiation')
     }
   ];
 
@@ -169,17 +172,17 @@ const ActiveDataRoomsGrid = () => {
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 rtl:space-x-reverse">
             <Icon name="Database" size={20} className="text-accent" />
-            <h3 className="text-lg font-semibold text-foreground">Active Data Rooms</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t('active_data_rooms.title')}</h3>
             <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-medium rounded-full">
-              {filteredAndSortedRooms?.length} Active
+              {filteredAndSortedRooms?.length}
             </span>
           </div>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Button variant="outline" size="sm" iconName="Plus">
-              New Room
+              {t('active_data_rooms.new_room')}
             </Button>
             <Button variant="ghost" size="sm" iconName="RefreshCw" />
           </div>
@@ -189,7 +192,7 @@ const ActiveDataRoomsGrid = () => {
         <div className="max-w-md">
           <Input
             type="search"
-            placeholder="Search data rooms, owners, or phases..."
+            placeholder={t('active_data_rooms.search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e?.target?.value)}
           />
@@ -200,45 +203,45 @@ const ActiveDataRoomsGrid = () => {
         <table className="w-full">
           <thead className="bg-muted/20">
             <tr>
-              <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+              <th className="text-left rtl:text-right p-4 text-sm font-medium text-muted-foreground">
                 <button
                   onClick={() => handleSort('name')}
-                  className="flex items-center space-x-1 hover:text-foreground"
+                  className="flex items-center space-x-1 rtl:space-x-reverse hover:text-foreground"
                 >
-                  <span>Data Room</span>
+                  <span>{t('active_data_rooms.headers.data_room')}</span>
                   <Icon name="ArrowUpDown" size={12} />
                 </button>
               </th>
-              <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
-              <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+              <th className="text-left rtl:text-right p-4 text-sm font-medium text-muted-foreground">{t('active_data_rooms.headers.status')}</th>
+              <th className="text-left rtl:text-right p-4 text-sm font-medium text-muted-foreground">
                 <button
                   onClick={() => handleSort('users')}
-                  className="flex items-center space-x-1 hover:text-foreground"
+                  className="flex items-center space-x-1 rtl:space-x-reverse hover:text-foreground"
                 >
-                  <span>Users</span>
+                  <span>{t('active_data_rooms.headers.users')}</span>
                   <Icon name="ArrowUpDown" size={12} />
                 </button>
               </th>
-              <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+              <th className="text-left rtl:text-right p-4 text-sm font-medium text-muted-foreground">
                 <button
                   onClick={() => handleSort('documents')}
-                  className="flex items-center space-x-1 hover:text-foreground"
+                  className="flex items-center space-x-1 rtl:space-x-reverse hover:text-foreground"
                 >
-                  <span>Documents</span>
+                  <span>{t('active_data_rooms.headers.documents')}</span>
                   <Icon name="ArrowUpDown" size={12} />
                 </button>
               </th>
-              <th className="text-left p-4 text-sm font-medium text-muted-foreground">Performance</th>
-              <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+              <th className="text-left rtl:text-right p-4 text-sm font-medium text-muted-foreground">{t('active_data_rooms.headers.performance')}</th>
+              <th className="text-left rtl:text-right p-4 text-sm font-medium text-muted-foreground">
                 <button
                   onClick={() => handleSort('activity')}
-                  className="flex items-center space-x-1 hover:text-foreground"
+                  className="flex items-center space-x-1 rtl:space-x-reverse hover:text-foreground"
                 >
-                  <span>Last Activity</span>
+                  <span>{t('active_data_rooms.headers.last_activity')}</span>
                   <Icon name="ArrowUpDown" size={12} />
                 </button>
               </th>
-              <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
+              <th className="text-left rtl:text-right p-4 text-sm font-medium text-muted-foreground">{t('active_data_rooms.headers.actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -251,21 +254,21 @@ const ActiveDataRoomsGrid = () => {
                       {room?.dealValue} • {room?.phase}
                     </div>
                     <div className="text-xs text-muted-foreground mt-1">
-                      Owner: {room?.owner}
+                      {t('active_data_rooms.labels.owner')}: {room?.owner}
                     </div>
                   </div>
                 </td>
                 <td className="p-4">
                   <div className={`
-                    inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium border
+                    inline-flex items-center space-x-1 rtl:space-x-reverse px-2 py-1 rounded-full text-xs font-medium border
                     ${getStatusColor(room?.status)}
                   `}>
                     <Icon name={getStatusIcon(room?.status)} size={12} />
-                    <span className="capitalize">{room?.status}</span>
+                    <span className="capitalize">{tCommon(`status_values.${room?.status}`)}</span>
                   </div>
                 </td>
                 <td className="p-4">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 rtl:space-x-reverse">
                     <Icon name="Users" size={14} className="text-muted-foreground" />
                     <span className="font-medium">{room?.users}</span>
                   </div>
@@ -278,16 +281,16 @@ const ActiveDataRoomsGrid = () => {
                 </td>
                 <td className="p-4">
                   <div className="space-y-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xs text-muted-foreground">Uptime:</span>
+                    <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                      <span className="text-xs text-muted-foreground">{t('active_data_rooms.labels.uptime')}:</span>
                       <span className={`text-xs font-medium ${getUptimeColor(room?.uptime)}`}>
                         {room?.uptime}%
                       </span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xs text-muted-foreground">Response:</span>
+                    <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                      <span className="text-xs text-muted-foreground">{t('active_data_rooms.labels.response')}:</span>
                       <span className={`text-xs font-medium ${getResponseTimeColor(room?.responseTime)}`}>
-                        {room?.responseTime}ms
+                        {room?.responseTime} {tCommon('time_units.ms')}
                       </span>
                     </div>
                   </div>
@@ -296,7 +299,7 @@ const ActiveDataRoomsGrid = () => {
                   <span className="text-sm text-muted-foreground">{room?.lastActivity}</span>
                 </td>
                 <td className="p-4">
-                  <div className="flex items-center space-x-1">
+                  <div className="flex items-center space-x-1 rtl:space-x-reverse">
                     <Button variant="ghost" size="sm" iconName="Eye" />
                     <Button variant="ghost" size="sm" iconName="Settings" />
                     <Button variant="ghost" size="sm" iconName="MoreHorizontal" />
@@ -310,13 +313,13 @@ const ActiveDataRoomsGrid = () => {
       {/* Footer */}
       <div className="p-4 border-t border-border">
         <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>Showing {filteredAndSortedRooms?.length} of {dataRooms?.length} data rooms</span>
-          <div className="flex items-center space-x-2">
+          <span>{t('active_data_rooms.showing_results', { count: filteredAndSortedRooms?.length, total: dataRooms?.length })}</span>
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Button variant="ghost" size="sm" disabled>
-              Previous
+              {tCommon('actions.previous')}
             </Button>
             <Button variant="ghost" size="sm" disabled>
-              Next
+              {tCommon('actions.next')}
             </Button>
           </div>
         </div>

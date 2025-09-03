@@ -1,0 +1,299 @@
+{
+  "title": "VDR Operations Command Center",
+  "subtitle": "Real-time monitoring and control of virtual data room infrastructure",
+  
+  "system_metrics": {
+    "system_uptime": {
+      "title": "System Uptime",
+      "description": "Overall system availability"
+    },
+    "active_users": {
+      "title": "Active Users", 
+      "description": "Currently logged in users"
+    },
+    "storage_used": {
+      "title": "Storage Used",
+      "description": "Total storage utilization"
+    },
+    "avg_response": {
+      "title": "Avg Response",
+      "description": "Average server response time"
+    },
+    "security_incidents": {
+      "title": "Security Incidents",
+      "description": "Security events detected"
+    },
+    "qa_resolution": {
+      "title": "Q&A Resolution",
+      "description": "Question resolution rate"
+    }
+  },
+
+  "active_data_rooms": {
+    "title": "Active Data Rooms",
+    "subtitle": "Currently active data rooms and their status",
+    "search_placeholder": "Search data rooms, owners, or phases...",
+    "new_room": "New Room",
+    "showing_results": "Showing {{count}} of {{total}} data rooms",
+    "headers": {
+      "data_room": "Data Room",
+      "status": "Status", 
+      "users": "Users",
+      "documents": "Documents",
+      "performance": "Performance",
+      "last_activity": "Last Activity",
+      "actions": "Actions"
+    },
+    "labels": {
+      "owner": "Owner",
+      "uptime": "Uptime",
+      "response": "Response"
+    },
+    "sample_data": {
+      "rooms": {
+        "techcorp_acquisition": "TechCorp Acquisition",
+        "meddevice_merger": "MedDevice Merger", 
+        "fintech_partnership": "FinTech Partnership",
+        "energy_sector_deal": "Energy Sector Deal",
+        "retail_chain_buyout": "Retail Chain Buyout"
+      },
+      "phases": {
+        "due_diligence": "Due Diligence",
+        "final_review": "Final Review",
+        "initial_review": "Initial Review",
+        "negotiation": "Negotiation"
+      }
+    }
+  },
+
+  "system_alerts": {
+    "title": "System Alerts",
+    "subtitle": "Real-time system notifications and warnings",
+    "tabs": {
+      "all": "All",
+      "critical": "Critical", 
+      "warning": "Warning",
+      "info": "Info"
+    },
+    "empty_state": "No alerts to display",
+    "actions": {
+      "mark_all_read": "Mark All Read",
+      "view_history": "View History"
+    },
+    "severity_levels": {
+      "critical": "Critical",
+      "warning": "Warning", 
+      "info": "Info"
+    },
+    "sample_alerts": {
+      "high_storage": {
+        "title": "High Storage Usage Warning",
+        "message": "Storage utilization has reached 68.4% on primary server cluster. Consider archiving older documents or expanding storage capacity.",
+        "actions": {
+          "archive_old_files": "Archive Old Files"
+        }
+      },
+      "session_anomaly": {
+        "title": "User Session Anomaly Detected", 
+        "message": "Unusual login pattern detected for user john.doe@company.com from multiple geographic locations within 30 minutes.",
+        "actions": {
+          "investigate": "Investigate",
+          "block_user": "Block User"
+        }
+      },
+      "backup_completed": {
+        "title": "Backup Completed Successfully",
+        "message": "Daily backup process completed successfully. All data rooms backed up to secondary storage."
+      },
+      "api_rate_limit": {
+        "title": "API Rate Limit Approaching",
+        "message": "Document API rate limit at 85% for TechCorp Acquisition data room. Consider optimizing client requests."
+      }
+    }
+  },
+
+  "user_sessions": {
+    "title": "Recent User Sessions",
+    "subtitle": "Currently active and recent user sessions",
+    "tabs": {
+      "all": "All",
+      "active": "Active",
+      "idle": "Idle", 
+      "ended": "Ended"
+    },
+    "empty_state": "No sessions to display",
+    "view_all_sessions": "View All Sessions",
+    "session_details": {
+      "duration": "Duration",
+      "documents_viewed": "documents viewed",
+      "last_activity": "Last activity",
+      "device_types": {
+        "desktop": "Desktop",
+        "mobile": "Mobile",
+        "tablet": "Tablet"
+      }
+    },
+    "user_roles": {
+      "deal_manager": "Deal Manager",
+      "legal_advisor": "Legal Advisor", 
+      "financial_analyst": "Financial Analyst",
+      "senior_analyst": "Senior Analyst",
+      "investment_manager": "Investment Manager"
+    }
+  },
+
+  "system_performance": {
+    "title": "System Performance",
+    "subtitle": "Real-time system metrics and performance indicators",
+    "metrics": {
+      "response_time": "Response Time",
+      "cpu_usage": "CPU Usage",
+      "memory_usage": "Memory Usage", 
+      "network_io": "Network I/O"
+    },
+    "labels": {
+      "current": "Current",
+      "average": "Average",
+      "trend_increasing": "Increasing",
+      "trend_decreasing": "Decreasing",
+      "trend_stable": "Stable"
+    }
+  },
+
+  "user_activity_heatmap": {
+    "title": "User Activity Heatmap",
+    "subtitle": "Activity patterns across time periods",
+    "metrics": {
+      "sessions": "Active Sessions",
+      "downloads": "Downloads",
+      "uploads": "Uploads", 
+      "views": "Document Views"
+    },
+    "time_ranges": {
+      "1h": "1H",
+      "6h": "6H",
+      "24h": "24H",
+      "7d": "7D"
+    },
+    "intensity": {
+      "less": "Less",
+      "more": "More"
+    },
+    "stats": {
+      "peak": "Peak",
+      "last_updated": "Last updated"
+    }
+  },
+
+  "control_bar": {
+    "title": "Operations Control",
+    "environment": {
+      "label": "Environment",
+      "options": {
+        "production": "Production",
+        "staging": "Staging", 
+        "development": "Development"
+      }
+    },
+    "refresh_interval": {
+      "label": "Refresh Rate",
+      "options": {
+        "30_seconds": "30 seconds",
+        "1_minute": "1 minute",
+        "5_minutes": "5 minutes"
+      }
+    },
+    "search_placeholder": "Search across all metrics, users, documents...",
+    "connection_status": {
+      "connected": "Connected",
+      "connecting": "Connecting",
+      "disconnected": "Disconnected"
+    },
+    "actions": {
+      "export": "Export",
+      "configure": "Configure",
+      "alerts": "Alerts"
+    }
+  },
+
+  "tabs": {
+    "user_activity": "User Activity",
+    "system_performance": "System Performance",
+    "document_access": "Document Access"
+  },
+
+  "quick_actions": {
+    "title": "Quick Actions",
+    "create_data_room": "Create New Data Room",
+    "invite_users": "Invite Users",
+    "export_report": "Export System Report",
+    "system_configuration": "System Configuration"
+  },
+
+  "status_footer": {
+    "last_updated": "Last updated: {{time}}",
+    "environment": "Environment: {{env}}",
+    "refresh_rate": "Refresh: Every {{interval}}s",
+    "connection_status": "{{status}}"
+  },
+
+  "common": {
+    "actions": {
+      "refresh": "Refresh",
+      "export": "Export", 
+      "configure": "Configure",
+      "view_details": "View Details",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "maintenance": "Maintenance",
+      "idle": "Idle",
+      "ended": "Ended"
+    },
+    "time_units": {
+      "ms": "ms",
+      "seconds": "s", 
+      "minutes": "m",
+      "hours": "h",
+      "days": "d"
+    },
+    "time_relative": {
+      "ago": "ago"
+    },
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue", 
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "sample_times": {
+      "2_min_ago": "2 min ago",
+      "5_min_ago": "5 min ago",
+      "8_min_ago": "8 min ago", 
+      "1_min_ago": "1 min ago",
+      "1_hour_ago": "1 hour ago",
+      "15_min_ago": "15 min ago",
+      "30_min_ago": "30 min ago",
+      "duration_2h_34m": "2h 34m",
+      "duration_1h_45m": "1h 45m", 
+      "duration_45m": "45m",
+      "duration_3h_12m": "3h 12m",
+      "duration_1h_23m": "1h 23m"
+    },
+    "labels": {
+      "docs": "docs",
+      "of": "of",
+      "sessions": "sessions"
+    }
+  },
+
+  "empty_states": {
+    "coming_soon": "Real-time document access analytics coming soon"
+  }
+}

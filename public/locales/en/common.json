@@ -27,7 +27,10 @@
     "low": "Low",
     "medium": "Medium",
     "high": "High",
-    "compliant": "Compliant"
+    "compliant": "Compliant",
+    "maintenance": "Maintenance",
+    "idle": "Idle",
+    "ended": "Ended"
   },
   "units": {
     "days": "days",
@@ -40,7 +43,10 @@
     "refresh": "Refresh",
     "save": "Save",
     "cancel": "Cancel",
-    "reset": "Reset"
+    "reset": "Reset",
+    "view_details": "View Details",
+    "previous": "Previous",
+    "next": "Next"
   },
   "time_ago": {
     "just_now": "Just now",
@@ -65,7 +71,10 @@
     "toggle_theme": "Toggle theme"
   },
   "labels": {
-    "users": "users"
+    "users": "users",
+    "docs": "docs",
+    "of": "of",
+    "sessions": "sessions"
   },
   "user": {
     "profile_settings": "Profile Settings",
@@ -73,5 +82,37 @@
     "notification_settings": "Notification Settings",
     "help_support": "Help & Support",
     "sign_out": "Sign Out"
+  },
+  "time_units": {
+    "ms": "ms",
+    "seconds": "s",
+    "minutes": "m",
+    "hours": "h",
+    "days": "d"
+  },
+  "time_relative": {
+    "ago": "ago"
+  },
+  "days": {
+    "mon": "Mon",
+    "tue": "Tue", 
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "sample_times": {
+    "1_min_ago": "1 min ago",
+    "2_min_ago": "2 min ago",
+    "5_min_ago": "5 min ago",
+    "8_min_ago": "8 min ago",
+    "1_hour_ago": "1 hour ago",
+    "3_hours_ago": "3 hours ago",
+    "yesterday": "yesterday",
+    "duration_2h_34m": "2h 34m",
+    "duration_1h_45m": "1h 45m",
+    "duration_45m": "45m",
+    "duration_3h_12m": "3h 12m"
   }
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Select from '../../../components/ui/Select';
@@ -12,18 +13,20 @@ const ControlBar = ({
   onGlobalSearch,
   connectionStatus 
 }) => {
+  const { t } = useTranslation('vdr-operations-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [searchQuery, setSearchQuery] = useState('');
 
   const environmentOptions = [
-    { value: 'production', label: 'Production' },
-    { value: 'staging', label: 'Staging' },
-    { value: 'development', label: 'Development' }
+    { value: 'production', label: t('control_bar.environment.options.production') },
+    { value: 'staging', label: t('control_bar.environment.options.staging') },
+    { value: 'development', label: t('control_bar.environment.options.development') }
   ];
 
   const refreshOptions = [
-    { value: '30', label: '30 seconds' },
-    { value: '60', label: '1 minute' },
-    { value: '300', label: '5 minutes' }
+    { value: '30', label: t('control_bar.refresh_interval.options.30_seconds') },
+    { value: '60', label: t('control_bar.refresh_interval.options.1_minute') },
+    { value: '300', label: t('control_bar.refresh_interval.options.5_minutes') }
   ];
 
   const handleSearch = (e) => {
@@ -53,38 +56,38 @@ const ControlBar = ({
     <div className="bg-card border-b border-border p-4">
       <div className="flex items-center justify-between flex-wrap gap-4">
         {/* Left Section - Environment & Refresh */}
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4 rtl:space-x-reverse">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Icon name="Server" size={16} className="text-muted-foreground" />
             <Select
               options={environmentOptions}
               value={selectedEnvironment}
               onChange={onEnvironmentChange}
-              placeholder="Select Environment"
+              placeholder={t('control_bar.environment.label')}
               className="w-40"
             />
           </div>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Icon name="RefreshCw" size={16} className="text-muted-foreground" />
             <Select
               options={refreshOptions}
               value={refreshInterval}
               onChange={onRefreshIntervalChange}
-              placeholder="Refresh Rate"
+              placeholder={t('control_bar.refresh_interval.label')}
               className="w-36"
             />
           </div>
 
           {/* Connection Status */}
-          <div className="flex items-center space-x-2 px-3 py-1.5 bg-muted/20 rounded-lg">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse px-3 py-1.5 bg-muted/20 rounded-lg">
             <Icon 
               name={getConnectionStatusIcon()} 
               size={14} 
               className={`${getConnectionStatusColor()} ${connectionStatus === 'connecting' ? 'animate-spin' : ''}`}
             />
             <span className={`text-xs font-medium ${getConnectionStatusColor()}`}>
-              {connectionStatus?.charAt(0)?.toUpperCase() + connectionStatus?.slice(1)}
+              {t(`control_bar.connection_status.${connectionStatus}`)}
             </span>
           </div>
         </div>
@@ -94,14 +97,14 @@ const ControlBar = ({
           <div className="relative">
             <Input
               type="search"
-              placeholder="Search across all metrics, users, documents..."
+              placeholder={t('control_bar.search_placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e?.target?.value)}
-              className="pr-10"
+              className="pr-10 rtl:pl-10 rtl:pr-3"
             />
             <button
               type="submit"
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-muted/50 rounded"
+              className="absolute right-2 rtl:left-2 rtl:right-auto top-1/2 -translate-y-1/2 p-1 hover:bg-muted/50 rounded"
             >
               <Icon name="Search" size={16} className="text-muted-foreground" />
             </button>
@@ -109,15 +112,15 @@ const ControlBar = ({
         </form>
 
         {/* Right Section - Actions */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
           <Button variant="outline" size="sm" iconName="Download">
-            Export
+            {t('control_bar.actions.export')}
           </Button>
           <Button variant="outline" size="sm" iconName="Settings">
-            Configure
+            {t('control_bar.actions.configure')}
           </Button>
           <Button variant="default" size="sm" iconName="AlertTriangle">
-            Alerts
+            {t('control_bar.actions.alerts')}
           </Button>
         </div>
       </div>

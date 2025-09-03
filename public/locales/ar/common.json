@@ -27,7 +27,10 @@
     "low": "منخفض",
     "medium": "متوسط",
     "high": "عالي",
-    "compliant": "متوافق"
+    "compliant": "متوافق",
+    "maintenance": "صيانة",
+    "idle": "خامل",
+    "ended": "منتهي"
   },
   "units": {
     "days": "أيام",
@@ -40,7 +43,10 @@
     "refresh": "تحديث",
     "save": "حفظ",
     "cancel": "إلغاء",
-    "reset": "إعادة تعيين"
+    "reset": "إعادة تعيين",
+    "view_details": "عرض التفاصيل",
+    "previous": "السابق",
+    "next": "التالي"
   },
   "time_ago": {
     "just_now": "الآن",
@@ -65,7 +71,10 @@
     "toggle_theme": "تبديل المظهر"
   },
   "labels": {
-    "users": "مستخدمين"
+    "users": "مستخدمين",
+    "docs": "مستندات",
+    "of": "من",
+    "sessions": "جلسات"
   },
   "user": {
     "profile_settings": "إعدادات الملف الشخصي",
@@ -73,5 +82,37 @@
     "notification_settings": "إعدادات الإشعارات", 
     "help_support": "المساعدة والدعم",
     "sign_out": "تسجيل الخروج"
+  },
+  "time_units": {
+    "ms": "مس",
+    "seconds": "ث",
+    "minutes": "د",
+    "hours": "س",
+    "days": "ي"
+  },
+  "time_relative": {
+    "ago": "منذ"
+  },
+  "days": {
+    "mon": "الاثنين",
+    "tue": "الثلاثاء", 
+    "wed": "الأربعاء",
+    "thu": "الخميس",
+    "fri": "الجمعة",
+    "sat": "السبت",
+    "sun": "الأحد"
+  },
+  "sample_times": {
+    "1_min_ago": "منذ دقيقة",
+    "2_min_ago": "منذ دقيقتين",
+    "5_min_ago": "منذ 5 دقائق",
+    "8_min_ago": "منذ 8 دقائق",
+    "1_hour_ago": "منذ ساعة",
+    "3_hours_ago": "منذ 3 ساعات",
+    "yesterday": "أمس",
+    "duration_2h_34m": "2س 34د",
+    "duration_1h_45m": "1س 45د",
+    "duration_45m": "45د",
+    "duration_3h_12m": "3س 12د"
   }
 }

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 const AlertFeed = ({ alerts = [] }) => {
+  const { t } = useTranslation('vdr-operations-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [filter, setFilter] = useState('all');
 
   const getSeverityColor = (severity) => {
@@ -28,10 +31,10 @@ const AlertFeed = ({ alerts = [] }) => {
     const alertTime = new Date(timestamp);
     const diff = Math.floor((now - alertTime) / 1000);
     
-    if (diff < 60) return `${diff}s ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return `${Math.floor(diff / 86400)}d ago`;
+    if (diff < 60) return `${diff}${tCommon('time_units.seconds')} ${tCommon('time_relative.ago')}`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}${tCommon('time_units.minutes')} ${tCommon('time_relative.ago')}`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}${tCommon('time_units.hours')} ${tCommon('time_relative.ago')}`;
+    return `${Math.floor(diff / 86400)}${tCommon('time_units.days')} ${tCommon('time_relative.ago')}`;
   };
 
   const filteredAlerts = alerts?.filter(alert => 
@@ -48,17 +51,17 @@ const AlertFeed = ({ alerts = [] }) => {
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-foreground">System Alerts</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('system_alerts.title')}</h3>
           <Button variant="ghost" size="sm" iconName="Settings" />
         </div>
         
         {/* Filter Tabs */}
-        <div className="flex space-x-1">
+        <div className="flex space-x-1 rtl:space-x-reverse">
           {[
-            { key: 'all', label: 'All', count: alerts?.length },
-            { key: 'critical', label: 'Critical', count: severityCounts?.critical || 0 },
-            { key: 'warning', label: 'Warning', count: severityCounts?.warning || 0 },
-            { key: 'info', label: 'Info', count: severityCounts?.info || 0 }
+            { key: 'all', label: t('system_alerts.tabs.all'), count: alerts?.length },
+            { key: 'critical', label: t('system_alerts.tabs.critical'), count: severityCounts?.critical || 0 },
+            { key: 'warning', label: t('system_alerts.tabs.warning'), count: severityCounts?.warning || 0 },
+            { key: 'info', label: t('system_alerts.tabs.info'), count: severityCounts?.info || 0 }
           ]?.map(({ key, label, count }) => (
             <button
               key={key}
@@ -81,7 +84,7 @@ const AlertFeed = ({ alerts = [] }) => {
         {filteredAlerts?.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-32 text-muted-foreground">
             <Icon name="CheckCircle" size={24} className="mb-2" />
-            <span className="text-sm">No alerts to display</span>
+            <span className="text-sm">{t('system_alerts.empty_state')}</span>
           </div>
         ) : (
           <div className="space-y-2 p-4">
@@ -93,7 +96,7 @@ const AlertFeed = ({ alerts = [] }) => {
                   ${getSeverityColor(alert?.severity)}
                 `}
               >
-                <div className="flex items-start space-x-3">
+                <div className="flex items-start space-x-3 rtl:space-x-reverse">
                   <Icon 
                     name={getSeverityIcon(alert?.severity)} 
                     size={16} 
@@ -104,7 +107,7 @@ const AlertFeed = ({ alerts = [] }) => {
                       <span className="text-sm font-medium truncate">
                         {alert?.title}
                       </span>
-                      <span className="text-xs opacity-60 flex-shrink-0 ml-2">
+                      <span className="text-xs opacity-60 flex-shrink-0 ml-2 rtl:mr-2 rtl:ml-0">
                         {formatTime(alert?.timestamp)}
                       </span>
                     </div>
@@ -113,7 +116,7 @@ const AlertFeed = ({ alerts = [] }) => {
                     </p>
                     {alert?.source && (
                       <div className="flex items-center mt-2 text-xs opacity-60">
-                        <Icon name="Server" size={12} className="mr-1" />
+                        <Icon name="Server" size={12} className="mr-1 rtl:ml-1 rtl:mr-0" />
                         <span>{alert?.source}</span>
                       </div>
                     )}
@@ -121,7 +124,7 @@ const AlertFeed = ({ alerts = [] }) => {
                 </div>
                 
                 {alert?.actions && (
-                  <div className="flex space-x-2 mt-3">
+                  <div className="flex space-x-2 rtl:space-x-reverse mt-3">
                     {alert?.actions?.map((action, index) => (
                       <Button
                         key={index}
@@ -141,12 +144,12 @@ const AlertFeed = ({ alerts = [] }) => {
       </div>
       {/* Footer Actions */}
       <div className="p-4 border-t border-border">
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 rtl:space-x-reverse">
           <Button variant="outline" size="sm" fullWidth>
-            Mark All Read
+            {t('system_alerts.actions.mark_all_read')}
           </Button>
           <Button variant="ghost" size="sm" fullWidth>
-            View History
+            {t('system_alerts.actions.view_history')}
           </Button>
         </div>
       </div>
