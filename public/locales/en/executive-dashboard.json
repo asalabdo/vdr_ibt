@@ -13,7 +13,6 @@
       "above_benchmark": "Above benchmark"
     },
     "units": {
-      "days": "days",
       "million": "M",
       "billion": "B"
     }
@@ -149,18 +148,12 @@
     "view_all": "View All",
     "view_quarterly": "View Quarterly"
   },
-  "time": {
-    "days": "days",
-    "vs_last_quarter": "vs last quarter",
-    "2_minutes_ago": "2 minutes ago"
-  },
+
   "symbols": {
     "arrow": "→",
     "bullet": "•"
   },
-  "common": {
-    "participants": "participants"
-  },
+
   "controls": {
     "filters": {
       "date_range": "Date Range",

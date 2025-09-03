@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 
 const ExecutiveSummaryTable = ({ deals }) => {
-  const { t } = useTranslation('dashboard');
+  const { t } = useTranslation('executive-dashboard');
+  const { t: tCommon } = useTranslation('common');
 
   const getStatusColor = (status) => {
     const statusLower = status?.toLowerCase();
@@ -125,7 +126,7 @@ const ExecutiveSummaryTable = ({ deals }) => {
                   </td>
                   <td className="p-4">
                     <div className="text-sm text-foreground">{formatDate(deal?.projectedClose)}</div>
-                    <div className="text-xs text-muted-foreground">{deal?.daysRemaining} {t('time.days', 'days')}</div>
+                    <div className="text-xs text-muted-foreground">{deal?.daysRemaining} {tCommon('units.days')}</div>
                   </td>
                   <td className="p-4">
                     <div className="flex items-center space-x-2 rtl:space-x-reverse">

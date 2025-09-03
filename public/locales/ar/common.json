@@ -1,19 +1,73 @@
 {
+  "time": {
+    "days": "أيام",
+    "hours": "ساعات",
+    "am": "ص",
+    "pm": "م",
+    "months": {
+      "jan": "يناير", "feb": "فبراير", "mar": "مارس", "apr": "أبريل",
+      "may": "مايو", "jun": "يونيو", "jul": "يوليو", "aug": "أغسطس",
+      "sep": "سبتمبر", "oct": "أكتوبر", "nov": "نوفمبر", "dec": "ديسمبر"
+    },
+    "days_of_week": {
+      "mon": "الاثنين", "tue": "الثلاثاء", "wed": "الأربعاء", "thu": "الخميس",
+      "fri": "الجمعة", "sat": "السبت", "sun": "الأحد"
+    },
+    "time_labels": {
+      "am": "ص",
+      "pm": "م"
+    }
+  },
+  "status_values": {
+    "active": "نشط",
+    "completed": "مكتمل",
+    "pending": "قيد الانتظار",
+    "review": "مراجعة",
+    "final": "نهائي",
+    "low": "منخفض",
+    "medium": "متوسط",
+    "high": "عالي",
+    "compliant": "متوافق"
+  },
+  "units": {
+    "days": "أيام",
+    "hours": "ساعات",
+    "million": "م",
+    "percent": "%"
+  },
+  "actions": {
+    "export": "تصدير",
+    "refresh": "تحديث",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "reset": "إعادة تعيين"
+  },
+  "time_ago": {
+    "just_now": "الآن",
+    "minutes_ago": "منذ {{count}} دقيقة",
+    "hours_ago": "منذ {{count}} ساعة"
+  },
+  "time_comparison": {
+    "vs_last_quarter": "مقارنة بالربع السابق",
+    "vs_last_month": "مقارنة بالشهر السابق", 
+    "vs_last_week": "مقارنة بالأسبوع السابق"
+  },
+  "empty_states": {
+    "no_data": "لا توجد بيانات متاحة",
+    "loading": "جاري التحميل...",
+    "error": "خطأ في تحميل البيانات"
+  },
+  "confidence": "الثقة",
+  "participants": "مشاركين",
   "header": {
-    "toggle_theme": "تبديل النمط",
-    "toggle_language": "تبديل اللغة",
-    "updated": "تم التحديث"
+    "updated": "تم التحديث",
+    "toggle_theme": "تبديل المظهر"
   },
   "user": {
-    "profile_settings": "إعدادات الحساب",
+    "profile_settings": "إعدادات الملف الشخصي",
     "dashboard_preferences": "تفضيلات لوحة القيادة",
-    "notification_settings": "إعدادات الإشعارات",
+    "notification_settings": "إعدادات الإشعارات", 
     "help_support": "المساعدة والدعم",
     "sign_out": "تسجيل الخروج"
-  },
-  "misc": {
-    "just_now": "الآن",
-    "minutes_ago": "د مضت",
-    "hours_ago": "س مضت"
   }
 }

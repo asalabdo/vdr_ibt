@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 
 const KPICard = ({ title, value, change, changeType, icon, subtitle, trend }) => {
-  const { t } = useTranslation('dashboard');
+  const { t } = useTranslation('executive-dashboard');
+  const { t: tCommon } = useTranslation('common');
 
   const getChangeColor = () => {
     if (changeType === 'positive') return 'text-success';
@@ -49,7 +50,7 @@ const KPICard = ({ title, value, change, changeType, icon, subtitle, trend }) =>
           <div className={`flex items-center space-x-1 rtl:space-x-reverse text-sm ${getChangeColor()}`}>
             <Icon name={getChangeIcon()} size={14} />
             <span>{change}</span>
-            <span className="text-muted-foreground">{t('time.vs_last_quarter', 'vs last quarter')}</span>
+            <span className="text-muted-foreground">{tCommon('time_comparison.vs_last_quarter')}</span>
           </div>
         )}
       </div>

@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 
 const TopPerformingRooms = ({ rooms }) => {
-  const { t } = useTranslation('dashboard');
+  const { t } = useTranslation('executive-dashboard');
+  const { t: tCommon } = useTranslation('common');
 
   const getRankIcon = (rank) => {
     if (rank === 1) return { icon: 'Trophy', color: 'text-yellow-500' };
@@ -47,7 +48,7 @@ const TopPerformingRooms = ({ rooms }) => {
                 <div className="flex items-center space-x-4 rtl:space-x-reverse mt-1">
                   <span className="text-xs text-muted-foreground">{room?.dealValue}</span>
                   <span className="text-xs text-muted-foreground">{t('symbols.bullet', '•')}</span>
-                  <span className="text-xs text-muted-foreground">{room?.participants} {t('common.participants', 'participants')}</span>
+                  <span className="text-xs text-muted-foreground">{room?.participants} {tCommon('participants')}</span>
                 </div>
               </div>
               <div className="flex flex-col items-end rtl:items-start space-y-1">

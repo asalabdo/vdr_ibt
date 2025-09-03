@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 
 const DealPipelineFunnel = ({ stages }) => {
-  const { t } = useTranslation('dashboard');
+  const { t } = useTranslation('executive-dashboard');
   
   const getStageColor = (index) => {
     const colors = [

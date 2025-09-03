@@ -12,34 +12,35 @@ const Header = ({ onToggleSidebar }) => {
   const userMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t: tNav } = useTranslation('navigation');
+  const { t: tCommon } = useTranslation('common');
 
 
 
   const navigationItems = [
     {
-      label: t('navigation:routes.executive_overview'),
+      label: tNav('routes.executive_overview'),
       path: '/executive-deal-flow-dashboard',
       icon: 'BarChart3',
-      tooltip: t('header.toggle_theme')
+      tooltip: tCommon('header.toggle_theme')
     },
     {
-      label: t('navigation:routes.deal_intelligence'),
+      label: tNav('routes.deal_intelligence'),
       path: '/deal-analytics-intelligence-dashboard',
       icon: 'TrendingUp',
-      tooltip: t('header.toggle_theme')
+      tooltip: tCommon('header.toggle_theme')
     },
     {
-      label: t('navigation:routes.operations_center'),
+      label: tNav('routes.operations_center'),
       path: '/vdr-operations-command-center',
       icon: 'Monitor',
-      tooltip: t('header.toggle_theme')
+      tooltip: tCommon('header.toggle_theme')
     },
     {
-      label: t('navigation:routes.compliance_security'),
+      label: tNav('routes.compliance_security'),
       path: '/compliance-security-monitoring-dashboard',
       icon: 'Shield',
-      tooltip: t('header.toggle_theme')
+      tooltip: tCommon('header.toggle_theme')
     }
   ];
 
@@ -70,13 +71,13 @@ const Header = ({ onToggleSidebar }) => {
     const now = new Date();
     const diff = Math.floor((now - date) / 1000);
     
-    if (diff < 60) return t('misc.just_now');
+    if (diff < 60) return tCommon('time_ago.just_now');
     if (diff < 3600) {
       const minutes = Math.floor(diff / 60);
-      return `${minutes}${t('misc.minutes_ago')}`;
+      return tCommon('time_ago.minutes_ago', { count: minutes });
     }
     const hours = Math.floor(diff / 3600);
-    return `${hours}${t('misc.hours_ago')}`;
+    return tCommon('time_ago.hours_ago', { count: hours });
   };
 
   const getCurrentPageTitle = () => {
@@ -150,7 +151,7 @@ const Header = ({ onToggleSidebar }) => {
           <div className="hidden md:flex items-center space-x-2 rtl:space-x-reverse px-3 py-1.5 bg-muted/20 rounded-md">
             <div className="w-1.5 h-1.5 bg-success rounded-full animate-pulse"></div>
             <span className="text-xs text-muted-foreground font-medium">
-              {t('header.updated')} {formatLastRefresh(lastDataRefresh)}
+              {tCommon('header.updated')} {formatLastRefresh(lastDataRefresh)}
             </span>
           </div>
 
@@ -188,26 +189,26 @@ const Header = ({ onToggleSidebar }) => {
                 <div className="py-2">
                   <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                     <Icon name="User" size={16} />
-                    <span>{t('user.profile_settings')}</span>
+                    <span>{tCommon('user.profile_settings')}</span>
                   </button>
                   <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                     <Icon name="Settings" size={16} />
-                    <span>{t('user.dashboard_preferences')}</span>
+                    <span>{tCommon('user.dashboard_preferences')}</span>
                   </button>
                   <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                     <Icon name="Bell" size={16} />
-                    <span>{t('user.notification_settings')}</span>
+                    <span>{tCommon('user.notification_settings')}</span>
                   </button>
                   <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                     <Icon name="HelpCircle" size={16} />
-                    <span>{t('user.help_support')}</span>
+                    <span>{tCommon('user.help_support')}</span>
                   </button>
                 </div>
                 
                 <div className="border-t border-border pt-4">
                   <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors">
                     <Icon name="LogOut" size={16} />
-                    <span>{t('user.sign_out')}</span>
+                    <span>{tCommon('user.sign_out')}</span>
                   </button>
                 </div>
               </div>

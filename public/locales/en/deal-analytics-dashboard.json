@@ -1,0 +1,261 @@
+{
+  "title": "Deal Analytics & Intelligence Dashboard",
+  "subtitle": "Comprehensive transaction insights and predictive analytics for optimizing due diligence workflows",
+  "actions": {
+    "refresh_data": "Refresh Data",
+    "save_analysis": "Save Analysis",
+    "export_report": "Export Report",
+    "share_dashboard": "Share Dashboard",
+    "schedule_report": "Schedule Report",
+    "customize_view": "Customize View",
+    "export": "Export",
+    "reset": "Reset"
+  },
+  "kpis": {
+    "deal_velocity": {
+      "title": "Deal Velocity",
+      "description": "Average time to close",
+      "unit": "days",
+      "confidence": "Confidence"
+    },
+    "user_engagement": {
+      "title": "User Engagement Score",
+      "description": "Active participation rate",
+      "unit": "%"
+    },
+    "document_utilization": {
+      "title": "Document Utilization",
+      "description": "Documents accessed rate",
+      "unit": "%"
+    },
+    "qa_efficiency": {
+      "title": "Q&A Efficiency",
+      "description": "Average response time",
+      "unit": "hrs"
+    },
+    "success_probability": {
+      "title": "AI Success Probability",
+      "description": "Predicted deal success",
+      "unit": "%"
+    },
+    "change_labels": {
+      "vs_last_period": "vs last period",
+      "response_time": "response time",
+      "confidence_increase": "confidence increase"
+    }
+  },
+  "charts": {
+    "timeline": {
+      "title": "Deal Timeline Analysis",
+      "subtitle": "Track deal progression and performance metrics over time",
+      "metrics": {
+        "velocity": "Deal Velocity (Days)",
+        "volume": "Deal Volume",
+        "success_rate": "Success Rate (%)",
+        "avg_size": "Avg Size ($M)"
+      },
+      "timeframes": {
+        "3months": "3 Months",
+        "6months": "6 Months",
+        "12months": "12 Months",
+        "ytd": "Year to Date"
+      },
+      "active_deals": "Active Deals",
+      "average": "Average"
+    },
+    "heatmap": {
+      "title": "User Engagement Heatmap",
+      "subtitle": "Activity patterns across time periods",
+      "metrics": {
+        "sessions": "User Sessions",
+        "documents": "Document Access",
+        "qa_activity": "Q&A Activity"
+      },
+      "intensity": {
+        "less": "Less",
+        "more": "More"
+      },
+      "stats": {
+        "peak": "Peak",
+        "average": "Average",
+        "total": "Total"
+      }
+    },
+    "segments": {
+      "title": "Segmented Analytics",
+      "subtitle": "Detailed Insights",
+      "tabs": {
+        "documents": "Document Analytics",
+        "behavior": "User Behavior",
+        "compliance": "Compliance Metrics"
+      },
+      "document_analytics": {
+        "access_frequency": "Document Access Frequency",
+        "storage_utilization": "Storage Utilization",
+        "version_control": "Version Control Activity",
+        "headers": {
+          "document": "Document",
+          "versions": "Versions",
+          "last_updated": "Last Updated",
+          "status": "Status"
+        }
+      },
+      "user_behavior": {
+        "session_patterns": "Session Patterns",
+        "user_types": "User Type Distribution",
+        "activity_flow": "User Activity Flow"
+      },
+      "compliance": {
+        "security_score": "Security Score",
+        "overall_score": "Overall Security Score",
+        "regulatory_adherence": "Regulatory Adherence",
+        "audit_trail": "Audit Trail Summary",
+        "headers": {
+          "action_type": "Action Type",
+          "count": "Count",
+          "compliance": "Compliance",
+          "risk_level": "Risk Level"
+        }
+      }
+    }
+  },
+  "filters": {
+    "title": "Filters",
+    "deal_types": "Deal Types",
+    "date_range": "Date Range",
+    "user_roles": "User Roles",
+    "comparison_mode": "Comparison Mode",
+    "options": {
+      "deal_types": {
+        "ma": "M&A Transactions",
+        "ipo": "IPO Preparations",
+        "fundraising": "Fundraising Rounds",
+        "divestiture": "Divestitures",
+        "joint_venture": "Joint Ventures",
+        "restructuring": "Restructuring"
+      },
+      "date_ranges": {
+        "last7days": "Last 7 Days",
+        "last30days": "Last 30 Days",
+        "last90days": "Last 90 Days",
+        "ytd": "Year to Date",
+        "custom": "Custom Range"
+      },
+      "user_roles": {
+        "buyer": "Buyers",
+        "seller": "Sellers",
+        "advisor": "Advisors",
+        "legal": "Legal Teams",
+        "finance": "Finance Teams",
+        "admin": "Administrators"
+      }
+    },
+    "placeholders": {
+      "select_deal_types": "Select deal types...",
+      "select_date_range": "Select date range...",
+      "select_user_roles": "Select user roles..."
+    }
+  },
+  "insights": {
+    "prediction": {
+      "title": "AI Success Prediction",
+      "model_version": "ML Model v2.1",
+      "success_rate": "Success Rate",
+      "confidence": "Confidence",
+      "timeline": {
+        "best_case": "Best Case",
+        "worst_case": "Worst Case"
+      }
+    },
+    "risk_analysis": {
+      "title": "Risk Analysis",
+      "impact": "impact"
+    },
+    "bottlenecks": {
+      "title": "Current Bottlenecks"
+    },
+    "recommendations": {
+      "title": "AI Recommendations",
+      "apply_all": "Apply All Recommendations"
+    }
+  },
+  "quick_actions": {
+    "title": "Quick Actions",
+    "subtitle": "Common tasks and shortcuts for deal analysis"
+  },
+  "status": {
+    "updated": "Updated {{time}}",
+    "live_data": "Live Data"
+  },
+  "sample_data": {
+    "deals": {
+      "techcorp_acquisition": "TechCorp Acquisition",
+      "finserv_merger": "FinServ Merger",
+      "healthcare_ipo": "Healthcare IPO",
+      "energy_divestiture": "Energy Divestiture",
+      "retail_chain_sale": "Retail Chain Sale",
+      "tech_startup_round": "Tech Startup Round",
+      "manufacturing_jv": "Manufacturing JV",
+      "pharma_licensing": "Pharma Licensing",
+      "logistics_acquisition": "Logistics Acquisition",
+      "saas_company_sale": "SaaS Company Sale",
+      "real_estate_reit": "Real Estate REIT",
+      "biotech_merger": "Biotech Merger"
+    },
+    "documents": {
+      "financial_statements": "Financial Statements",
+      "legal_documents": "Legal Documents",
+      "technical_specs": "Technical Specs",
+      "market_analysis": "Market Analysis",
+      "due_diligence": "Due Diligence",
+      "compliance_reports": "Compliance Reports",
+      "merger_agreement": "Merger Agreement",
+      "financial_model": "Financial Model",
+      "legal_opinion": "Legal Opinion",
+      "market_research": "Market Research"
+    },
+    "categories": {
+      "financial": "Financial",
+      "legal": "Legal",
+      "technical": "Technical",
+      "marketing": "Marketing",
+      "other": "Other"
+    },
+    "user_types": {
+      "buyers": "Buyers",
+      "sellers": "Sellers",
+      "advisors": "Advisors",
+      "legal_teams": "Legal",
+      "finance_teams": "Finance"
+    },
+    "activity_steps": {
+      "login": "Login",
+      "browse_documents": "Browse Documents",
+      "download_files": "Download Files",
+      "submit_qa": "Submit Q&A",
+      "complete_review": "Complete Review"
+    },
+    "security_categories": {
+      "access_control": "Access Control",
+      "data_encryption": "Data Encryption",
+      "audit_logging": "Audit Logging",
+      "user_management": "User Management",
+      "compliance_checks": "Compliance Checks"
+    },
+    "regulations": {
+      "gdpr": "GDPR",
+      "sox": "SOX",
+      "hipaa": "HIPAA",
+      "pci_dss": "PCI DSS"
+    },
+    "risk_factors": {
+      "regulatory_approval": "Regulatory Approval",
+      "due_diligence_completion": "Due Diligence Completion",
+      "stakeholder_alignment": "Stakeholder Alignment"
+    },
+    "bottlenecks": {
+      "legal_documentation": "Legal Documentation",
+      "financial_verification": "Financial Verification"
+    }
+  }
+}

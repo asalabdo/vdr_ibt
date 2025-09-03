@@ -1,92 +1,95 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import Icon from '../../../components/AppIcon';
 
 const DealTimelineChart = () => {
+  const { t } = useTranslation('deal-analytics-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [selectedTimeframe, setSelectedTimeframe] = useState('6months');
   const [selectedMetric, setSelectedMetric] = useState('velocity');
 
   const timelineData = [
     {
-      month: 'Mar 2024',
+      month: `${tCommon('time.months.mar')} 2024`,
       velocity: 45,
       volume: 12,
       success_rate: 85,
       avg_size: 2.4,
       deals: [
-        { name: 'TechCorp Acquisition', status: 'completed', duration: 42 },
-        { name: 'FinServ Merger', status: 'active', duration: 38 }
+        { name: t('sample_data.deals.techcorp_acquisition'), status: tCommon('status_values.completed'), duration: 42 },
+        { name: t('sample_data.deals.finserv_merger'), status: tCommon('status_values.active'), duration: 38 }
       ]
     },
     {
-      month: 'Apr 2024',
+      month: `${tCommon('time.months.apr')} 2024`,
       velocity: 38,
       volume: 15,
       success_rate: 92,
       avg_size: 3.1,
       deals: [
-        { name: 'Healthcare IPO', status: 'completed', duration: 35 },
-        { name: 'Energy Divestiture', status: 'completed', duration: 41 }
+        { name: t('sample_data.deals.healthcare_ipo'), status: tCommon('status_values.completed'), duration: 35 },
+        { name: t('sample_data.deals.energy_divestiture'), status: tCommon('status_values.completed'), duration: 41 }
       ]
     },
     {
-      month: 'May 2024',
+      month: `${tCommon('time.months.may')} 2024`,
       velocity: 52,
       volume: 9,
       success_rate: 78,
       avg_size: 1.8,
       deals: [
-        { name: 'Retail Chain Sale', status: 'active', duration: 48 },
-        { name: 'Tech Startup Round', status: 'completed', duration: 29 }
+        { name: t('sample_data.deals.retail_chain_sale'), status: tCommon('status_values.active'), duration: 48 },
+        { name: t('sample_data.deals.tech_startup_round'), status: tCommon('status_values.completed'), duration: 29 }
       ]
     },
     {
-      month: 'Jun 2024',
+      month: `${tCommon('time.months.jun')} 2024`,
       velocity: 41,
       volume: 18,
       success_rate: 88,
       avg_size: 4.2,
       deals: [
-        { name: 'Manufacturing JV', status: 'completed', duration: 39 },
-        { name: 'Pharma Licensing', status: 'active', duration: 44 }
+        { name: t('sample_data.deals.manufacturing_jv'), status: tCommon('status_values.completed'), duration: 39 },
+        { name: t('sample_data.deals.pharma_licensing'), status: tCommon('status_values.active'), duration: 44 }
       ]
     },
     {
-      month: 'Jul 2024',
+      month: `${tCommon('time.months.jul')} 2024`,
       velocity: 47,
       volume: 14,
       success_rate: 91,
       avg_size: 2.9,
       deals: [
-        { name: 'Logistics Acquisition', status: 'completed', duration: 43 },
-        { name: 'SaaS Company Sale', status: 'active', duration: 51 }
+        { name: t('sample_data.deals.logistics_acquisition'), status: tCommon('status_values.completed'), duration: 43 },
+        { name: t('sample_data.deals.saas_company_sale'), status: tCommon('status_values.active'), duration: 51 }
       ]
     },
     {
-      month: 'Aug 2024',
+      month: `${tCommon('time.months.aug')} 2024`,
       velocity: 42,
       volume: 16,
       success_rate: 87,
       avg_size: 3.6,
       deals: [
-        { name: 'Real Estate REIT', status: 'active', duration: 40 },
-        { name: 'Biotech Merger', status: 'completed', duration: 44 }
+        { name: t('sample_data.deals.real_estate_reit'), status: tCommon('status_values.active'), duration: 40 },
+        { name: t('sample_data.deals.biotech_merger'), status: tCommon('status_values.completed'), duration: 44 }
       ]
     }
   ];
 
   const metricOptions = [
-    { value: 'velocity', label: 'Deal Velocity (Days)', color: '#1e40af' },
-    { value: 'volume', label: 'Deal Volume', color: '#059669' },
-    { value: 'success_rate', label: 'Success Rate (%)', color: '#0ea5e9' },
-    { value: 'avg_size', label: 'Avg Size ($M)', color: '#d97706' }
+    { value: 'velocity', label: t('charts.timeline.metrics.velocity'), color: '#1e40af' },
+    { value: 'volume', label: t('charts.timeline.metrics.volume'), color: '#059669' },
+    { value: 'success_rate', label: t('charts.timeline.metrics.success_rate'), color: '#0ea5e9' },
+    { value: 'avg_size', label: t('charts.timeline.metrics.avg_size'), color: '#d97706' }
   ];
 
   const timeframeOptions = [
-    { value: '3months', label: '3 Months' },
-    { value: '6months', label: '6 Months' },
-    { value: '12months', label: '12 Months' },
-    { value: 'ytd', label: 'Year to Date' }
+    { value: '3months', label: t('charts.timeline.timeframes.3months') },
+    { value: '6months', label: t('charts.timeline.timeframes.6months') },
+    { value: '12months', label: t('charts.timeline.timeframes.12months') },
+    { value: 'ytd', label: t('charts.timeline.timeframes.ytd') }
   ];
 
   const currentMetric = metricOptions?.find(m => m?.value === selectedMetric);
@@ -102,11 +105,13 @@ const DealTimelineChart = () => {
               <span className="text-sm text-muted-foreground">{currentMetric?.label}:</span>
               <span className="font-medium text-popover-foreground">
                 {payload?.[0]?.value}
-                {selectedMetric === 'success_rate' ? '%' : selectedMetric === 'avg_size' ? 'M' : selectedMetric === 'velocity' ? ' days' : ''}
+                {selectedMetric === 'success_rate' ? tCommon('units.percent') : 
+                 selectedMetric === 'avg_size' ? tCommon('units.million') : 
+                 selectedMetric === 'velocity' ? ` ${tCommon('units.days')}` : ''}
               </span>
             </div>
             <div className="border-t border-border pt-4">
-              <p className="text-xs text-muted-foreground mb-1">Active Deals:</p>
+              <p className="text-xs text-muted-foreground mb-1">{t('charts.timeline.active_deals')}:</p>
               {data?.deals?.map((deal, index) => (
                 <div key={index} className="flex items-center justify-between text-xs">
                   <span className="text-popover-foreground">{deal?.name}</span>
@@ -135,11 +140,11 @@ const DealTimelineChart = () => {
     <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-foreground mb-1">Deal Timeline Analysis</h3>
-          <p className="text-sm text-muted-foreground">Track deal progression and performance metrics over time</p>
+          <h3 className="text-lg font-semibold text-foreground mb-1">{t('charts.timeline.title')}</h3>
+          <p className="text-sm text-muted-foreground">{t('charts.timeline.subtitle')}</p>
         </div>
         
-        <div className="flex items-center space-x-3 mt-4 sm:mt-0">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse mt-4 sm:mt-0">
           <select
             value={selectedMetric}
             onChange={(e) => setSelectedMetric(e?.target?.value)}
@@ -202,9 +207,11 @@ const DealTimelineChart = () => {
               <div className="text-sm text-muted-foreground mb-1">{metric?.label}</div>
               <div className="text-lg font-semibold text-foreground" style={{ color: metric?.color }}>
                 {avgValue?.toFixed(1)}
-                {metric?.value === 'success_rate' ? '%' : metric?.value === 'avg_size' ? 'M' : metric?.value === 'velocity' ? ' days' : ''}
+                {metric?.value === 'success_rate' ? tCommon('units.percent') : 
+                 metric?.value === 'avg_size' ? tCommon('units.million') : 
+                 metric?.value === 'velocity' ? ` ${tCommon('units.days')}` : ''}
               </div>
-              <div className="text-xs text-muted-foreground">Average</div>
+              <div className="text-xs text-muted-foreground">{t('charts.timeline.average')}</div>
             </div>
           );
         })}

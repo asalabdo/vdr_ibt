@@ -13,7 +13,6 @@
       "above_benchmark": "أعلى من المعيار"
     },
     "units": {
-      "days": "أيام",
       "million": "م",
       "billion": "ب"
     }
@@ -149,18 +148,12 @@
     "view_all": "عرض الكل",
     "view_quarterly": "عرض الربعي"
   },
-  "time": {
-    "days": "أيام",
-    "vs_last_quarter": "مقارنة بالربع السابق",
-    "2_minutes_ago": "منذ دقيقتين"
-  },
+
   "symbols": {
     "arrow": "←",
     "bullet": "•"
   },
-  "common": {
-    "participants": "مشاركين"
-  },
+
   "controls": {
     "filters": {
       "date_range": "المدى الزمني",

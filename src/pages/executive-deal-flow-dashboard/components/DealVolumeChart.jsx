@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const DealVolumeChart = ({ data, onDrillDown }) => {
-  const { t } = useTranslation('dashboard');
+  const { t } = useTranslation('executive-dashboard');
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload?.length) {

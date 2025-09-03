@@ -9,7 +9,8 @@ import ExecutiveSummaryTable from './components/ExecutiveSummaryTable';
 import GlobalControls from './components/GlobalControls';
 
 const ExecutiveDealFlowDashboard = () => {
-  const { t, i18n } = useTranslation('dashboard');
+  const { t, i18n } = useTranslation('executive-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [filters, setFilters] = useState({
     dateRange: 'Q4 2024',
     stage: 'all',
@@ -29,8 +30,8 @@ const ExecutiveDealFlowDashboard = () => {
     },
     {
       title: t('kpi.average_time_to_close', 'Average Time to Close'),
-      value: `18.5 ${t('kpi.units.days', 'days')}`,
-      change: `-2.1 ${t('kpi.units.days', 'days')}`,
+      value: `18.5 ${tCommon('units.days')}`,
+      change: `-2.1 ${tCommon('units.days')}`,
       changeType: 'positive',
       icon: 'Clock',
       subtitle: t('kpi.descriptions.faster_than_target', 'Faster than target'),

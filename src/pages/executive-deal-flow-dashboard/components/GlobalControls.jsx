@@ -4,7 +4,8 @@ import Icon from '../../../components/AppIcon';
 import Select from '../../../components/ui/Select';
 
 const GlobalControls = ({ onFiltersChange }) => {
-  const { t } = useTranslation('dashboard');
+  const { t } = useTranslation('executive-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [selectedDateRange, setSelectedDateRange] = useState('Q4 2024');
   const [selectedStage, setSelectedStage] = useState('all');
   const [selectedRegion, setSelectedRegion] = useState('global');
@@ -109,7 +110,7 @@ const GlobalControls = ({ onFiltersChange }) => {
         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Icon name="Clock" size={14} />
-            <span>{t('status.last_updated', 'Last updated: {{time}}', { time: t('time.2_minutes_ago', '2 minutes ago') })}</span>
+            <span>{t('status.last_updated', 'Last updated: {{time}}', { time: tCommon('time_ago.minutes_ago', { count: 2 }) })}</span>
           </div>
           <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Icon name="Database" size={14} />

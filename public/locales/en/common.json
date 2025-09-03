@@ -1,19 +1,73 @@
 {
+  "time": {
+    "days": "days",
+    "hours": "hours",
+    "am": "AM",
+    "pm": "PM",
+    "months": {
+      "jan": "Jan", "feb": "Feb", "mar": "Mar", "apr": "Apr",
+      "may": "May", "jun": "Jun", "jul": "Jul", "aug": "Aug",
+      "sep": "Sep", "oct": "Oct", "nov": "Nov", "dec": "Dec"
+    },
+    "days_of_week": {
+      "mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu",
+      "fri": "Fri", "sat": "Sat", "sun": "Sun"
+    },
+    "time_labels": {
+      "am": "AM",
+      "pm": "PM"
+    }
+  },
+  "status_values": {
+    "active": "Active",
+    "completed": "Completed",
+    "pending": "Pending",
+    "review": "Review",
+    "final": "Final",
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "compliant": "Compliant"
+  },
+  "units": {
+    "days": "days",
+    "hours": "hrs",
+    "million": "M",
+    "percent": "%"
+  },
+  "actions": {
+    "export": "Export",
+    "refresh": "Refresh",
+    "save": "Save",
+    "cancel": "Cancel",
+    "reset": "Reset"
+  },
+  "time_ago": {
+    "just_now": "Just now",
+    "minutes_ago": "{{count}}m ago",
+    "hours_ago": "{{count}}h ago"
+  },
+  "time_comparison": {
+    "vs_last_quarter": "vs last quarter",
+    "vs_last_month": "vs last month",
+    "vs_last_week": "vs last week"
+  },
+  "empty_states": {
+    "no_data": "No data available",
+    "loading": "Loading...",
+    "error": "Error loading data"
+  },
+  "confidence": "Confidence",
+  "participants": "participants",
   "header": {
-    "toggle_theme": "Toggle theme",
-    "toggle_language": "Toggle language",
-    "updated": "Updated"
+    "updated": "Updated",
+    "toggle_theme": "Toggle theme"
   },
   "user": {
     "profile_settings": "Profile Settings",
-    "dashboard_preferences": "Dashboard Preferences",
+    "dashboard_preferences": "Dashboard Preferences", 
     "notification_settings": "Notification Settings",
     "help_support": "Help & Support",
     "sign_out": "Sign Out"
-  },
-  "misc": {
-    "just_now": "Just now",
-    "minutes_ago": "m ago",
-    "hours_ago": "h ago"
   }
 }
