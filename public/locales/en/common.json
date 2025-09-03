@@ -45,7 +45,8 @@
   "time_ago": {
     "just_now": "Just now",
     "minutes_ago": "{{count}}m ago",
-    "hours_ago": "{{count}}h ago"
+    "hours_ago": "{{count}}h ago",
+    "days_ago": "{{count}}d ago"
   },
   "time_comparison": {
     "vs_last_quarter": "vs last quarter",
@@ -62,6 +63,9 @@
   "header": {
     "updated": "Updated",
     "toggle_theme": "Toggle theme"
+  },
+  "labels": {
+    "users": "users"
   },
   "user": {
     "profile_settings": "Profile Settings",

@@ -45,7 +45,8 @@
   "time_ago": {
     "just_now": "الآن",
     "minutes_ago": "منذ {{count}} دقيقة",
-    "hours_ago": "منذ {{count}} ساعة"
+    "hours_ago": "منذ {{count}} ساعة",
+    "days_ago": "منذ {{count}} يوم"
   },
   "time_comparison": {
     "vs_last_quarter": "مقارنة بالربع السابق",
@@ -62,6 +63,9 @@
   "header": {
     "updated": "تم التحديث",
     "toggle_theme": "تبديل المظهر"
+  },
+  "labels": {
+    "users": "مستخدمين"
   },
   "user": {
     "profile_settings": "إعدادات الملف الشخصي",

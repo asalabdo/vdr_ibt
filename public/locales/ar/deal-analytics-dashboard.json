@@ -103,13 +103,16 @@
       "user_behavior": {
         "session_patterns": "أنماط الجلسات",
         "user_types": "توزيع أنواع المستخدمين",
-        "activity_flow": "تدفق نشاط المستخدمين"
+        "activity_flow": "تدفق نشاط المستخدمين",
+        "engagement": "مشاركة"
       },
       "compliance": {
         "security_score": "نقاط الأمان",
         "overall_score": "النقاط الإجمالية للأمان",
         "regulatory_adherence": "الالتزام التنظيمي",
         "audit_trail": "ملخص مسار التدقيق",
+        "score_label": "النتيجة",
+        "last_audit_label": "آخر تدقيق",
         "headers": {
           "action_type": "نوع الإجراء",
           "count": "العدد",
@@ -167,16 +170,48 @@
         "worst_case": "أسوأ حالة"
       }
     },
+    "key_metrics": {
+      "userEngagement": "مشاركة المستخدمين",
+      "documentCompletion": "إكمال المستندات",
+      "qaResolution": "حل الأسئلة والأجوبة",
+      "complianceScore": "نقاط الامتثال"
+    },
     "risk_analysis": {
       "title": "تحليل المخاطر",
       "impact": "تأثير"
     },
+    "risk_descriptions": {
+      "antitrust_review": "مراجعة مكافحة الاحتكار معلقة في منطقتين قضائيتين",
+      "financial_review": "المراجعة المالية مكتملة بنسبة 85%",
+      "board_approval": "موافقة مجلس الإدارة مطلوبة من 3 كيانات"
+    },
     "bottlenecks": {
       "title": "الاختناقات الحالية"
     },
+    "bottleneck_descriptions": {
+      "contract_amendments": "تعديلات العقود معلقة",
+      "audit_trail": "إكمال مسار التدقيق"
+    },
+    "delay_estimates": {
+      "2_3_days": "2-3 أيام",
+      "5_7_days": "5-7 أيام"
+    },
+    "timeline_estimates": {
+      "35_days": "35 يوماً",
+      "42_days": "42 يوماً",
+      "58_days": "58 يوماً"
+    },
     "recommendations": {
       "title": "توصيات الذكاء الاصطناعي",
-      "apply_all": "تطبيق جميع التوصيات"
+      "apply_all": "تطبيق جميع التوصيات",
+      "accelerate_regulatory": "تسريع الإيداع التنظيمي",
+      "schedule_stakeholder_meeting": "جدولة اجتماع أصحاب المصلحة",
+      "prepare_contingency": "إعداد وثائق الطوارئ"
+    },
+    "impact": {
+      "plus_12_percent": "+12% معدل نجاح",
+      "plus_8_percent": "+8% معدل نجاح",
+      "plus_3_percent": "+3% معدل نجاح"
     }
   },
   "quick_actions": {
@@ -256,6 +291,13 @@
     "bottlenecks": {
       "legal_documentation": "الوثائق القانونية",
       "financial_verification": "التحقق المالي"
+    },
+    "audit_actions": {
+      "document_access": "الوصول للمستندات",
+      "user_authentication": "مصادقة المستخدمين", 
+      "data_export": "تصدير البيانات",
+      "permission_changes": "تغييرات الأذونات",
+      "system_access": "الوصول للنظام"
     }
   }
 }

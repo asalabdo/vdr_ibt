@@ -25,10 +25,10 @@ const SegmentedAnalytics = () => {
       { category: t('sample_data.categories.other'), value: 7, size: '0.5 GB', color: '#6b7280' }
     ],
     versionControl: [
-      { document: t('sample_data.documents.merger_agreement'), versions: 12, last_updated: '2 hours ago', status: tCommon('status_values.active') },
-      { document: t('sample_data.documents.financial_model'), versions: 8, last_updated: '5 hours ago', status: tCommon('status_values.review') },
-      { document: t('sample_data.documents.legal_opinion'), versions: 15, last_updated: '1 day ago', status: tCommon('status_values.final') },
-      { document: t('sample_data.documents.market_research'), versions: 6, last_updated: '3 days ago', status: tCommon('status_values.active') }
+      { document: t('sample_data.documents.merger_agreement'), versions: 12, last_updated: tCommon('time_ago.hours_ago', { count: 2 }), status: tCommon('status_values.active') },
+      { document: t('sample_data.documents.financial_model'), versions: 8, last_updated: tCommon('time_ago.hours_ago', { count: 5 }), status: tCommon('status_values.review') },
+      { document: t('sample_data.documents.legal_opinion'), versions: 15, last_updated: tCommon('time_ago.days_ago', { count: 1 }), status: tCommon('status_values.final') },
+      { document: t('sample_data.documents.market_research'), versions: 6, last_updated: tCommon('time_ago.days_ago', { count: 3 }), status: tCommon('status_values.active') }
     ]
   };
 
@@ -59,11 +59,11 @@ const SegmentedAnalytics = () => {
 
   const complianceMetrics = {
     auditTrail: [
-      { action: 'Document Access', count: 2847, compliance: 98.5, risk: tCommon('status_values.low') },
-      { action: 'User Authentication', count: 1923, compliance: 99.2, risk: tCommon('status_values.low') },
-      { action: 'Data Export', count: 456, compliance: 94.7, risk: tCommon('status_values.medium') },
-      { action: 'Permission Changes', count: 234, compliance: 97.8, risk: tCommon('status_values.low') },
-      { action: 'System Access', count: 189, compliance: 91.5, risk: tCommon('status_values.high') }
+      { action: t('sample_data.audit_actions.document_access'), count: 2847, compliance: 98.5, risk: tCommon('status_values.low') },
+      { action: t('sample_data.audit_actions.user_authentication'), count: 1923, compliance: 99.2, risk: tCommon('status_values.low') },
+      { action: t('sample_data.audit_actions.data_export'), count: 456, compliance: 94.7, risk: tCommon('status_values.medium') },
+      { action: t('sample_data.audit_actions.permission_changes'), count: 234, compliance: 97.8, risk: tCommon('status_values.low') },
+      { action: t('sample_data.audit_actions.system_access'), count: 189, compliance: 91.5, risk: tCommon('status_values.high') }
     ],
     securityScore: {
       overall: 94.2,
@@ -76,10 +76,10 @@ const SegmentedAnalytics = () => {
       ]
     },
     regulatoryAdherence: [
-      { regulation: t('sample_data.regulations.gdpr'), status: tCommon('status_values.compliant'), score: 96.2, last_audit: '15 days ago' },
-      { regulation: t('sample_data.regulations.sox'), status: tCommon('status_values.compliant'), score: 94.8, last_audit: '22 days ago' },
-      { regulation: t('sample_data.regulations.hipaa'), status: tCommon('status_values.review'), score: 87.3, last_audit: '45 days ago' },
-      { regulation: t('sample_data.regulations.pci_dss'), status: tCommon('status_values.compliant'), score: 92.1, last_audit: '8 days ago' }
+      { regulation: t('sample_data.regulations.gdpr'), status: tCommon('status_values.compliant'), score: 96.2, last_audit: tCommon('time_ago.days_ago', { count: 15 }) },
+      { regulation: t('sample_data.regulations.sox'), status: tCommon('status_values.compliant'), score: 94.8, last_audit: tCommon('time_ago.days_ago', { count: 22 }) },
+      { regulation: t('sample_data.regulations.hipaa'), status: tCommon('status_values.review'), score: 87.3, last_audit: tCommon('time_ago.days_ago', { count: 45 }) },
+      { regulation: t('sample_data.regulations.pci_dss'), status: tCommon('status_values.compliant'), score: 92.1, last_audit: tCommon('time_ago.days_ago', { count: 8 }) }
     ]
   };
 
@@ -140,11 +140,11 @@ const SegmentedAnalytics = () => {
             <div className="w-1/2 space-y-2">
               {documentAnalytics?.storageUtilization?.map((item, index) => (
                 <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 rtl:space-x-reverse">
                     <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item?.color }}></div>
                     <span className="text-sm text-foreground">{item?.category}</span>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right rtl:text-left">
                     <div className="text-sm font-medium text-foreground">{item?.value}%</div>
                     <div className="text-xs text-muted-foreground">{item?.size}</div>
                   </div>
@@ -222,13 +222,13 @@ const SegmentedAnalytics = () => {
           <div className="space-y-4">
             {userBehaviorData?.userTypes?.map((type, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-muted/10 rounded-lg">
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3 rtl:space-x-reverse">
                   <div className="w-4 h-4 rounded-full" style={{ backgroundColor: type?.color }}></div>
                   <span className="font-medium text-foreground">{type?.type}</span>
                 </div>
-                <div className="text-right">
-                  <div className="text-sm font-medium text-foreground">{type?.count} users</div>
-                  <div className="text-xs text-muted-foreground">{type?.engagement}% engagement</div>
+                <div className="text-right rtl:text-left">
+                  <div className="text-sm font-medium text-foreground">{type?.count} {tCommon('labels.users')}</div>
+                  <div className="text-xs text-muted-foreground">{type?.engagement}% {t('charts.segments.user_behavior.engagement')}</div>
                 </div>
               </div>
             ))}
@@ -248,7 +248,7 @@ const SegmentedAnalytics = () => {
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-1">
                   <span className="font-medium text-foreground">{step?.step}</span>
-                  <span className="text-sm text-muted-foreground">{step?.users} users ({step?.conversion}%)</span>
+                  <span className="text-sm text-muted-foreground">{step?.users} {tCommon('labels.users')} ({step?.conversion}%)</span>
                 </div>
                 <div className="w-full bg-muted/20 rounded-full h-2">
                   <div 
@@ -309,8 +309,8 @@ const SegmentedAnalytics = () => {
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Score: {reg?.score}%</span>
-                  <span className="text-muted-foreground">Last audit: {reg?.last_audit}</span>
+                  <span className="text-muted-foreground">{t('charts.segments.compliance.score_label')}: {reg?.score}%</span>
+                  <span className="text-muted-foreground">{t('charts.segments.compliance.last_audit_label')}: {reg?.last_audit}</span>
                 </div>
               </div>
             ))}

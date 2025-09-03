@@ -103,13 +103,16 @@
       "user_behavior": {
         "session_patterns": "Session Patterns",
         "user_types": "User Type Distribution",
-        "activity_flow": "User Activity Flow"
+        "activity_flow": "User Activity Flow",
+        "engagement": "engagement"
       },
       "compliance": {
         "security_score": "Security Score",
         "overall_score": "Overall Security Score",
         "regulatory_adherence": "Regulatory Adherence",
         "audit_trail": "Audit Trail Summary",
+        "score_label": "Score",
+        "last_audit_label": "Last audit",
         "headers": {
           "action_type": "Action Type",
           "count": "Count",
@@ -167,16 +170,48 @@
         "worst_case": "Worst Case"
       }
     },
+    "key_metrics": {
+      "userEngagement": "User Engagement",
+      "documentCompletion": "Document Completion",
+      "qaResolution": "QA Resolution",
+      "complianceScore": "Compliance Score"
+    },
     "risk_analysis": {
       "title": "Risk Analysis",
       "impact": "impact"
     },
+    "risk_descriptions": {
+      "antitrust_review": "Antitrust review pending in 2 jurisdictions",
+      "financial_review": "Financial review 85% complete",
+      "board_approval": "Board approval required from 3 entities"
+    },
     "bottlenecks": {
       "title": "Current Bottlenecks"
     },
+    "bottleneck_descriptions": {
+      "contract_amendments": "Contract amendments pending",
+      "audit_trail": "Audit trail completion"
+    },
+    "delay_estimates": {
+      "2_3_days": "2-3 days",
+      "5_7_days": "5-7 days"
+    },
+    "timeline_estimates": {
+      "35_days": "35 days",
+      "42_days": "42 days",
+      "58_days": "58 days"
+    },
     "recommendations": {
       "title": "AI Recommendations",
-      "apply_all": "Apply All Recommendations"
+      "apply_all": "Apply All Recommendations",
+      "accelerate_regulatory": "Accelerate regulatory filing",
+      "schedule_stakeholder_meeting": "Schedule stakeholder alignment meeting",
+      "prepare_contingency": "Prepare contingency documentation"
+    },
+    "impact": {
+      "plus_12_percent": "+12% success rate",
+      "plus_8_percent": "+8% success rate",
+      "plus_3_percent": "+3% success rate"
     }
   },
   "quick_actions": {
@@ -256,6 +291,13 @@
     "bottlenecks": {
       "legal_documentation": "Legal Documentation",
       "financial_verification": "Financial Verification"
+    },
+    "audit_actions": {
+      "document_access": "Document Access",
+      "user_authentication": "User Authentication",
+      "data_export": "Data Export", 
+      "permission_changes": "Permission Changes",
+      "system_access": "System Access"
     }
   }
 }

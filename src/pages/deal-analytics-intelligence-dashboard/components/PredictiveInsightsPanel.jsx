@@ -14,23 +14,23 @@ const PredictiveInsightsPanel = () => {
       successProbability: 78.9,
       confidenceLevel: 92,
       riskFactors: [
-        { factor: t('sample_data.risk_factors.regulatory_approval'), risk: tCommon('status_values.medium'), impact: 15, description: 'Antitrust review pending in 2 jurisdictions' },
-        { factor: t('sample_data.risk_factors.due_diligence_completion'), risk: tCommon('status_values.low'), impact: 8, description: 'Financial review 85% complete' },
-        { factor: t('sample_data.risk_factors.stakeholder_alignment'), risk: tCommon('status_values.high'), impact: 22, description: 'Board approval required from 3 entities' }
+        { factor: t('sample_data.risk_factors.regulatory_approval'), risk: tCommon('status_values.medium'), impact: 15, description: t('insights.risk_descriptions.antitrust_review') },
+        { factor: t('sample_data.risk_factors.due_diligence_completion'), risk: tCommon('status_values.low'), impact: 8, description: t('insights.risk_descriptions.financial_review') },
+        { factor: t('sample_data.risk_factors.stakeholder_alignment'), risk: tCommon('status_values.high'), impact: 22, description: t('insights.risk_descriptions.board_approval') }
       ],
       bottlenecks: [
-        { area: t('sample_data.bottlenecks.legal_documentation'), severity: tCommon('status_values.high'), delay: '5-7 days', description: 'Contract amendments pending' },
-        { area: t('sample_data.bottlenecks.financial_verification'), severity: tCommon('status_values.medium'), delay: '2-3 days', description: 'Audit trail completion' }
+        { area: t('sample_data.bottlenecks.legal_documentation'), severity: tCommon('status_values.high'), delay: t('insights.delay_estimates.5_7_days'), description: t('insights.bottleneck_descriptions.contract_amendments') },
+        { area: t('sample_data.bottlenecks.financial_verification'), severity: tCommon('status_values.medium'), delay: t('insights.delay_estimates.2_3_days'), description: t('insights.bottleneck_descriptions.audit_trail') }
       ],
       recommendations: [
-        { priority: tCommon('status_values.high'), action: 'Accelerate regulatory filing', impact: '+12% success rate' },
-        { priority: tCommon('status_values.medium'), action: 'Schedule stakeholder alignment meeting', impact: '+8% success rate' },
-        { priority: tCommon('status_values.low'), action: 'Prepare contingency documentation', impact: '+3% success rate' }
+        { priority: tCommon('status_values.high'), action: t('insights.recommendations.accelerate_regulatory'), impact: t('insights.impact.plus_12_percent') },
+        { priority: tCommon('status_values.medium'), action: t('insights.recommendations.schedule_stakeholder_meeting'), impact: t('insights.impact.plus_8_percent') },
+        { priority: tCommon('status_values.low'), action: t('insights.recommendations.prepare_contingency'), impact: t('insights.impact.plus_3_percent') }
       ],
       timeline: {
-        estimated: '42 days',
-        optimistic: '35 days',
-        pessimistic: '58 days'
+        estimated: t('insights.timeline_estimates.42_days'),
+        optimistic: t('insights.timeline_estimates.35_days'),
+        pessimistic: t('insights.timeline_estimates.58_days')
       },
       keyMetrics: {
         userEngagement: 87,
@@ -134,7 +134,7 @@ const PredictiveInsightsPanel = () => {
         <div className="grid grid-cols-2 gap-3">
           {Object.entries(currentDeal?.keyMetrics)?.map(([key, value]) => (
             <div key={key} className="flex items-center justify-between p-2 bg-muted/10 rounded">
-              <span className="text-xs text-muted-foreground capitalize">{key?.replace(/([A-Z])/g, ' $1')}</span>
+              <span className="text-xs text-muted-foreground">{t(`insights.key_metrics.${key}`)}</span>
               <span className="text-sm font-medium text-foreground">{value}%</span>
             </div>
           ))}
@@ -152,7 +152,7 @@ const PredictiveInsightsPanel = () => {
             <div key={index} className="p-3 border border-border rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="font-medium text-foreground">{risk?.factor}</span>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 rtl:space-x-reverse">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRiskColor(risk?.risk)}`}>
                     {risk?.risk}
                   </span>
@@ -176,7 +176,7 @@ const PredictiveInsightsPanel = () => {
             <div key={index} className="p-3 border border-border rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="font-medium text-foreground">{bottleneck?.area}</span>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 rtl:space-x-reverse">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getSeverityColor(bottleneck?.severity)}`}>
                     {bottleneck?.severity}
                   </span>
@@ -199,7 +199,7 @@ const PredictiveInsightsPanel = () => {
           {currentDeal?.recommendations?.map((rec, index) => (
             <div key={index} className="p-3 border border-border rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 rtl:space-x-reverse">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(rec?.priority)}`}>
                     {rec?.priority}
                   </span>
