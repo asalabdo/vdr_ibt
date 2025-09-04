@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 const DataRoomCard = ({ room }) => {
+  const { t, i18n } = useTranslation('data-rooms-management');
+  const { t: tCommon } = useTranslation('common');
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const getStatusColor = (status) => {
@@ -25,7 +29,7 @@ const DataRoomCard = ({ room }) => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString)?.toLocaleDateString('en-US', {
+    return new Date(dateString)?.toLocaleDateString(i18n.language, {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
@@ -36,7 +40,7 @@ const DataRoomCard = ({ room }) => {
     <div className="bg-card rounded-xl shadow-sm border border-border p-6 hover:shadow-md transition-all duration-200 group">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center space-x-3 cursor-pointer flex-1">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer flex-1">
           <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
             <Icon name="FolderOpen" size={24} className="text-primary" />
           </div>
@@ -45,7 +49,7 @@ const DataRoomCard = ({ room }) => {
               {room?.name}
             </h3>
             <p className="text-sm text-muted-foreground">
-              Created by {room?.creator}
+              {t('room_card.created_by', { creator: room?.creator })}
             </p>
           </div>
         </div>
@@ -62,27 +66,27 @@ const DataRoomCard = ({ room }) => {
           
           {/* Dropdown Menu */}
           {isMenuOpen && (
-            <div className="absolute right-0 top-full mt-2 w-48 bg-popover border border-border rounded-lg shadow-lg py-2 z-10">
-              <button className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
+            <div className="absolute right-0 rtl:left-0 rtl:right-auto top-full mt-2 w-48 bg-popover border border-border rounded-lg shadow-lg py-2 z-10">
+              <button className="w-full flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                 <Icon name="Eye" size={14} />
-                <span>View Details</span>
+                <span>{t('actions.view_details')}</span>
               </button>
-              <button className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
+              <button className="w-full flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                 <Icon name="Users" size={14} />
-                <span>Manage Users</span>
+                <span>{t('actions.manage_users')}</span>
               </button>
-              <button className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
+              <button className="w-full flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                 <Icon name="Settings" size={14} />
-                <span>Settings</span>
+                <span>{t('actions.settings')}</span>
               </button>
-              <button className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
+              <button className="w-full flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                 <Icon name="Download" size={14} />
-                <span>Export</span>
+                <span>{t('actions.export')}</span>
               </button>
               <div className="border-t border-border my-1"></div>
-              <button className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-error hover:bg-error/10 transition-colors">
+              <button className="w-full flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 text-sm text-error hover:bg-error/10 transition-colors">
                 <Icon name="Archive" size={14} />
-                <span>Archive Room</span>
+                <span>{t('actions.archive_room')}</span>
               </button>
             </div>
           )}
@@ -97,17 +101,17 @@ const DataRoomCard = ({ room }) => {
       {/* Status and Deal Type */}
       <div className="flex items-center justify-between mb-4">
         <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(room?.status)}`}>
-          {room?.status?.toUpperCase()}
+          {t(`room_card.status_labels.${room?.status}`)}
         </span>
         <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">
-          {room?.dealType}
+          {room?.dealTypeDisplay}
         </span>
       </div>
 
       {/* User Avatars */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <div className="flex -space-x-2">
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+          <div className="flex -space-x-2 rtl:space-x-reverse rtl:-space-x-2">
             {room?.avatars?.slice(0, 4)?.map((avatar, index) => (
               <div
                 key={index}
@@ -123,8 +127,8 @@ const DataRoomCard = ({ room }) => {
               </div>
             )}
           </div>
-          <span className="text-sm text-muted-foreground ml-2">
-            {room?.userCount} users
+          <span className="text-sm text-muted-foreground ml-2 rtl:mr-2 rtl:ml-0">
+            {room?.userCount} {t('room_card.users')}
           </span>
         </div>
       </div>
@@ -132,7 +136,9 @@ const DataRoomCard = ({ room }) => {
       {/* Progress and Completion */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-muted-foreground">Completion</span>
+          <span className="text-sm text-muted-foreground">
+            {t('room_card.completion')}
+          </span>
           <span className="text-sm font-medium text-foreground">
             {room?.completionScore}%
           </span>
@@ -148,23 +154,23 @@ const DataRoomCard = ({ room }) => {
       {/* Metrics */}
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div className="text-center">
-          <div className="flex items-center justify-center space-x-1 text-muted-foreground mb-1">
+          <div className="flex items-center justify-center space-x-1 rtl:space-x-reverse text-muted-foreground mb-1">
             <Icon name="FileText" size={14} />
-            <span className="text-xs">Files</span>
+            <span className="text-xs">{t('room_card.files')}</span>
           </div>
           <p className="text-sm font-medium text-foreground">{room?.fileCount}</p>
         </div>
         <div className="text-center">
-          <div className="flex items-center justify-center space-x-1 text-muted-foreground mb-1">
+          <div className="flex items-center justify-center space-x-1 rtl:space-x-reverse text-muted-foreground mb-1">
             <Icon name="HardDrive" size={14} />
-            <span className="text-xs">Storage</span>
+            <span className="text-xs">{t('room_card.storage')}</span>
           </div>
           <p className="text-sm font-medium text-foreground">{room?.storageUsed}</p>
         </div>
         <div className="text-center">
-          <div className="flex items-center justify-center space-x-1 text-muted-foreground mb-1">
+          <div className="flex items-center justify-center space-x-1 rtl:space-x-reverse text-muted-foreground mb-1">
             <Icon name="Shield" size={14} />
-            <span className="text-xs">Security</span>
+            <span className="text-xs">{t('room_card.security')}</span>
           </div>
           <p className="text-sm font-medium text-foreground">{room?.securityScore}%</p>
         </div>
@@ -172,13 +178,17 @@ const DataRoomCard = ({ room }) => {
 
       {/* Footer */}
       <div className="flex items-center justify-between text-xs text-muted-foreground pt-4 border-t border-border">
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 rtl:space-x-reverse">
           <Icon name="Calendar" size={12} />
-          <span>Created {formatDate(room?.createdDate)}</span>
+          <span>
+            {t('room_card.created', { date: formatDate(room?.createdDate) })}
+          </span>
         </div>
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 rtl:space-x-reverse">
           <Icon name="Clock" size={12} />
-          <span>Updated {formatDate(room?.lastActivity)}</span>
+          <span>
+            {t('room_card.updated', { date: formatDate(room?.lastActivity) })}
+          </span>
         </div>
       </div>
     </div>

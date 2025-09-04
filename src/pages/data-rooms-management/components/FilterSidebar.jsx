@@ -1,8 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
+  const { t } = useTranslation('data-rooms-management');
+  
   const handleFilterChange = (filterType, value) => {
     onFilterChange({
       ...filters,
@@ -29,10 +32,12 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
         onClick={onClose}
       />
       {/* Sidebar */}
-      <div className="fixed right-0 top-0 h-full w-80 bg-card border-l border-border z-50 overflow-y-auto">
+      <div className="fixed right-0 rtl:left-0 rtl:right-auto top-0 h-full w-80 bg-card border-l rtl:border-r rtl:border-l-0 border-border z-50 overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
-          <h3 className="text-lg font-semibold text-foreground">Filters</h3>
+          <h3 className="text-lg font-semibold text-foreground">
+            {t('filters.title')}
+          </h3>
           <Button
             variant="ghost"
             size="icon"
@@ -46,13 +51,15 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
         <div className="p-6 space-y-6">
           {/* Status Filter */}
           <div>
-            <h4 className="text-sm font-medium text-foreground mb-3">Status</h4>
+            <h4 className="text-sm font-medium text-foreground mb-3">
+              {t('filters.status.title')}
+            </h4>
             <div className="space-y-2">
               {[
-                { value: 'all', label: 'All Status', count: 4 },
-                { value: 'active', label: 'Active', count: 3 },
-                { value: 'archived', label: 'Archived', count: 1 },
-                { value: 'pending', label: 'Pending', count: 0 }
+                { value: 'all', label: t('filters.status.all'), count: 4 },
+                { value: 'active', label: t('filters.status.active'), count: 3 },
+                { value: 'archived', label: t('filters.status.archived'), count: 1 },
+                { value: 'pending', label: t('filters.status.pending'), count: 0 }
               ]?.map((option) => (
                 <button
                   key={option?.value}
@@ -73,13 +80,15 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
           
           {/* Deal Type Filter */}
           <div>
-            <h4 className="text-sm font-medium text-foreground mb-3">Deal Type</h4>
+            <h4 className="text-sm font-medium text-foreground mb-3">
+              {t('filters.deal_type.title')}
+            </h4>
             <div className="space-y-2">
               {[
-                { value: 'all', label: 'All Types', count: 4 },
-                { value: 'M&A', label: 'M&A', count: 1 },
-                { value: 'Due Diligence', label: 'Due Diligence', count: 2 },
-                { value: 'Legal Review', label: 'Legal Review', count: 1 }
+                { value: 'all', label: t('filters.deal_type.all'), count: 4 },
+                { value: 'ma', label: t('filters.deal_type.ma'), count: 1 },
+                { value: 'due_diligence', label: t('filters.deal_type.due_diligence'), count: 2 },
+                { value: 'legal_review', label: t('filters.deal_type.legal_review'), count: 1 }
               ]?.map((option) => (
                 <button
                   key={option?.value}
@@ -100,13 +109,15 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
           
           {/* Activity Filter */}
           <div>
-            <h4 className="text-sm font-medium text-foreground mb-3">Activity Level</h4>
+            <h4 className="text-sm font-medium text-foreground mb-3">
+              {t('filters.activity.title')}
+            </h4>
             <div className="space-y-2">
               {[
-                { value: 'all', label: 'All Activity', count: 4 },
-                { value: 'high', label: 'High Activity', count: 2 },
-                { value: 'medium', label: 'Medium Activity', count: 1 },
-                { value: 'low', label: 'Low Activity', count: 1 }
+                { value: 'all', label: t('filters.activity.all'), count: 4 },
+                { value: 'high', label: t('filters.activity.high'), count: 2 },
+                { value: 'medium', label: t('filters.activity.medium'), count: 1 },
+                { value: 'low', label: t('filters.activity.low'), count: 1 }
               ]?.map((option) => (
                 <button
                   key={option?.value}
@@ -127,14 +138,16 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
           
           {/* Date Range Filter */}
           <div>
-            <h4 className="text-sm font-medium text-foreground mb-3">Date Range</h4>
+            <h4 className="text-sm font-medium text-foreground mb-3">
+              {t('filters.date_range.title')}
+            </h4>
             <div className="space-y-2">
               {[
-                { value: 'all', label: 'All Time' },
-                { value: 'today', label: 'Today' },
-                { value: 'week', label: 'This Week' },
-                { value: 'month', label: 'This Month' },
-                { value: 'quarter', label: 'This Quarter' }
+                { value: 'all', label: t('filters.date_range.all') },
+                { value: 'today', label: t('filters.date_range.today') },
+                { value: 'week', label: t('filters.date_range.week') },
+                { value: 'month', label: t('filters.date_range.month') },
+                { value: 'quarter', label: t('filters.date_range.quarter') }
               ]?.map((option) => (
                 <button
                   key={option?.value}
@@ -153,20 +166,20 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
         
         {/* Footer */}
         <div className="p-6 border-t border-border">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 rtl:space-x-reverse">
             <Button
               variant="outline"
               onClick={clearAllFilters}
               className="flex-1"
             >
-              Clear All
+              {t('actions.clear_all')}
             </Button>
             <Button
               variant="default"
               onClick={onClose}
               className="flex-1"
             >
-              Apply
+              {t('actions.apply')}
             </Button>
           </div>
         </div>

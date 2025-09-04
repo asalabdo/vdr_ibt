@@ -1,0 +1,123 @@
+{
+  "title": "غرف البيانات",
+  "subtitle": "إدارة والوصول إلى غرف البيانات الافتراضية الخاصة بك",
+  
+  "actions": {
+    "create_room": "إنشاء غرفة",
+    "export_rooms": "تصدير الغرف", 
+    "bulk_invite": "دعوة جماعية",
+    "view_details": "عرض التفاصيل",
+    "manage_users": "إدارة المستخدمين",
+    "settings": "الإعدادات",
+    "export": "تصدير",
+    "archive_room": "أرشفة الغرفة",
+    "filters": "التصفيات",
+    "sort": "ترتيب",
+    "clear_all": "مسح الكل",
+    "apply": "تطبيق"
+  },
+
+  "stats": {
+    "total_rooms": "إجمالي الغرف",
+    "active": "نشطة", 
+    "archived": "مؤرشفة",
+    "total_users": "إجمالي المستخدمين",
+    "total_files": "إجمالي الملفات"
+  },
+
+  "search": {
+    "placeholder": "البحث في غرف البيانات...",
+    "no_results": "لم يتم العثور على غرف بيانات",
+    "no_results_description": "جرب تعديل معايير البحث الخاصة بك",
+    "empty_state_description": "أنشئ غرفة البيانات الأولى للبدء"
+  },
+
+  "filters": {
+    "title": "التصفيات",
+    "status": {
+      "title": "الحالة",
+      "all": "جميع الحالات",
+      "active": "نشطة", 
+      "archived": "مؤرشفة",
+      "pending": "معلقة"
+    },
+    "deal_type": {
+      "title": "نوع الصفقة",
+      "all": "جميع الأنواع",
+      "ma": "دمج واستحواذ",
+      "due_diligence": "العناية الواجبة", 
+      "legal_review": "مراجعة قانونية"
+    },
+    "activity": {
+      "title": "مستوى النشاط",
+      "all": "جميع الأنشطة",
+      "high": "نشاط عالي",
+      "medium": "نشاط متوسط",
+      "low": "نشاط منخفض"
+    },
+    "date_range": {
+      "title": "نطاق التاريخ",
+      "all": "كل الأوقات",
+      "today": "اليوم",
+      "week": "هذا الأسبوع", 
+      "month": "هذا الشهر",
+      "quarter": "هذا الربع"
+    }
+  },
+
+  "room_card": {
+    "created_by": "تم إنشاؤها بواسطة {{creator}}",
+    "users": "مستخدمين",
+    "completion": "الإنجاز",
+    "files": "الملفات",
+    "storage": "التخزين", 
+    "security": "الأمان",
+    "created": "تم الإنشاء {{date}}",
+    "updated": "تم التحديث {{date}}",
+    "status_labels": {
+      "active": "نشطة",
+      "archived": "مؤرشفة", 
+      "pending": "معلقة"
+    }
+  },
+
+  "sample_data": {
+    "rooms": {
+      "project_alpha": {
+        "name": "مشروع ألفا",
+        "description": "وثائق مشروع سرية"
+      },
+      "legal_documents": {
+        "name": "الوثائق القانونية", 
+        "description": "مواد المراجعة القانونية"
+      },
+      "financial_reports": {
+        "name": "التقارير المالية",
+        "description": "البيانات المالية للربع الرابع"
+      },
+      "due_diligence_materials": {
+        "name": "مواد العناية الواجبة",
+        "description": "حزمة شاملة للعناية الواجبة"
+      }
+    },
+    "deal_types": {
+      "ma": "دمج واستحواذ",
+      "legal_review": "مراجعة قانونية",
+      "due_diligence": "العناية الواجبة"
+    },
+    "user_roles": {
+      "admin_user": "مستخدم إداري",
+      "legal_advisor": "مستشار قانوني",
+      "contract_manager": "مدير العقود", 
+      "compliance_officer": "مسؤول الامتثال",
+      "cfo": "المدير المالي",
+      "financial_analyst": "محلل مالي",
+      "auditor": "مدقق",
+      "investment_manager": "مدير الاستثمار",
+      "deal_manager": "مدير الصفقة",
+      "analyst": "محلل",
+      "reviewer": "مراجع",
+      "partner": "شريك"
+    }
+  }
+}
