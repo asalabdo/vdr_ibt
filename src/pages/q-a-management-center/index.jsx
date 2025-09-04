@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Header from '../../components/ui/Header';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
@@ -9,19 +10,21 @@ import QuestionCard from './components/QuestionCard';
 import QuestionDetailPanel from './components/QuestionDetailPanel';
 
 const QAManagementCenter = () => {
+  const { t } = useTranslation('q-a-management-center');
+  const { t: tCommon } = useTranslation('common');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
-  // Mock data for Q&A
-  const [questions] = useState([
+  // Mock data for Q&A using translation keys
+  const [questionsData] = useState([
     {
       id: 1,
-      question: 'What is the timeline for project completion?',
-      askedBy: 'Q&A Observer Full',
+      questionKey: 'mock_data.questions.1',
+      askedByKey: 'mock_data.users.qa_observer',
       askedByRole: 'Observer',
-      room: 'Project Alpha',
+      roomKey: 'mock_data.rooms.project_alpha',
       priority: 'high',
       status: 'pending',
       createdAt: '2025-08-31T10:30:00Z',
@@ -31,10 +34,10 @@ const QAManagementCenter = () => {
     },
     {
       id: 2,
-      question: 'Are there any regulatory requirements?',
-      askedBy: 'Q&A Observer Full',
+      questionKey: 'mock_data.questions.2',
+      askedByKey: 'mock_data.users.qa_observer',
       askedByRole: 'Observer',
-      room: 'Project Alpha',
+      roomKey: 'mock_data.rooms.project_alpha',
       priority: 'medium',
       status: 'pending',
       createdAt: '2025-08-31T09:15:00Z',
@@ -44,10 +47,10 @@ const QAManagementCenter = () => {
     },
     {
       id: 3,
-      question: 'When will the contract be finalized?',
-      askedBy: 'Q&A Observer Full',
+      questionKey: 'mock_data.questions.3',
+      askedByKey: 'mock_data.users.qa_observer',
       askedByRole: 'Observer',
-      room: 'Legal Documents',
+      roomKey: 'mock_data.rooms.legal_documents',
       priority: 'high',
       status: 'pending',
       createdAt: '2025-08-31T08:45:00Z',
@@ -57,10 +60,10 @@ const QAManagementCenter = () => {
     },
     {
       id: 4,
-      question: 'What are the financial projections for next quarter?',
-      askedBy: 'Financial Analyst',
+      questionKey: 'mock_data.questions.4',
+      askedByKey: 'mock_data.users.financial_analyst',
       askedByRole: 'Analyst',
-      room: 'Financial Reports',
+      roomKey: 'mock_data.rooms.financial_reports',
       priority: 'medium',
       status: 'answered',
       createdAt: '2025-08-30T16:20:00Z',
@@ -68,8 +71,8 @@ const QAManagementCenter = () => {
       responses: [
         {
           id: 1,
-          answer: 'The financial projections show a 15% growth in revenue for Q1 2026.',
-          respondedBy: 'CFO',
+          answerKey: 'mock_data.answers.1',
+          respondedByKey: 'mock_data.users.cfo',
           respondedAt: '2025-08-31T11:00:00Z',
           status: 'approved'
         }
@@ -78,10 +81,10 @@ const QAManagementCenter = () => {
     },
     {
       id: 5,
-      question: 'Are there any pending compliance issues?',
-      askedBy: 'Compliance Officer',
+      questionKey: 'mock_data.questions.5',
+      askedByKey: 'mock_data.users.compliance_officer',
       askedByRole: 'Officer',
-      room: 'Legal Documents',
+      roomKey: 'mock_data.rooms.legal_documents',
       priority: 'low',
       status: 'approved',
       createdAt: '2025-08-30T14:30:00Z',
@@ -89,8 +92,8 @@ const QAManagementCenter = () => {
       responses: [
         {
           id: 1,
-          answer: 'All compliance requirements are currently met. No pending issues identified.',
-          respondedBy: 'Legal Advisor',
+          answerKey: 'mock_data.answers.2',
+          respondedByKey: 'mock_data.users.legal_advisor',
           respondedAt: '2025-08-30T15:45:00Z',
           status: 'approved'
         }
@@ -98,6 +101,19 @@ const QAManagementCenter = () => {
       attachments: []
     }
   ]);
+
+  // Transform keys to actual translated text
+  const questions = questionsData.map(questionData => ({
+    ...questionData,
+    question: t(questionData.questionKey),
+    askedBy: t(questionData.askedByKey),
+    room: t(questionData.roomKey),
+    responses: questionData.responses?.map(response => ({
+      ...response,
+      answer: t(response.answerKey),
+      respondedBy: t(response.respondedByKey)
+    })) || []
+  }));
 
   const filteredQuestions = questions?.filter(question => {
     const matchesSearch = question?.question?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
@@ -120,10 +136,10 @@ const QAManagementCenter = () => {
     const date = new Date(dateString);
     const diff = Math.floor((now - date) / 1000);
 
-    if (diff < 60) return 'Just now';
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return `${Math.floor(diff / 86400)}d ago`;
+    if (diff < 60) return t('time.just_now');
+    if (diff < 3600) return t('time.minutes_ago', { count: Math.floor(diff / 60) });
+    if (diff < 86400) return t('time.hours_ago', { count: Math.floor(diff / 3600) });
+    return t('time.days_ago', { count: Math.floor(diff / 86400) });
   };
 
   return (
@@ -134,74 +150,76 @@ const QAManagementCenter = () => {
           {/* Header Section */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
             <div className="mb-4 lg:mb-0">
-              <h1 className="text-3xl font-bold text-foreground mb-2">Q&A Management</h1>
+              <h1 className="text-3xl font-bold text-foreground mb-2">
+                {t('title')}
+              </h1>
               <p className="text-muted-foreground">
-                Manage questions and answers across all data rooms
+                {t('subtitle')}
               </p>
             </div>
             
             <Button iconName="Plus" variant="default">
-              Ask Question
+              {t('actions.ask_question')}
             </Button>
           </div>
 
           {/* Status Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <StatusCard
-              title="Pending"
+              title={t('status_cards.pending.title')}
               value={stats?.pending}
               icon="Clock"
               color="warning"
-              description="Questions awaiting response"
+              description={t('status_cards.pending.description')}
             />
             <StatusCard
-              title="Answered"
+              title={t('status_cards.answered.title')}
               value={stats?.answered}
               icon="MessageSquare"
               color="info"
-              description="Questions with responses"
+              description={t('status_cards.answered.description')}
             />
             <StatusCard
-              title="Approved"
+              title={t('status_cards.approved.title')}
               value={stats?.approved}
               icon="CheckCircle"
               color="success"
-              description="Approved answers"
+              description={t('status_cards.approved.description')}
             />
             <StatusCard
-              title="High Priority"
+              title={t('status_cards.high_priority.title')}
               value={stats?.highPriority}
               icon="AlertCircle"
               color="error"
-              description="Urgent questions"
+              description={t('status_cards.high_priority.description')}
             />
           </div>
 
           {/* Search and Filter Controls */}
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="relative flex-1">
-              <Icon name="Search" size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+              <Icon name="Search" size={20} className="absolute left-3 rtl:right-3 rtl:left-auto top-1/2 transform -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search questions and answers..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e?.target?.value || '')}
-                className="pl-10"
+                className="pl-10 rtl:pr-10 rtl:pl-3"
               />
             </div>
             
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse">
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <Icon name="Filter" size={16} className="text-muted-foreground" />
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e?.target?.value)}
                   className="border border-input rounded-lg px-3 py-2 bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
                 >
-                  <option value="all">All Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="answered">Answered</option>
-                  <option value="approved">Approved</option>
+                  <option value="all">{t('filters.status.all')}</option>
+                  <option value="pending">{t('filters.status.pending')}</option>
+                  <option value="answered">{t('filters.status.answered')}</option>
+                  <option value="approved">{t('filters.status.approved')}</option>
                 </select>
                 
                 <select
@@ -209,15 +227,15 @@ const QAManagementCenter = () => {
                   onChange={(e) => setPriorityFilter(e?.target?.value)}
                   className="border border-input rounded-lg px-3 py-2 bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
                 >
-                  <option value="all">All Priority</option>
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
+                  <option value="all">{t('filters.priority.all')}</option>
+                  <option value="high">{t('filters.priority.high')}</option>
+                  <option value="medium">{t('filters.priority.medium')}</option>
+                  <option value="low">{t('filters.priority.low')}</option>
                 </select>
               </div>
               
               <Button variant="outline" iconName="Download">
-                Export Q&A
+                {t('actions.export_qa')}
               </Button>
             </div>
           </div>
@@ -242,13 +260,17 @@ const QAManagementCenter = () => {
                   <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
                     <Icon name="MessageSquare" size={32} className="text-muted-foreground" />
                   </div>
-                  <h3 className="text-lg font-medium text-foreground mb-2">No questions found</h3>
+                  <h3 className="text-lg font-medium text-foreground mb-2">
+                    {t('empty_states.no_questions.title')}
+                  </h3>
                   <p className="text-muted-foreground mb-4">
-                    {searchQuery || statusFilter !== 'all' || priorityFilter !== 'all' ?'Try adjusting your search criteria' :'No questions have been asked yet'
+                    {searchQuery || statusFilter !== 'all' || priorityFilter !== 'all' 
+                      ? t('empty_states.no_questions.description')
+                      : t('empty_states.no_questions.empty_description')
                     }
                   </p>
                   <Button iconName="Plus" variant="default">
-                    Ask Question
+                    {t('empty_states.no_questions.action')}
                   </Button>
                 </div>
               )}

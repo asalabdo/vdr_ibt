@@ -41,7 +41,7 @@ const StatusCard = ({ title, value, icon, color, description }) => {
 
   return (
     <div className="bg-card rounded-lg shadow-sm border border-border p-4 hover:shadow-md transition-shadow">
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-3 rtl:space-x-reverse">
         <div className={`w-10 h-10 ${colors?.bg} rounded-lg flex items-center justify-center`}>
           <Icon name={icon} size={20} className={colors?.icon} />
         </div>
