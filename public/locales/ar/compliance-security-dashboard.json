@@ -73,7 +73,7 @@
   },
 
   "timeline": {
-    "title": "الجدول الزمني للأمان",
+    "title": "الخط الزمني الأمني",
     "subtitle": "أحداث الأمان وأنماط الوصول في الوقت الفعلي",
     "views": {
       "access_patterns": "أنماط الوصول",
@@ -124,19 +124,19 @@
     "sample_alerts": {
       "failed_login": {
         "title": "محاولات تسجيل دخول فاشلة متعددة",
-        "description": "حساب المستخدم john.doe@company.com لديه 5 محاولات تسجيل دخول فاشلة متتالية من IP 45.123.78.90",
-        "recommended_action": "قفل الحساب والتحقيق في عنوان IP المصدر",
+        "description": "حساب المستخدم john.doe@company.com سجّل 5 محاولات تسجيل دخول فاشلة متتالية من عنوان IP 45.123.78.90",
+        "recommended_action": "إيقاف الحساب والتحقيق في مصدر عنوان IP",
         "affected_resource": "نظام المصادقة"
       },
       "unusual_access": {
         "title": "نمط وصول غير طبيعي للمستندات", 
-        "description": "المستخدم الخارجي sarah.wilson@advisor.com وصل إلى أكثر من 15 مستند حساس خلال 10 دقائق",
-        "recommended_action": "مراجعة أذونات المستخدم والتواصل مع المستخدم",
+        "description": "المستخدم الخارجي sarah.wilson@advisor.com دخل على أكثر من 15 مستنداً حساساً خلال 10 دقائق",
+        "recommended_action": "مراجعة صلاحيات المستخدم والتواصل معه",
         "affected_resource": "غرفة بيانات ألفا"
       },
       "permission_request": {
         "title": "طلب رفع الأذونات",
-        "description": "المستخدم michael.chen@company.com طلب صلاحيات إدارية لغرفة بيانات بيتا", 
+        "description": "المستخدم michael.chen@company.com طلب صلاحيات إدارية للوصول إلى غرفة بيانات بيتا", 
         "recommended_action": "مراجعة وموافقة/رفض الطلب",
         "affected_resource": "غرفة بيانات بيتا"
       },
@@ -202,8 +202,8 @@
   },
 
   "audit_table": {
-    "title": "مسار تدقيق شامل", 
-    "subtitle": "سجلات وصول تفصيلية وأحداث أمنية",
+    "title": "مسار التدقيق الشامل", 
+    "subtitle": "سجلات الوصول التفصيلية والأحداث الأمنية",
     "search_placeholder": "البحث في المستخدمين أو الإجراءات أو الموارد...",
     "filter_placeholder": "تصفية حسب الإجراء",
     "headers": {
