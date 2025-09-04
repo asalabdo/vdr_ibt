@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Header from '../../components/ui/Header';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
@@ -8,6 +9,7 @@ import PermissionManagerModal from './components/PermissionManagerModal';
 import BulkActionToolbar from './components/BulkActionToolbar';
 
 const DocumentManagementConsole = () => {
+  const { t } = useTranslation('document-management-console');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [selectedDocuments, setSelectedDocuments] = useState([]);
@@ -17,20 +19,20 @@ const DocumentManagementConsole = () => {
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
-  // Mock document data with comprehensive details
-  const [documents] = useState([
+  // Mock document data using translation keys
+  const [documentsData] = useState([
     {
       id: 1,
-      filename: 'Project_Proposal.pdf',
+      filenameKey: 'mock_data.documents.1',
       fileType: 'application/pdf',
       size: 2457600, // 2.4 MB
       uploadDate: '2025-08-31T10:30:00Z',
       owner: {
-        name: 'Admin User',
+        nameKey: 'mock_data.users.admin_user',
         email: 'admin@company.com',
         avatar: 'AU'
       },
-      room: 'Project Alpha',
+      roomKey: 'mock_data.rooms.project_alpha',
       status: 'approved',
       downloadCount: 24,
       lastAccessed: '2025-08-31T15:45:00Z',
@@ -41,16 +43,16 @@ const DocumentManagementConsole = () => {
     },
     {
       id: 2,
-      filename: 'Technical_Specs.docx',
+      filenameKey: 'mock_data.documents.2',
       fileType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       size: 1843200, // 1.8 MB
       uploadDate: '2025-08-31T09:15:00Z',
       owner: {
-        name: 'Technical Lead',
+        nameKey: 'mock_data.users.technical_lead',
         email: 'tech@company.com',
         avatar: 'TL'
       },
-      room: 'Project Alpha',
+      roomKey: 'mock_data.rooms.project_alpha',
       status: 'approved',
       downloadCount: 18,
       lastAccessed: '2025-08-31T14:20:00Z',
@@ -61,16 +63,16 @@ const DocumentManagementConsole = () => {
     },
     {
       id: 3,
-      filename: 'Contract_Draft.pdf',
+      filenameKey: 'mock_data.documents.3',
       fileType: 'application/pdf',
       size: 3276800, // 3.2 MB
       uploadDate: '2025-08-31T08:45:00Z',
       owner: {
-        name: 'Legal Advisor',
+        nameKey: 'mock_data.users.legal_advisor',
         email: 'legal@company.com',
         avatar: 'LA'
       },
-      room: 'Legal Documents',
+      roomKey: 'mock_data.rooms.legal_documents',
       status: 'pending',
       downloadCount: 7,
       lastAccessed: '2025-08-31T12:30:00Z',
@@ -81,16 +83,16 @@ const DocumentManagementConsole = () => {
     },
     {
       id: 4,
-      filename: 'Q4_Report.xlsx',
+      filenameKey: 'mock_data.documents.4',
       fileType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       size: 5242880, // 5.0 MB
       uploadDate: '2025-08-30T16:20:00Z',
       owner: {
-        name: 'Finance Manager',
+        nameKey: 'mock_data.users.finance_manager',
         email: 'finance@company.com',
         avatar: 'FM'
       },
-      room: 'Financial Reports',
+      roomKey: 'mock_data.rooms.financial_reports',
       status: 'approved',
       downloadCount: 42,
       lastAccessed: '2025-08-31T11:15:00Z',
@@ -101,16 +103,16 @@ const DocumentManagementConsole = () => {
     },
     {
       id: 5,
-      filename: 'Presentation_Deck.pptx',
+      filenameKey: 'mock_data.documents.5',
       fileType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
       size: 7340032, // 7.0 MB
       uploadDate: '2025-08-30T14:10:00Z',
       owner: {
-        name: 'Marketing Director',
+        nameKey: 'mock_data.users.marketing_director',
         email: 'marketing@company.com',
         avatar: 'MD'
       },
-      room: 'Marketing Materials',
+      roomKey: 'mock_data.rooms.marketing_materials',
       status: 'approved',
       downloadCount: 31,
       lastAccessed: '2025-08-31T13:45:00Z',
@@ -120,6 +122,17 @@ const DocumentManagementConsole = () => {
       thumbnail: '📊'
     }
   ]);
+
+  // Transform keys to actual translated text
+  const documents = documentsData.map(docData => ({
+    ...docData,
+    filename: t(docData.filenameKey),
+    room: t(docData.roomKey),
+    owner: {
+      ...docData.owner,
+      name: t(docData.owner.nameKey)
+    }
+  }));
 
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes';
@@ -134,10 +147,10 @@ const DocumentManagementConsole = () => {
     const date = new Date(dateString);
     const diff = Math.floor((now - date) / 1000);
 
-    if (diff < 60) return 'Just now';
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return `${Math.floor(diff / 86400)}d ago`;
+    if (diff < 60) return t('time.just_now');
+    if (diff < 3600) return t('time.minutes_ago', { count: Math.floor(diff / 60) });
+    if (diff < 86400) return t('time.hours_ago', { count: Math.floor(diff / 3600) });
+    return t('time.days_ago', { count: Math.floor(diff / 86400) });
   };
 
   const filteredDocuments = documents?.filter(doc => {
@@ -225,18 +238,20 @@ const DocumentManagementConsole = () => {
           {/* Header Section */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
             <div className="mb-4 lg:mb-0">
-              <h1 className="text-3xl font-bold text-foreground mb-2">Documents</h1>
+              <h1 className="text-3xl font-bold text-foreground mb-2">
+                {t('title')}
+              </h1>
               <p className="text-muted-foreground">
-                Manage and access documents across all data rooms
+                {t('subtitle')}
               </p>
             </div>
             
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse">
               <Button iconName="Download" variant="success">
-                Bulk Download
+                {t('actions.bulk_download')}
               </Button>
               <Button iconName="FileText" variant="outline">
-                Generate Report
+                {t('actions.generate_report')}
               </Button>
             </div>
           </div>
@@ -244,48 +259,48 @@ const DocumentManagementConsole = () => {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 rtl:space-x-reverse">
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Icon name="FileText" size={20} className="text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Documents</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.total_documents')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.total}</p>
                 </div>
               </div>
             </div>
             
             <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 rtl:space-x-reverse">
                 <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
                   <Icon name="CheckCircle" size={20} className="text-success" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Approved</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.approved')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.approved}</p>
                 </div>
               </div>
             </div>
             
             <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 rtl:space-x-reverse">
                 <div className="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center">
                   <Icon name="Clock" size={20} className="text-warning" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Pending</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.pending')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.pending}</p>
                 </div>
               </div>
             </div>
             
             <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 rtl:space-x-reverse">
                 <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
                   <Icon name="Eye" size={20} className="text-purple-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Views Today</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.views_today')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.totalViews}</p>
                 </div>
               </div>
@@ -295,26 +310,26 @@ const DocumentManagementConsole = () => {
           {/* Search and Filter Controls */}
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="relative flex-1">
-              <Icon name="Search" size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+              <Icon name="Search" size={20} className="absolute left-3 rtl:right-3 rtl:left-auto top-1/2 transform -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search documents..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e?.target?.value || '')}
-                className="pl-10"
+                className="pl-10 rtl:pr-10 rtl:pl-3"
               />
             </div>
             
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse">
               <Icon name="Filter" size={16} className="text-muted-foreground" />
               <select
                 value={selectedFilter}
                 onChange={(e) => setSelectedFilter(e?.target?.value)}
                 className="border border-input rounded-lg px-3 py-2 bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
               >
-                <option value="all">All Documents</option>
-                <option value="approved">Approved</option>
-                <option value="pending">Pending Approval</option>
+                <option value="all">{t('filters.all_documents')}</option>
+                <option value="approved">{t('filters.approved')}</option>
+                <option value="pending">{t('filters.pending_approval')}</option>
               </select>
             </div>
           </div>
@@ -340,7 +355,7 @@ const DocumentManagementConsole = () => {
               <div className="absolute inset-0 bg-primary/10 flex items-center justify-center z-10">
                 <div className="text-center">
                   <Icon name="Upload" size={48} className="text-primary mx-auto mb-4" />
-                  <p className="text-lg font-medium text-primary">Drop files here to upload</p>
+                  <p className="text-lg font-medium text-primary">{t('drag_drop.title')}</p>
                 </div>
               </div>
             )}
@@ -361,8 +376,8 @@ const DocumentManagementConsole = () => {
                       className="text-left py-3 px-4 font-medium text-foreground cursor-pointer hover:bg-muted/50 transition-colors"
                       onClick={() => handleSort('filename')}
                     >
-                      <div className="flex items-center space-x-1">
-                        <span>Document</span>
+                      <div className="flex items-center space-x-1 rtl:space-x-reverse">
+                        <span>{t('table.headers.document')}</span>
                         {sortConfig?.key === 'filename' && (
                           <Icon 
                             name={sortConfig?.direction === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
@@ -376,8 +391,8 @@ const DocumentManagementConsole = () => {
                       className="text-left py-3 px-4 font-medium text-foreground cursor-pointer hover:bg-muted/50 transition-colors"
                       onClick={() => handleSort('room')}
                     >
-                      <div className="flex items-center space-x-1">
-                        <span>Room</span>
+                      <div className="flex items-center space-x-1 rtl:space-x-reverse">
+                        <span>{t('table.headers.room')}</span>
                         {sortConfig?.key === 'room' && (
                           <Icon 
                             name={sortConfig?.direction === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
@@ -391,8 +406,8 @@ const DocumentManagementConsole = () => {
                       className="text-left py-3 px-4 font-medium text-foreground cursor-pointer hover:bg-muted/50 transition-colors"
                       onClick={() => handleSort('size')}
                     >
-                      <div className="flex items-center space-x-1">
-                        <span>Size</span>
+                      <div className="flex items-center space-x-1 rtl:space-x-reverse">
+                        <span>{t('table.headers.size')}</span>
                         {sortConfig?.key === 'size' && (
                           <Icon 
                             name={sortConfig?.direction === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
@@ -402,14 +417,14 @@ const DocumentManagementConsole = () => {
                         )}
                       </div>
                     </th>
-                    <th className="text-left py-3 px-4 font-medium text-foreground">Uploaded By</th>
-                    <th className="text-left py-3 px-4 font-medium text-foreground">Status</th>
+                    <th className="text-left py-3 px-4 font-medium text-foreground">{t('table.headers.uploaded_by')}</th>
+                    <th className="text-left py-3 px-4 font-medium text-foreground">{t('table.headers.status')}</th>
                     <th 
                       className="text-left py-3 px-4 font-medium text-foreground cursor-pointer hover:bg-muted/50 transition-colors"
                       onClick={() => handleSort('uploadDate')}
                     >
-                      <div className="flex items-center space-x-1">
-                        <span>Date</span>
+                      <div className="flex items-center space-x-1 rtl:space-x-reverse">
+                        <span>{t('table.headers.date')}</span>
                         {sortConfig?.key === 'uploadDate' && (
                           <Icon 
                             name={sortConfig?.direction === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
@@ -419,7 +434,7 @@ const DocumentManagementConsole = () => {
                         )}
                       </div>
                     </th>
-                    <th className="text-left py-3 px-4 font-medium text-foreground">Actions</th>
+                    <th className="text-left py-3 px-4 font-medium text-foreground">{t('table.headers.actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -434,7 +449,7 @@ const DocumentManagementConsole = () => {
                         />
                       </td>
                       <td className="py-3 px-4">
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center space-x-3 rtl:space-x-reverse">
                           <span className="text-2xl">{document?.thumbnail}</span>
                           <div>
                             <p className="font-medium text-foreground">{document?.filename}</p>
@@ -451,7 +466,7 @@ const DocumentManagementConsole = () => {
                         </span>
                       </td>
                       <td className="py-3 px-4">
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 rtl:space-x-reverse">
                           <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center text-xs font-medium text-primary">
                             {document?.owner?.avatar}
                           </div>
@@ -459,7 +474,7 @@ const DocumentManagementConsole = () => {
                         </div>
                       </td>
                       <td className="py-3 px-4">
-                        <div className="flex items-center space-x-1">
+                        <div className="flex items-center space-x-1 rtl:space-x-reverse">
                           <Icon 
                             name={document?.status === 'approved' ? 'CheckCircle' : 'Clock'} 
                             size={16} 
@@ -470,7 +485,7 @@ const DocumentManagementConsole = () => {
                               document?.status === 'approved' ? 'text-success' : 'text-warning'
                             }`}
                           >
-                            {document?.status}
+                            {t(`status_labels.${document?.status}`)}
                           </span>
                         </div>
                       </td>
@@ -480,25 +495,25 @@ const DocumentManagementConsole = () => {
                         </span>
                       </td>
                       <td className="py-3 px-4">
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 rtl:space-x-reverse">
                           <button
                             onClick={() => handleDocumentPreview(document)}
                             className="p-1 text-muted-foreground hover:text-primary transition-colors"
-                            title="Preview document"
+                            title={t('tooltips.preview_document')}
                           >
                             <Icon name="Eye" size={16} />
                           </button>
                           <button
                             onClick={() => window.open(`/api/documents/${document?.id}/download`)}
                             className="p-1 text-muted-foreground hover:text-success transition-colors"
-                            title="Download document"
+                            title={t('tooltips.download_document')}
                           >
                             <Icon name="Download" size={16} />
                           </button>
                           <button
                             onClick={() => handlePermissionManager(document)}
                             className="p-1 text-muted-foreground hover:text-warning transition-colors"
-                            title="Manage permissions"
+                            title={t('tooltips.manage_permissions')}
                           >
                             <Icon name="Shield" size={16} />
                           </button>
@@ -516,13 +531,15 @@ const DocumentManagementConsole = () => {
                 <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
                   <Icon name="FileText" size={32} className="text-muted-foreground" />
                 </div>
-                <h3 className="text-lg font-medium text-foreground mb-2">No documents found</h3>
+                <h3 className="text-lg font-medium text-foreground mb-2">{t('search.no_results_title')}</h3>
                 <p className="text-muted-foreground mb-4">
-                  {searchQuery || selectedFilter !== 'all' ?'Try adjusting your search criteria' :'Upload your first document to get started'
+                  {searchQuery || selectedFilter !== 'all' 
+                    ? t('search.no_results_description') 
+                    : t('search.empty_state_description')
                   }
                 </p>
                 <Button iconName="Upload" variant="default">
-                  Upload Document
+                  {t('actions.upload_document')}
                 </Button>
               </div>
             )}

@@ -1,0 +1,134 @@
+{
+  "title": "المستندات",
+  "subtitle": "إدارة والوصول إلى المستندات عبر جميع غرف البيانات",
+
+  "actions": {
+    "bulk_download": "تحميل مجمع",
+    "generate_report": "إنشاء تقرير",
+    "upload_document": "رفع مستند",
+    "download_all": "تحميل الكل",
+    "approve": "موافقة",
+    "delete": "حذف",
+    "download": "تحميل",
+    "cancel": "إلغاء",
+    "save_changes": "حفظ التغييرات",
+    "clear_selection": "مسح التحديد"
+  },
+
+  "stats": {
+    "total_documents": "إجمالي المستندات",
+    "approved": "موافق عليها",
+    "pending": "قيد الانتظار",
+    "views_today": "المشاهدات اليوم"
+  },
+
+  "search": {
+    "placeholder": "البحث في المستندات...",
+    "no_results_title": "لم يتم العثور على مستندات",
+    "no_results_description": "جرب تعديل معايير البحث الخاصة بك",
+    "empty_state_description": "قم برفع أول مستند للبدء"
+  },
+
+  "filters": {
+    "all_documents": "جميع المستندات",
+    "approved": "موافق عليها",
+    "pending_approval": "في انتظار الموافقة"
+  },
+
+  "table": {
+    "headers": {
+      "document": "المستند",
+      "room": "الغرفة", 
+      "size": "الحجم",
+      "uploaded_by": "رفع بواسطة",
+      "status": "الحالة",
+      "date": "التاريخ",
+      "actions": "الإجراءات"
+    }
+  },
+
+  "status_labels": {
+    "approved": "موافق عليه",
+    "pending": "قيد الانتظار"
+  },
+
+  "bulk_actions": {
+    "selected_singular": "{{count}} مستند محدد",
+    "selected_plural": "{{count}} مستندات محددة"
+  },
+
+  "tooltips": {
+    "preview_document": "معاينة المستند",
+    "download_document": "تحميل المستند", 
+    "manage_permissions": "إدارة الصلاحيات"
+  },
+
+  "drag_drop": {
+    "title": "اسحب الملفات هنا للرفع"
+  },
+
+  "preview_modal": {
+    "title": "معاينة المستند",
+    "description": "سيتم تنفيذ وظيفة المعاينة هنا لملفات {{fileType}}",
+    "file_size": "حجم الملف:",
+    "version": "الإصدار:",
+    "downloads": "التحميلات:"
+  },
+
+  "permissions_modal": {
+    "title": "إدارة الصلاحيات",
+    "subtitle": "صلاحيات المستند",
+    "current_access": "الوصول الحالي",
+    "owner": "المالك:",
+    "room": "الغرفة:",
+    "status": "الحالة:",
+    "permissions": {
+      "read": {
+        "label": "قراءة",
+        "description": "عرض محتوى المستند"
+      },
+      "download": {
+        "label": "تحميل", 
+        "description": "تحميل ملفات المستند"
+      },
+      "edit": {
+        "label": "تحرير",
+        "description": "تعديل محتوى المستند"
+      },
+      "delete": {
+        "label": "حذف",
+        "description": "إزالة المستند من النظام"
+      }
+    }
+  },
+
+  "time": {
+    "just_now": "الآن",
+    "minutes_ago": "منذ {{count}} د",
+    "hours_ago": "منذ {{count}} س",
+    "days_ago": "منذ {{count}} ي"
+  },
+
+  "mock_data": {
+    "documents": {
+      "1": "اقتراح_المشروع.pdf",
+      "2": "المواصفات_الفنية.docx", 
+      "3": "مسودة_العقد.pdf",
+      "4": "تقرير_الربع_الرابع.xlsx",
+      "5": "عرض_تقديمي.pptx"
+    },
+    "users": {
+      "admin_user": "المدير العام",
+      "technical_lead": "القائد التقني",
+      "legal_advisor": "المستشار القانوني", 
+      "finance_manager": "مدير المالية",
+      "marketing_director": "مدير التسويق"
+    },
+    "rooms": {
+      "project_alpha": "مشروع ألفا",
+      "legal_documents": "الوثائق القانونية",
+      "financial_reports": "التقارير المالية",
+      "marketing_materials": "مواد التسويق"
+    }
+  }
+}
