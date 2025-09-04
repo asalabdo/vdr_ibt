@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 const SecurityTimeline = () => {
+  const { t } = useTranslation('compliance-security-dashboard');
+  const { t: tCommon } = useTranslation('common');
+  
   const [timelineView, setTimelineView] = useState('access_patterns');
   const [zoomLevel, setZoomLevel] = useState('day');
 
@@ -17,16 +21,16 @@ const SecurityTimeline = () => {
   ];
 
   const viewOptions = [
-    { key: 'access_patterns', label: 'Access Patterns', icon: 'Users', color: '#0ea5e9' },
-    { key: 'permission_changes', label: 'Permission Changes', icon: 'Shield', color: '#d97706' },
-    { key: 'security_alerts', label: 'Security Alerts', icon: 'AlertTriangle', color: '#dc2626' },
-    { key: 'anomalies', label: 'Anomalies', icon: 'Zap', color: '#7c3aed' }
+    { key: 'access_patterns', label: t('timeline.views.access_patterns'), icon: 'Users', color: '#0ea5e9' },
+    { key: 'permission_changes', label: t('timeline.views.permission_changes'), icon: 'Shield', color: '#d97706' },
+    { key: 'security_alerts', label: t('timeline.views.security_alerts'), icon: 'AlertTriangle', color: '#dc2626' },
+    { key: 'anomalies', label: t('timeline.views.anomalies'), icon: 'Zap', color: '#7c3aed' }
   ];
 
   const zoomOptions = [
-    { key: 'hour', label: 'Hourly' },
-    { key: 'day', label: 'Daily' },
-    { key: 'week', label: 'Weekly' }
+    { key: 'hour', label: t('timeline.zoom_levels.hour') },
+    { key: 'day', label: t('timeline.zoom_levels.day') },
+    { key: 'week', label: t('timeline.zoom_levels.week') }
   ];
 
   const currentView = viewOptions?.find(option => option?.key === timelineView);
@@ -35,11 +39,15 @@ const SecurityTimeline = () => {
     <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-foreground mb-1">Security Timeline</h3>
-          <p className="text-sm text-muted-foreground">Real-time security events and access patterns</p>
+          <h3 className="text-lg font-semibold text-foreground mb-1">
+            {t('timeline.title')}
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            {t('timeline.subtitle')}
+          </p>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
           {zoomOptions?.map((option) => (
             <Button
               key={option?.key}
@@ -58,7 +66,7 @@ const SecurityTimeline = () => {
             key={option?.key}
             onClick={() => setTimelineView(option?.key)}
             className={`
-              flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium
+              flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 rounded-lg text-sm font-medium
               transition-all duration-200 border
               ${timelineView === option?.key
                 ? 'bg-primary/10 text-primary border-primary/20' :'bg-muted/30 text-muted-foreground border-border hover:bg-muted/50'
@@ -103,27 +111,27 @@ const SecurityTimeline = () => {
         </ResponsiveContainer>
       </div>
       <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
-        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-          <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4 rtl:space-x-reverse text-sm text-muted-foreground">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <div className="w-3 h-3 rounded-full bg-success"></div>
-            <span>Normal Activity</span>
+            <span>{t('timeline.legend.normal_activity')}</span>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <div className="w-3 h-3 rounded-full bg-warning"></div>
-            <span>Elevated Activity</span>
+            <span>{t('timeline.legend.elevated_activity')}</span>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <div className="w-3 h-3 rounded-full bg-error"></div>
-            <span>Critical Events</span>
+            <span>{t('timeline.legend.critical_events')}</span>
           </div>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
           <Button variant="ghost" size="sm" iconName="Download">
-            Export Data
+            {tCommon('actions.export')}
           </Button>
           <Button variant="ghost" size="sm" iconName="RefreshCw">
-            Refresh
+            {t('actions.refresh')}
           </Button>
         </div>
       </div>

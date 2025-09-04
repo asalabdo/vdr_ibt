@@ -43,7 +43,7 @@ const SecurityScoreCard = ({ title, value, change, changeType, icon, color, desc
         <div className={`p-3 rounded-lg border ${getColorClasses(color)}`}>
           <Icon name={icon} size={24} />
         </div>
-        <div className={`flex items-center space-x-1 text-sm ${getChangeColor(changeType)}`}>
+        <div className={`flex items-center space-x-1 rtl:space-x-reverse text-sm ${getChangeColor(changeType)}`}>
           <Icon name={getChangeIcon(changeType)} size={16} />
           <span>{change}</span>
         </div>

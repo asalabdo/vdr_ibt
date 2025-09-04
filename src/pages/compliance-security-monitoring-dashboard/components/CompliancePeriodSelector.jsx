@@ -1,31 +1,41 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Select from '../../../components/ui/Select';
 
-const CompliancePeriodSelector = ({ selectedPeriod, onPeriodChange, selectedFramework, onFrameworkChange, securityLevel, onSecurityLevelChange }) => {
+const CompliancePeriodSelector = ({ 
+  selectedPeriod, 
+  onPeriodChange, 
+  selectedFramework, 
+  onFrameworkChange, 
+  securityLevel, 
+  onSecurityLevelChange 
+}) => {
+  const { t } = useTranslation('compliance-security-dashboard');
+
   const periodOptions = [
-    { value: 'last_7_days', label: 'Last 7 Days' },
-    { value: 'last_30_days', label: 'Last 30 Days' },
-    { value: 'last_90_days', label: 'Last 90 Days' },
-    { value: 'last_6_months', label: 'Last 6 Months' },
-    { value: 'last_year', label: 'Last Year' },
-    { value: 'custom', label: 'Custom Range' }
+    { value: 'last_7_days', label: t('period_selector.periods.last_7_days') },
+    { value: 'last_30_days', label: t('period_selector.periods.last_30_days') },
+    { value: 'last_90_days', label: t('period_selector.periods.last_90_days') },
+    { value: 'last_6_months', label: t('period_selector.periods.last_6_months') },
+    { value: 'last_year', label: t('period_selector.periods.last_year') },
+    { value: 'custom', label: t('period_selector.periods.custom') }
   ];
 
   const frameworkOptions = [
-    { value: 'all', label: 'All Frameworks' },
-    { value: 'sox', label: 'SOX Compliance' },
-    { value: 'gdpr', label: 'GDPR' },
-    { value: 'sec', label: 'SEC Regulations' },
-    { value: 'iso27001', label: 'ISO 27001' },
-    { value: 'hipaa', label: 'HIPAA' }
+    { value: 'all', label: t('period_selector.frameworks.all') },
+    { value: 'sox', label: t('period_selector.frameworks.sox') },
+    { value: 'gdpr', label: t('period_selector.frameworks.gdpr') },
+    { value: 'sec', label: t('period_selector.frameworks.sec') },
+    { value: 'iso27001', label: t('period_selector.frameworks.iso27001') },
+    { value: 'hipaa', label: t('period_selector.frameworks.hipaa') }
   ];
 
   const securityLevelOptions = [
-    { value: 'all', label: 'All Levels' },
-    { value: 'critical', label: 'Critical Only' },
-    { value: 'high', label: 'High & Above' },
-    { value: 'medium', label: 'Medium & Above' },
-    { value: 'low', label: 'All Levels' }
+    { value: 'all', label: t('period_selector.security_levels.all') },
+    { value: 'critical', label: t('period_selector.security_levels.critical') },
+    { value: 'high', label: t('period_selector.security_levels.high') },
+    { value: 'medium', label: t('period_selector.security_levels.medium') },
+    { value: 'low', label: t('period_selector.security_levels.low') }
   ];
 
   return (
@@ -34,7 +44,7 @@ const CompliancePeriodSelector = ({ selectedPeriod, onPeriodChange, selectedFram
         options={periodOptions}
         value={selectedPeriod}
         onChange={onPeriodChange}
-        placeholder="Select period"
+        placeholder={t('period_selector.placeholders.select_period')}
         className="min-w-40"
       />
       
@@ -42,7 +52,7 @@ const CompliancePeriodSelector = ({ selectedPeriod, onPeriodChange, selectedFram
         options={frameworkOptions}
         value={selectedFramework}
         onChange={onFrameworkChange}
-        placeholder="Regulatory framework"
+        placeholder={t('period_selector.placeholders.regulatory_framework')}
         className="min-w-48"
       />
       
@@ -50,7 +60,7 @@ const CompliancePeriodSelector = ({ selectedPeriod, onPeriodChange, selectedFram
         options={securityLevelOptions}
         value={securityLevel}
         onChange={onSecurityLevelChange}
-        placeholder="Security level"
+        placeholder={t('period_selector.placeholders.security_level')}
         className="min-w-40"
       />
     </div>

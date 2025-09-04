@@ -1,37 +1,41 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 const CompliancePanel = () => {
+  const { t } = useTranslation('compliance-security-dashboard');
+  const { t: tCommon } = useTranslation('common');
+  
   const complianceChecklist = [
     {
       id: 1,
-      framework: 'SOX',
-      requirement: 'Access Control Documentation',
+      framework: t('compliance_panel.frameworks.sox'),
+      requirement: t('compliance_panel.requirements.access_control'),
       status: 'completed',
       completedDate: '2025-08-30',
       nextReview: '2025-09-30'
     },
     {
       id: 2,
-      framework: 'GDPR',
-      requirement: 'Data Processing Records',
+      framework: t('compliance_panel.frameworks.gdpr'),
+      requirement: t('compliance_panel.requirements.data_processing'),
       status: 'in_progress',
       completedDate: null,
       nextReview: '2025-09-15'
     },
     {
       id: 3,
-      framework: 'SEC',
-      requirement: 'Audit Trail Completeness',
+      framework: t('compliance_panel.frameworks.sec'),
+      requirement: t('compliance_panel.requirements.audit_trail'),
       status: 'completed',
       completedDate: '2025-08-29',
       nextReview: '2025-10-01'
     },
     {
       id: 4,
-      framework: 'ISO 27001',
-      requirement: 'Security Incident Response',
+      framework: t('compliance_panel.frameworks.iso27001'),
+      requirement: t('compliance_panel.requirements.incident_response'),
       status: 'overdue',
       completedDate: null,
       nextReview: '2025-08-25'
@@ -42,33 +46,33 @@ const CompliancePanel = () => {
     {
       id: 1,
       type: 'access_review',
-      description: 'Quarterly access review completed for Deal Room Alpha',
+      description: t('compliance_panel.sample_activities.quarterly_review'),
       timestamp: '2025-08-31 14:30:00',
-      user: 'Sarah Johnson',
+      user: t('compliance_panel.users.sarah_johnson'),
       status: 'completed'
     },
     {
       id: 2,
       type: 'permission_change',
-      description: 'Bulk permission update for external advisors',
+      description: t('compliance_panel.sample_activities.bulk_update'),
       timestamp: '2025-08-31 12:15:00',
-      user: 'Michael Chen',
+      user: t('compliance_panel.users.michael_chen'),
       status: 'completed'
     },
     {
       id: 3,
       type: 'security_scan',
-      description: 'Automated security vulnerability scan initiated',
+      description: t('compliance_panel.sample_activities.security_scan'),
       timestamp: '2025-08-31 10:00:00',
-      user: 'System',
+      user: t('compliance_panel.users.system'),
       status: 'in_progress'
     },
     {
       id: 4,
       type: 'compliance_report',
-      description: 'Monthly compliance report generated',
+      description: t('compliance_panel.sample_activities.monthly_report'),
       timestamp: '2025-08-31 09:45:00',
-      user: 'Compliance Bot',
+      user: t('compliance_panel.users.compliance_bot'),
       status: 'completed'
     }
   ];
@@ -106,9 +110,9 @@ const CompliancePanel = () => {
     const now = new Date();
     const diff = Math.floor((now - date) / 1000);
     
-    if (diff < 60) return 'Just now';
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 60) return tCommon('time_ago.just_now');
+    if (diff < 3600) return tCommon('time_ago.minutes_ago', { count: Math.floor(diff / 60) });
+    if (diff < 86400) return tCommon('time_ago.hours_ago', { count: Math.floor(diff / 3600) });
     return date?.toLocaleDateString();
   };
 
@@ -118,11 +122,15 @@ const CompliancePanel = () => {
       <div className="bg-card border border-border rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-foreground">Regulatory Checklist</h3>
-            <p className="text-sm text-muted-foreground">Compliance requirements status</p>
+            <h3 className="text-lg font-semibold text-foreground">
+              {t('compliance_panel.regulatory_checklist.title')}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {t('compliance_panel.regulatory_checklist.subtitle')}
+            </p>
           </div>
           <Button variant="ghost" size="sm" iconName="RefreshCw">
-            Refresh
+            {t('actions.refresh')}
           </Button>
         </div>
 
@@ -130,14 +138,14 @@ const CompliancePanel = () => {
           {complianceChecklist?.map((item) => {
             const statusConfig = getStatusIcon(item?.status);
             return (
-              <div key={item?.id} className="flex items-start space-x-3 p-3 bg-muted/20 rounded-lg">
+              <div key={item?.id} className="flex items-start space-x-3 rtl:space-x-reverse p-3 bg-muted/20 rounded-lg">
                 <Icon 
                   name={statusConfig?.icon} 
                   size={16} 
                   className={statusConfig?.color}
                 />
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center space-x-2 mb-1">
+                  <div className="flex items-center space-x-2 rtl:space-x-reverse mb-1">
                     <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded">
                       {item?.framework}
                     </span>
@@ -146,7 +154,7 @@ const CompliancePanel = () => {
                     {item?.requirement}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Next review: {new Date(item.nextReview)?.toLocaleDateString()}
+                    {t('compliance_panel.labels.next_review')}: {new Date(item.nextReview)?.toLocaleDateString()}
                   </p>
                 </div>
               </div>
@@ -156,7 +164,7 @@ const CompliancePanel = () => {
 
         <div className="mt-4 pt-4 border-t border-border">
           <Button variant="outline" size="sm" fullWidth iconName="FileText">
-            Generate Compliance Report
+            {t('actions.generate_report')}
           </Button>
         </div>
       </div>
@@ -164,17 +172,21 @@ const CompliancePanel = () => {
       <div className="bg-card border border-border rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-foreground">Recent Activities</h3>
-            <p className="text-sm text-muted-foreground">Latest audit and compliance actions</p>
+            <h3 className="text-lg font-semibold text-foreground">
+              {t('compliance_panel.recent_activities.title')}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {t('compliance_panel.recent_activities.subtitle')}
+            </p>
           </div>
           <Button variant="ghost" size="sm" iconName="ExternalLink">
-            View All
+            {t('actions.view_all')}
           </Button>
         </div>
 
         <div className="space-y-3">
           {recentAuditActivities?.map((activity) => (
-            <div key={activity?.id} className="flex items-start space-x-3 p-3 hover:bg-muted/20 rounded-lg transition-colors">
+            <div key={activity?.id} className="flex items-start space-x-3 rtl:space-x-reverse p-3 hover:bg-muted/20 rounded-lg transition-colors">
               <div className="p-2 bg-primary/10 rounded-lg">
                 <Icon 
                   name={getActivityIcon(activity?.type)} 
@@ -186,7 +198,7 @@ const CompliancePanel = () => {
                 <p className="text-sm font-medium text-foreground mb-1">
                   {activity?.description}
                 </p>
-                <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                <div className="flex items-center space-x-2 rtl:space-x-reverse text-xs text-muted-foreground">
                   <span>{activity?.user}</span>
                   <span>•</span>
                   <span>{formatTimestamp(activity?.timestamp)}</span>
@@ -198,7 +210,12 @@ const CompliancePanel = () => {
                   ? 'bg-success/10 text-success' :'bg-warning/10 text-warning'
                 }
               `}>
-                {activity?.status?.replace('_', ' ')}
+                {activity?.status === 'completed' 
+                  ? tCommon('status_values.completed')
+                  : activity?.status === 'in_progress'
+                    ? tCommon('status_values.pending')
+                    : tCommon('status_values.active')
+                }
               </div>
             </div>
           ))}
@@ -206,16 +223,18 @@ const CompliancePanel = () => {
       </div>
       {/* Quick Actions */}
       <div className="bg-card border border-border rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Quick Actions</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">
+          {t('compliance_panel.quick_actions.title')}
+        </h3>
         <div className="space-y-2">
           <Button variant="outline" size="sm" fullWidth iconName="Download">
-            Export Audit Logs
+            {t('actions.export_logs')}
           </Button>
           <Button variant="outline" size="sm" fullWidth iconName="AlertTriangle">
-            Create Security Incident
+            {t('actions.create_incident')}
           </Button>
           <Button variant="outline" size="sm" fullWidth iconName="Settings">
-            Configure Alerts
+            {t('actions.configure_alerts')}
           </Button>
         </div>
       </div>
