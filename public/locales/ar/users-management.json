@@ -1,0 +1,99 @@
+{
+  "title": "إدارة المستخدمين",
+  "subtitle": "إدارة حسابات المستخدمين وصلاحيات الوصول",
+  
+  "actions": {
+    "invite_user": "دعوة مستخدم",
+    "export_users": "تصدير المستخدمين",
+    "edit": "تحرير",
+    "manage_permissions": "إدارة الصلاحيات",
+    "cancel": "إلغاء",
+    "send_invitation": "إرسال دعوة",
+    "sending": "جاري الإرسال..."
+  },
+
+  "stats": {
+    "total_users": "إجمالي المستخدمين",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "قيد الانتظار"
+  },
+
+  "search": {
+    "placeholder": "البحث في المستخدمين...",
+    "no_results_title": "لم يتم العثور على مستخدمين",
+    "no_results_description": "جرب تعديل معايير البحث الخاصة بك",
+    "empty_state_description": "ادع أول مستخدم للبدء"
+  },
+
+  "filters": {
+    "all_roles": "جميع الأدوار",
+    "all_status": "جميع الحالات",
+    "active": "نشط",
+    "inactive": "غير نشط", 
+    "pending": "قيد الانتظار"
+  },
+
+  "user_card": {
+    "role": "الدور",
+    "status": "الحالة",
+    "data_rooms": "غرف البيانات",
+    "permissions": "الصلاحيات",
+    "last_login": "آخر تسجيل دخول:",
+    "more_rooms": "+ {{count}} أخرى"
+  },
+
+  "status_labels": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "قيد الانتظار"
+  },
+
+  "time": {
+    "just_now": "الآن",
+    "never": "أبداً",
+    "minutes_ago": "منذ {{count}} د",
+    "hours_ago": "منذ {{count}} س",
+    "days_ago": "منذ {{count}} ي"
+  },
+
+  "invite_modal": {
+    "title": "دعوة مستخدم",
+    "full_name_label": "الاسم الكامل",
+    "full_name_placeholder": "أدخل الاسم الكامل",
+    "email_label": "عنوان البريد الإلكتروني",
+    "email_placeholder": "أدخل عنوان البريد الإلكتروني",
+    "role_label": "الدور",
+    "data_room_access_label": "الوصول لغرف البيانات",
+    "send_welcome_email": "إرسال بريد ترحيبي"
+  },
+
+  "permissions": {
+    "view_questions": "عرض الأسئلة",
+    "reply_questions": "الرد على الأسئلة", 
+    "approve_answers": "الموافقة على الإجابات",
+    "upload_files": "رفع الملفات",
+    "user_management": "إدارة المستخدمين"
+  },
+
+  "mock_data": {
+    "users": {
+      "admin_user": "المدير العام",
+      "qa_observer_full": "مراقب الأسئلة والأجوبة الكامل",
+      "financial_analyst": "محلل مالي",
+      "legal_advisor": "مستشار قانوني",
+      "marketing_director": "مدير التسويق"
+    },
+    "roles": {
+      "admin": "مدير",
+      "qa_observer_full_control": "مراقب الأسئلة والأجوبة – تحكم كامل",
+      "qa_observer_view_only": "مراقب الأسئلة والأجوبة – عرض فقط"
+    },
+    "data_rooms": {
+      "project_alpha": "مشروع ألفا",
+      "legal_documents": "الوثائق القانونية",
+      "financial_reports": "التقارير المالية",
+      "marketing_materials": "مواد التسويق"
+    }
+  }
+}
