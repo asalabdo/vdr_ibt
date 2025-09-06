@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes as RouterRoutes, Route, Link, useLocation } from "react-router-dom";
-import ScrollToTop from "components/ScrollToTop";
-import ErrorBoundary from "components/ErrorBoundary";
-import NotFound from "pages/NotFound";
-import DealAnalyticsIntelligenceDashboard from './pages/deal-analytics-intelligence-dashboard';
-import VDROperationsCommandCenter from './pages/vdr-operations-command-center';
-import ComplianceSecurityMonitoringDashboard from './pages/compliance-security-monitoring-dashboard';
-import ExecutiveDealFlowDashboard from './pages/executive-deal-flow-dashboard';
-import DataRoomsManagement from './pages/data-rooms-management';
-import QAManagementCenter from './pages/q-a-management-center';
-import DocumentManagementConsole from './pages/document-management-console';
-import UsersManagement from './pages/users-management';
-import RolesPermissions from './pages/roles-permissions';
-import AuditLogs from './pages/audit-logs';
-import Settings from './pages/settings';
-import Header from './components/ui/Header';
-import Icon from './components/AppIcon';
+import ScrollToTop from "@/components/ScrollToTop";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import NotFound from "@/pages/NotFound";
+import DealAnalyticsIntelligenceDashboard from '@/pages/deal-analytics-intelligence-dashboard';
+import VDROperationsCommandCenter from '@/pages/vdr-operations-command-center';
+import ComplianceSecurityMonitoringDashboard from '@/pages/compliance-security-monitoring-dashboard';
+import ExecutiveDealFlowDashboard from '@/pages/executive-deal-flow-dashboard';
+import DataRoomsManagement from '@/pages/data-rooms-management';
+import QAManagementCenter from '@/pages/q-a-management-center';
+import DocumentManagementConsole from '@/pages/document-management-console';
+import UsersManagement from '@/pages/users-management';
+import RolesPermissions from '@/pages/roles-permissions';
+import AuditLogs from '@/pages/audit-logs';
+import Settings from '@/pages/settings';
+import Header from '@/components/ui/Header';
+import Icon from '@/components/AppIcon';
 import { useTranslation } from 'react-i18next';
 
 const Sidebar = ({ isOpen, onClose }) => {
