@@ -1,47 +1,55 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Header from '../../components/ui/Header';
 import Button from '../../components/ui/Button';
-
 import Icon from '../../components/AppIcon';
 import NotificationSettings from './components/NotificationSettings';
 import SecuritySettings from './components/SecuritySettings';
 import SystemSettings from './components/SystemSettings';
 
 const Settings = () => {
+  const { t } = useTranslation('settings');
   const [activeTab, setActiveTab] = useState('notifications');
 
-  const settingsTabs = [
+  const settingsTabsData = [
     {
       id: 'notifications',
-      label: 'Notifications',
+      labelKey: 'tabs.notifications.label',
       icon: 'Bell',
-      description: 'Email and system notification preferences'
+      descriptionKey: 'tabs.notifications.description'
     },
     {
       id: 'security',
-      label: 'Security',
+      labelKey: 'tabs.security.label',
       icon: 'Shield',
-      description: 'Password, authentication, and security settings'
+      descriptionKey: 'tabs.security.description'
     },
     {
       id: 'system',
-      label: 'System',
+      labelKey: 'tabs.system.label',
       icon: 'Settings',
-      description: 'General system configuration and preferences'
+      descriptionKey: 'tabs.system.description'
     },
     {
       id: 'data',
-      label: 'Data & Privacy',
+      labelKey: 'tabs.data.label',
       icon: 'Database',
-      description: 'Data retention, backup, and privacy settings'
+      descriptionKey: 'tabs.data.description'
     },
     {
       id: 'integration',
-      label: 'Integrations',
+      labelKey: 'tabs.integration.label',
       icon: 'Link',
-      description: 'Third-party integrations and API settings'
+      descriptionKey: 'tabs.integration.description'
     }
   ];
+
+  // Transform keys to actual translated text
+  const settingsTabs = settingsTabsData.map(tabData => ({
+    ...tabData,
+    label: t(tabData.labelKey),
+    description: t(tabData.descriptionKey)
+  }));
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -67,9 +75,11 @@ const Settings = () => {
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Settings</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              {t('title')}
+            </h1>
             <p className="text-muted-foreground">
-              Manage your account and system preferences
+              {t('subtitle')}
             </p>
           </div>
 
@@ -81,7 +91,7 @@ const Settings = () => {
                   <button
                     key={tab?.id}
                     onClick={() => setActiveTab(tab?.id)}
-                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                    className={`w-full flex items-center space-x-3 rtl:space-x-reverse px-3 py-2 rounded-lg text-left rtl:text-right transition-colors ${
                       activeTab === tab?.id
                         ? 'bg-primary/10 text-primary border border-primary/20' :'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     }`}
@@ -108,24 +118,30 @@ const Settings = () => {
 };
 
 // Placeholder components for other settings tabs
-const DataPrivacySettings = () => (
-  <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-    <h2 className="text-xl font-semibold text-foreground mb-4">Data & Privacy Settings</h2>
-    <p className="text-muted-foreground">Data retention, backup, and privacy configuration options.</p>
-    <div className="mt-6">
-      <Button variant="outline">Configure Data Settings</Button>
+const DataPrivacySettings = () => {
+  const { t } = useTranslation('settings');
+  return (
+    <div className="bg-card rounded-xl shadow-sm border border-border p-6">
+      <h2 className="text-xl font-semibold text-foreground mb-4">{t('data_privacy.title')}</h2>
+      <p className="text-muted-foreground">{t('data_privacy.description')}</p>
+      <div className="mt-6">
+        <Button variant="outline">{t('actions.configure_data_settings')}</Button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
-const IntegrationSettings = () => (
-  <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-    <h2 className="text-xl font-semibold text-foreground mb-4">Integration Settings</h2>
-    <p className="text-muted-foreground">Manage third-party integrations and API configurations.</p>
-    <div className="mt-6">
-      <Button variant="outline">Manage Integrations</Button>
+const IntegrationSettings = () => {
+  const { t } = useTranslation('settings');
+  return (
+    <div className="bg-card rounded-xl shadow-sm border border-border p-6">
+      <h2 className="text-xl font-semibold text-foreground mb-4">{t('integrations.title')}</h2>
+      <p className="text-muted-foreground">{t('integrations.description')}</p>
+      <div className="mt-6">
+        <Button variant="outline">{t('actions.manage_integrations')}</Button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Settings;

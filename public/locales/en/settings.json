@@ -1,0 +1,224 @@
+{
+  "title": "Settings",
+  "subtitle": "Manage your account and system preferences",
+  
+  "actions": {
+    "save_changes": "Save Changes",
+    "update_password": "Update Password",
+    "configure": "Configure",
+    "manage_integrations": "Manage Integrations",
+    "configure_data_settings": "Configure Data Settings",
+    "reset_to_defaults": "Reset to Defaults",
+    "revoke": "Revoke"
+  },
+
+  "tabs": {
+    "notifications": {
+      "label": "Notifications",
+      "description": "Email and system notification preferences"
+    },
+    "security": {
+      "label": "Security",
+      "description": "Password, authentication, and security settings"
+    },
+    "system": {
+      "label": "System",
+      "description": "General system configuration and preferences"
+    },
+    "data": {
+      "label": "Data & Privacy",
+      "description": "Data retention, backup, and privacy settings"
+    },
+    "integration": {
+      "label": "Integrations",
+      "description": "Third-party integrations and API settings"
+    }
+  },
+
+  "notifications": {
+    "title": "Notification Settings",
+    "email_notifications": {
+      "title": "Email Notifications",
+      "description": "Receive notifications via email",
+      "options": {
+        "new_questions": {
+          "label": "New Questions",
+          "description": "When new questions are posted"
+        },
+        "document_uploads": {
+          "label": "Document Uploads",
+          "description": "When documents are uploaded"
+        },
+        "system_alerts": {
+          "label": "System Alerts",
+          "description": "Important system notifications"
+        },
+        "weekly_digest": {
+          "label": "Weekly Digest",
+          "description": "Weekly summary of activities"
+        },
+        "login_alerts": {
+          "label": "Login Alerts",
+          "description": "Security-related login notifications"
+        }
+      }
+    },
+    "push_notifications": {
+      "title": "Push Notifications",
+      "description": "Browser and mobile push notifications",
+      "options": {
+        "new_questions": {
+          "label": "New Questions",
+          "description": "Instant alerts for new questions"
+        },
+        "document_uploads": {
+          "label": "Document Uploads",
+          "description": "When documents are uploaded"
+        },
+        "system_alerts": {
+          "label": "System Alerts",
+          "description": "Critical system notifications"
+        },
+        "urgent_alerts": {
+          "label": "Urgent Alerts",
+          "description": "High-priority alerts only"
+        }
+      }
+    },
+    "frequency": {
+      "title": "Notification Frequency",
+      "description": "How often you receive notifications",
+      "options": {
+        "immediate": {
+          "label": "Immediate",
+          "description": "Receive notifications as they happen"
+        },
+        "hourly": {
+          "label": "Hourly Digest",
+          "description": "Bundled notifications every hour"
+        },
+        "daily": {
+          "label": "Daily Digest",
+          "description": "Summary of notifications once per day"
+        },
+        "weekly": {
+          "label": "Weekly Digest",
+          "description": "Weekly summary of all notifications"
+        }
+      }
+    }
+  },
+
+  "security": {
+    "title": "Security Settings",
+    "change_password": {
+      "title": "Change Password",
+      "description": "Update your account password",
+      "current_password": "Current Password",
+      "new_password": "New Password",
+      "confirm_password": "Confirm New Password"
+    },
+    "two_factor_auth": {
+      "title": "Two-Factor Authentication",
+      "description": "Add an extra layer of security to your account",
+      "enable_2fa": "Enable 2FA",
+      "enable_description": "Require authentication code in addition to password"
+    },
+    "session_security": {
+      "title": "Session Security",
+      "description": "Manage session timeout and activity monitoring",
+      "session_timeout": "Session Timeout (minutes)",
+      "session_timeout_description": "Automatically log out after inactivity",
+      "login_notifications": "Login Notifications",
+      "login_notifications_description": "Get notified of new login attempts",
+      "suspicious_activity": "Suspicious Activity Alerts",
+      "suspicious_activity_description": "Alert on unusual account activity"
+    },
+    "active_sessions": {
+      "title": "Active Sessions",
+      "description": "Manage your active login sessions",
+      "current_session": "Current Session",
+      "mobile_device": "Mobile Device",
+      "last_seen": "Last seen {{time}} ago",
+      "active": "Active"
+    }
+  },
+
+  "system": {
+    "title": "System Settings",
+    "general": {
+      "title": "General Settings",
+      "description": "Basic system configuration",
+      "company_name": "Company Name",
+      "support_email": "Support Email",
+      "timezone": "Timezone",
+      "language": "Language"
+    },
+    "file_management": {
+      "title": "File Management",
+      "description": "File upload and storage settings",
+      "max_file_size": "Maximum File Size (MB)",
+      "max_file_size_description": "Maximum file size for uploads"
+    },
+    "security_access": {
+      "title": "Security & Access",
+      "description": "Access control and security settings",
+      "maintenance_mode": "Maintenance Mode",
+      "maintenance_mode_description": "Temporarily disable user access",
+      "guest_access": "Allow Guest Access",
+      "guest_access_description": "Enable limited access without login",
+      "default_session_timeout": "Default Session Timeout (minutes)"
+    },
+    "audit_logging": {
+      "title": "Audit & Logging",
+      "description": "System logging and audit trail settings",
+      "enable_audit_logs": "Enable Audit Logs",
+      "enable_audit_logs_description": "Log user activities and system events",
+      "log_retention": "Log Retention (days)",
+      "log_retention_description": "How long to keep audit logs"
+    },
+    "system_status": {
+      "title": "System Status",
+      "description": "Current system information",
+      "system_version": "System Version",
+      "database_status": "Database Status",
+      "storage_usage": "Storage Usage",
+      "active_users": "Active Users",
+      "total_documents": "Total Documents",
+      "last_backup": "Last Backup",
+      "healthy": "✓ Healthy"
+    },
+    "languages": {
+      "en": "English",
+      "es": "Spanish",
+      "fr": "French",
+      "de": "German",
+      "ja": "Japanese",
+      "ar": "Arabic"
+    }
+  },
+
+  "data_privacy": {
+    "title": "Data & Privacy Settings",
+    "description": "Data retention, backup, and privacy configuration options."
+  },
+
+  "integrations": {
+    "title": "Integration Settings",
+    "description": "Manage third-party integrations and API configurations."
+  },
+
+  "sample_data": {
+    "devices": {
+      "chrome_macos": "Chrome on macOS • San Francisco, US",
+      "iphone_safari": "iPhone Safari"
+    },
+    "system_info": {
+      "version": "v2.1.0",
+      "storage": "2.1 GB / 100 GB",
+      "active_users_count": "5",
+      "total_documents_count": "245",
+      "last_backup_time": "2 hours ago"
+    }
+  }
+}

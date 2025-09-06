@@ -1,0 +1,224 @@
+{
+  "title": "الإعدادات",
+  "subtitle": "إدارة حسابك وتفضيلات النظام",
+  
+  "actions": {
+    "save_changes": "حفظ التغييرات",
+    "update_password": "تحديث كلمة المرور",
+    "configure": "تكوين",
+    "manage_integrations": "إدارة التكاملات",
+    "configure_data_settings": "تكوين إعدادات البيانات",
+    "reset_to_defaults": "إعادة تعيين للافتراضي",
+    "revoke": "إلغاء"
+  },
+
+  "tabs": {
+    "notifications": {
+      "label": "الإشعارات",
+      "description": "تفضيلات إشعارات البريد الإلكتروني والنظام"
+    },
+    "security": {
+      "label": "الأمان",
+      "description": "إعدادات كلمة المرور والمصادقة والأمان"
+    },
+    "system": {
+      "label": "النظام",
+      "description": "التكوين العام للنظام والتفضيلات"
+    },
+    "data": {
+      "label": "البيانات والخصوصية",
+      "description": "إعدادات الاحتفاظ بالبيانات والنسخ الاحتياطي والخصوصية"
+    },
+    "integration": {
+      "label": "التكاملات",
+      "description": "تكاملات الطرف الثالث وإعدادات API"
+    }
+  },
+
+  "notifications": {
+    "title": "إعدادات الإشعارات",
+    "email_notifications": {
+      "title": "إشعارات البريد الإلكتروني",
+      "description": "استقبال الإشعارات عبر البريد الإلكتروني",
+      "options": {
+        "new_questions": {
+          "label": "الأسئلة الجديدة",
+          "description": "عند نشر أسئلة جديدة"
+        },
+        "document_uploads": {
+          "label": "رفع المستندات",
+          "description": "عند رفع المستندات"
+        },
+        "system_alerts": {
+          "label": "تنبيهات النظام",
+          "description": "إشعارات النظام المهمة"
+        },
+        "weekly_digest": {
+          "label": "الملخص الأسبوعي",
+          "description": "ملخص أسبوعي للأنشطة"
+        },
+        "login_alerts": {
+          "label": "تنبيهات تسجيل الدخول",
+          "description": "إشعارات الأمان المتعلقة بتسجيل الدخول"
+        }
+      }
+    },
+    "push_notifications": {
+      "title": "الإشعارات الفورية",
+      "description": "إشعارات المتصفح والجوال الفورية",
+      "options": {
+        "new_questions": {
+          "label": "الأسئلة الجديدة",
+          "description": "تنبيهات فورية للأسئلة الجديدة"
+        },
+        "document_uploads": {
+          "label": "رفع المستندات",
+          "description": "عند رفع المستندات"
+        },
+        "system_alerts": {
+          "label": "تنبيهات النظام",
+          "description": "إشعارات النظام الحرجة"
+        },
+        "urgent_alerts": {
+          "label": "التنبيهات العاجلة",
+          "description": "التنبيهات عالية الأولوية فقط"
+        }
+      }
+    },
+    "frequency": {
+      "title": "تكرار الإشعارات",
+      "description": "عدد مرات استقبال الإشعارات",
+      "options": {
+        "immediate": {
+          "label": "فوري",
+          "description": "استقبال الإشعارات عند حدوثها"
+        },
+        "hourly": {
+          "label": "ملخص كل ساعة",
+          "description": "إشعارات مجمعة كل ساعة"
+        },
+        "daily": {
+          "label": "ملخص يومي",
+          "description": "ملخص الإشعارات مرة واحدة يومياً"
+        },
+        "weekly": {
+          "label": "ملخص أسبوعي",
+          "description": "ملخص أسبوعي لجميع الإشعارات"
+        }
+      }
+    }
+  },
+
+  "security": {
+    "title": "إعدادات الأمان",
+    "change_password": {
+      "title": "تغيير كلمة المرور",
+      "description": "تحديث كلمة مرور حسابك",
+      "current_password": "كلمة المرور الحالية",
+      "new_password": "كلمة المرور الجديدة",
+      "confirm_password": "تأكيد كلمة المرور الجديدة"
+    },
+    "two_factor_auth": {
+      "title": "المصادقة الثنائية",
+      "description": "إضافة طبقة حماية إضافية لحسابك",
+      "enable_2fa": "تفعيل المصادقة الثنائية",
+      "enable_description": "تتطلب رمز المصادقة بالإضافة إلى كلمة المرور"
+    },
+    "session_security": {
+      "title": "أمان الجلسة",
+      "description": "إدارة انتهاء مهلة الجلسة ومراقبة النشاط",
+      "session_timeout": "انتهاء مهلة الجلسة (بالدقائق)",
+      "session_timeout_description": "تسجيل الخروج التلقائي بعد عدم النشاط",
+      "login_notifications": "إشعارات تسجيل الدخول",
+      "login_notifications_description": "الحصول على إشعار بمحاولات تسجيل الدخول الجديدة",
+      "suspicious_activity": "تنبيهات النشاط المشبوه",
+      "suspicious_activity_description": "التنبيه عند نشاط غير طبيعي في الحساب"
+    },
+    "active_sessions": {
+      "title": "الجلسات النشطة",
+      "description": "إدارة جلسات تسجيل الدخول النشطة",
+      "current_session": "الجلسة الحالية",
+      "mobile_device": "الجهاز المحمول",
+      "last_seen": "آخر ظهور منذ {{time}}",
+      "active": "نشط"
+    }
+  },
+
+  "system": {
+    "title": "إعدادات النظام",
+    "general": {
+      "title": "الإعدادات العامة",
+      "description": "التكوين الأساسي للنظام",
+      "company_name": "اسم الشركة",
+      "support_email": "بريد الدعم الإلكتروني",
+      "timezone": "المنطقة الزمنية",
+      "language": "اللغة"
+    },
+    "file_management": {
+      "title": "إدارة الملفات",
+      "description": "إعدادات رفع وتخزين الملفات",
+      "max_file_size": "الحد الأقصى لحجم الملف (ميجابايت)",
+      "max_file_size_description": "الحد الأقصى لحجم الملف للرفع"
+    },
+    "security_access": {
+      "title": "الأمان والوصول",
+      "description": "إعدادات التحكم في الوصول والأمان",
+      "maintenance_mode": "وضع الصيانة",
+      "maintenance_mode_description": "تعطيل وصول المستخدمين مؤقتاً",
+      "guest_access": "السماح بالوصول للضيوف",
+      "guest_access_description": "تمكين الوصول المحدود بدون تسجيل الدخول",
+      "default_session_timeout": "انتهاء مهلة الجلسة الافتراضي (بالدقائق)"
+    },
+    "audit_logging": {
+      "title": "التدقيق والتسجيل",
+      "description": "إعدادات تسجيل النظام ومسار التدقيق",
+      "enable_audit_logs": "تفعيل سجلات التدقيق",
+      "enable_audit_logs_description": "تسجيل أنشطة المستخدمين وأحداث النظام",
+      "log_retention": "الاحتفاظ بالسجلات (بالأيام)",
+      "log_retention_description": "مدة الاحتفاظ بسجلات التدقيق"
+    },
+    "system_status": {
+      "title": "حالة النظام",
+      "description": "معلومات النظام الحالية",
+      "system_version": "إصدار النظام",
+      "database_status": "حالة قاعدة البيانات",
+      "storage_usage": "استخدام التخزين",
+      "active_users": "المستخدمون النشطون",
+      "total_documents": "إجمالي المستندات",
+      "last_backup": "آخر نسخة احتياطية",
+      "healthy": "✓ سليم"
+    },
+    "languages": {
+      "en": "الإنجليزية",
+      "es": "الإسبانية",
+      "fr": "الفرنسية",
+      "de": "الألمانية",
+      "ja": "اليابانية",
+      "ar": "العربية"
+    }
+  },
+
+  "data_privacy": {
+    "title": "إعدادات البيانات والخصوصية",
+    "description": "خيارات تكوين الاحتفاظ بالبيانات والنسخ الاحتياطي والخصوصية."
+  },
+
+  "integrations": {
+    "title": "إعدادات التكاملات",
+    "description": "إدارة تكاملات الطرف الثالث وتكوينات API."
+  },
+
+  "sample_data": {
+    "devices": {
+      "chrome_macos": "Chrome على macOS • سان فرانسيسكو، الولايات المتحدة",
+      "iphone_safari": "iPhone Safari"
+    },
+    "system_info": {
+      "version": "الإصدار 2.1.0",
+      "storage": "2.1 جيجابايت / 100 جيجابايت",
+      "active_users_count": "5",
+      "total_documents_count": "245",
+      "last_backup_time": "منذ ساعتين"
+    }
+  }
+}
