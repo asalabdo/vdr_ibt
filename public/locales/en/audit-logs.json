@@ -1,0 +1,139 @@
+{
+  "title": "Audit Logs",
+  "subtitle": "Monitor system activities and security events",
+  
+  "actions": {
+    "export_logs": "Export Logs",
+    "security_report": "Security Report",
+    "clear_filters": "Clear All Filters",
+    "filters": "Filters",
+    "date_range": "Date Range",
+    "more": "More",
+    "less": "Less"
+  },
+
+  "stats": {
+    "total_logs": "Total Logs",
+    "info_logs": "Info",
+    "warnings": "Warnings",
+    "errors": "Errors"
+  },
+
+  "search": {
+    "placeholder": "Search audit logs...",
+    "no_results_title": "No audit logs found",
+    "no_results_description": "Try adjusting your search criteria or filters",
+    "empty_state_description": "Audit logs will appear here as users interact with the system"
+  },
+
+  "filters": {
+    "title": "Filters",
+    "action_type": {
+      "label": "Action Type",
+      "all": "All Actions"
+    },
+    "user": {
+      "label": "User",
+      "all": "All Users"
+    },
+    "severity": {
+      "label": "Severity Level",
+      "all": "All Levels",
+      "info": "Info",
+      "warning": "Warning",
+      "error": "Error"
+    },
+    "time_range": {
+      "label": "Time Range",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "week": "This Week",
+      "month": "This Month",
+      "custom": "Custom Range"
+    }
+  },
+
+  "log_entry": {
+    "user_details": "User Details",
+    "additional_information": "Additional Information",
+    "user_agent": "User Agent",
+    "labels": {
+      "email": "Email",
+      "ip_address": "IP Address",
+      "location": "Location"
+    }
+  },
+
+  "actions_types": {
+    "document_download": "Document Download",
+    "document_upload": "Document Upload",
+    "user_login": "User Login",
+    "failed_login": "Failed Login",
+    "permission_change": "Permission Change",
+    "qa_response": "Q&A Response",
+    "document_access": "Document Access",
+    "user_role_update": "User Role Update",
+    "system_access": "System Access"
+  },
+
+  "severity_levels": {
+    "info": "Info",
+    "warning": "Warning",
+    "error": "Error"
+  },
+
+  "resource_types": {
+    "document": "document",
+    "system": "system",
+    "user": "user",
+    "room": "room"
+  },
+
+  "time": {
+    "just_now": "Just now",
+    "minutes_ago": "{{count}}m ago",
+    "hours_ago": "{{count}}h ago",
+    "days_ago": "{{count}}d ago"
+  },
+
+  "sample_data": {
+    "descriptions": {
+      "document_download": "Downloaded {{fileName}}",
+      "document_upload": "Uploaded {{fileName}}",
+      "user_login": "Successful login attempt",
+      "failed_login": "Failed login attempt",
+      "permission_change": "Updated user permissions",
+      "qa_response": "Responded to question #{{questionId}}"
+    },
+    "users": {
+      "admin_user": "Admin User",
+      "legal_advisor": "Legal Advisor",
+      "financial_analyst": "Financial Analyst",
+      "qa_observer": "Q&A Observer",
+      "document_viewer": "Document Viewer"
+    },
+    "resources": {
+      "contract_draft": "Contract_Draft.pdf",
+      "financial_report": "Q4_Financial_Report.xlsx",
+      "legal_documents": "Legal Documents",
+      "authentication_system": "Authentication System",
+      "user_management": "User Management"
+    },
+    "locations": {
+      "new_york": "New York, US",
+      "san_francisco": "San Francisco, US",
+      "london": "London, UK",
+      "toronto": "Toronto, CA",
+      "unknown": "Unknown"
+    },
+    "additional_data": {
+      "file_size": "File size",
+      "room": "Room",
+      "login_method": "Login method",
+      "session_duration": "Session duration",
+      "old_role": "Old role",
+      "new_role": "New role",
+      "question_priority": "Question priority"
+    }
+  }
+}

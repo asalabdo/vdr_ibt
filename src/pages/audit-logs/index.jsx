@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Header from '../../components/ui/Header';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
@@ -7,6 +8,7 @@ import LogEntry from './components/LogEntry';
 import FilterSidebar from './components/FilterSidebar';
 
 const AuditLogs = () => {
+  const { t } = useTranslation('audit-logs');
   const [searchQuery, setSearchQuery] = useState('');
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -16,139 +18,110 @@ const AuditLogs = () => {
     dateRange: 'today'
   });
 
-  // Mock audit logs data
-  const [auditLogs] = useState([
+  // Mock audit logs data using translation keys
+  const [auditLogsData] = useState([
     {
       id: 1,
       timestamp: '2025-08-31T15:45:00Z',
       action: 'document_download',
-      description: 'Downloaded Contract_Draft.pdf',
-      user: {
-        name: 'Legal Advisor',
-        email: 'legal@company.com',
-        avatar: 'LA'
-      },
-      resource: 'Contract_Draft.pdf',
+      descriptionKey: 'sample_data.descriptions.document_download',
+      descriptionParams: { fileName: 'sample_data.resources.contract_draft' },
+      userKey: 'sample_data.users.legal_advisor',
+      userEmail: 'legal@company.com',
+      avatar: 'LA',
+      resourceKey: 'sample_data.resources.contract_draft',
       resourceType: 'document',
       severity: 'info',
       ipAddress: '192.168.1.105',
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/118.0.0.0',
-      location: 'New York, US',
+      locationKey: 'sample_data.locations.new_york',
       additionalData: {
-        fileSize: '3.2 MB',
-        room: 'Legal Documents'
+        fileSizeKey: 'sample_data.additional_data.file_size',
+        fileSizeValue: '3.2 MB',
+        roomKey: 'sample_data.additional_data.room',
+        roomValue: 'Legal Documents'
       }
     },
     {
       id: 2,
       timestamp: '2025-08-31T15:30:00Z',
       action: 'user_login',
-      description: 'Successful login attempt',
-      user: {
-        name: 'Admin User',
-        email: 'admin@company.com',
-        avatar: 'AU'
-      },
-      resource: 'Authentication System',
+      descriptionKey: 'sample_data.descriptions.user_login',
+      userKey: 'sample_data.users.admin_user',
+      userEmail: 'admin@company.com',
+      avatar: 'AU',
+      resourceKey: 'sample_data.resources.authentication_system',
       resourceType: 'system',
       severity: 'info',
       ipAddress: '192.168.1.100',
       userAgent: 'Mozilla/5.0 (macOS; Intel Mac OS X 10_15_7) Safari/605.1.15',
-      location: 'San Francisco, US',
+      locationKey: 'sample_data.locations.san_francisco',
       additionalData: {
-        loginMethod: 'password',
-        sessionDuration: '2h 15m'
+        loginMethodKey: 'sample_data.additional_data.login_method',
+        loginMethodValue: 'password',
+        sessionDurationKey: 'sample_data.additional_data.session_duration',
+        sessionDurationValue: '2h 15m'
       }
     },
     {
       id: 3,
       timestamp: '2025-08-31T15:15:00Z',
       action: 'permission_change',
-      description: 'Updated user permissions for Financial Analyst',
-      user: {
-        name: 'Admin User',
-        email: 'admin@company.com',
-        avatar: 'AU'
-      },
-      resource: 'Financial Analyst',
+      descriptionKey: 'sample_data.descriptions.permission_change',
+      userKey: 'sample_data.users.admin_user',
+      userEmail: 'admin@company.com',
+      avatar: 'AU',
+      resourceKey: 'sample_data.users.financial_analyst',
       resourceType: 'user',
       severity: 'warning',
       ipAddress: '192.168.1.100',
       userAgent: 'Mozilla/5.0 (macOS; Intel Mac OS X 10_15_7) Safari/605.1.15',
-      location: 'San Francisco, US',
+      locationKey: 'sample_data.locations.san_francisco',
       additionalData: {
-        oldRole: 'Viewer',
-        newRole: 'Q&A Observer – View Only',
-        changedBy: 'Admin User'
+        oldRoleKey: 'sample_data.additional_data.old_role',
+        oldRoleValue: 'Viewer',
+        newRoleKey: 'sample_data.additional_data.new_role',
+        newRoleValue: 'Q&A Observer – View Only'
       }
     },
     {
       id: 4,
       timestamp: '2025-08-31T15:00:00Z',
       action: 'document_upload',
-      description: 'Uploaded new document to Project Alpha',
-      user: {
-        name: 'Technical Lead',
-        email: 'tech@company.com',
-        avatar: 'TL'
-      },
+      descriptionKey: 'sample_data.descriptions.document_upload',
+      descriptionParams: { fileName: 'Technical_Specs_v2.docx' },
+      userKey: 'sample_data.users.admin_user',
+      userEmail: 'tech@company.com',
+      avatar: 'TL',
       resource: 'Technical_Specs_v2.docx',
       resourceType: 'document',
       severity: 'info',
       ipAddress: '192.168.1.112',
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/118.0.0.0',
-      location: 'Austin, US',
+      locationKey: 'sample_data.locations.new_york',
       additionalData: {
-        fileSize: '2.1 MB',
-        room: 'Project Alpha',
-        version: '2.0'
-      }
-    },
-    {
-      id: 5,
-      timestamp: '2025-08-31T14:45:00Z',
-      action: 'failed_login',
-      description: 'Failed login attempt - invalid credentials',
-      user: {
-        name: 'Unknown User',
-        email: 'suspicious@external.com',
-        avatar: '??'
-      },
-      resource: 'Authentication System',
-      resourceType: 'system',
-      severity: 'error',
-      ipAddress: '203.45.67.89',
-      userAgent: 'curl/7.68.0',
-      location: 'Unknown',
-      additionalData: {
-        attemptCount: 5,
-        blocked: true,
-        reason: 'Multiple failed attempts'
-      }
-    },
-    {
-      id: 6,
-      timestamp: '2025-08-31T14:30:00Z',
-      action: 'qa_response',
-      description: 'Responded to question in Project Alpha',
-      user: {
-        name: 'Q&A Observer Full',
-        email: 'qa.observer@company.com',
-        avatar: 'QO'
-      },
-      resource: 'Question #2',
-      resourceType: 'qa',
-      severity: 'info',
-      ipAddress: '192.168.1.108',
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/118.0.0.0',
-      location: 'Chicago, US',
-      additionalData: {
-        questionId: 2,
-        room: 'Project Alpha',
-        responseLength: '156 characters'
+        fileSizeKey: 'sample_data.additional_data.file_size',
+        fileSizeValue: '2.1 MB',
+        roomKey: 'sample_data.additional_data.room',
+        roomValue: 'Project Alpha'
       }
     }
   ]);
+
+  // Transform keys to actual translated text
+  const auditLogs = auditLogsData.map(logData => ({
+    ...logData,
+    description: logData.descriptionParams 
+      ? t(logData.descriptionKey, { fileName: t(logData.descriptionParams.fileName) })
+      : t(logData.descriptionKey),
+    user: {
+      name: t(logData.userKey),
+      email: logData.userEmail,
+      avatar: logData.avatar
+    },
+    resource: t(logData.resourceKey),
+    location: t(logData.locationKey)
+  }));
 
   const filteredLogs = auditLogs?.filter(log => {
     const matchesSearch = log?.description?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
@@ -180,18 +153,20 @@ const AuditLogs = () => {
           {/* Header Section */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
             <div className="mb-4 lg:mb-0">
-              <h1 className="text-3xl font-bold text-foreground mb-2">Audit Logs</h1>
+              <h1 className="text-3xl font-bold text-foreground mb-2">
+                {t('title')}
+              </h1>
               <p className="text-muted-foreground">
-                Monitor system activities and security events
+                {t('subtitle')}
               </p>
             </div>
             
             <div className="flex items-center space-x-3">
               <Button iconName="Download" variant="outline" onClick={handleExport}>
-                Export Logs
+                {t('actions.export_logs')}
               </Button>
               <Button iconName="Shield" variant="outline">
-                Security Report
+                {t('actions.security_report')}
               </Button>
             </div>
           </div>
@@ -204,7 +179,7 @@ const AuditLogs = () => {
                   <Icon name="FileText" size={20} className="text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Events</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.total_logs')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.total}</p>
                 </div>
               </div>
@@ -216,7 +191,7 @@ const AuditLogs = () => {
                   <Icon name="Info" size={20} className="text-success" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Info</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.info_logs')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.info}</p>
                 </div>
               </div>
@@ -228,7 +203,7 @@ const AuditLogs = () => {
                   <Icon name="AlertTriangle" size={20} className="text-warning" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Warnings</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.warnings')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.warning}</p>
                 </div>
               </div>
@@ -240,7 +215,7 @@ const AuditLogs = () => {
                   <Icon name="AlertCircle" size={20} className="text-destructive" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Errors</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.errors')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.error}</p>
                 </div>
               </div>
@@ -250,13 +225,13 @@ const AuditLogs = () => {
           {/* Search and Filter Controls */}
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="relative flex-1">
-              <Icon name="Search" size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+              <Icon name="Search" size={20} className="absolute left-3 rtl:right-3 rtl:left-auto top-1/2 transform -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search audit logs..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e?.target?.value || '')}
-                className="pl-10"
+                className="pl-10 rtl:pr-10 rtl:pl-3"
               />
             </div>
             
@@ -266,10 +241,10 @@ const AuditLogs = () => {
                 variant="outline"
                 onClick={() => setIsFilterSidebarOpen(!isFilterSidebarOpen)}
               >
-                Filters
+                {t('actions.filters')}
               </Button>
               <Button iconName="Calendar" variant="outline">
-                Date Range
+                {t('actions.date_range')}
               </Button>
             </div>
           </div>
@@ -287,10 +262,11 @@ const AuditLogs = () => {
               <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
                 <Icon name="FileText" size={32} className="text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-medium text-foreground mb-2">No audit logs found</h3>
+              <h3 className="text-lg font-medium text-foreground mb-2">{t('search.no_results_title')}</h3>
               <p className="text-muted-foreground">
                 {searchQuery || Object.values(selectedFilters)?.some(f => f !== 'all' && f !== 'today')
-                  ? 'Try adjusting your search criteria or filters' :'Audit logs will appear here as users interact with the system'
+                  ? t('search.no_results_description')
+                  : t('search.empty_state_description')
                 }
               </p>
             </div>
