@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../../components/ui/Header';
 import ControlBar from './components/ControlBar';
 import MetricCard from './components/MetricCard';
 import AlertFeed from './components/AlertFeed';
@@ -163,7 +162,6 @@ const VDROperationsCommandCenter = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <div className="pt-7">
         {/* Control Bar */}
         <ControlBar

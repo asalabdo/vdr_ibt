@@ -153,23 +153,6 @@ const Routes = () => {
   const closeSidebar = () => setIsSidebarOpen(false);
   const toggleSidebar = () => setIsSidebarOpen((s) => !s);
 
-  // Open sidebar when any element with data-component-line="191" is clicked.
-  useEffect(() => {
-    const handler = (e) => {
-      try {
-        const el = e?.target?.closest && e.target.closest('[data-component-content="%7B%22elementName%22%3A%22div%22%7D"]');
-        if (el) {
-          // Toggle sidebar when the specific element is clicked
-          setIsSidebarOpen((s) => !s);
-        }
-      } catch (err) {
-        // ignore
-      }
-    };
-
-    document.addEventListener('click', handler);
-    return () => document.removeEventListener('click', handler);
-  }, []);
 
   return (
     <BrowserRouter>

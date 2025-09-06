@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../../components/ui/Header';
 import SecurityScoreCard from './components/SecurityScoreCard';
 import CompliancePeriodSelector from './components/CompliancePeriodSelector';
 import SecurityTimeline from './components/SecurityTimeline';
@@ -76,7 +75,6 @@ const ComplianceSecurityMonitoringDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main className="pt-4">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Header Section */}

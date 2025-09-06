@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../../components/ui/Header';
 import KPICard from './components/KPICard';
 import DealVolumeChart from './components/DealVolumeChart';
 import DealPipelineFunnel from './components/DealPipelineFunnel';
@@ -190,7 +189,6 @@ const ExecutiveDealFlowDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main className="pt-4">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Page Header */}

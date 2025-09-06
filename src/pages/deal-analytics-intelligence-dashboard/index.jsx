@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../../components/ui/Header';
 import FilterControls from './components/FilterControls';
 import KPIMetricsCards from './components/KPIMetricsCards';
 import DealTimelineChart from './components/DealTimelineChart';
@@ -56,8 +55,6 @@ const DealAnalyticsIntelligenceDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      
       <main className="pt-4">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Page Header */}
