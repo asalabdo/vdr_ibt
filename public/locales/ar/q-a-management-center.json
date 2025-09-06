@@ -1,0 +1,149 @@
+{
+  "title": "إدارة الأسئلة والأجوبة",
+  "subtitle": "إدارة الأسئلة والأجوبة عبر جميع غرف البيانات",
+  
+  "actions": {
+    "ask_question": "طرح سؤال",
+    "export_qa": "تصدير الأسئلة والأجوبة",
+    "send_response": "إرسال الرد",
+    "view_in_room": "عرض في الغرفة",
+    "assign_to_expert": "تعيين لخبير",
+    "approve_response": "الموافقة على الرد",
+    "select_question": "اختر سؤالاً",
+    "close": "إغلاق"
+  },
+
+  "status_cards": {
+    "pending": {
+      "title": "قيد الانتظار",
+      "description": "أسئلة في انتظار الرد"
+    },
+    "answered": {
+      "title": "مجاب عليها", 
+      "description": "أسئلة تم الرد عليها"
+    },
+    "approved": {
+      "title": "موافق عليها",
+      "description": "إجابات معتمدة"
+    },
+    "high_priority": {
+      "title": "أولوية عالية",
+      "description": "أسئلة عاجلة"
+    }
+  },
+
+  "search": {
+    "placeholder": "البحث في الأسئلة والأجوبة...",
+    "no_results": "لم يتم العثور على أسئلة",
+    "no_results_description": "جرب تعديل معايير البحث الخاصة بك",
+    "empty_state_description": "لم يتم طرح أي أسئلة بعد"
+  },
+
+  "filters": {
+    "status": {
+      "all": "جميع الحالات",
+      "pending": "قيد الانتظار",
+      "answered": "مجاب عليها", 
+      "approved": "موافق عليها"
+    },
+    "priority": {
+      "all": "جميع الأولويات",
+      "high": "عالية",
+      "medium": "متوسطة",
+      "low": "منخفضة"
+    }
+  },
+
+  "question_card": {
+    "in_room": "في {{room}}",
+    "question_by": "سؤال من {{askedBy}}",
+    "response_by": "رد من {{respondedBy}}",
+    "responses_count": "{{count}} ردود",
+    "response_count": "{{count}} رد",
+    "attachments_count": "{{count}} مرفقات",
+    "attachment_count": "{{count}} مرفق", 
+    "asked_time": "تم السؤال {{timeAgo}}",
+    "updated_time": "{{timeAgo}}"
+  },
+
+  "detail_panel": {
+    "title": "تفاصيل السؤال",
+    "empty_state": {
+      "title": "اختر سؤالاً",
+      "description": "اختر سؤالاً من القائمة لعرض التفاصيل والرد عليه"
+    },
+    "question_info": {
+      "asked_by": "سأل بواسطة {{askedBy}}",
+      "in_room": "في {{room}}",
+      "question_id": "#{{id}}"
+    },
+    "form": {
+      "question_label": "السؤال",
+      "responses_title": "الردود ({{count}})",
+      "add_response_title": "إضافة رد",
+      "priority_label": "مستوى الأولوية",
+      "response_label": "ردك",
+      "response_placeholder": "اكتب ردك هنا..."
+    },
+    "status_labels": {
+      "approved": "موافق عليه"
+    }
+  },
+
+  "priority_levels": {
+    "high": "عالية",
+    "medium": "متوسطة", 
+    "low": "منخفضة",
+    "high_full": "أولوية عالية",
+    "medium_full": "أولوية متوسطة",
+    "low_full": "أولوية منخفضة"
+  },
+
+  "status_labels": {
+    "pending": "قيد الانتظار",
+    "answered": "مجاب عليه",
+    "approved": "موافق عليه"
+  },
+
+  "empty_states": {
+    "no_questions": {
+      "title": "لم يتم العثور على أسئلة",
+      "description": "جرب تعديل معايير البحث الخاصة بك",
+      "empty_description": "لم يتم طرح أي أسئلة بعد",
+      "action": "طرح سؤال"
+    }
+  },
+
+  "time": {
+    "just_now": "الآن",
+    "minutes_ago": "منذ {{count}} د",
+    "hours_ago": "منذ {{count}} س", 
+    "days_ago": "منذ {{count}} ي"
+  },
+
+  "mock_data": {
+    "questions": {
+      "1": "ما هو الجدول الزمني لإكمال المشروع؟",
+      "2": "هل هناك أي متطلبات تنظيمية؟",
+      "3": "متى سيتم الانتهاء من العقد؟",
+      "4": "ما هي التوقعات المالية للربع القادم؟",
+      "5": "هل هناك أي قضايا امتثال معلقة؟"
+    },
+    "users": {
+      "qa_observer": "مراقب الأسئلة والأجوبة الكامل",
+      "financial_analyst": "محلل مالي", 
+      "compliance_officer": "مسؤول الامتثال",
+      "cfo": "المدير المالي",
+      "legal_advisor": "المستشار القانوني"
+    },
+    "rooms": {
+      "project_alpha": "مشروع ألفا",
+      "legal_documents": "الوثائق القانونية",
+      "financial_reports": "التقارير المالية"
+    },
+    "answers": {
+      "1": "تُظهر التوقعات المالية نمواً بنسبة 15% في الإيرادات للربع الأول من عام 2026.",
+      "2": "جميع متطلبات الامتثال مستوفاة حالياً. لم يتم تحديد أي قضايا معلقة."
+    }
+  }
+}

@@ -1,0 +1,303 @@
+{
+  "title": "لوحة تحكم تحليلات الصفقات والذكاء الاصطناعي",
+  "subtitle": "رؤى شاملة للمعاملات وتحليلات تنبؤية لتحسين سير عمل العناية الواجبة",
+  "actions": {
+    "refresh_data": "تحديث البيانات",
+    "save_analysis": "حفظ التحليل",
+    "export_report": "تصدير التقرير",
+    "share_dashboard": "مشاركة لوحة التحكم",
+    "schedule_report": "برمجة التقرير",
+    "customize_view": "تخصيص العرض",
+    "export": "تصدير",
+    "reset": "إعادة تعيين"
+  },
+  "kpis": {
+    "deal_velocity": {
+      "title": "سرعة الصفقات",
+      "description": "متوسط وقت الإغلاق",
+      "unit": "أيام",
+      "confidence": "الثقة"
+    },
+    "user_engagement": {
+      "title": "درجة مشاركة المستخدمين",
+      "description": "معدل المشاركة النشطة",
+      "unit": "%"
+    },
+    "document_utilization": {
+      "title": "استخدام المستندات",
+      "description": "معدل الوصول للمستندات",
+      "unit": "%"
+    },
+    "qa_efficiency": {
+      "title": "كفاءة الأسئلة والأجوبة",
+      "description": "متوسط وقت الاستجابة",
+      "unit": "ساعات"
+    },
+    "success_probability": {
+      "title": "احتمالية نجاح الذكاء الاصطناعي",
+      "description": "توقع نجاح الصفقة",
+      "unit": "%"
+    },
+    "change_labels": {
+      "vs_last_period": "مقارنة بالفترة السابقة",
+      "response_time": "وقت الاستجابة",
+      "confidence_increase": "زيادة الثقة"
+    }
+  },
+  "charts": {
+    "timeline": {
+      "title": "تحليل المخطط الزمني للصفقات",
+      "subtitle": "تتبع تقدم الصفقات ومقاييس الأداء عبر الوقت",
+      "metrics": {
+        "velocity": "سرعة الصفقات (أيام)",
+        "volume": "حجم الصفقات",
+        "success_rate": "معدل النجاح (%)",
+        "avg_size": "متوسط الحجم (مليون دولار)"
+      },
+      "timeframes": {
+        "3months": "3 أشهر",
+        "6months": "6 أشهر",
+        "12months": "12 شهر",
+        "ytd": "من بداية العام"
+      },
+      "active_deals": "الصفقات النشطة",
+      "average": "المتوسط"
+    },
+    "heatmap": {
+      "title": "خريطة حرارية لمشاركة المستخدمين",
+      "subtitle": "أنماط النشاط عبر الفترات الزمنية",
+      "metrics": {
+        "sessions": "جلسات المستخدمين",
+        "documents": "الوصول للمستندات",
+        "qa_activity": "نشاط الأسئلة والأجوبة"
+      },
+      "intensity": {
+        "less": "أقل",
+        "more": "أكثر"
+      },
+      "stats": {
+        "peak": "الذروة",
+        "average": "المتوسط",
+        "total": "الإجمالي"
+      }
+    },
+    "segments": {
+      "title": "التحليلات المجزأة",
+      "subtitle": "رؤى مفصلة",
+      "tabs": {
+        "documents": "تحليلات المستندات",
+        "behavior": "سلوك المستخدمين",
+        "compliance": "مقاييس الامتثال"
+      },
+      "document_analytics": {
+        "access_frequency": "تكرار الوصول للمستندات",
+        "storage_utilization": "استخدام التخزين",
+        "version_control": "نشاط التحكم في الإصدارات",
+        "headers": {
+          "document": "المستند",
+          "versions": "الإصدارات",
+          "last_updated": "آخر تحديث",
+          "status": "الحالة"
+        }
+      },
+      "user_behavior": {
+        "session_patterns": "أنماط الجلسات",
+        "user_types": "توزيع أنواع المستخدمين",
+        "activity_flow": "تدفق نشاط المستخدمين",
+        "engagement": "مشاركة"
+      },
+      "compliance": {
+        "security_score": "نقاط الأمان",
+        "overall_score": "النقاط الإجمالية للأمان",
+        "regulatory_adherence": "الالتزام التنظيمي",
+        "audit_trail": "ملخص مسار التدقيق",
+        "score_label": "النتيجة",
+        "last_audit_label": "آخر تدقيق",
+        "headers": {
+          "action_type": "نوع الإجراء",
+          "count": "العدد",
+          "compliance": "الامتثال",
+          "risk_level": "مستوى المخاطر"
+        }
+      }
+    }
+  },
+  "filters": {
+    "title": "المرشحات",
+    "deal_types": "أنواع الصفقات",
+    "date_range": "النطاق الزمني",
+    "user_roles": "أدوار المستخدمين",
+    "comparison_mode": "وضع المقارنة",
+    "options": {
+      "deal_types": {
+        "ma": "معاملات الدمج والاستحواذ",
+        "ipo": "التحضير للطرح العام الأولي",
+        "fundraising": "جولات جمع التمويل",
+        "divestiture": "التخارج",
+        "joint_venture": "المشاريع المشتركة",
+        "restructuring": "إعادة الهيكلة"
+      },
+      "date_ranges": {
+        "last7days": "آخر 7 أيام",
+        "last30days": "آخر 30 يوم",
+        "last90days": "آخر 90 يوم",
+        "ytd": "من بداية العام",
+        "custom": "نطاق مخصص"
+      },
+      "user_roles": {
+        "buyer": "المشترون",
+        "seller": "البائعون",
+        "advisor": "المستشارون",
+        "legal": "الفرق القانونية",
+        "finance": "الفرق المالية",
+        "admin": "المسؤولون"
+      }
+    },
+    "placeholders": {
+      "select_deal_types": "اختر أنواع الصفقات...",
+      "select_date_range": "اختر النطاق الزمني...",
+      "select_user_roles": "اختر أدوار المستخدمين..."
+    }
+  },
+  "insights": {
+    "prediction": {
+      "title": "توقع نجاح الذكاء الاصطناعي",
+      "model_version": "نموذج التعلم الآلي الإصدار 2.1",
+      "success_rate": "معدل النجاح",
+      "confidence": "الثقة",
+      "timeline": {
+        "best_case": "أفضل حالة",
+        "worst_case": "أسوأ حالة"
+      }
+    },
+    "key_metrics": {
+      "userEngagement": "مشاركة المستخدمين",
+      "documentCompletion": "إكمال المستندات",
+      "qaResolution": "حل الأسئلة والأجوبة",
+      "complianceScore": "نقاط الامتثال"
+    },
+    "risk_analysis": {
+      "title": "تحليل المخاطر",
+      "impact": "تأثير"
+    },
+    "risk_descriptions": {
+      "antitrust_review": "مراجعة مكافحة الاحتكار معلقة في منطقتين قضائيتين",
+      "financial_review": "المراجعة المالية مكتملة بنسبة 85%",
+      "board_approval": "موافقة مجلس الإدارة مطلوبة من 3 كيانات"
+    },
+    "bottlenecks": {
+      "title": "الاختناقات الحالية"
+    },
+    "bottleneck_descriptions": {
+      "contract_amendments": "تعديلات العقود معلقة",
+      "audit_trail": "إكمال مسار التدقيق"
+    },
+    "delay_estimates": {
+      "2_3_days": "2-3 أيام",
+      "5_7_days": "5-7 أيام"
+    },
+    "timeline_estimates": {
+      "35_days": "35 يوماً",
+      "42_days": "42 يوماً",
+      "58_days": "58 يوماً"
+    },
+    "recommendations": {
+      "title": "توصيات الذكاء الاصطناعي",
+      "apply_all": "تطبيق جميع التوصيات",
+      "accelerate_regulatory": "تسريع الإيداع التنظيمي",
+      "schedule_stakeholder_meeting": "جدولة اجتماع أصحاب المصلحة",
+      "prepare_contingency": "إعداد وثائق الطوارئ"
+    },
+    "impact": {
+      "plus_12_percent": "+12% معدل نجاح",
+      "plus_8_percent": "+8% معدل نجاح",
+      "plus_3_percent": "+3% معدل نجاح"
+    }
+  },
+  "quick_actions": {
+    "title": "الإجراءات السريعة",
+    "subtitle": "المهام الشائعة والاختصارات لتحليل الصفقات"
+  },
+  "status": {
+    "updated": "تم التحديث {{time}}",
+    "live_data": "بيانات مباشرة"
+  },
+  "sample_data": {
+    "deals": {
+      "techcorp_acquisition": "استحواذ تيك كورب",
+      "finserv_merger": "اندماج فين سيرف",
+      "healthcare_ipo": "الطرح العام الأولي لشركة الرعاية الصحية",
+      "energy_divestiture": "التخارج من قطاع الطاقة",
+      "retail_chain_sale": "بيع سلسلة متاجر التجزئة",
+      "tech_startup_round": "جولة تمويل لشركة ناشئة تقنية",
+      "manufacturing_jv": "مشروع مشترك للتصنيع",
+      "pharma_licensing": "ترخيص الأدوية",
+      "logistics_acquisition": "استحواذ لوجستي",
+      "saas_company_sale": "بيع شركة برمجيات الخدمة (SaaS)",
+      "real_estate_reit": "صندوق استثمار عقاري",
+      "biotech_merger": "اندماج التكنولوجيا الحيوية"
+    },
+    "documents": {
+      "financial_statements": "البيانات المالية",
+      "legal_documents": "المستندات القانونية",
+      "technical_specs": "المواصفات الفنية",
+      "market_analysis": "تحليل السوق",
+      "due_diligence": "العناية الواجبة",
+      "compliance_reports": "تقارير الامتثال",
+      "merger_agreement": "اتفاقية الاندماج",
+      "financial_model": "النموذج المالي",
+      "legal_opinion": "الرأي القانوني",
+      "market_research": "أبحاث السوق"
+    },
+    "categories": {
+      "financial": "مالي",
+      "legal": "قانوني",
+      "technical": "تقني",
+      "marketing": "تسويق",
+      "other": "أخرى"
+    },
+    "user_types": {
+      "buyers": "المشترون",
+      "sellers": "البائعون",
+      "advisors": "المستشارون",
+      "legal_teams": "الفرق القانونية",
+      "finance_teams": "الفرق المالية"
+    },
+    "activity_steps": {
+      "login": "تسجيل الدخول",
+      "browse_documents": "تصفح المستندات",
+      "download_files": "تنزيل الملفات",
+      "submit_qa": "تقديم أسئلة وأجوبة",
+      "complete_review": "إكمال المراجعة"
+    },
+    "security_categories": {
+      "access_control": "التحكم في الوصول",
+      "data_encryption": "تشفير البيانات",
+      "audit_logging": "تسجيل التدقيق",
+      "user_management": "إدارة المستخدمين",
+      "compliance_checks": "فحوصات الامتثال"
+    },
+    "regulations": {
+      "gdpr": "اللائحة العامة لحماية البيانات (GDPR)",
+      "sox": "قانون ساربينز-أوكسلي (SOX)",
+      "hipaa": "قانون حماية البيانات الصحية (HIPAA)",
+      "pci_dss": "معيار أمان بيانات البطاقات (PCI DSS)"
+    },
+    "risk_factors": {
+      "regulatory_approval": "الموافقة التنظيمية",
+      "due_diligence_completion": "إتمام العناية الواجبة",
+      "stakeholder_alignment": "مواءمة أصحاب المصلحة"
+    },
+    "bottlenecks": {
+      "legal_documentation": "الوثائق القانونية",
+      "financial_verification": "التحقق المالي"
+    },
+    "audit_actions": {
+      "document_access": "الوصول للمستندات",
+      "user_authentication": "مصادقة المستخدمين", 
+      "data_export": "تصدير البيانات",
+      "permission_changes": "تغييرات الأذونات",
+      "system_access": "الوصول للنظام"
+    }
+  }
+}

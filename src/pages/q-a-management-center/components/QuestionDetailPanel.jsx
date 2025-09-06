@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 
 const QuestionDetailPanel = ({ question, onClose }) => {
+  const { t, i18n } = useTranslation('q-a-management-center');
   const [response, setResponse] = useState('');
   const [priority, setPriority] = useState(question?.priority || 'medium');
 
@@ -14,9 +16,11 @@ const QuestionDetailPanel = ({ question, onClose }) => {
           <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
             <Icon name="MessageSquare" size={32} className="text-muted-foreground" />
           </div>
-          <h3 className="text-lg font-medium text-foreground mb-2">Select a Question</h3>
+          <h3 className="text-lg font-medium text-foreground mb-2">
+            {t('detail_panel.empty_state.title')}
+          </h3>
           <p className="text-muted-foreground">
-            Choose a question from the list to view details and respond
+            {t('detail_panel.empty_state.description')}
           </p>
         </div>
       </div>
@@ -51,7 +55,7 @@ const QuestionDetailPanel = ({ question, onClose }) => {
 
   const statusConfig = getStatusColor(question?.status);
   const formatDateTime = (dateString) => {
-    return new Date(dateString)?.toLocaleString('en-US', {
+    return new Date(dateString)?.toLocaleString(i18n.language, {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -64,7 +68,9 @@ const QuestionDetailPanel = ({ question, onClose }) => {
     <div className="bg-card rounded-xl border border-border h-fit sticky top-8">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-border">
-        <h3 className="text-lg font-semibold text-foreground">Question Details</h3>
+        <h3 className="text-lg font-semibold text-foreground">
+          {t('detail_panel.title')}
+        </h3>
         <Button
           variant="ghost"
           size="icon"
@@ -77,31 +83,33 @@ const QuestionDetailPanel = ({ question, onClose }) => {
         {/* Question Info */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse">
               <span className={`px-2 py-1 text-xs font-medium rounded-full border ${getPriorityColor(question?.priority)}`}>
-                {question?.priority?.toUpperCase()}
+                {t(`priority_levels.${question?.priority}`)}
               </span>
-              <span className="text-sm text-muted-foreground">#{question?.id}</span>
+              <span className="text-sm text-muted-foreground">
+                {t('detail_panel.question_info.question_id', { id: question?.id })}
+              </span>
             </div>
             
-            <div className={`flex items-center space-x-2 px-2 py-1 rounded-full ${statusConfig?.bg}`}>
+            <div className={`flex items-center space-x-2 rtl:space-x-reverse px-2 py-1 rounded-full ${statusConfig?.bg}`}>
               <Icon name={statusConfig?.icon} size={14} className={statusConfig?.text} />
               <span className={`text-xs font-medium capitalize ${statusConfig?.text}`}>
-                {question?.status}
+                {t(`status_labels.${question?.status}`)}
               </span>
             </div>
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm text-muted-foreground">
               <Icon name="User" size={14} />
-              <span>Asked by {question?.askedBy}</span>
+              <span>{t('detail_panel.question_info.asked_by', { askedBy: question?.askedBy })}</span>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm text-muted-foreground">
               <Icon name="FolderOpen" size={14} />
-              <span>in {question?.room}</span>
+              <span>{t('detail_panel.question_info.in_room', { room: question?.room })}</span>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm text-muted-foreground">
               <Icon name="Calendar" size={14} />
               <span>{formatDateTime(question?.createdAt)}</span>
             </div>
@@ -110,7 +118,9 @@ const QuestionDetailPanel = ({ question, onClose }) => {
 
         {/* Question */}
         <div>
-          <h4 className="text-sm font-medium text-foreground mb-2">Question</h4>
+          <h4 className="text-sm font-medium text-foreground mb-2">
+            {t('detail_panel.form.question_label')}
+          </h4>
           <div className="bg-muted/30 p-3 rounded-lg">
             <p className="text-foreground">{question?.question}</p>
           </div>
@@ -120,21 +130,21 @@ const QuestionDetailPanel = ({ question, onClose }) => {
         {question?.responses?.length > 0 && (
           <div>
             <h4 className="text-sm font-medium text-foreground mb-3">
-              Responses ({question?.responses?.length})
+              {t('detail_panel.form.responses_title', { count: question?.responses?.length })}
             </h4>
             <div className="space-y-3">
               {question?.responses?.map((resp, index) => (
                 <div key={index} className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2 text-sm">
+                    <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm">
                       <Icon name="MessageCircle" size={14} className="text-muted-foreground" />
                       <span className="font-medium text-foreground">{resp?.respondedBy}</span>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 rtl:space-x-reverse">
                       {resp?.status === 'approved' && (
-                        <div className="flex items-center space-x-1 text-success">
+                        <div className="flex items-center space-x-1 rtl:space-x-reverse text-success">
                           <Icon name="CheckCircle" size={14} />
-                          <span className="text-xs">Approved</span>
+                          <span className="text-xs">{t('detail_panel.status_labels.approved')}</span>
                         </div>
                       )}
                       <span className="text-xs text-muted-foreground">
@@ -154,40 +164,42 @@ const QuestionDetailPanel = ({ question, onClose }) => {
         {/* Response Form */}
         {question?.status === 'pending' && (
           <div className="space-y-4">
-            <h4 className="text-sm font-medium text-foreground">Add Response</h4>
+            <h4 className="text-sm font-medium text-foreground">
+              {t('detail_panel.form.add_response_title')}
+            </h4>
             
             <div>
               <label className="text-sm font-medium text-foreground mb-2 block">
-                Priority Level
+                {t('detail_panel.form.priority_label')}
               </label>
               <select
                 value={priority}
                 onChange={(e) => setPriority(e?.target?.value)}
                 className="w-full border border-input rounded-lg px-3 py-2 bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
               >
-                <option value="low">Low Priority</option>
-                <option value="medium">Medium Priority</option>
-                <option value="high">High Priority</option>
+                <option value="low">{t('priority_levels.low_full')}</option>
+                <option value="medium">{t('priority_levels.medium_full')}</option>
+                <option value="high">{t('priority_levels.high_full')}</option>
               </select>
             </div>
 
             <div>
               <label className="text-sm font-medium text-foreground mb-2 block">
-                Your Response
+                {t('detail_panel.form.response_label')}
               </label>
               <textarea
                 value={response}
                 onChange={(e) => setResponse(e?.target?.value || '')}
-                placeholder="Type your response here..."
+                placeholder={t('detail_panel.form.response_placeholder')}
                 rows={4}
                 className="w-full border border-input rounded-lg px-3 py-2 bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:border-transparent resize-none"
               />
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse">
               <Button variant="default" size="sm" className="flex-1">
-                <Icon name="Send" size={14} className="mr-1" />
-                Send Response
+                <Icon name="Send" size={14} className="mr-1 rtl:mr-0 rtl:ml-1" />
+                {t('actions.send_response')}
               </Button>
               <Button variant="outline" size="sm">
                 <Icon name="Paperclip" size={14} />
@@ -199,17 +211,17 @@ const QuestionDetailPanel = ({ question, onClose }) => {
         {/* Actions */}
         <div className="space-y-2 pt-4 border-t border-border">
           <Button variant="outline" size="sm" className="w-full">
-            <Icon name="Eye" size={14} className="mr-2" />
-            View in Room
+            <Icon name="Eye" size={14} className="mr-2 rtl:mr-0 rtl:ml-2" />
+            {t('actions.view_in_room')}
           </Button>
           <Button variant="outline" size="sm" className="w-full">
-            <Icon name="UserPlus" size={14} className="mr-2" />
-            Assign to Expert
+            <Icon name="UserPlus" size={14} className="mr-2 rtl:mr-0 rtl:ml-2" />
+            {t('actions.assign_to_expert')}
           </Button>
           {question?.status === 'answered' && (
             <Button variant="success" size="sm" className="w-full">
-              <Icon name="CheckCircle" size={14} className="mr-2" />
-              Approve Response
+              <Icon name="CheckCircle" size={14} className="mr-2 rtl:mr-0 rtl:ml-2" />
+              {t('actions.approve_response')}
             </Button>
           )}
         </div>

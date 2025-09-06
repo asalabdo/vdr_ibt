@@ -1,0 +1,119 @@
+{
+  "title": "الأدوار والصلاحيات",
+  "subtitle": "إدارة أدوار النظام وصلاحياتها",
+  
+  "actions": {
+    "create_role": "إنشاء دور",
+    "edit": "تحرير",
+    "cancel": "إلغاء",
+    "creating": "جاري الإنشاء...",
+    "create": "إنشاء دور"
+  },
+
+  "stats": {
+    "total_roles": "إجمالي الأدوار",
+    "total_users": "إجمالي المستخدمين",
+    "active_roles": "الأدوار النشطة"
+  },
+
+  "search": {
+    "placeholder": "البحث في الأدوار...",
+    "no_results_title": "لم يتم العثور على أدوار",
+    "no_results_description": "جرب تعديل معايير البحث الخاصة بك",
+    "empty_state_description": "أنشئ أول دور للبدء"
+  },
+
+  "role_card": {
+    "role_id": "معرف الدور:",
+    "permissions": "الصلاحيات:",
+    "users": "مستخدمين"
+  },
+
+  "create_modal": {
+    "title": "إنشاء دور جديد",
+    "role_name_label": "اسم الدور",
+    "role_name_placeholder": "أدخل اسم الدور",
+    "description_label": "الوصف",
+    "description_placeholder": "صف الغرض من الدور ومسؤولياته",
+    "permissions_label": "الصلاحيات"
+  },
+
+  "permissions": {
+    "view_questions": {
+      "label": "عرض الأسئلة",
+      "description": "عرض جميع الأسئلة والأجوبة"
+    },
+    "reply_questions": {
+      "label": "الرد على الأسئلة", 
+      "description": "الرد على الأسئلة"
+    },
+    "approve_answers": {
+      "label": "الموافقة على الأجوبة",
+      "description": "الموافقة على الأجوبة أو رفضها"
+    },
+    "upload_files": {
+      "label": "رفع الملفات",
+      "description": "رفع المستندات والملفات"
+    },
+    "user_management": {
+      "label": "إدارة المستخدمين",
+      "description": "إدارة حسابات المستخدمين"
+    },
+    "role_management": {
+      "label": "إدارة الأدوار",
+      "description": "إنشاء وتحرير الأدوار"
+    },
+    "system_settings": {
+      "label": "إعدادات النظام",
+      "description": "الوصول إلى تكوين النظام"
+    },
+    "view_documents": {
+      "label": "عرض المستندات",
+      "description": "عرض المستندات والملفات"
+    },
+    "download_documents": {
+      "label": "تحميل المستندات",
+      "description": "تحميل المستندات والملفات"
+    }
+  },
+
+  "permission_names": {
+    "view_questions": "عرض الأسئلة",
+    "reply_questions": "الرد على الأسئلة",
+    "approve_answers": "الموافقة على الأجوبة",
+    "upload_files": "رفع الملفات",
+    "user_management": "إدارة المستخدمين",
+    "role_management": "إدارة الأدوار",
+    "system_settings": "إعدادات النظام",
+    "view_documents": "عرض المستندات",
+    "download_documents": "تحميل المستندات"
+  },
+
+  "time": {
+    "just_now": "الآن",
+    "minutes_ago": "منذ {{count}} د",
+    "hours_ago": "منذ {{count}} س",
+    "days_ago": "منذ {{count}} ي"
+  },
+
+  "mock_data": {
+    "roles": {
+      "admin": {
+        "name": "مدير",
+        "description": "وصول كامل وإدارة النظام"
+      },
+      "qa_observer_full": {
+        "name": "مراقب الأسئلة والأجوبة – تحكم كامل",
+        "description": "يمكنه عرض الأسئلة والرد عليها"
+      },
+      "qa_observer_view": {
+        "name": "مراقب الأسئلة والأجوبة – عرض فقط", 
+        "description": "يمكنه عرض الأسئلة فقط"
+      },
+      "document_viewer": {
+        "name": "عارض المستندات",
+        "description": "عرض المستندات والتفاعلات الأساسية"
+      }
+    }
+  }
+}

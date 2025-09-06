@@ -1,0 +1,280 @@
+{
+  "title": "مراقبة الامتثال والأمان",
+  "subtitle": "مقاييس أمان شاملة، مسارات تدقيق، وتتبع الامتثال التنظيمي",
+  
+  "actions": {
+    "refresh_data": "تحديث البيانات",
+    "export_report": "تصدير التقرير",
+    "configure_alerts": "تكوين التنبيهات",
+    "view_details": "عرض التفاصيل",
+    "export_csv": "تصدير CSV",
+    "advanced_filter": "تصفية متقدمة",
+    "acknowledge": "إقرار",
+    "investigate": "تحقق",
+    "escalate": "تصعيد",
+    "mark_resolved": "تمييز كمحلول",
+    "view_all_alerts": "عرض جميع التنبيهات",
+    "configure": "تكوين",
+    "refresh": "تحديث",
+    "generate_report": "إنشاء تقرير الامتثال",
+    "create_incident": "إنشاء حادث أمني",
+    "export_logs": "تصدير سجلات التدقيق",
+    "view_all": "عرض الكل"
+  },
+
+  "security_metrics": {
+    "overall_security_score": {
+      "title": "النتيجة الأمنية الإجمالية",
+      "description": "تقييم شامل للوضع الأمني"
+    },
+    "compliance_violations": {
+      "title": "انتهاكات الامتثال النشطة", 
+      "description": "قضايا الامتثال التنظيمي الحالية"
+    },
+    "audit_trail_completeness": {
+      "title": "اكتمال مسار التدقيق",
+      "description": "نسبة الأنشطة المسجلة"
+    },
+    "access_anomaly_count": {
+      "title": "عدد شذوذ الوصول",
+      "description": "أنماط وصول غير طبيعية مكتشفة"
+    }
+  },
+
+  "period_selector": {
+    "periods": {
+      "last_7_days": "آخر 7 أيام",
+      "last_30_days": "آخر 30 يوم", 
+      "last_90_days": "آخر 90 يوم",
+      "last_6_months": "آخر 6 أشهر",
+      "last_year": "العام الماضي",
+      "custom": "نطاق مخصص"
+    },
+    "frameworks": {
+      "all": "جميع الأطر",
+      "sox": "امتثال SOX",
+      "gdpr": "GDPR",
+      "sec": "لوائح SEC", 
+      "iso27001": "ISO 27001",
+      "hipaa": "HIPAA"
+    },
+    "security_levels": {
+      "all": "جميع المستويات",
+      "critical": "حرج فقط",
+      "high": "عالي وما فوق",
+      "medium": "متوسط وما فوق",
+      "low": "جميع المستويات"
+    },
+    "placeholders": {
+      "select_period": "اختر الفترة",
+      "regulatory_framework": "الإطار التنظيمي",
+      "security_level": "مستوى الأمان"
+    }
+  },
+
+  "timeline": {
+    "title": "الخط الزمني الأمني",
+    "subtitle": "أحداث الأمان وأنماط الوصول في الوقت الفعلي",
+    "views": {
+      "access_patterns": "أنماط الوصول",
+      "permission_changes": "تغييرات الأذونات", 
+      "security_alerts": "تنبيهات الأمان",
+      "anomalies": "الشذوذ"
+    },
+    "zoom_levels": {
+      "hour": "كل ساعة",
+      "day": "يومي", 
+      "week": "أسبوعي"
+    },
+    "legend": {
+      "normal_activity": "نشاط طبيعي",
+      "elevated_activity": "نشاط مرتفع",
+      "critical_events": "أحداث حرجة"
+    }
+  },
+
+  "security_alerts": {
+    "title": "تنبيهات الأمان",
+    "subtitle": "حوادث أمنية وشذوذ في الوقت الفعلي",
+    "severity_levels": {
+      "critical": "حرج",
+      "high": "عالي",
+      "medium": "متوسط", 
+      "low": "منخفض"
+    },
+    "status_labels": {
+      "active": "نشط",
+      "investigating": "قيد التحقيق",
+      "pending_review": "قيد المراجعة",
+      "acknowledged": "مُقر",
+      "unknown": "غير معروف"
+    },
+    "escalation_levels": {
+      "immediate": "فوري",
+      "within_1_hour": "خلال ساعة واحدة",
+      "within_4_hours": "خلال 4 ساعات", 
+      "within_24_hours": "خلال 24 ساعة"
+    },
+    "categories": {
+      "authentication": "مصادقة",
+      "access_anomaly": "شذوذ في الوصول",
+      "permission_change": "تغيير الأذونات",
+      "device_change": "تغيير الجهاز"
+    },
+    "sample_alerts": {
+      "failed_login": {
+        "title": "محاولات تسجيل دخول فاشلة متعددة",
+        "description": "حساب المستخدم john.doe@company.com سجّل 5 محاولات تسجيل دخول فاشلة متتالية من عنوان IP 45.123.78.90",
+        "recommended_action": "إيقاف الحساب والتحقيق في مصدر عنوان IP",
+        "affected_resource": "نظام المصادقة"
+      },
+      "unusual_access": {
+        "title": "نمط وصول غير طبيعي للمستندات", 
+        "description": "المستخدم الخارجي sarah.wilson@advisor.com دخل على أكثر من 15 مستنداً حساساً خلال 10 دقائق",
+        "recommended_action": "مراجعة صلاحيات المستخدم والتواصل معه",
+        "affected_resource": "غرفة بيانات ألفا"
+      },
+      "permission_request": {
+        "title": "طلب رفع الأذونات",
+        "description": "المستخدم michael.chen@company.com طلب صلاحيات إدارية للوصول إلى غرفة بيانات بيتا", 
+        "recommended_action": "مراجعة وموافقة/رفض الطلب",
+        "affected_resource": "غرفة بيانات بيتا"
+      },
+      "new_device": {
+        "title": "تسجيل دخول من جهاز جديد",
+        "description": "المستخدم emma.davis@company.com سجل دخول من جهاز جديد (Chrome على macOS)",
+        "recommended_action": "التحقق مع المستخدم إذا لزم الأمر",
+        "affected_resource": "حساب المستخدم"
+      }
+    },
+    "footer_text": "{{count}} تنبيه نشط يتطلب انتباه",
+    "headers": {
+      "recommended_action": "الإجراء الموصى به",
+      "category": "الفئة"
+    }
+  },
+
+  "compliance_panel": {
+    "regulatory_checklist": {
+      "title": "قائمة تحقق تنظيمية",
+      "subtitle": "حالة متطلبات الامتثال"
+    },
+    "recent_activities": {
+      "title": "الأنشطة الحديثة", 
+      "subtitle": "أحدث إجراءات التدقيق والامتثال"
+    },
+    "quick_actions": {
+      "title": "إجراءات سريعة"
+    },
+    "frameworks": {
+      "sox": "SOX",
+      "gdpr": "GDPR", 
+      "sec": "SEC",
+      "iso27001": "ISO 27001"
+    },
+    "requirements": {
+      "access_control": "توثيق التحكم في الوصول",
+      "data_processing": "سجلات معالجة البيانات",
+      "audit_trail": "اكتمال مسار التدقيق",
+      "incident_response": "الاستجابة للحوادث الأمنية"
+    },
+    "activity_types": {
+      "access_review": "مراجعة_الوصول",
+      "permission_change": "تغيير_الأذونات",
+      "security_scan": "مسح_أمني", 
+      "compliance_report": "تقرير_امتثال"
+    },
+    "sample_activities": {
+      "quarterly_review": "اكتملت مراجعة الوصول الربعية لغرفة بيانات ألفا",
+      "bulk_update": "تحديث أذونات جماعي للمستشارين الخارجيين",
+      "security_scan": "بدء مسح أمني آلي للثغرات",
+      "monthly_report": "تم إنشاء تقرير الامتثال الشهري"
+    },
+    "users": {
+      "sarah_johnson": "سارة جونسون",
+      "michael_chen": "مايكل تشين",
+      "system": "النظام",
+      "compliance_bot": "بوت الامتثال"
+    },
+    "labels": {
+      "next_review": "المراجعة التالية"
+    }
+  },
+
+  "audit_table": {
+    "title": "مسار التدقيق الشامل", 
+    "subtitle": "سجلات الوصول التفصيلية والأحداث الأمنية",
+    "search_placeholder": "البحث في المستخدمين أو الإجراءات أو الموارد...",
+    "filter_placeholder": "تصفية حسب الإجراء",
+    "headers": {
+      "timestamp": "الطابع الزمني",
+      "user": "المستخدم",
+      "action": "الإجراء",
+      "resource": "المورد",
+      "location": "الموقع", 
+      "risk_level": "مستوى المخاطر",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "action_types": {
+      "all": "جميع الإجراءات",
+      "document_access": "الوصول للمستندات",
+      "document_download": "تنزيل المستندات",
+      "permission_change": "تغيير الأذونات",
+      "failed_login": "تسجيل دخول فاشل",
+      "user_role_update": "تحديث دور المستخدم"
+    },
+    "risk_levels": {
+      "high": "عالي",
+      "medium": "متوسط",
+      "low": "منخفض"
+    },
+    "status_labels": {
+      "success": "نجح", 
+      "failed": "فشل"
+    },
+    "pagination": {
+      "showing": "عرض {{start}} إلى {{end}} من {{total}} مدخل",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "sample_data": {
+      "actions": {
+        "document_access": "الوصول للمستندات",
+        "permission_change": "تغيير الأذونات",
+        "failed_login": "محاولة تسجيل دخول فاشلة",
+        "document_download": "تنزيل المستندات",
+        "user_role_update": "تحديث دور المستخدم",
+        "document_view": "عرض المستندات"
+      },
+      "resources": {
+        "financial_statements": "البيانات_المالية_الربع_الثالث.pdf",
+        "deal_room_alpha": "غرفة بيانات ألفا",
+        "auth_system": "نظام المصادقة", 
+        "legal_contracts": "حزمة_العقود_القانونية.zip",
+        "user_management": "إدارة المستخدمين",
+        "market_analysis": "تقرير_تحليل_السوق.pdf"
+      },
+      "locations": {
+        "new_york": "نيويورك، الولايات المتحدة",
+        "london": "لندن، المملكة المتحدة",
+        "unknown": "غير معروف",
+        "san_francisco": "سان فرانسيسكو، الولايات المتحدة",
+        "toronto": "تورونتو، كندا"
+      }
+    }
+  },
+
+  "status": {
+    "last_updated": "آخر تحديث: {{time}}",
+    "live_data": "بيانات مباشرة",
+    "data_source": "مصدر البيانات: تحليلات أمان VDR"
+  },
+
+  "empty_states": {
+    "no_data": "لا توجد بيانات متاحة",
+    "loading": "جاري التحميل...",
+    "error": "خطأ في تحميل البيانات",
+    "no_alerts": "لا توجد تنبيهات للعرض"
+  }
+}

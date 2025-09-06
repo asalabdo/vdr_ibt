@@ -1,0 +1,99 @@
+{
+  "title": "Users Management",
+  "subtitle": "Manage user accounts and access permissions",
+  
+  "actions": {
+    "invite_user": "Invite User",
+    "export_users": "Export Users",
+    "edit": "Edit",
+    "manage_permissions": "Manage Permissions",
+    "cancel": "Cancel",
+    "send_invitation": "Send Invitation",
+    "sending": "Sending..."
+  },
+
+  "stats": {
+    "total_users": "Total Users",
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending"
+  },
+
+  "search": {
+    "placeholder": "Search users...",
+    "no_results_title": "No users found",
+    "no_results_description": "Try adjusting your search criteria",
+    "empty_state_description": "Invite your first user to get started"
+  },
+
+  "filters": {
+    "all_roles": "All Roles",
+    "all_status": "All Status",
+    "active": "Active",
+    "inactive": "Inactive", 
+    "pending": "Pending"
+  },
+
+  "user_card": {
+    "role": "Role",
+    "status": "Status",
+    "data_rooms": "Data Rooms",
+    "permissions": "Permissions",
+    "last_login": "Last login:",
+    "more_rooms": "+ {{count}} more"
+  },
+
+  "status_labels": {
+    "active": "active",
+    "inactive": "inactive",
+    "pending": "pending"
+  },
+
+  "time": {
+    "just_now": "Just now",
+    "never": "Never",
+    "minutes_ago": "{{count}}m ago",
+    "hours_ago": "{{count}}h ago",
+    "days_ago": "{{count}}d ago"
+  },
+
+  "invite_modal": {
+    "title": "Invite User",
+    "full_name_label": "Full Name",
+    "full_name_placeholder": "Enter full name",
+    "email_label": "Email Address",
+    "email_placeholder": "Enter email address",
+    "role_label": "Role",
+    "data_room_access_label": "Data Room Access",
+    "send_welcome_email": "Send welcome email"
+  },
+
+  "permissions": {
+    "view_questions": "view questions",
+    "reply_questions": "reply questions", 
+    "approve_answers": "approve answers",
+    "upload_files": "upload files",
+    "user_management": "user management"
+  },
+
+  "mock_data": {
+    "users": {
+      "admin_user": "Admin User",
+      "qa_observer_full": "Q&A Observer Full",
+      "financial_analyst": "Financial Analyst",
+      "legal_advisor": "Legal Advisor",
+      "marketing_director": "Marketing Director"
+    },
+    "roles": {
+      "admin": "Admin",
+      "qa_observer_full_control": "Q&A Observer – Full Control",
+      "qa_observer_view_only": "Q&A Observer – View Only"
+    },
+    "data_rooms": {
+      "project_alpha": "Project Alpha",
+      "legal_documents": "Legal Documents",
+      "financial_reports": "Financial Reports",
+      "marketing_materials": "Marketing Materials"
+    }
+  }
+}

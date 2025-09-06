@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 
 const AuditTable = () => {
+  const { t } = useTranslation('compliance-security-dashboard');
+  const { t: tCommon } = useTranslation('common');
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [sortField, setSortField] = useState('timestamp');
@@ -17,10 +21,11 @@ const AuditTable = () => {
       id: 1,
       timestamp: '2025-08-31 15:45:23',
       user: 'john.doe@company.com',
-      action: 'Document Access',
-      resource: 'Financial_Statements_Q3.pdf',
+      action: 'document_access',
+      actionDisplay: t('audit_table.sample_data.actions.document_access'),
+      resource: t('audit_table.sample_data.resources.financial_statements'),
       ip_address: '192.168.1.100',
-      location: 'New York, US',
+      location: t('audit_table.sample_data.locations.new_york'),
       status: 'success',
       risk_level: 'low',
       session_id: 'sess_abc123'
@@ -29,10 +34,11 @@ const AuditTable = () => {
       id: 2,
       timestamp: '2025-08-31 15:42:15',
       user: 'sarah.wilson@advisor.com',
-      action: 'Permission Change',
-      resource: 'Deal Room Alpha',
+      action: 'permission_change',
+      actionDisplay: t('audit_table.sample_data.actions.permission_change'),
+      resource: t('audit_table.sample_data.resources.deal_room_alpha'),
       ip_address: '203.45.67.89',
-      location: 'London, UK',
+      location: t('audit_table.sample_data.locations.london'),
       status: 'success',
       risk_level: 'medium',
       session_id: 'sess_def456'
@@ -41,10 +47,11 @@ const AuditTable = () => {
       id: 3,
       timestamp: '2025-08-31 15:38:07',
       user: 'michael.chen@company.com',
-      action: 'Failed Login Attempt',
-      resource: 'Authentication System',
+      action: 'failed_login',
+      actionDisplay: t('audit_table.sample_data.actions.failed_login'),
+      resource: t('audit_table.sample_data.resources.auth_system'),
       ip_address: '45.123.78.90',
-      location: 'Unknown',
+      location: t('audit_table.sample_data.locations.unknown'),
       status: 'failed',
       risk_level: 'high',
       session_id: 'sess_ghi789'
@@ -53,10 +60,11 @@ const AuditTable = () => {
       id: 4,
       timestamp: '2025-08-31 15:35:42',
       user: 'emma.davis@company.com',
-      action: 'Document Download',
-      resource: 'Legal_Contracts_Bundle.zip',
+      action: 'document_download',
+      actionDisplay: t('audit_table.sample_data.actions.document_download'),
+      resource: t('audit_table.sample_data.resources.legal_contracts'),
       ip_address: '192.168.1.105',
-      location: 'San Francisco, US',
+      location: t('audit_table.sample_data.locations.san_francisco'),
       status: 'success',
       risk_level: 'medium',
       session_id: 'sess_jkl012'
@@ -65,10 +73,11 @@ const AuditTable = () => {
       id: 5,
       timestamp: '2025-08-31 15:32:18',
       user: 'admin@company.com',
-      action: 'User Role Update',
-      resource: 'User Management',
+      action: 'user_role_update',
+      actionDisplay: t('audit_table.sample_data.actions.user_role_update'),
+      resource: t('audit_table.sample_data.resources.user_management'),
       ip_address: '192.168.1.1',
-      location: 'New York, US',
+      location: t('audit_table.sample_data.locations.new_york'),
       status: 'success',
       risk_level: 'high',
       session_id: 'sess_mno345'
@@ -77,10 +86,11 @@ const AuditTable = () => {
       id: 6,
       timestamp: '2025-08-31 15:28:55',
       user: 'robert.taylor@external.com',
-      action: 'Document View',
-      resource: 'Market_Analysis_Report.pdf',
+      action: 'document_view',
+      actionDisplay: t('audit_table.sample_data.actions.document_view'),
+      resource: t('audit_table.sample_data.resources.market_analysis'),
       ip_address: '78.45.123.67',
-      location: 'Toronto, CA',
+      location: t('audit_table.sample_data.locations.toronto'),
       status: 'success',
       risk_level: 'low',
       session_id: 'sess_pqr678'
@@ -88,12 +98,12 @@ const AuditTable = () => {
   ];
 
   const actionTypes = [
-    { value: 'all', label: 'All Actions' },
-    { value: 'Document Access', label: 'Document Access' },
-    { value: 'Document Download', label: 'Document Download' },
-    { value: 'Permission Change', label: 'Permission Change' },
-    { value: 'Failed Login Attempt', label: 'Failed Login' },
-    { value: 'User Role Update', label: 'User Role Update' }
+    { value: 'all', label: t('audit_table.action_types.all') },
+    { value: 'document_access', label: t('audit_table.action_types.document_access') },
+    { value: 'document_download', label: t('audit_table.action_types.document_download') },
+    { value: 'permission_change', label: t('audit_table.action_types.permission_change') },
+    { value: 'failed_login', label: t('audit_table.action_types.failed_login') },
+    { value: 'user_role_update', label: t('audit_table.action_types.user_role_update') }
   ];
 
   const getRiskLevelColor = (level) => {
@@ -118,7 +128,7 @@ const AuditTable = () => {
   const filteredLogs = auditLogs?.filter(log => {
     const matchesSearch = searchTerm === '' || 
       log?.user?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-      log?.action?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+      log?.actionDisplay?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
       log?.resource?.toLowerCase()?.includes(searchTerm?.toLowerCase());
     
     const matchesFilter = filterType === 'all' || log?.action === filterType;
@@ -159,16 +169,20 @@ const AuditTable = () => {
     <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-foreground mb-1">Comprehensive Audit Trail</h3>
-          <p className="text-sm text-muted-foreground">Detailed access logs and security events</p>
+          <h3 className="text-lg font-semibold text-foreground mb-1">
+            {t('audit_table.title')}
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            {t('audit_table.subtitle')}
+          </p>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
           <Button variant="outline" size="sm" iconName="Download">
-            Export CSV
+            {t('actions.export_csv')}
           </Button>
           <Button variant="outline" size="sm" iconName="Filter">
-            Advanced Filter
+            {t('actions.advanced_filter')}
           </Button>
         </div>
       </div>
@@ -177,7 +191,7 @@ const AuditTable = () => {
         <div className="flex-1">
           <Input
             type="search"
-            placeholder="Search users, actions, or resources..."
+            placeholder={t('audit_table.search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e?.target?.value)}
           />
@@ -187,7 +201,7 @@ const AuditTable = () => {
           options={actionTypes}
           value={filterType}
           onChange={setFilterType}
-          placeholder="Filter by action"
+          placeholder={t('audit_table.filter_placeholder')}
           className="sm:w-48"
         />
       </div>
@@ -199,9 +213,9 @@ const AuditTable = () => {
               <th className="text-left py-3 px-4">
                 <button
                   onClick={() => handleSort('timestamp')}
-                  className="flex items-center space-x-1 text-sm font-medium text-muted-foreground hover:text-foreground"
+                  className="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-muted-foreground hover:text-foreground"
                 >
-                  <span>Timestamp</span>
+                  <span>{t('audit_table.headers.timestamp')}</span>
                   <Icon 
                     name={sortField === 'timestamp' && sortDirection === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
                     size={14} 
@@ -211,9 +225,9 @@ const AuditTable = () => {
               <th className="text-left py-3 px-4">
                 <button
                   onClick={() => handleSort('user')}
-                  className="flex items-center space-x-1 text-sm font-medium text-muted-foreground hover:text-foreground"
+                  className="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-muted-foreground hover:text-foreground"
                 >
-                  <span>User</span>
+                  <span>{t('audit_table.headers.user')}</span>
                   <Icon 
                     name={sortField === 'user' && sortDirection === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
                     size={14} 
@@ -221,22 +235,34 @@ const AuditTable = () => {
                 </button>
               </th>
               <th className="text-left py-3 px-4">
-                <span className="text-sm font-medium text-muted-foreground">Action</span>
+                <span className="text-sm font-medium text-muted-foreground">
+                  {t('audit_table.headers.action')}
+                </span>
               </th>
               <th className="text-left py-3 px-4">
-                <span className="text-sm font-medium text-muted-foreground">Resource</span>
+                <span className="text-sm font-medium text-muted-foreground">
+                  {t('audit_table.headers.resource')}
+                </span>
               </th>
               <th className="text-left py-3 px-4">
-                <span className="text-sm font-medium text-muted-foreground">Location</span>
+                <span className="text-sm font-medium text-muted-foreground">
+                  {t('audit_table.headers.location')}
+                </span>
               </th>
               <th className="text-left py-3 px-4">
-                <span className="text-sm font-medium text-muted-foreground">Risk Level</span>
+                <span className="text-sm font-medium text-muted-foreground">
+                  {t('audit_table.headers.risk_level')}
+                </span>
               </th>
               <th className="text-left py-3 px-4">
-                <span className="text-sm font-medium text-muted-foreground">Status</span>
+                <span className="text-sm font-medium text-muted-foreground">
+                  {t('audit_table.headers.status')}
+                </span>
               </th>
               <th className="text-left py-3 px-4">
-                <span className="text-sm font-medium text-muted-foreground">Actions</span>
+                <span className="text-sm font-medium text-muted-foreground">
+                  {t('audit_table.headers.actions')}
+                </span>
               </th>
             </tr>
           </thead>
@@ -249,7 +275,7 @@ const AuditTable = () => {
                     <span className="text-sm text-foreground">{formatTimestamp(log?.timestamp)}</span>
                   </td>
                   <td className="py-3 px-4">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 rtl:space-x-reverse">
                       <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
                         <Icon name="User" size={12} className="text-primary" />
                       </div>
@@ -257,7 +283,7 @@ const AuditTable = () => {
                     </div>
                   </td>
                   <td className="py-3 px-4">
-                    <span className="text-sm text-foreground">{log?.action}</span>
+                    <span className="text-sm text-foreground">{log?.actionDisplay}</span>
                   </td>
                   <td className="py-3 px-4">
                     <span className="text-sm text-foreground truncate max-w-32" title={log?.resource}>
@@ -275,22 +301,24 @@ const AuditTable = () => {
                       px-2 py-1 rounded text-xs font-medium border
                       ${getRiskLevelColor(log?.risk_level)}
                     `}>
-                      {log?.risk_level?.toUpperCase()}
+                      {t(`audit_table.risk_levels.${log?.risk_level}`)}
                     </span>
                   </td>
                   <td className="py-3 px-4">
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 rtl:space-x-reverse">
                       <Icon name={statusConfig?.icon} size={16} className={statusConfig?.color} />
-                      <span className="text-sm text-foreground capitalize">{log?.status}</span>
+                      <span className="text-sm text-foreground capitalize">
+                        {t(`audit_table.status_labels.${log?.status}`)}
+                      </span>
                     </div>
                   </td>
                   <td className="py-3 px-4">
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 rtl:space-x-reverse">
                       <Button variant="ghost" size="sm" iconName="Eye">
-                        Details
+                        {t('actions.view_details')}
                       </Button>
                       <Button variant="ghost" size="sm" iconName="ExternalLink">
-                        Investigate
+                        {t('actions.investigate')}
                       </Button>
                     </div>
                   </td>
@@ -303,10 +331,14 @@ const AuditTable = () => {
       {/* Pagination */}
       <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
         <div className="text-sm text-muted-foreground">
-          Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, sortedLogs?.length)} of {sortedLogs?.length} entries
+          {t('audit_table.pagination.showing', { 
+            start: startIndex + 1, 
+            end: Math.min(startIndex + itemsPerPage, sortedLogs?.length), 
+            total: sortedLogs?.length 
+          })}
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
           <Button
             variant="outline"
             size="sm"
@@ -314,10 +346,10 @@ const AuditTable = () => {
             disabled={currentPage === 1}
             iconName="ChevronLeft"
           >
-            Previous
+            {t('audit_table.pagination.previous')}
           </Button>
           
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1 rtl:space-x-reverse">
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               const page = i + 1;
               return (
@@ -340,7 +372,7 @@ const AuditTable = () => {
             disabled={currentPage === totalPages}
             iconName="ChevronRight"
           >
-            Next
+            {t('audit_table.pagination.next')}
           </Button>
         </div>
       </div>

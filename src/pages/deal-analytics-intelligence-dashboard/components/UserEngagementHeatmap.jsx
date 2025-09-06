@@ -1,49 +1,52 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 
 const UserEngagementHeatmap = () => {
+  const { t } = useTranslation('deal-analytics-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [selectedView, setSelectedView] = useState('weekly');
   const [selectedMetric, setSelectedMetric] = useState('sessions');
 
   const heatmapData = {
     weekly: [
-      { day: 'Mon', hours: Array.from({length: 24}, (_, i) => ({
+      { day: tCommon('time.days_of_week.mon'), hours: Array.from({length: 24}, (_, i) => ({
         hour: i,
         sessions: Math.floor(Math.random() * 50) + 10,
         documents: Math.floor(Math.random() * 30) + 5,
         qa_activity: Math.floor(Math.random() * 20) + 2
       }))},
-      { day: 'Tue', hours: Array.from({length: 24}, (_, i) => ({
+      { day: tCommon('time.days_of_week.tue'), hours: Array.from({length: 24}, (_, i) => ({
         hour: i,
         sessions: Math.floor(Math.random() * 60) + 15,
         documents: Math.floor(Math.random() * 35) + 8,
         qa_activity: Math.floor(Math.random() * 25) + 3
       }))},
-      { day: 'Wed', hours: Array.from({length: 24}, (_, i) => ({
+      { day: tCommon('time.days_of_week.wed'), hours: Array.from({length: 24}, (_, i) => ({
         hour: i,
         sessions: Math.floor(Math.random() * 70) + 20,
         documents: Math.floor(Math.random() * 40) + 10,
         qa_activity: Math.floor(Math.random() * 30) + 5
       }))},
-      { day: 'Thu', hours: Array.from({length: 24}, (_, i) => ({
+      { day: tCommon('time.days_of_week.thu'), hours: Array.from({length: 24}, (_, i) => ({
         hour: i,
         sessions: Math.floor(Math.random() * 65) + 18,
         documents: Math.floor(Math.random() * 38) + 9,
         qa_activity: Math.floor(Math.random() * 28) + 4
       }))},
-      { day: 'Fri', hours: Array.from({length: 24}, (_, i) => ({
+      { day: tCommon('time.days_of_week.fri'), hours: Array.from({length: 24}, (_, i) => ({
         hour: i,
         sessions: Math.floor(Math.random() * 55) + 12,
         documents: Math.floor(Math.random() * 32) + 6,
         qa_activity: Math.floor(Math.random() * 22) + 2
       }))},
-      { day: 'Sat', hours: Array.from({length: 24}, (_, i) => ({
+      { day: tCommon('time.days_of_week.sat'), hours: Array.from({length: 24}, (_, i) => ({
         hour: i,
         sessions: Math.floor(Math.random() * 25) + 3,
         documents: Math.floor(Math.random() * 15) + 2,
         qa_activity: Math.floor(Math.random() * 10) + 1
       }))},
-      { day: 'Sun', hours: Array.from({length: 24}, (_, i) => ({
+      { day: tCommon('time.days_of_week.sun'), hours: Array.from({length: 24}, (_, i) => ({
         hour: i,
         sessions: Math.floor(Math.random() * 20) + 2,
         documents: Math.floor(Math.random() * 12) + 1,
@@ -53,9 +56,9 @@ const UserEngagementHeatmap = () => {
   };
 
   const metricOptions = [
-    { value: 'sessions', label: 'User Sessions', color: '#1e40af' },
-    { value: 'documents', label: 'Document Access', color: '#059669' },
-    { value: 'qa_activity', label: 'Q&A Activity', color: '#d97706' }
+    { value: 'sessions', label: t('charts.heatmap.metrics.sessions'), color: '#1e40af' },
+    { value: 'documents', label: t('charts.heatmap.metrics.documents'), color: '#059669' },
+    { value: 'qa_activity', label: t('charts.heatmap.metrics.qa_activity'), color: '#d97706' }
   ];
 
   const getIntensityColor = (value, maxValue) => {
@@ -78,10 +81,10 @@ const UserEngagementHeatmap = () => {
   const avgValue = getAllValues()?.reduce((sum, val) => sum + val, 0) / getAllValues()?.length;
 
   const getHourLabel = (hour) => {
-    if (hour === 0) return '12 AM';
-    if (hour < 12) return `${hour} AM`;
-    if (hour === 12) return '12 PM';
-    return `${hour - 12} PM`;
+    if (hour === 0) return `12 ${tCommon('time_labels.am')}`;
+    if (hour < 12) return `${hour} ${tCommon('time_labels.am')}`;
+    if (hour === 12) return `12 ${tCommon('time_labels.pm')}`;
+    return `${hour - 12} ${tCommon('time_labels.pm')}`;
   };
 
   const [hoveredCell, setHoveredCell] = useState(null);
@@ -90,11 +93,11 @@ const UserEngagementHeatmap = () => {
     <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-foreground mb-1">User Engagement Heatmap</h3>
-          <p className="text-sm text-muted-foreground">Activity patterns across time periods</p>
+          <h3 className="text-lg font-semibold text-foreground mb-1">{t('charts.heatmap.title')}</h3>
+          <p className="text-sm text-muted-foreground">{t('charts.heatmap.subtitle')}</p>
         </div>
         
-        <div className="flex items-center space-x-3 mt-4 sm:mt-0">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse mt-4 sm:mt-0">
           <select
             value={selectedMetric}
             onChange={(e) => setSelectedMetric(e?.target?.value)}
@@ -168,9 +171,9 @@ const UserEngagementHeatmap = () => {
       </div>
       {/* Legend and stats */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-6 pt-6 border-t border-border">
-        <div className="flex items-center space-x-4 mb-4 sm:mb-0">
-          <span className="text-sm text-muted-foreground">Less</span>
-          <div className="flex space-x-1">
+        <div className="flex items-center space-x-4 rtl:space-x-reverse mb-4 sm:mb-0">
+          <span className="text-sm text-muted-foreground">{t('charts.heatmap.intensity.less')}</span>
+          <div className="flex space-x-1 rtl:space-x-reverse">
             <div className="w-3 h-3 bg-muted/20 rounded-sm"></div>
             <div className="w-3 h-3 bg-primary/20 rounded-sm"></div>
             <div className="w-3 h-3 bg-primary/40 rounded-sm"></div>
@@ -178,23 +181,23 @@ const UserEngagementHeatmap = () => {
             <div className="w-3 h-3 bg-primary/80 rounded-sm"></div>
             <div className="w-3 h-3 bg-primary rounded-sm"></div>
           </div>
-          <span className="text-sm text-muted-foreground">More</span>
+          <span className="text-sm text-muted-foreground">{t('charts.heatmap.intensity.more')}</span>
         </div>
 
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-6 rtl:space-x-reverse">
           <div className="text-center">
             <div className="text-sm font-medium text-foreground">{maxValue}</div>
-            <div className="text-xs text-muted-foreground">Peak</div>
+            <div className="text-xs text-muted-foreground">{t('charts.heatmap.stats.peak')}</div>
           </div>
           <div className="text-center">
             <div className="text-sm font-medium text-foreground">{avgValue?.toFixed(1)}</div>
-            <div className="text-xs text-muted-foreground">Average</div>
+            <div className="text-xs text-muted-foreground">{t('charts.heatmap.stats.average')}</div>
           </div>
           <div className="text-center">
             <div className="text-sm font-medium text-foreground">
               {heatmapData?.weekly?.reduce((sum, day) => sum + day?.hours?.reduce((daySum, hour) => daySum + hour?.[selectedMetric], 0), 0)}
             </div>
-            <div className="text-xs text-muted-foreground">Total</div>
+            <div className="text-xs text-muted-foreground">{t('charts.heatmap.stats.total')}</div>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../../components/ui/Header';
+import { useTranslation } from 'react-i18next';
 import ControlBar from './components/ControlBar';
 import MetricCard from './components/MetricCard';
 import AlertFeed from './components/AlertFeed';
@@ -13,16 +13,18 @@ import Button from '../../components/ui/Button';
 
 
 const VDROperationsCommandCenter = () => {
+  const { t } = useTranslation('vdr-operations-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [selectedEnvironment, setSelectedEnvironment] = useState('production');
   const [refreshInterval, setRefreshInterval] = useState('30');
   const [connectionStatus, setConnectionStatus] = useState('connected');
   const [activeTab, setActiveTab] = useState('heatmap');
   const [lastRefresh, setLastRefresh] = useState(new Date());
 
-  // Mock system metrics data
+  // System metrics data
   const systemMetrics = [
     {
-      title: 'System Uptime',
+      title: t('system_metrics.system_uptime.title'),
       value: '99.8',
       unit: '%',
       change: 0.2,
@@ -32,7 +34,7 @@ const VDROperationsCommandCenter = () => {
       sparklineData: [99.5, 99.6, 99.7, 99.8, 99.9, 99.8, 99.8]
     },
     {
-      title: 'Active Users',
+      title: t('system_metrics.active_users.title'),
       value: '247',
       unit: '',
       change: 12,
@@ -42,7 +44,7 @@ const VDROperationsCommandCenter = () => {
       sparklineData: [220, 235, 240, 245, 250, 247, 247]
     },
     {
-      title: 'Storage Used',
+      title: t('system_metrics.storage_used.title'),
       value: '68.4',
       unit: '%',
       change: 3.2,
@@ -52,9 +54,9 @@ const VDROperationsCommandCenter = () => {
       sparklineData: [65, 66, 67, 68, 69, 68.5, 68.4]
     },
     {
-      title: 'Avg Response',
+      title: t('system_metrics.avg_response.title'),
       value: '145',
-      unit: 'ms',
+      unit: tCommon('time_units.ms'),
       change: 8,
       changeType: 'negative',
       icon: 'Zap',
@@ -62,7 +64,7 @@ const VDROperationsCommandCenter = () => {
       sparklineData: [120, 130, 135, 140, 150, 148, 145]
     },
     {
-      title: 'Security Incidents',
+      title: t('system_metrics.security_incidents.title'),
       value: '0',
       unit: '',
       change: 0,
@@ -72,7 +74,7 @@ const VDROperationsCommandCenter = () => {
       sparklineData: [0, 0, 1, 0, 0, 0, 0]
     },
     {
-      title: 'Q&A Resolution',
+      title: t('system_metrics.qa_resolution.title'),
       value: '94.2',
       unit: '%',
       change: 2.1,
@@ -83,44 +85,44 @@ const VDROperationsCommandCenter = () => {
     }
   ];
 
-  // Mock alerts data
+  // System alerts data
   const systemAlerts = [
     {
       id: 'alert-001',
-      title: 'High Storage Usage Warning',
-      message: 'Storage utilization has reached 68.4% on primary server cluster. Consider archiving older documents or expanding storage capacity.',
+      title: t('system_alerts.sample_alerts.high_storage.title'),
+      message: t('system_alerts.sample_alerts.high_storage.message'),
       severity: 'warning',
       timestamp: new Date(Date.now() - 300000),
       source: 'Storage Monitor',
       actions: [
-        { label: 'View Details', onClick: () => {} },
-        { label: 'Archive Old Files', onClick: () => {} }
+        { label: tCommon('actions.view_details'), onClick: () => {} },
+        { label: t('system_alerts.sample_alerts.high_storage.actions.archive_old_files'), onClick: () => {} }
       ]
     },
     {
       id: 'alert-002',
-      title: 'User Session Anomaly Detected',
-      message: 'Unusual login pattern detected for user john.doe@company.com from multiple geographic locations within 30 minutes.',
+      title: t('system_alerts.sample_alerts.session_anomaly.title'),
+      message: t('system_alerts.sample_alerts.session_anomaly.message'),
       severity: 'critical',
       timestamp: new Date(Date.now() - 600000),
       source: 'Security Monitor',
       actions: [
-        { label: 'Investigate', onClick: () => {} },
-        { label: 'Block User', onClick: () => {} }
+        { label: t('system_alerts.sample_alerts.session_anomaly.actions.investigate'), onClick: () => {} },
+        { label: t('system_alerts.sample_alerts.session_anomaly.actions.block_user'), onClick: () => {} }
       ]
     },
     {
       id: 'alert-003',
-      title: 'Backup Completed Successfully',
-      message: 'Daily backup process completed successfully. All data rooms backed up to secondary storage.',
+      title: t('system_alerts.sample_alerts.backup_completed.title'),
+      message: t('system_alerts.sample_alerts.backup_completed.message'),
       severity: 'info',
       timestamp: new Date(Date.now() - 1800000),
       source: 'Backup Service'
     },
     {
       id: 'alert-004',
-      title: 'API Rate Limit Approaching',
-      message: 'Document API rate limit at 85% for TechCorp Acquisition data room. Consider optimizing client requests.',
+      title: t('system_alerts.sample_alerts.api_rate_limit.title'),
+      message: t('system_alerts.sample_alerts.api_rate_limit.message'),
       severity: 'warning',
       timestamp: new Date(Date.now() - 2400000),
       source: 'API Gateway'
@@ -153,14 +155,13 @@ const VDROperationsCommandCenter = () => {
   };
 
   const tabOptions = [
-    { key: 'heatmap', label: 'User Activity', icon: 'Activity' },
-    { key: 'performance', label: 'System Performance', icon: 'TrendingUp' },
-    { key: 'documents', label: 'Document Access', icon: 'FileText' }
+    { key: 'heatmap', label: t('tabs.user_activity'), icon: 'Activity' },
+    { key: 'performance', label: t('tabs.system_performance'), icon: 'TrendingUp' },
+    { key: 'documents', label: t('tabs.document_access'), icon: 'FileText' }
   ];
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <div className="pt-7">
         {/* Control Bar */}
         <ControlBar
@@ -221,8 +222,8 @@ const VDROperationsCommandCenter = () => {
                     <div className="flex items-center justify-center h-full text-muted-foreground">
                       <div className="text-center">
                         <Icon name="FileText" size={48} className="mx-auto mb-4 opacity-50" />
-                        <p className="text-lg font-medium mb-2">Document Access Patterns</p>
-                        <p className="text-sm">Real-time document access analytics coming soon</p>
+                        <p className="text-lg font-medium mb-2">{t('tabs.document_access')}</p>
+                        <p className="text-sm">{t('empty_states.coming_soon')}</p>
                       </div>
                     </div>
                   )}
@@ -247,19 +248,19 @@ const VDROperationsCommandCenter = () => {
 
               {/* Quick Actions */}
               <div className="bg-card border border-border rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Quick Actions</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-4">{t('quick_actions.title')}</h3>
                 <div className="space-y-2">
                   <Button variant="outline" fullWidth iconName="Plus" iconPosition="left">
-                    Create New Data Room
+                    {t('quick_actions.create_data_room')}
                   </Button>
                   <Button variant="outline" fullWidth iconName="UserPlus" iconPosition="left">
-                    Invite Users
+                    {t('quick_actions.invite_users')}
                   </Button>
                   <Button variant="outline" fullWidth iconName="Download" iconPosition="left">
-                    Export System Report
+                    {t('quick_actions.export_report')}
                   </Button>
                   <Button variant="outline" fullWidth iconName="Settings" iconPosition="left">
-                    System Configuration
+                    {t('quick_actions.system_configuration')}
                   </Button>
                 </div>
               </div>
@@ -269,19 +270,19 @@ const VDROperationsCommandCenter = () => {
           {/* Status Footer */}
           <div className="bg-card border border-border rounded-lg p-4">
             <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <div className="flex items-center space-x-4">
-                <span>Last updated: {lastRefresh?.toLocaleTimeString()}</span>
+              <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                <span>{t('status_footer.last_updated', { time: lastRefresh?.toLocaleTimeString() })}</span>
                 <span>•</span>
-                <span>Environment: {selectedEnvironment}</span>
+                <span>{t('status_footer.environment', { env: selectedEnvironment })}</span>
                 <span>•</span>
-                <span>Refresh: Every {refreshInterval}s</span>
+                <span>{t('status_footer.refresh_rate', { interval: refreshInterval })}</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <div className={`w-2 h-2 rounded-full ${
                   connectionStatus === 'connected' ? 'bg-success' :
                   connectionStatus === 'connecting' ? 'bg-warning' : 'bg-error'
                 } ${connectionStatus === 'connecting' ? 'animate-pulse-subtle' : ''}`}></div>
-                <span className="capitalize">{connectionStatus}</span>
+                <span className="capitalize">{t(`control_bar.connection_status.${connectionStatus}`)}</span>
               </div>
             </div>
           </div>

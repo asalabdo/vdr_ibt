@@ -1,0 +1,15 @@
+{
+  "messages": {
+    "network_error": "Network connection error",
+    "loading_failed": "Failed to load data",
+    "access_denied": "Access denied",
+    "not_found": "Page not found",
+    "server_error": "Internal server error"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalid_email": "Invalid email address",
+    "password_too_short": "Password too short",
+    "passwords_dont_match": "Passwords don't match"
+  }
+}

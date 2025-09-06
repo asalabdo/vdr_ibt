@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
 
 const PermissionManagerModal = ({ isOpen, onClose, document }) => {
+  const { t } = useTranslation('document-management-console');
   const [permissions, setPermissions] = useState({
     read: true,
     download: true,
@@ -26,10 +28,10 @@ const PermissionManagerModal = ({ isOpen, onClose, document }) => {
   };
 
   const permissionOptions = [
-    { key: 'read', label: 'Read', description: 'View document content' },
-    { key: 'download', label: 'Download', description: 'Download document files' },
-    { key: 'edit', label: 'Edit', description: 'Modify document content' },
-    { key: 'delete', label: 'Delete', description: 'Remove document from system' }
+    { key: 'read', labelKey: 'permissions_modal.permissions.read.label', descriptionKey: 'permissions_modal.permissions.read.description' },
+    { key: 'download', labelKey: 'permissions_modal.permissions.download.label', descriptionKey: 'permissions_modal.permissions.download.description' },
+    { key: 'edit', labelKey: 'permissions_modal.permissions.edit.label', descriptionKey: 'permissions_modal.permissions.edit.description' },
+    { key: 'delete', labelKey: 'permissions_modal.permissions.delete.label', descriptionKey: 'permissions_modal.permissions.delete.description' }
   ];
 
   return (
@@ -38,7 +40,7 @@ const PermissionManagerModal = ({ isOpen, onClose, document }) => {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
           <div>
-            <h3 className="text-lg font-semibold text-foreground">Manage Permissions</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t('permissions_modal.title')}</h3>
             <p className="text-sm text-muted-foreground">{document?.filename}</p>
           </div>
           <button
@@ -52,13 +54,13 @@ const PermissionManagerModal = ({ isOpen, onClose, document }) => {
         {/* Content */}
         <div className="p-6 space-y-6">
           <div>
-            <h4 className="text-sm font-medium text-foreground mb-3">Document Permissions</h4>
+            <h4 className="text-sm font-medium text-foreground mb-3">{t('permissions_modal.subtitle')}</h4>
             <div className="space-y-3">
               {permissionOptions?.map((option) => (
                 <div key={option?.key} className="flex items-center justify-between">
                   <div>
-                    <div className="text-sm font-medium text-foreground">{option?.label}</div>
-                    <div className="text-xs text-muted-foreground">{option?.description}</div>
+                    <div className="text-sm font-medium text-foreground">{t(option?.labelKey)}</div>
+                    <div className="text-xs text-muted-foreground">{t(option?.descriptionKey)}</div>
                   </div>
                   <input
                     type="checkbox"
@@ -72,22 +74,22 @@ const PermissionManagerModal = ({ isOpen, onClose, document }) => {
           </div>
 
           <div className="bg-muted/30 rounded-lg p-4">
-            <div className="text-sm font-medium text-foreground mb-2">Current Access</div>
+            <div className="text-sm font-medium text-foreground mb-2">{t('permissions_modal.current_access')}</div>
             <div className="text-xs text-muted-foreground space-y-1">
-              <div>Owner: {document?.owner?.name}</div>
-              <div>Room: {document?.room}</div>
-              <div>Status: {document?.status}</div>
+              <div>{t('permissions_modal.owner')} {document?.owner?.name}</div>
+              <div>{t('permissions_modal.room')} {document?.room}</div>
+              <div>{t('permissions_modal.status')} {document?.status}</div>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end space-x-3 p-6 border-t border-border">
+        <div className="flex items-center justify-end space-x-3 rtl:space-x-reverse p-6 border-t border-border">
           <Button onClick={onClose} variant="outline">
-            Cancel
+            {t('actions.cancel')}
           </Button>
           <Button onClick={handleSave} variant="default">
-            Save Changes
+            {t('actions.save_changes')}
           </Button>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
 
 const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange, auditLogs }) => {
+  const { t } = useTranslation('audit-logs');
   if (!isOpen) return null;
 
   const handleFilterChange = (key, value) => {
@@ -36,7 +38,7 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange, auditLogs }) 
       <div className="fixed right-0 top-0 h-full w-80 bg-card border-l border-border shadow-lg z-10 lg:relative lg:w-full lg:h-auto lg:shadow-none">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
-          <h3 className="text-lg font-semibold text-foreground">Filters</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('filters.title')}</h3>
           <button
             onClick={onClose}
             className="p-2 hover:bg-muted rounded-lg transition-colors"
@@ -50,17 +52,17 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange, auditLogs }) 
           {/* Action Filter */}
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Action Type
+              {t('filters.action_type.label')}
             </label>
             <select
               value={filters?.action}
               onChange={(e) => handleFilterChange('action', e?.target?.value)}
               className="w-full border border-input rounded-lg px-3 py-2 bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
             >
-              <option value="all">All Actions</option>
+              <option value="all">{t('filters.action_type.all')}</option>
               {uniqueActions?.map((action) => (
                 <option key={action} value={action}>
-                  {action?.replace('_', ' ')?.replace(/\b\w/g, l => l?.toUpperCase())}
+                  {t(`actions_types.${action}`)}
                 </option>
               ))}
             </select>
@@ -69,14 +71,14 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange, auditLogs }) 
           {/* User Filter */}
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              User
+              {t('filters.user.label')}
             </label>
             <select
               value={filters?.user}
               onChange={(e) => handleFilterChange('user', e?.target?.value)}
               className="w-full border border-input rounded-lg px-3 py-2 bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
             >
-              <option value="all">All Users</option>
+              <option value="all">{t('filters.user.all')}</option>
               {uniqueUsers?.map((user) => (
                 <option key={user} value={user}>{user}</option>
               ))}
@@ -86,35 +88,35 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange, auditLogs }) 
           {/* Severity Filter */}
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Severity Level
+              {t('filters.severity.label')}
             </label>
             <select
               value={filters?.severity}
               onChange={(e) => handleFilterChange('severity', e?.target?.value)}
               className="w-full border border-input rounded-lg px-3 py-2 bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
             >
-              <option value="all">All Levels</option>
-              <option value="info">Info</option>
-              <option value="warning">Warning</option>
-              <option value="error">Error</option>
+              <option value="all">{t('filters.severity.all')}</option>
+              <option value="info">{t('filters.severity.info')}</option>
+              <option value="warning">{t('filters.severity.warning')}</option>
+              <option value="error">{t('filters.severity.error')}</option>
             </select>
           </div>
 
           {/* Date Range Filter */}
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Time Range
+              {t('filters.time_range.label')}
             </label>
             <select
               value={filters?.dateRange}
               onChange={(e) => handleFilterChange('dateRange', e?.target?.value)}
               className="w-full border border-input rounded-lg px-3 py-2 bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
             >
-              <option value="today">Today</option>
-              <option value="yesterday">Yesterday</option>
-              <option value="week">This Week</option>
-              <option value="month">This Month</option>
-              <option value="custom">Custom Range</option>
+              <option value="today">{t('filters.time_range.today')}</option>
+              <option value="yesterday">{t('filters.time_range.yesterday')}</option>
+              <option value="week">{t('filters.time_range.week')}</option>
+              <option value="month">{t('filters.time_range.month')}</option>
+              <option value="custom">{t('filters.time_range.custom')}</option>
             </select>
           </div>
 
@@ -126,7 +128,7 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange, auditLogs }) 
               className="w-full"
               iconName="X"
             >
-              Clear All Filters
+              {t('actions.clear_filters')}
             </Button>
           </div>
         </div>

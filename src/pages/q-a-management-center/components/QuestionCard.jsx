@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 
 const QuestionCard = ({ question, onSelect, isSelected, formatTimeAgo }) => {
+  const { t } = useTranslation('q-a-management-center');
   const getPriorityColor = (priority) => {
     switch (priority) {
       case 'high':
@@ -41,21 +43,23 @@ const QuestionCard = ({ question, onSelect, isSelected, formatTimeAgo }) => {
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse">
           <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
             <Icon name="MessageSquare" size={20} className="text-primary" />
           </div>
           <div>
-            <div className="flex items-center space-x-2 mb-1">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse mb-1">
               <span className={`px-2 py-1 text-xs font-medium rounded-full border ${getPriorityColor(question?.priority)}`}>
-                {question?.priority?.toUpperCase()}
+                {t(`priority_levels.${question?.priority}`)}
               </span>
-              <span className="text-sm text-muted-foreground">in {question?.room}</span>
+              <span className="text-sm text-muted-foreground">
+                {t('question_card.in_room', { room: question?.room })}
+              </span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse">
               <Icon name={statusConfig?.icon} size={16} className={statusConfig?.color} />
               <span className={`text-sm font-medium capitalize ${statusConfig?.color}`}>
-                {question?.status}
+                {t(`status_labels.${question?.status}`)}
               </span>
             </div>
           </div>
@@ -68,10 +72,10 @@ const QuestionCard = ({ question, onSelect, isSelected, formatTimeAgo }) => {
       {/* Question Content */}
       <div className="space-y-4">
         <div>
-          <div className="flex items-center space-x-2 mb-2">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse mb-2">
             <Icon name="User" size={14} className="text-muted-foreground" />
             <span className="text-sm font-medium text-foreground">
-              Question by {question?.askedBy}
+              {t('question_card.question_by', { askedBy: question?.askedBy })}
             </span>
           </div>
           <div className="bg-muted/30 p-3 rounded-lg">
@@ -82,10 +86,10 @@ const QuestionCard = ({ question, onSelect, isSelected, formatTimeAgo }) => {
         {/* Response Preview */}
         {question?.responses?.length > 0 && (
           <div>
-            <div className="flex items-center space-x-2 mb-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse mb-2">
               <Icon name="MessageCircle" size={14} className="text-muted-foreground" />
               <span className="text-sm font-medium text-foreground">
-                Response by {question?.responses?.[0]?.respondedBy}
+                {t('question_card.response_by', { respondedBy: question?.responses?.[0]?.respondedBy })}
               </span>
             </div>
             <div className="bg-primary/5 p-3 rounded-lg border border-primary/20">
@@ -98,21 +102,31 @@ const QuestionCard = ({ question, onSelect, isSelected, formatTimeAgo }) => {
 
         {/* Metadata */}
         <div className="flex items-center justify-between text-xs text-muted-foreground pt-4 border-t border-border">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-4 rtl:space-x-reverse">
+            <div className="flex items-center space-x-1 rtl:space-x-reverse">
               <Icon name="MessageSquare" size={12} />
-              <span>{question?.responses?.length} responses</span>
+              <span>
+                {question?.responses?.length === 1 
+                  ? t('question_card.response_count', { count: question?.responses?.length })
+                  : t('question_card.responses_count', { count: question?.responses?.length })
+                }
+              </span>
             </div>
             {question?.attachments?.length > 0 && (
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center space-x-1 rtl:space-x-reverse">
                 <Icon name="Paperclip" size={12} />
-                <span>{question?.attachments?.length} attachments</span>
+                <span>
+                  {question?.attachments?.length === 1 
+                    ? t('question_card.attachment_count', { count: question?.attachments?.length })
+                    : t('question_card.attachments_count', { count: question?.attachments?.length })
+                  }
+                </span>
               </div>
             )}
           </div>
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1 rtl:space-x-reverse">
             <Icon name="Calendar" size={12} />
-            <span>Asked {formatTimeAgo(question?.createdAt)}</span>
+            <span>{t('question_card.asked_time', { timeAgo: formatTimeAgo(question?.createdAt) })}</span>
           </div>
         </div>
       </div>

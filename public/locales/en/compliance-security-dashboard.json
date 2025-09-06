@@ -1,0 +1,280 @@
+{
+  "title": "Compliance & Security Monitoring",
+  "subtitle": "Comprehensive security metrics, audit trails, and regulatory compliance tracking",
+  
+  "actions": {
+    "refresh_data": "Refresh Data",
+    "export_report": "Export Report",
+    "configure_alerts": "Configure Alerts",
+    "view_details": "View Details",
+    "export_csv": "Export CSV",
+    "advanced_filter": "Advanced Filter",
+    "acknowledge": "Acknowledge",
+    "investigate": "Investigate",
+    "escalate": "Escalate",
+    "mark_resolved": "Mark Resolved",
+    "view_all_alerts": "View All Alerts",
+    "configure": "Configure",
+    "refresh": "Refresh",
+    "generate_report": "Generate Compliance Report",
+    "create_incident": "Create Security Incident",
+    "export_logs": "Export Audit Logs",
+    "view_all": "View All"
+  },
+
+  "security_metrics": {
+    "overall_security_score": {
+      "title": "Overall Security Score",
+      "description": "Comprehensive security posture rating"
+    },
+    "compliance_violations": {
+      "title": "Active Compliance Violations", 
+      "description": "Current regulatory compliance issues"
+    },
+    "audit_trail_completeness": {
+      "title": "Audit Trail Completeness",
+      "description": "Percentage of logged activities"
+    },
+    "access_anomaly_count": {
+      "title": "Access Anomaly Count",
+      "description": "Unusual access patterns detected"
+    }
+  },
+
+  "period_selector": {
+    "periods": {
+      "last_7_days": "Last 7 Days",
+      "last_30_days": "Last 30 Days", 
+      "last_90_days": "Last 90 Days",
+      "last_6_months": "Last 6 Months",
+      "last_year": "Last Year",
+      "custom": "Custom Range"
+    },
+    "frameworks": {
+      "all": "All Frameworks",
+      "sox": "SOX Compliance",
+      "gdpr": "GDPR",
+      "sec": "SEC Regulations", 
+      "iso27001": "ISO 27001",
+      "hipaa": "HIPAA"
+    },
+    "security_levels": {
+      "all": "All Levels",
+      "critical": "Critical Only",
+      "high": "High & Above",
+      "medium": "Medium & Above",
+      "low": "All Levels"
+    },
+    "placeholders": {
+      "select_period": "Select period",
+      "regulatory_framework": "Regulatory framework",
+      "security_level": "Security level"
+    }
+  },
+
+  "timeline": {
+    "title": "Security Timeline",
+    "subtitle": "Real-time security events and access patterns",
+    "views": {
+      "access_patterns": "Access Patterns",
+      "permission_changes": "Permission Changes", 
+      "security_alerts": "Security Alerts",
+      "anomalies": "Anomalies"
+    },
+    "zoom_levels": {
+      "hour": "Hourly",
+      "day": "Daily", 
+      "week": "Weekly"
+    },
+    "legend": {
+      "normal_activity": "Normal Activity",
+      "elevated_activity": "Elevated Activity",
+      "critical_events": "Critical Events"
+    }
+  },
+
+  "security_alerts": {
+    "title": "Security Alerts",
+    "subtitle": "Real-time security incidents and anomalies",
+    "severity_levels": {
+      "critical": "CRITICAL",
+      "high": "HIGH",
+      "medium": "MEDIUM", 
+      "low": "LOW"
+    },
+    "status_labels": {
+      "active": "Active",
+      "investigating": "Investigating",
+      "pending_review": "Pending Review",
+      "acknowledged": "Acknowledged",
+      "unknown": "Unknown"
+    },
+    "escalation_levels": {
+      "immediate": "immediate",
+      "within_1_hour": "within 1 hour",
+      "within_4_hours": "within 4 hours", 
+      "within_24_hours": "within 24 hours"
+    },
+    "categories": {
+      "authentication": "authentication",
+      "access_anomaly": "access anomaly",
+      "permission_change": "permission change",
+      "device_change": "device change"
+    },
+    "sample_alerts": {
+      "failed_login": {
+        "title": "Multiple Failed Login Attempts",
+        "description": "User account john.doe@company.com has 5 consecutive failed login attempts from IP 45.123.78.90",
+        "recommended_action": "Lock account and investigate source IP",
+        "affected_resource": "Authentication System"
+      },
+      "unusual_access": {
+        "title": "Unusual Document Access Pattern", 
+        "description": "External user sarah.wilson@advisor.com accessed 15+ sensitive documents within 10 minutes",
+        "recommended_action": "Review user permissions and contact user",
+        "affected_resource": "Deal Room Alpha"
+      },
+      "permission_request": {
+        "title": "Permission Elevation Request",
+        "description": "User michael.chen@company.com requested admin privileges for Deal Room Beta", 
+        "recommended_action": "Review and approve/deny request",
+        "affected_resource": "Deal Room Beta"
+      },
+      "new_device": {
+        "title": "New Device Login",
+        "description": "User emma.davis@company.com logged in from a new device (Chrome on macOS)",
+        "recommended_action": "Verify with user if needed",
+        "affected_resource": "User Account"
+      }
+    },
+    "footer_text": "{{count}} active alerts requiring attention",
+    "headers": {
+      "recommended_action": "Recommended Action",
+      "category": "Category"
+    }
+  },
+
+  "compliance_panel": {
+    "regulatory_checklist": {
+      "title": "Regulatory Checklist",
+      "subtitle": "Compliance requirements status"
+    },
+    "recent_activities": {
+      "title": "Recent Activities", 
+      "subtitle": "Latest audit and compliance actions"
+    },
+    "quick_actions": {
+      "title": "Quick Actions"
+    },
+    "frameworks": {
+      "sox": "SOX",
+      "gdpr": "GDPR", 
+      "sec": "SEC",
+      "iso27001": "ISO 27001"
+    },
+    "requirements": {
+      "access_control": "Access Control Documentation",
+      "data_processing": "Data Processing Records",
+      "audit_trail": "Audit Trail Completeness",
+      "incident_response": "Security Incident Response"
+    },
+    "activity_types": {
+      "access_review": "access_review",
+      "permission_change": "permission_change",
+      "security_scan": "security_scan", 
+      "compliance_report": "compliance_report"
+    },
+    "sample_activities": {
+      "quarterly_review": "Quarterly access review completed for Deal Room Alpha",
+      "bulk_update": "Bulk permission update for external advisors",
+      "security_scan": "Automated security vulnerability scan initiated",
+      "monthly_report": "Monthly compliance report generated"
+    },
+    "users": {
+      "sarah_johnson": "Sarah Johnson",
+      "michael_chen": "Michael Chen",
+      "system": "System",
+      "compliance_bot": "Compliance Bot"
+    },
+    "labels": {
+      "next_review": "Next review"
+    }
+  },
+
+  "audit_table": {
+    "title": "Comprehensive Audit Trail", 
+    "subtitle": "Detailed access logs and security events",
+    "search_placeholder": "Search users, actions, or resources...",
+    "filter_placeholder": "Filter by action",
+    "headers": {
+      "timestamp": "Timestamp",
+      "user": "User",
+      "action": "Action",
+      "resource": "Resource",
+      "location": "Location", 
+      "risk_level": "Risk Level",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "action_types": {
+      "all": "All Actions",
+      "document_access": "Document Access",
+      "document_download": "Document Download",
+      "permission_change": "Permission Change",
+      "failed_login": "Failed Login",
+      "user_role_update": "User Role Update"
+    },
+    "risk_levels": {
+      "high": "HIGH",
+      "medium": "MEDIUM",
+      "low": "LOW"
+    },
+    "status_labels": {
+      "success": "success", 
+      "failed": "failed"
+    },
+    "pagination": {
+      "showing": "Showing {{start}} to {{end}} of {{total}} entries",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "sample_data": {
+      "actions": {
+        "document_access": "Document Access",
+        "permission_change": "Permission Change",
+        "failed_login": "Failed Login Attempt",
+        "document_download": "Document Download",
+        "user_role_update": "User Role Update",
+        "document_view": "Document View"
+      },
+      "resources": {
+        "financial_statements": "Financial_Statements_Q3.pdf",
+        "deal_room_alpha": "Deal Room Alpha",
+        "auth_system": "Authentication System", 
+        "legal_contracts": "Legal_Contracts_Bundle.zip",
+        "user_management": "User Management",
+        "market_analysis": "Market_Analysis_Report.pdf"
+      },
+      "locations": {
+        "new_york": "New York, US",
+        "london": "London, UK",
+        "unknown": "Unknown",
+        "san_francisco": "San Francisco, US",
+        "toronto": "Toronto, CA"
+      }
+    }
+  },
+
+  "status": {
+    "last_updated": "Last updated: {{time}}",
+    "live_data": "Live Data",
+    "data_source": "Data source: VDR Security Analytics"
+  },
+
+  "empty_states": {
+    "no_data": "No data available",
+    "loading": "Loading...",
+    "error": "Error loading data",
+    "no_alerts": "No alerts to display"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "title": "Documents",
+  "subtitle": "Manage and access documents across all data rooms",
+
+  "actions": {
+    "bulk_download": "Bulk Download",
+    "generate_report": "Generate Report",
+    "upload_document": "Upload Document",
+    "download_all": "Download All",
+    "approve": "Approve",
+    "delete": "Delete",
+    "download": "Download",
+    "cancel": "Cancel",
+    "save_changes": "Save Changes",
+    "clear_selection": "Clear selection"
+  },
+
+  "stats": {
+    "total_documents": "Total Documents",
+    "approved": "Approved",
+    "pending": "Pending",
+    "views_today": "Views Today"
+  },
+
+  "search": {
+    "placeholder": "Search documents...",
+    "no_results_title": "No documents found",
+    "no_results_description": "Try adjusting your search criteria",
+    "empty_state_description": "Upload your first document to get started"
+  },
+
+  "filters": {
+    "all_documents": "All Documents",
+    "approved": "Approved",
+    "pending_approval": "Pending Approval"
+  },
+
+  "table": {
+    "headers": {
+      "document": "Document",
+      "room": "Room", 
+      "size": "Size",
+      "uploaded_by": "Uploaded By",
+      "status": "Status",
+      "date": "Date",
+      "actions": "Actions"
+    }
+  },
+
+  "status_labels": {
+    "approved": "approved",
+    "pending": "pending"
+  },
+
+  "bulk_actions": {
+    "selected_singular": "{{count}} document selected",
+    "selected_plural": "{{count}} documents selected"
+  },
+
+  "tooltips": {
+    "preview_document": "Preview document",
+    "download_document": "Download document", 
+    "manage_permissions": "Manage permissions"
+  },
+
+  "drag_drop": {
+    "title": "Drop files here to upload"
+  },
+
+  "preview_modal": {
+    "title": "Document Preview",
+    "description": "Preview functionality would be implemented here for {{fileType}} files",
+    "file_size": "File size:",
+    "version": "Version:",
+    "downloads": "Downloads:"
+  },
+
+  "permissions_modal": {
+    "title": "Manage Permissions",
+    "subtitle": "Document Permissions",
+    "current_access": "Current Access",
+    "owner": "Owner:",
+    "room": "Room:",
+    "status": "Status:",
+    "permissions": {
+      "read": {
+        "label": "Read",
+        "description": "View document content"
+      },
+      "download": {
+        "label": "Download", 
+        "description": "Download document files"
+      },
+      "edit": {
+        "label": "Edit",
+        "description": "Modify document content"
+      },
+      "delete": {
+        "label": "Delete",
+        "description": "Remove document from system"
+      }
+    }
+  },
+
+  "time": {
+    "just_now": "Just now",
+    "minutes_ago": "{{count}}m ago",
+    "hours_ago": "{{count}}h ago",
+    "days_ago": "{{count}}d ago"
+  },
+
+  "mock_data": {
+    "documents": {
+      "1": "Project_Proposal.pdf",
+      "2": "Technical_Specs.docx", 
+      "3": "Contract_Draft.pdf",
+      "4": "Q4_Report.xlsx",
+      "5": "Presentation_Deck.pptx"
+    },
+    "users": {
+      "admin_user": "Admin User",
+      "technical_lead": "Technical Lead",
+      "legal_advisor": "Legal Advisor", 
+      "finance_manager": "Finance Manager",
+      "marketing_director": "Marketing Director"
+    },
+    "rooms": {
+      "project_alpha": "Project Alpha",
+      "legal_documents": "Legal Documents",
+      "financial_reports": "Financial Reports",
+      "marketing_materials": "Marketing Materials"
+    }
+  }
+}

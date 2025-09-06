@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Icon from '../AppIcon';
-import t from '../../utils/i18n';
 import Button from './Button';
+import LanguageToggle from './LanguageToggle';
+import DarkModeToggle from './DarkModeToggle';
 
 const Header = ({ onToggleSidebar }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -10,80 +12,36 @@ const Header = ({ onToggleSidebar }) => {
   const userMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const { t: tNav } = useTranslation('navigation');
+  const { t: tCommon } = useTranslation('common');
 
-  // Theme (dark/light) and language (en/ar) state
-  const [isDark, setIsDark] = useState(() => {
-    try {
-      const stored = localStorage.getItem('theme');
-      if (stored) return stored === 'dark';
-      return document?.documentElement?.classList?.contains('dark');
-    } catch (e) {
-      return false;
-    }
-  });
 
-  const [isRTL, setIsRTL] = useState(() => {
-    try {
-      const stored = localStorage.getItem('lang');
-      if (stored) return stored === 'ar';
-      return document?.documentElement?.dir === 'rtl';
-    } catch (e) {
-      return false;
-    }
-  });
 
-  useEffect(() => {
-    try {
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-      }
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    } catch (e) {
-      // ignore
-    }
-  }, [isDark]);
-
-  useEffect(() => {
-    try {
-      document.documentElement.lang = isRTL ? 'ar' : 'en';
-      document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-      localStorage.setItem('lang', isRTL ? 'ar' : 'en');
-    } catch (e) {
-      // ignore
-    }
-  }, [isRTL]);
-
-  const toggleTheme = () => setIsDark((s) => !s);
-  const toggleLang = () => setIsRTL((s) => !s);
 
   const navigationItems = [
     {
-      label: t('routes.executive_overview'),
+      label: tNav('routes.executive_overview'),
       path: '/executive-deal-flow-dashboard',
       icon: 'BarChart3',
-      tooltip: t('header.toggle_theme')
+      tooltip: tCommon('header.toggle_theme')
     },
     {
-      label: t('routes.deal_intelligence'),
+      label: tNav('routes.deal_intelligence'),
       path: '/deal-analytics-intelligence-dashboard',
       icon: 'TrendingUp',
-      tooltip: t('header.toggle_theme')
+      tooltip: tCommon('header.toggle_theme')
     },
     {
-      label: t('routes.operations_center'),
+      label: tNav('routes.operations_center'),
       path: '/vdr-operations-command-center',
       icon: 'Monitor',
-      tooltip: t('header.toggle_theme')
+      tooltip: tCommon('header.toggle_theme')
     },
     {
-      label: t('routes.compliance_security'),
+      label: tNav('routes.compliance_security'),
       path: '/compliance-security-monitoring-dashboard',
       icon: 'Shield',
-      tooltip: t('header.toggle_theme')
+      tooltip: tCommon('header.toggle_theme')
     }
   ];
 
@@ -114,10 +72,13 @@ const Header = ({ onToggleSidebar }) => {
     const now = new Date();
     const diff = Math.floor((now - date) / 1000);
     
-    if (diff < 60) return 'Just now';
-    if (diff < 60) return t('misc.just_now');
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 60) return tCommon('time_ago.just_now');
+    if (diff < 3600) {
+      const minutes = Math.floor(diff / 60);
+      return tCommon('time_ago.minutes_ago', { count: minutes });
+    }
+    const hours = Math.floor(diff / 3600);
+    return tCommon('time_ago.hours_ago', { count: hours });
   };
 
   const getCurrentPageTitle = () => {
@@ -129,10 +90,10 @@ const Header = ({ onToggleSidebar }) => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-card border-b border-border">
       <div className="flex items-center justify-between h-16 px-6">
         {/* Logo Section */}
-        <div className="flex items-center space-x-8">
+        <div className="flex items-center space-x-8 rtl:space-x-reverse">
           <div 
-            className="flex items-center space-x-3 cursor-pointer"
-            onClick={() => navigate('/executive-deal-flow-dashboard')}
+            className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer"
+            onClick={() => navigate('/')}
           >
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Icon name="Database" size={20} color="var(--color-primary-foreground)" />
@@ -144,24 +105,29 @@ const Header = ({ onToggleSidebar }) => {
           </div>
 
           {/* Navigation Items */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-1 rtl:space-x-reverse">
             {navigationItems?.map((item) => {
               const isActive = location?.pathname === item?.path;
               return (
                 <button
                   key={item?.path}
                   onClick={() => handleNavigation(item?.path)}
-                  className={`
-                    flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium
-                    transition-all duration-200 hover:bg-muted/50
-                    ${isActive 
-                      ? 'bg-primary/10 text-primary border border-primary/20' :'text-muted-foreground hover:text-foreground'
-                    }
-                  `}
+                                     className={`
+                     flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-lg text-sm font-medium
+                     transition-all duration-200 relative group
+                     ${isActive 
+                       ? 'bg-primary text-primary-foreground shadow-md ring-1 ring-primary/10 font-semibold' 
+                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/60 hover:shadow-sm'
+                     }
+                   `}
                   title={item?.tooltip}
                 >
                   <Icon name={item?.icon} size={16} />
                   <span>{item?.label}</span>
+                  {/* Active indicator */}
+                  {isActive && (
+                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 h-0.5 bg-primary-foreground/40 rounded-full"></div>
+                  )}
                 </button>
               );
             })}
@@ -169,31 +135,24 @@ const Header = ({ onToggleSidebar }) => {
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center space-x-4">
-          {/* Theme toggle */}
-          <button
-            onClick={toggleTheme}
-            title="Toggle theme"
-            aria-label="Toggle theme"
-            className="p-2 rounded-lg hover:bg-muted/50 transition-colors"
-          >
-            <Icon name={isDark ? 'Sun' : 'Moon'} size={18} />
-          </button>
+        <div className="flex items-center space-x-1 rtl:space-x-reverse">
+          {/* Theme Controls */}
+          <div className="flex items-center space-x-1 rtl:space-x-reverse">
+            {/* Language Toggle */}
+            <LanguageToggle />
 
-          {/* Language/RTL toggle */}
-          <button
-            onClick={toggleLang}
-            title="Toggle language"
-            aria-label="Toggle language"
-            className="p-2 rounded-lg hover:bg-muted/50 transition-colors"
-          >
-            <Icon name={isRTL ? 'Globe' : 'Globe'} size={18} />
-          </button>
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
+          </div>
+
+          {/* Divider */}
+          <div className="h-5 w-px bg-border/60 mx-3"></div>
+
           {/* Data Status Indicator */}
-          <div className="hidden md:flex items-center space-x-2 px-3 py-1.5 bg-muted/30 rounded-lg">
-            <div className="w-2 h-2 bg-success rounded-full animate-pulse-subtle"></div>
-            <span className="text-xs text-muted-foreground">
-              {t('header.updated')} {formatLastRefresh(lastDataRefresh)}
+          <div className="hidden md:flex items-center space-x-2 rtl:space-x-reverse px-3 py-1.5 bg-muted/20 rounded-md">
+            <div className="w-1.5 h-1.5 bg-success rounded-full animate-pulse"></div>
+            <span className="text-xs text-muted-foreground font-medium">
+              {tCommon('header.updated')} {formatLastRefresh(lastDataRefresh)}
             </span>
           </div>
 
@@ -201,19 +160,19 @@ const Header = ({ onToggleSidebar }) => {
           <div className="relative" ref={userMenuRef}>
             <button
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              className="flex items-center space-x-2 p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200"
+              className="flex items-center space-x-2 rtl:space-x-reverse px-2 py-1.5 rounded-lg hover:bg-muted/50 transition-all duration-200 group"
             >
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <Icon name="User" size={16} color="var(--color-primary-foreground)" />
+              <div className="w-7 h-7 bg-primary rounded-full flex items-center justify-center ring-2 ring-background shadow-sm">
+                <Icon name="User" size={14} color="var(--color-primary-foreground)" />
               </div>
               <div className="hidden sm:block text-left">
-                <div className="text-sm font-medium text-foreground">John Executive</div>
+                <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">John Executive</div>
                 <div className="text-xs text-muted-foreground">Senior Analyst</div>
               </div>
               <Icon 
                 name="ChevronDown" 
-                size={16} 
-                className={`text-muted-foreground transition-transform duration-200 ${
+                size={14} 
+                className={`text-muted-foreground group-hover:text-foreground transition-all duration-200 ${
                   isUserMenuOpen ? 'rotate-180' : ''
                 }`}
               />
@@ -229,28 +188,28 @@ const Header = ({ onToggleSidebar }) => {
                 </div>
                 
                 <div className="py-2">
-                  <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
+                  <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                     <Icon name="User" size={16} />
-                    <span>{t('user.profile_settings')}</span>
+                    <span>{tCommon('user.profile_settings')}</span>
                   </button>
-                  <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
+                  <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                     <Icon name="Settings" size={16} />
-                    <span>{t('user.dashboard_preferences')}</span>
+                    <span>{tCommon('user.dashboard_preferences')}</span>
                   </button>
-                  <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
+                  <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                     <Icon name="Bell" size={16} />
-                    <span>{t('user.notification_settings')}</span>
+                    <span>{tCommon('user.notification_settings')}</span>
                   </button>
-                  <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
+                  <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
                     <Icon name="HelpCircle" size={16} />
-                    <span>{t('user.help_support')}</span>
+                    <span>{tCommon('user.help_support')}</span>
                   </button>
                 </div>
                 
                 <div className="border-t border-border pt-4">
-                  <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors">
+                  <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors">
                     <Icon name="LogOut" size={16} />
-                    <span>{t('user.sign_out')}</span>
+                    <span>{tCommon('user.sign_out')}</span>
                   </button>
                 </div>
               </div>
@@ -258,36 +217,45 @@ const Header = ({ onToggleSidebar }) => {
           </div>
 
           {/* Menu Button (visible on all sizes) */}
-          <div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => onToggleSidebar && onToggleSidebar()}
-            >
-              <Icon name="Menu" size={20} />
-            </Button>
-          </div>
+          <button
+            onClick={() => onToggleSidebar && onToggleSidebar()}
+            className="p-2 rounded-lg hover:bg-muted/50 transition-all duration-200 group ml-2"
+            aria-label="Toggle sidebar"
+          >
+            <div className="flex items-center justify-center w-5 h-5">
+              <Icon 
+                name="Menu" 
+                size={18} 
+                className="text-muted-foreground group-hover:text-foreground transition-colors" 
+              />
+            </div>
+          </button>
         </div>
       </div>
       {/* Mobile Navigation */}
       <div className="lg:hidden border-t border-border bg-card">
-        <nav className="flex overflow-x-auto py-2 px-4 space-x-1">
+        <nav className="flex overflow-x-auto py-2 px-4 space-x-1 rtl:space-x-reverse">
           {navigationItems?.map((item) => {
             const isActive = location?.pathname === item?.path;
             return (
               <button
                 key={item?.path}
                 onClick={() => handleNavigation(item?.path)}
-                className={`
-                  flex flex-col items-center space-y-1 px-3 py-2 rounded-lg text-xs font-medium
-                  transition-all duration-200 whitespace-nowrap min-w-fit
-                  ${isActive 
-                    ? 'bg-primary/10 text-primary' :'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                  }
-                `}
+                                 className={`
+                   flex flex-col items-center space-y-1 px-3 py-2 rounded-lg text-xs font-medium
+                   transition-all duration-200 whitespace-nowrap min-w-fit relative
+                   ${isActive 
+                     ? 'bg-primary text-primary-foreground shadow-md ring-1 ring-primary/10 font-semibold' 
+                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/60 hover:shadow-sm'
+                   }
+                 `}
               >
                 <Icon name={item?.icon} size={16} />
                 <span>{item?.label}</span>
+                {/* Active indicator for mobile */}
+                {isActive && (
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-4 h-0.5 bg-primary-foreground/40 rounded-full"></div>
+                )}
               </button>
             );
           })}

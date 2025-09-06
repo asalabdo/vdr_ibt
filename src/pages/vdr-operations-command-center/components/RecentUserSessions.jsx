@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 const RecentUserSessions = () => {
+  const { t } = useTranslation('vdr-operations-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [filter, setFilter] = useState('all');
 
   // Mock user session data
@@ -13,12 +16,12 @@ const RecentUserSessions = () => {
         name: 'Sarah Johnson',
         email: 'sarah.johnson@techcorp.com',
         avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=32&h=32&fit=crop&crop=face',
-        role: 'Deal Manager'
+        role: t('user_sessions.user_roles.deal_manager')
       },
       dataRoom: 'TechCorp Acquisition',
       status: 'active',
-      duration: '2h 34m',
-      lastActivity: '2 min ago',
+      duration: tCommon('sample_times.duration_2h_34m'),
+      lastActivity: tCommon('sample_times.2_min_ago'),
       documentsViewed: 23,
       location: 'New York, US',
       device: 'Desktop',
@@ -30,12 +33,12 @@ const RecentUserSessions = () => {
         name: 'Michael Chen',
         email: 'michael.chen@meddevice.com',
         avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face',
-        role: 'Legal Advisor'
+        role: t('user_sessions.user_roles.legal_advisor')
       },
       dataRoom: 'MedDevice Merger',
       status: 'active',
-      duration: '1h 45m',
-      lastActivity: '5 min ago',
+      duration: tCommon('sample_times.duration_1h_45m'),
+      lastActivity: tCommon('sample_times.5_min_ago'),
       documentsViewed: 18,
       location: 'London, UK',
       device: 'Mobile',
@@ -47,12 +50,12 @@ const RecentUserSessions = () => {
         name: 'Emily Rodriguez',
         email: 'emily.rodriguez@fintech.com',
         avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face',
-        role: 'Financial Analyst'
+        role: t('user_sessions.user_roles.financial_analyst')
       },
       dataRoom: 'FinTech Partnership',
       status: 'idle',
-      duration: '45m',
-      lastActivity: '15 min ago',
+      duration: tCommon('sample_times.duration_45m'),
+      lastActivity: tCommon('sample_times.15_min_ago'),
       documentsViewed: 12,
       location: 'San Francisco, US',
       device: 'Tablet',
@@ -64,12 +67,12 @@ const RecentUserSessions = () => {
         name: 'David Kim',
         email: 'david.kim@energy.com',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face',
-        role: 'Senior Analyst'
+        role: t('user_sessions.user_roles.senior_analyst')
       },
       dataRoom: 'Energy Sector Deal',
       status: 'active',
-      duration: '3h 12m',
-      lastActivity: '1 min ago',
+      duration: tCommon('sample_times.duration_3h_12m'),
+      lastActivity: tCommon('sample_times.1_min_ago'),
       documentsViewed: 41,
       location: 'Tokyo, JP',
       device: 'Desktop',
@@ -81,12 +84,12 @@ const RecentUserSessions = () => {
         name: 'Lisa Wang',
         email: 'lisa.wang@retail.com',
         avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=32&h=32&fit=crop&crop=face',
-        role: 'Investment Manager'
+        role: t('user_sessions.user_roles.investment_manager')
       },
       dataRoom: 'Retail Chain Buyout',
       status: 'ended',
-      duration: '1h 23m',
-      lastActivity: '30 min ago',
+      duration: tCommon('sample_times.duration_1h_23m'),
+      lastActivity: tCommon('sample_times.30_min_ago'),
       documentsViewed: 15,
       location: 'Sydney, AU',
       device: 'Desktop',
@@ -136,20 +139,20 @@ const RecentUserSessions = () => {
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 rtl:space-x-reverse">
             <Icon name="Users" size={20} className="text-accent" />
-            <h3 className="text-lg font-semibold text-foreground">Recent User Sessions</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t('user_sessions.title')}</h3>
           </div>
           <Button variant="ghost" size="sm" iconName="RefreshCw" />
         </div>
         
         {/* Filter Tabs */}
-        <div className="flex space-x-1">
+        <div className="flex space-x-1 rtl:space-x-reverse">
           {[
-            { key: 'all', label: 'All', count: userSessions?.length },
-            { key: 'active', label: 'Active', count: statusCounts?.active || 0 },
-            { key: 'idle', label: 'Idle', count: statusCounts?.idle || 0 },
-            { key: 'ended', label: 'Ended', count: statusCounts?.ended || 0 }
+            { key: 'all', label: t('user_sessions.tabs.all'), count: userSessions?.length },
+            { key: 'active', label: t('user_sessions.tabs.active'), count: statusCounts?.active || 0 },
+            { key: 'idle', label: t('user_sessions.tabs.idle'), count: statusCounts?.idle || 0 },
+            { key: 'ended', label: t('user_sessions.tabs.ended'), count: statusCounts?.ended || 0 }
           ]?.map(({ key, label, count }) => (
             <button
               key={key}
@@ -172,7 +175,7 @@ const RecentUserSessions = () => {
         {filteredSessions?.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-32 text-muted-foreground">
             <Icon name="Users" size={24} className="mb-2" />
-            <span className="text-sm">No sessions to display</span>
+            <span className="text-sm">{t('user_sessions.empty_state')}</span>
           </div>
         ) : (
           <div className="space-y-1 p-2">
@@ -221,7 +224,7 @@ const RecentUserSessions = () => {
                         inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-xs font-medium border
                         ${getStatusColor(session?.status)}
                       `}>
-                        <span className="capitalize">{session?.status}</span>
+                        <span className="capitalize">{tCommon(`status_values.${session?.status}`)}</span>
                       </div>
                     </div>
 
@@ -230,19 +233,19 @@ const RecentUserSessions = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div className="flex items-center space-x-1">
+                      <div className="flex items-center space-x-1 rtl:space-x-reverse">
                         <Icon name="Clock" size={12} className="text-muted-foreground" />
                         <span>{session?.duration}</span>
                       </div>
-                      <div className="flex items-center space-x-1">
+                      <div className="flex items-center space-x-1 rtl:space-x-reverse">
                         <Icon name="FileText" size={12} className="text-muted-foreground" />
-                        <span>{session?.documentsViewed} docs</span>
+                        <span>{session?.documentsViewed} {tCommon('labels.docs')}</span>
                       </div>
-                      <div className="flex items-center space-x-1">
+                      <div className="flex items-center space-x-1 rtl:space-x-reverse">
                         <Icon name={getDeviceIcon(session?.device)} size={12} className="text-muted-foreground" />
                         <span>{session?.device}</span>
                       </div>
-                      <div className="flex items-center space-x-1">
+                      <div className="flex items-center space-x-1 rtl:space-x-reverse">
                         <Icon name="MapPin" size={12} className="text-muted-foreground" />
                         <span>{session?.location}</span>
                       </div>
@@ -250,9 +253,9 @@ const RecentUserSessions = () => {
 
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-xs text-muted-foreground">
-                        Last activity: {session?.lastActivity}
+                        {t('user_sessions.session_details.last_activity')}: {session?.lastActivity}
                       </span>
-                      <div className="flex space-x-1">
+                      <div className="flex space-x-1 rtl:space-x-reverse">
                         <Button variant="ghost" size="xs" iconName="Eye" />
                         <Button variant="ghost" size="xs" iconName="MessageSquare" />
                         {session?.status === 'active' && (
@@ -271,10 +274,10 @@ const RecentUserSessions = () => {
       <div className="p-4 border-t border-border">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>
-            {filteredSessions?.length} of {userSessions?.length} sessions
+            {filteredSessions?.length} {tCommon('labels.of')} {userSessions?.length} {tCommon('labels.sessions')}
           </span>
           <Button variant="ghost" size="sm">
-            View All Sessions
+            {t('user_sessions.view_all_sessions')}
           </Button>
         </div>
       </div>

@@ -1,0 +1,123 @@
+{
+  "title": "Data Rooms",
+  "subtitle": "Manage and access your virtual data rooms",
+  
+  "actions": {
+    "create_room": "Create Room",
+    "export_rooms": "Export Rooms", 
+    "bulk_invite": "Bulk Invite",
+    "view_details": "View Details",
+    "manage_users": "Manage Users",
+    "settings": "Settings",
+    "export": "Export",
+    "archive_room": "Archive Room",
+    "filters": "Filters",
+    "sort": "Sort",
+    "clear_all": "Clear All",
+    "apply": "Apply"
+  },
+
+  "stats": {
+    "total_rooms": "Total Rooms",
+    "active": "Active", 
+    "archived": "Archived",
+    "total_users": "Total Users",
+    "total_files": "Total Files"
+  },
+
+  "search": {
+    "placeholder": "Search data rooms...",
+    "no_results": "No data rooms found",
+    "no_results_description": "Try adjusting your search criteria",
+    "empty_state_description": "Create your first data room to get started"
+  },
+
+  "filters": {
+    "title": "Filters",
+    "status": {
+      "title": "Status",
+      "all": "All Status",
+      "active": "Active", 
+      "archived": "Archived",
+      "pending": "Pending"
+    },
+    "deal_type": {
+      "title": "Deal Type",
+      "all": "All Types",
+      "ma": "M&A",
+      "due_diligence": "Due Diligence", 
+      "legal_review": "Legal Review"
+    },
+    "activity": {
+      "title": "Activity Level",
+      "all": "All Activity",
+      "high": "High Activity",
+      "medium": "Medium Activity",
+      "low": "Low Activity"
+    },
+    "date_range": {
+      "title": "Date Range",
+      "all": "All Time",
+      "today": "Today",
+      "week": "This Week", 
+      "month": "This Month",
+      "quarter": "This Quarter"
+    }
+  },
+
+  "room_card": {
+    "created_by": "Created by {{creator}}",
+    "users": "users",
+    "completion": "Completion",
+    "files": "Files",
+    "storage": "Storage", 
+    "security": "Security",
+    "created": "Created {{date}}",
+    "updated": "Updated {{date}}",
+    "status_labels": {
+      "active": "ACTIVE",
+      "archived": "ARCHIVED", 
+      "pending": "PENDING"
+    }
+  },
+
+  "sample_data": {
+    "rooms": {
+      "project_alpha": {
+        "name": "Project Alpha",
+        "description": "Confidential project documentation"
+      },
+      "legal_documents": {
+        "name": "Legal Documents", 
+        "description": "Legal review materials"
+      },
+      "financial_reports": {
+        "name": "Financial Reports",
+        "description": "Q4 financial data"
+      },
+      "due_diligence_materials": {
+        "name": "Due Diligence Materials",
+        "description": "Comprehensive due diligence package"
+      }
+    },
+    "deal_types": {
+      "ma": "M&A",
+      "legal_review": "Legal Review",
+      "due_diligence": "Due Diligence"
+    },
+    "user_roles": {
+      "admin_user": "Admin User",
+      "legal_advisor": "Legal Advisor",
+      "contract_manager": "Contract Manager", 
+      "compliance_officer": "Compliance Officer",
+      "cfo": "CFO",
+      "financial_analyst": "Financial Analyst",
+      "auditor": "Auditor",
+      "investment_manager": "Investment Manager",
+      "deal_manager": "Deal Manager",
+      "analyst": "Analyst",
+      "reviewer": "Reviewer",
+      "partner": "Partner"
+    }
+  }
+}

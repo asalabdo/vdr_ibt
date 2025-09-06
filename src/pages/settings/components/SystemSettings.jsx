@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Icon from '../../../components/AppIcon';
 
 const SystemSettings = () => {
+  const { t } = useTranslation('settings');
   const [systemSettings, setSystemSettings] = useState({
     companyName: 'VDR',
     supportEmail: 'support@vdranalytics.com',
@@ -40,32 +42,39 @@ const SystemSettings = () => {
     'Asia/Shanghai'
   ];
 
-  const languages = [
-    { code: 'en', name: 'English' },
-    { code: 'es', name: 'Spanish' },
-    { code: 'fr', name: 'French' },
-    { code: 'de', name: 'German' },
-    { code: 'ja', name: 'Japanese' }
+  const languagesData = [
+    { code: 'en', nameKey: 'system.languages.en' },
+    { code: 'es', nameKey: 'system.languages.es' },
+    { code: 'fr', nameKey: 'system.languages.fr' },
+    { code: 'de', nameKey: 'system.languages.de' },
+    { code: 'ja', nameKey: 'system.languages.ja' },
+    { code: 'ar', nameKey: 'system.languages.ar' }
   ];
+
+  // Transform keys to actual translated text
+  const languages = languagesData.map(lang => ({
+    ...lang,
+    name: t(lang.nameKey)
+  }));
 
   return (
     <div className="space-y-6">
       {/* General Settings */}
       <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-        <div className="flex items-center space-x-3 mb-4">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse mb-4">
           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
             <Icon name="Building" size={20} className="text-primary" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-foreground">General Settings</h3>
-            <p className="text-sm text-muted-foreground">Basic system configuration</p>
+            <h3 className="text-lg font-semibold text-foreground">{t('system.general.title')}</h3>
+            <p className="text-sm text-muted-foreground">{t('system.general.description')}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Company Name
+              {t('system.general.company_name')}
             </label>
             <Input
               type="text"
@@ -76,7 +85,7 @@ const SystemSettings = () => {
           
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Support Email
+              {t('system.general.support_email')}
             </label>
             <Input
               type="email"
@@ -87,7 +96,7 @@ const SystemSettings = () => {
           
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Timezone
+              {t('system.general.timezone')}
             </label>
             <select
               value={systemSettings?.timezone}
@@ -102,7 +111,7 @@ const SystemSettings = () => {
           
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Language
+              {t('system.general.language')}
             </label>
             <select
               value={systemSettings?.language}
@@ -118,20 +127,20 @@ const SystemSettings = () => {
       </div>
       {/* File Management */}
       <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-        <div className="flex items-center space-x-3 mb-4">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse mb-4">
           <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
             <Icon name="File" size={20} className="text-blue-600" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-foreground">File Management</h3>
-            <p className="text-sm text-muted-foreground">File upload and storage settings</p>
+            <h3 className="text-lg font-semibold text-foreground">{t('system.file_management.title')}</h3>
+            <p className="text-sm text-muted-foreground">{t('system.file_management.description')}</p>
           </div>
         </div>
 
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Maximum File Size (MB)
+              {t('system.file_management.max_file_size')}
             </label>
             <Input
               type="number"
@@ -142,28 +151,28 @@ const SystemSettings = () => {
               className="w-32"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              Maximum file size for uploads
+              {t('system.file_management.max_file_size_description')}
             </p>
           </div>
         </div>
       </div>
       {/* Security & Access */}
       <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-        <div className="flex items-center space-x-3 mb-4">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse mb-4">
           <div className="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center">
             <Icon name="Shield" size={20} className="text-warning" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-foreground">Security & Access</h3>
-            <p className="text-sm text-muted-foreground">Access control and security settings</p>
+            <h3 className="text-lg font-semibold text-foreground">{t('system.security_access.title')}</h3>
+            <p className="text-sm text-muted-foreground">{t('system.security_access.description')}</p>
           </div>
         </div>
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-sm font-medium text-foreground">Maintenance Mode</div>
-              <div className="text-xs text-muted-foreground">Temporarily disable user access</div>
+              <div className="text-sm font-medium text-foreground">{t('system.security_access.maintenance_mode')}</div>
+              <div className="text-xs text-muted-foreground">{t('system.security_access.maintenance_mode_description')}</div>
             </div>
             <input
               type="checkbox"
@@ -175,8 +184,8 @@ const SystemSettings = () => {
 
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-sm font-medium text-foreground">Allow Guest Access</div>
-              <div className="text-xs text-muted-foreground">Enable limited access without login</div>
+              <div className="text-sm font-medium text-foreground">{t('system.security_access.guest_access')}</div>
+              <div className="text-xs text-muted-foreground">{t('system.security_access.guest_access_description')}</div>
             </div>
             <input
               type="checkbox"
@@ -188,7 +197,7 @@ const SystemSettings = () => {
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Default Session Timeout (minutes)
+              {t('system.security_access.default_session_timeout')}
             </label>
             <Input
               type="number"
@@ -203,21 +212,21 @@ const SystemSettings = () => {
       </div>
       {/* Audit & Logging */}
       <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-        <div className="flex items-center space-x-3 mb-4">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse mb-4">
           <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
             <Icon name="FileText" size={20} className="text-success" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-foreground">Audit & Logging</h3>
-            <p className="text-sm text-muted-foreground">System logging and audit trail settings</p>
+            <h3 className="text-lg font-semibold text-foreground">{t('system.audit_logging.title')}</h3>
+            <p className="text-sm text-muted-foreground">{t('system.audit_logging.description')}</p>
           </div>
         </div>
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-sm font-medium text-foreground">Enable Audit Logs</div>
-              <div className="text-xs text-muted-foreground">Log user activities and system events</div>
+              <div className="text-sm font-medium text-foreground">{t('system.audit_logging.enable_audit_logs')}</div>
+              <div className="text-xs text-muted-foreground">{t('system.audit_logging.enable_audit_logs_description')}</div>
             </div>
             <input
               type="checkbox"
@@ -229,7 +238,7 @@ const SystemSettings = () => {
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Log Retention (days)
+              {t('system.audit_logging.log_retention')}
             </label>
             <Input
               type="number"
@@ -240,62 +249,62 @@ const SystemSettings = () => {
               className="w-32"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              How long to keep audit logs
+              {t('system.audit_logging.log_retention_description')}
             </p>
           </div>
         </div>
       </div>
       {/* System Status */}
       <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-        <div className="flex items-center space-x-3 mb-4">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse mb-4">
           <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
             <Icon name="Activity" size={20} className="text-purple-600" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-foreground">System Status</h3>
-            <p className="text-sm text-muted-foreground">Current system information</p>
+            <h3 className="text-lg font-semibold text-foreground">{t('system.system_status.title')}</h3>
+            <p className="text-sm text-muted-foreground">{t('system.system_status.description')}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">System Version:</span>
-              <span className="text-foreground">v2.1.0</span>
+              <span className="text-muted-foreground">{t('system.system_status.system_version')}:</span>
+              <span className="text-foreground">{t('sample_data.system_info.version')}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Database Status:</span>
-              <span className="text-success">✓ Healthy</span>
+              <span className="text-muted-foreground">{t('system.system_status.database_status')}:</span>
+              <span className="text-success">{t('system.system_status.healthy')}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Storage Usage:</span>
-              <span className="text-foreground">2.1 GB / 100 GB</span>
+              <span className="text-muted-foreground">{t('system.system_status.storage_usage')}:</span>
+              <span className="text-foreground">{t('sample_data.system_info.storage')}</span>
             </div>
           </div>
           
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Active Users:</span>
-              <span className="text-foreground">5</span>
+              <span className="text-muted-foreground">{t('system.system_status.active_users')}:</span>
+              <span className="text-foreground">{t('sample_data.system_info.active_users_count')}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Total Documents:</span>
-              <span className="text-foreground">245</span>
+              <span className="text-muted-foreground">{t('system.system_status.total_documents')}:</span>
+              <span className="text-foreground">{t('sample_data.system_info.total_documents_count')}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Last Backup:</span>
-              <span className="text-foreground">2 hours ago</span>
+              <span className="text-muted-foreground">{t('system.system_status.last_backup')}:</span>
+              <span className="text-foreground">{t('sample_data.system_info.last_backup_time')}</span>
             </div>
           </div>
         </div>
       </div>
       {/* Save Button */}
-      <div className="flex items-center justify-end space-x-3 pt-6 border-t border-border">
+      <div className="flex items-center justify-end space-x-3 rtl:space-x-reverse pt-6 border-t border-border">
         <Button variant="outline">
-          Reset to Defaults
+          {t('actions.reset_to_defaults')}
         </Button>
         <Button onClick={handleSave} variant="default" iconName="Save">
-          Save Changes
+          {t('actions.save_changes')}
         </Button>
       </div>
     </div>

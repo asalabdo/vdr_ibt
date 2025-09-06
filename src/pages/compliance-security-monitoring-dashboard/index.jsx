@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../../components/ui/Header';
+import { useTranslation } from 'react-i18next';
 import SecurityScoreCard from './components/SecurityScoreCard';
 import CompliancePeriodSelector from './components/CompliancePeriodSelector';
 import SecurityTimeline from './components/SecurityTimeline';
@@ -8,6 +8,9 @@ import AuditTable from './components/AuditTable';
 import SecurityAlerts from './components/SecurityAlerts';
 
 const ComplianceSecurityMonitoringDashboard = () => {
+  const { t } = useTranslation('compliance-security-dashboard');
+  const { t: tCommon } = useTranslation('common');
+  
   const [selectedPeriod, setSelectedPeriod] = useState('last_30_days');
   const [selectedFramework, setSelectedFramework] = useState('all');
   const [securityLevel, setSecurityLevel] = useState('all');
@@ -23,45 +26,46 @@ const ComplianceSecurityMonitoringDashboard = () => {
 
   const securityMetrics = [
     {
-      title: 'Overall Security Score',
+      title: t('security_metrics.overall_security_score.title'),
       value: '94/100',
       change: '+2.3%',
       changeType: 'increase',
       icon: 'Shield',
       color: 'success',
-      description: 'Comprehensive security posture rating'
+      description: t('security_metrics.overall_security_score.description')
     },
     {
-      title: 'Active Compliance Violations',
+      title: t('security_metrics.compliance_violations.title'),
       value: '3',
       change: '-2',
       changeType: 'decrease',
       icon: 'AlertTriangle',
       color: 'warning',
-      description: 'Current regulatory compliance issues'
+      description: t('security_metrics.compliance_violations.description')
     },
     {
-      title: 'Audit Trail Completeness',
+      title: t('security_metrics.audit_trail_completeness.title'),
       value: '99.8%',
       change: '+0.1%',
       changeType: 'increase',
       icon: 'FileText',
       color: 'success',
-      description: 'Percentage of logged activities'
+      description: t('security_metrics.audit_trail_completeness.description')
     },
     {
-      title: 'Access Anomaly Count',
+      title: t('security_metrics.access_anomaly_count.title'),
       value: '7',
       change: '+3',
       changeType: 'increase',
       icon: 'Zap',
       color: 'error',
-      description: 'Unusual access patterns detected'
+      description: t('security_metrics.access_anomaly_count.description')
     }
   ];
 
   const formatLastUpdated = (date) => {
-    return date?.toLocaleString('en-US', {
+    const { i18n } = useTranslation();
+    return date?.toLocaleString(i18n.language, {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
@@ -71,20 +75,19 @@ const ComplianceSecurityMonitoringDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main className="pt-4">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Header Section */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
             <div className="mb-4 lg:mb-0">
               <h1 className="text-3xl font-bold text-foreground mb-2">
-                Compliance & Security Monitoring
+                {t('title')}
               </h1>
               <p className="text-muted-foreground">
-                Comprehensive security metrics, audit trails, and regulatory compliance tracking
+                {t('subtitle')}
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                Last updated: {formatLastUpdated(lastUpdated)}
+                {tCommon('header.updated')}: {formatLastUpdated(lastUpdated)}
               </p>
             </div>
             

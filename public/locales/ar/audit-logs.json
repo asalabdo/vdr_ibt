@@ -1,0 +1,139 @@
+{
+  "title": "سجلات التدقيق",
+  "subtitle": "مراقبة أنشطة النظام والأحداث الأمنية",
+  
+  "actions": {
+    "export_logs": "تصدير السجلات",
+    "security_report": "تقرير الأمان",
+    "clear_filters": "مسح جميع الفلاتر",
+    "filters": "الفلاتر",
+    "date_range": "النطاق الزمني",
+    "more": "المزيد",
+    "less": "أقل"
+  },
+
+  "stats": {
+    "total_logs": "إجمالي السجلات",
+    "info_logs": "معلومات",
+    "warnings": "تحذيرات",
+    "errors": "أخطاء"
+  },
+
+  "search": {
+    "placeholder": "البحث في سجلات التدقيق...",
+    "no_results_title": "لم يتم العثور على سجلات تدقيق",
+    "no_results_description": "جرب تعديل معايير البحث أو الفلاتر الخاصة بك",
+    "empty_state_description": "ستظهر سجلات التدقيق هنا عندما يتفاعل المستخدمون مع النظام"
+  },
+
+  "filters": {
+    "title": "الفلاتر",
+    "action_type": {
+      "label": "نوع العملية",
+      "all": "جميع العمليات"
+    },
+    "user": {
+      "label": "المستخدم",
+      "all": "جميع المستخدمين"
+    },
+    "severity": {
+      "label": "مستوى الأهمية",
+      "all": "جميع المستويات",
+      "info": "معلوماتي",
+      "warning": "تحذيري",
+      "error": "خطأ"
+    },
+    "time_range": {
+      "label": "النطاق الزمني",
+      "today": "اليوم",
+      "yesterday": "أمس",
+      "week": "هذا الأسبوع",
+      "month": "هذا الشهر",
+      "custom": "نطاق مخصص"
+    }
+  },
+
+  "log_entry": {
+    "user_details": "تفاصيل المستخدم",
+    "additional_information": "معلومات إضافية",
+    "user_agent": "وكيل المستخدم",
+    "labels": {
+      "email": "البريد الإلكتروني",
+      "ip_address": "عنوان IP",
+      "location": "الموقع"
+    }
+  },
+
+  "actions_types": {
+    "document_download": "تحميل مستند",
+    "document_upload": "رفع مستند",
+    "user_login": "تسجيل دخول المستخدم",
+    "failed_login": "فشل تسجيل الدخول",
+    "permission_change": "تعديل الصلاحيات",
+    "qa_response": "الرد على الاستفسارات",
+    "document_access": "الوصول إلى المستندات",
+    "user_role_update": "تحديث دور المستخدم",
+    "system_access": "الدخول إلى النظام"
+  },
+
+  "severity_levels": {
+    "info": "معلوماتي",
+    "warning": "تحذيري",
+    "error": "خطأ"
+  },
+
+  "resource_types": {
+    "document": "مستند",
+    "system": "نظام",
+    "user": "مستخدم",
+    "room": "غرفة"
+  },
+
+  "time": {
+    "just_now": "الآن",
+    "minutes_ago": "منذ {{count}} د",
+    "hours_ago": "منذ {{count}} س",
+    "days_ago": "منذ {{count}} ي"
+  },
+
+  "sample_data": {
+    "descriptions": {
+      "document_download": "تم تحميل {{fileName}}",
+      "document_upload": "تم رفع {{fileName}}",
+      "user_login": "محاولة تسجيل دخول ناجحة",
+      "failed_login": "محاولة تسجيل دخول فاشلة",
+      "permission_change": "تم تحديث صلاحيات المستخدم",
+      "qa_response": "تم الرد على الاستفسار #{{questionId}}"
+    },
+    "users": {
+      "admin_user": "مدير النظام",
+      "legal_advisor": "المستشار القانوني",
+      "financial_analyst": "المحلل المالي",
+      "qa_observer": "مراقب الاستفسارات",
+      "document_viewer": "مراجع المستندات"
+    },
+    "resources": {
+      "contract_draft": "مسودة_العقد.pdf",
+      "financial_report": "التقرير_المالي_الربع_الرابع.xlsx",
+      "legal_documents": "الوثائق القانونية",
+      "authentication_system": "نظام المصادقة",
+      "user_management": "إدارة المستخدمين"
+    },
+    "locations": {
+      "new_york": "نيويورك، الولايات المتحدة",
+      "san_francisco": "سان فرانسيسكو، الولايات المتحدة",
+      "london": "لندن، المملكة المتحدة",
+      "toronto": "تورونتو، كندا",
+      "unknown": "غير معروف"
+    },
+    "additional_data": {
+      "file_size": "حجم الملف",
+      "room": "غرفة البيانات",
+      "login_method": "طريقة تسجيل الدخول",
+      "session_duration": "مدة الجلسة",
+      "old_role": "الدور السابق",
+      "new_role": "الدور الجديد",
+      "question_priority": "أولوية الاستفسار"
+    }
+  }
+}

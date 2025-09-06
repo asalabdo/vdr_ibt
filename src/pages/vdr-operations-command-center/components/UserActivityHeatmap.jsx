@@ -1,29 +1,40 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 const UserActivityHeatmap = ({ data = [] }) => {
+  const { t } = useTranslation('vdr-operations-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [selectedTimeRange, setSelectedTimeRange] = useState('24h');
   const [selectedMetric, setSelectedMetric] = useState('sessions');
 
   const timeRanges = [
-    { value: '1h', label: '1H' },
-    { value: '6h', label: '6H' },
-    { value: '24h', label: '24H' },
-    { value: '7d', label: '7D' }
+    { value: '1h', label: t('user_activity_heatmap.time_ranges.1h') },
+    { value: '6h', label: t('user_activity_heatmap.time_ranges.6h') },
+    { value: '24h', label: t('user_activity_heatmap.time_ranges.24h') },
+    { value: '7d', label: t('user_activity_heatmap.time_ranges.7d') }
   ];
 
   const metrics = [
-    { value: 'sessions', label: 'Active Sessions', icon: 'Users' },
-    { value: 'downloads', label: 'Downloads', icon: 'Download' },
-    { value: 'uploads', label: 'Uploads', icon: 'Upload' },
-    { value: 'views', label: 'Document Views', icon: 'Eye' }
+    { value: 'sessions', label: t('user_activity_heatmap.metrics.sessions'), icon: 'Users' },
+    { value: 'downloads', label: t('user_activity_heatmap.metrics.downloads'), icon: 'Download' },
+    { value: 'uploads', label: t('user_activity_heatmap.metrics.uploads'), icon: 'Upload' },
+    { value: 'views', label: t('user_activity_heatmap.metrics.views'), icon: 'Eye' }
   ];
 
   // Generate mock heatmap data
   const generateHeatmapData = () => {
     const hours = Array.from({ length: 24 }, (_, i) => i);
-    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const days = [
+      tCommon('days.mon'), 
+      tCommon('days.tue'), 
+      tCommon('days.wed'), 
+      tCommon('days.thu'), 
+      tCommon('days.fri'), 
+      tCommon('days.sat'), 
+      tCommon('days.sun')
+    ];
     
     return days?.map(day => ({
       day,
@@ -66,9 +77,9 @@ const UserActivityHeatmap = ({ data = [] }) => {
     <div className="bg-card border border-border rounded-lg p-4 h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse">
           <Icon name="Activity" size={20} className="text-accent" />
-          <h3 className="text-lg font-semibold text-foreground">User Activity Heatmap</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('user_activity_heatmap.title')}</h3>
         </div>
         
         <div className="flex items-center space-x-2">
@@ -121,7 +132,7 @@ const UserActivityHeatmap = ({ data = [] }) => {
             <div className="w-12"></div>
             {Array.from({ length: 24 }, (_, i) => (
               <div key={i} className="w-6 text-xs text-muted-foreground text-center">
-                {i % 4 === 0 ? `${i}h` : ''}
+                {i % 4 === 0 ? `${i} ${tCommon('time_units.hours')}` : ''}
               </div>
             ))}
           </div>
@@ -140,7 +151,7 @@ const UserActivityHeatmap = ({ data = [] }) => {
                     hover:ring-2 hover:ring-accent/50 hover:scale-110
                     ${getIntensityColor(hourData?.value)}
                   `}
-                  title={`${dayData?.day} ${hourData?.hour}:00 - ${hourData?.value} ${selectedMetric}`}
+                  title={`${dayData?.day} ${hourData?.hour}:00 - ${hourData?.value} ${metrics.find(m => m.value === selectedMetric)?.label}`}
                 />
               ))}
             </div>
@@ -149,8 +160,8 @@ const UserActivityHeatmap = ({ data = [] }) => {
 
         {/* Legend */}
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
-          <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-            <span>Less</span>
+          <div className="flex items-center space-x-2 rtl:space-x-reverse text-xs text-muted-foreground">
+            <span>{t('user_activity_heatmap.intensity.less')}</span>
             <div className="flex space-x-1">
               {[0, 0.25, 0.5, 0.75, 1]?.map((intensity, index) => (
                 <div
@@ -159,11 +170,11 @@ const UserActivityHeatmap = ({ data = [] }) => {
                 />
               ))}
             </div>
-            <span>More</span>
+            <span>{t('user_activity_heatmap.intensity.more')}</span>
           </div>
           
           <div className="text-xs text-muted-foreground">
-            Peak: {maxValue} {selectedMetric} • Last updated: 2 min ago
+            {t('user_activity_heatmap.stats.peak')}: {maxValue} {metrics.find(m => m.value === selectedMetric)?.label} • {t('user_activity_heatmap.stats.last_updated')}: {tCommon('sample_times.2_min_ago')}
           </div>
         </div>
       </div>

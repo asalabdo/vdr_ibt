@@ -1,37 +1,40 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 const SystemPerformanceChart = () => {
+  const { t } = useTranslation('vdr-operations-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [selectedMetric, setSelectedMetric] = useState('response_time');
   const [chartType, setChartType] = useState('line');
 
   const metrics = [
     { 
       key: 'response_time', 
-      label: 'Response Time', 
-      unit: 'ms', 
+      label: t('system_performance.metrics.response_time'), 
+      unit: tCommon('time_units.ms'), 
       color: '#0ea5e9',
       icon: 'Zap'
     },
     { 
       key: 'cpu_usage', 
-      label: 'CPU Usage', 
+      label: t('system_performance.metrics.cpu_usage'), 
       unit: '%', 
       color: '#059669',
       icon: 'Cpu'
     },
     { 
       key: 'memory_usage', 
-      label: 'Memory Usage', 
+      label: t('system_performance.metrics.memory_usage'), 
       unit: '%', 
       color: '#d97706',
       icon: 'HardDrive'
     },
     { 
       key: 'network_io', 
-      label: 'Network I/O', 
+      label: t('system_performance.metrics.network_io'), 
       unit: 'MB/s', 
       color: '#dc2626',
       icon: 'Wifi'
@@ -44,7 +47,7 @@ const SystemPerformanceChart = () => {
     return Array.from({ length: 60 }, (_, i) => {
       const time = new Date(now.getTime() - (59 - i) * 60000);
       return {
-        time: time?.toLocaleTimeString('en-US', { 
+        time: time?.toLocaleTimeString([], { 
           hour12: false, 
           hour: '2-digit', 
           minute: '2-digit' 
@@ -72,7 +75,7 @@ const SystemPerformanceChart = () => {
               style={{ backgroundColor: payload?.[0]?.color }}
             />
             <span className="text-sm text-popover-foreground">
-              {currentMetric?.label}: {payload?.[0]?.value}{currentMetric?.unit}
+              {currentMetric?.label}: {payload?.[0]?.value} {currentMetric?.unit}
             </span>
           </div>
         </div>
@@ -109,9 +112,9 @@ const SystemPerformanceChart = () => {
     <div className="bg-card border border-border rounded-lg p-4 h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 rtl:space-x-reverse">
           <Icon name="TrendingUp" size={20} className="text-accent" />
-          <h3 className="text-lg font-semibold text-foreground">System Performance</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('system_performance.title')}</h3>
         </div>
         
         <div className="flex items-center space-x-2">
@@ -168,22 +171,22 @@ const SystemPerformanceChart = () => {
       </div>
       {/* Performance Stats */}
       <div className="flex items-center justify-between mb-4 p-3 bg-muted/20 rounded-lg">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 rtl:space-x-reverse">
           <div className="text-sm">
-            <span className="text-muted-foreground">Current: </span>
+            <span className="text-muted-foreground">{t('system_performance.labels.current')}: </span>
             <span className="font-semibold text-foreground">
               {getLatestValue()}{currentMetric?.unit}
             </span>
           </div>
           <div className="text-sm">
-            <span className="text-muted-foreground">Average: </span>
+            <span className="text-muted-foreground">{t('system_performance.labels.average')}: </span>
             <span className="font-semibold text-foreground">
               {getAverageValue()}{currentMetric?.unit}
             </span>
           </div>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
           <Icon 
             name={trend === 'up' ? 'TrendingUp' : trend === 'down' ? 'TrendingDown' : 'Minus'} 
             size={16} 
@@ -193,7 +196,9 @@ const SystemPerformanceChart = () => {
             }
           />
           <span className="text-sm text-muted-foreground">
-            {trend === 'up' ? 'Increasing' : trend === 'down' ? 'Decreasing' : 'Stable'}
+            {trend === 'up' ? t('system_performance.labels.trend_increasing') : 
+             trend === 'down' ? t('system_performance.labels.trend_decreasing') : 
+             t('system_performance.labels.trend_stable')}
           </span>
         </div>
       </div>

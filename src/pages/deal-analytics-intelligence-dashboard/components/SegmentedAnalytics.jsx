@@ -1,31 +1,34 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import Icon from '../../../components/AppIcon';
 
 const SegmentedAnalytics = () => {
+  const { t } = useTranslation('deal-analytics-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [activeTab, setActiveTab] = useState('documents');
 
   const documentAnalytics = {
     accessFrequency: [
-      { name: 'Financial Statements', accesses: 1247, unique_users: 89, avg_time: 12.4 },
-      { name: 'Legal Documents', accesses: 892, unique_users: 67, avg_time: 18.7 },
-      { name: 'Technical Specs', accesses: 634, unique_users: 45, avg_time: 8.9 },
-      { name: 'Market Analysis', accesses: 567, unique_users: 78, avg_time: 15.2 },
-      { name: 'Due Diligence', accesses: 445, unique_users: 34, avg_time: 22.1 },
-      { name: 'Compliance Reports', accesses: 334, unique_users: 23, avg_time: 9.8 }
+      { name: t('sample_data.documents.financial_statements'), accesses: 1247, unique_users: 89, avg_time: 12.4 },
+      { name: t('sample_data.documents.legal_documents'), accesses: 892, unique_users: 67, avg_time: 18.7 },
+      { name: t('sample_data.documents.technical_specs'), accesses: 634, unique_users: 45, avg_time: 8.9 },
+      { name: t('sample_data.documents.market_analysis'), accesses: 567, unique_users: 78, avg_time: 15.2 },
+      { name: t('sample_data.documents.due_diligence'), accesses: 445, unique_users: 34, avg_time: 22.1 },
+      { name: t('sample_data.documents.compliance_reports'), accesses: 334, unique_users: 23, avg_time: 9.8 }
     ],
     storageUtilization: [
-      { category: 'Financial', value: 35, size: '2.4 GB', color: '#1e40af' },
-      { category: 'Legal', value: 28, size: '1.9 GB', color: '#059669' },
-      { category: 'Technical', value: 18, size: '1.2 GB', color: '#d97706' },
-      { category: 'Marketing', value: 12, size: '0.8 GB', color: '#dc2626' },
-      { category: 'Other', value: 7, size: '0.5 GB', color: '#6b7280' }
+      { category: t('sample_data.categories.financial'), value: 35, size: '2.4 GB', color: '#1e40af' },
+      { category: t('sample_data.categories.legal'), value: 28, size: '1.9 GB', color: '#059669' },
+      { category: t('sample_data.categories.technical'), value: 18, size: '1.2 GB', color: '#d97706' },
+      { category: t('sample_data.categories.marketing'), value: 12, size: '0.8 GB', color: '#dc2626' },
+      { category: t('sample_data.categories.other'), value: 7, size: '0.5 GB', color: '#6b7280' }
     ],
     versionControl: [
-      { document: 'Merger Agreement', versions: 12, last_updated: '2 hours ago', status: 'active' },
-      { document: 'Financial Model', versions: 8, last_updated: '5 hours ago', status: 'review' },
-      { document: 'Legal Opinion', versions: 15, last_updated: '1 day ago', status: 'final' },
-      { document: 'Market Research', versions: 6, last_updated: '3 days ago', status: 'active' }
+      { document: t('sample_data.documents.merger_agreement'), versions: 12, last_updated: tCommon('time_ago.hours_ago', { count: 2 }), status: tCommon('status_values.active') },
+      { document: t('sample_data.documents.financial_model'), versions: 8, last_updated: tCommon('time_ago.hours_ago', { count: 5 }), status: tCommon('status_values.review') },
+      { document: t('sample_data.documents.legal_opinion'), versions: 15, last_updated: tCommon('time_ago.days_ago', { count: 1 }), status: tCommon('status_values.final') },
+      { document: t('sample_data.documents.market_research'), versions: 6, last_updated: tCommon('time_ago.days_ago', { count: 3 }), status: tCommon('status_values.active') }
     ]
   };
 
@@ -39,51 +42,51 @@ const SegmentedAnalytics = () => {
       { time: '20:00', sessions: 67, duration: 56 }
     ],
     userTypes: [
-      { type: 'Buyers', count: 45, engagement: 87, color: '#1e40af' },
-      { type: 'Sellers', count: 23, engagement: 92, color: '#059669' },
-      { type: 'Advisors', count: 34, engagement: 78, color: '#d97706' },
-      { type: 'Legal', count: 18, engagement: 85, color: '#dc2626' },
-      { type: 'Finance', count: 29, engagement: 90, color: '#7c3aed' }
+      { type: t('sample_data.user_types.buyers'), count: 45, engagement: 87, color: '#1e40af' },
+      { type: t('sample_data.user_types.sellers'), count: 23, engagement: 92, color: '#059669' },
+      { type: t('sample_data.user_types.advisors'), count: 34, engagement: 78, color: '#d97706' },
+      { type: t('sample_data.user_types.legal_teams'), count: 18, engagement: 85, color: '#dc2626' },
+      { type: t('sample_data.user_types.finance_teams'), count: 29, engagement: 90, color: '#7c3aed' }
     ],
     activityFlow: [
-      { step: 'Login', users: 149, conversion: 100 },
-      { step: 'Browse Documents', users: 142, conversion: 95.3 },
-      { step: 'Download Files', users: 118, conversion: 79.2 },
-      { step: 'Submit Q&A', users: 89, conversion: 59.7 },
-      { step: 'Complete Review', users: 67, conversion: 45.0 }
+      { step: t('sample_data.activity_steps.login'), users: 149, conversion: 100 },
+      { step: t('sample_data.activity_steps.browse_documents'), users: 142, conversion: 95.3 },
+      { step: t('sample_data.activity_steps.download_files'), users: 118, conversion: 79.2 },
+      { step: t('sample_data.activity_steps.submit_qa'), users: 89, conversion: 59.7 },
+      { step: t('sample_data.activity_steps.complete_review'), users: 67, conversion: 45.0 }
     ]
   };
 
   const complianceMetrics = {
     auditTrail: [
-      { action: 'Document Access', count: 2847, compliance: 98.5, risk: 'low' },
-      { action: 'User Authentication', count: 1923, compliance: 99.2, risk: 'low' },
-      { action: 'Data Export', count: 456, compliance: 94.7, risk: 'medium' },
-      { action: 'Permission Changes', count: 234, compliance: 97.8, risk: 'low' },
-      { action: 'System Access', count: 189, compliance: 91.5, risk: 'high' }
+      { action: t('sample_data.audit_actions.document_access'), count: 2847, compliance: 98.5, risk: tCommon('status_values.low') },
+      { action: t('sample_data.audit_actions.user_authentication'), count: 1923, compliance: 99.2, risk: tCommon('status_values.low') },
+      { action: t('sample_data.audit_actions.data_export'), count: 456, compliance: 94.7, risk: tCommon('status_values.medium') },
+      { action: t('sample_data.audit_actions.permission_changes'), count: 234, compliance: 97.8, risk: tCommon('status_values.low') },
+      { action: t('sample_data.audit_actions.system_access'), count: 189, compliance: 91.5, risk: tCommon('status_values.high') }
     ],
     securityScore: {
       overall: 94.2,
       categories: [
-        { name: 'Access Control', score: 96.8, trend: 'up' },
-        { name: 'Data Encryption', score: 98.5, trend: 'stable' },
-        { name: 'Audit Logging', score: 92.1, trend: 'up' },
-        { name: 'User Management', score: 89.7, trend: 'down' },
-        { name: 'Compliance Checks', score: 95.3, trend: 'up' }
+        { name: t('sample_data.security_categories.access_control'), score: 96.8, trend: 'up' },
+        { name: t('sample_data.security_categories.data_encryption'), score: 98.5, trend: 'stable' },
+        { name: t('sample_data.security_categories.audit_logging'), score: 92.1, trend: 'up' },
+        { name: t('sample_data.security_categories.user_management'), score: 89.7, trend: 'down' },
+        { name: t('sample_data.security_categories.compliance_checks'), score: 95.3, trend: 'up' }
       ]
     },
     regulatoryAdherence: [
-      { regulation: 'GDPR', status: 'compliant', score: 96.2, last_audit: '15 days ago' },
-      { regulation: 'SOX', status: 'compliant', score: 94.8, last_audit: '22 days ago' },
-      { regulation: 'HIPAA', status: 'review', score: 87.3, last_audit: '45 days ago' },
-      { regulation: 'PCI DSS', status: 'compliant', score: 92.1, last_audit: '8 days ago' }
+      { regulation: t('sample_data.regulations.gdpr'), status: tCommon('status_values.compliant'), score: 96.2, last_audit: tCommon('time_ago.days_ago', { count: 15 }) },
+      { regulation: t('sample_data.regulations.sox'), status: tCommon('status_values.compliant'), score: 94.8, last_audit: tCommon('time_ago.days_ago', { count: 22 }) },
+      { regulation: t('sample_data.regulations.hipaa'), status: tCommon('status_values.review'), score: 87.3, last_audit: tCommon('time_ago.days_ago', { count: 45 }) },
+      { regulation: t('sample_data.regulations.pci_dss'), status: tCommon('status_values.compliant'), score: 92.1, last_audit: tCommon('time_ago.days_ago', { count: 8 }) }
     ]
   };
 
   const tabs = [
-    { id: 'documents', label: 'Document Analytics', icon: 'FileText' },
-    { id: 'behavior', label: 'User Behavior', icon: 'Users' },
-    { id: 'compliance', label: 'Compliance Metrics', icon: 'Shield' }
+    { id: 'documents', label: t('charts.segments.tabs.documents'), icon: 'FileText' },
+    { id: 'behavior', label: t('charts.segments.tabs.behavior'), icon: 'Users' },
+    { id: 'compliance', label: t('charts.segments.tabs.compliance'), icon: 'Shield' }
   ];
 
   const renderDocumentAnalytics = () => (
@@ -91,7 +94,7 @@ const SegmentedAnalytics = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Access Frequency Chart */}
         <div className="bg-card border border-border rounded-lg p-6">
-          <h4 className="text-lg font-semibold text-foreground mb-4">Document Access Frequency</h4>
+          <h4 className="text-lg font-semibold text-foreground mb-4">{t('charts.segments.document_analytics.access_frequency')}</h4>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={documentAnalytics?.accessFrequency}>
@@ -113,7 +116,7 @@ const SegmentedAnalytics = () => {
 
         {/* Storage Utilization */}
         <div className="bg-card border border-border rounded-lg p-6">
-          <h4 className="text-lg font-semibold text-foreground mb-4">Storage Utilization</h4>
+          <h4 className="text-lg font-semibold text-foreground mb-4">{t('charts.segments.document_analytics.storage_utilization')}</h4>
           <div className="h-64 flex items-center">
             <div className="w-1/2">
               <ResponsiveContainer width="100%" height="100%">
@@ -137,11 +140,11 @@ const SegmentedAnalytics = () => {
             <div className="w-1/2 space-y-2">
               {documentAnalytics?.storageUtilization?.map((item, index) => (
                 <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 rtl:space-x-reverse">
                     <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item?.color }}></div>
                     <span className="text-sm text-foreground">{item?.category}</span>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right rtl:text-left">
                     <div className="text-sm font-medium text-foreground">{item?.value}%</div>
                     <div className="text-xs text-muted-foreground">{item?.size}</div>
                   </div>
@@ -154,15 +157,15 @@ const SegmentedAnalytics = () => {
 
       {/* Version Control Table */}
       <div className="bg-card border border-border rounded-lg p-6">
-        <h4 className="text-lg font-semibold text-foreground mb-4">Version Control Activity</h4>
+        <h4 className="text-lg font-semibold text-foreground mb-4">{t('charts.segments.document_analytics.version_control')}</h4>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border">
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Document</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Versions</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Last Updated</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Status</th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">{t('charts.segments.document_analytics.headers.document')}</th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">{t('charts.segments.document_analytics.headers.versions')}</th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">{t('charts.segments.document_analytics.headers.last_updated')}</th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">{t('charts.segments.document_analytics.headers.status')}</th>
               </tr>
             </thead>
             <tbody>
@@ -193,7 +196,7 @@ const SegmentedAnalytics = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Session Patterns */}
         <div className="bg-card border border-border rounded-lg p-6">
-          <h4 className="text-lg font-semibold text-foreground mb-4">Session Patterns</h4>
+          <h4 className="text-lg font-semibold text-foreground mb-4">{t('charts.segments.user_behavior.session_patterns')}</h4>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={userBehaviorData?.sessionPatterns}>
@@ -215,17 +218,17 @@ const SegmentedAnalytics = () => {
 
         {/* User Types */}
         <div className="bg-card border border-border rounded-lg p-6">
-          <h4 className="text-lg font-semibold text-foreground mb-4">User Type Distribution</h4>
+          <h4 className="text-lg font-semibold text-foreground mb-4">{t('charts.segments.user_behavior.user_types')}</h4>
           <div className="space-y-4">
             {userBehaviorData?.userTypes?.map((type, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-muted/10 rounded-lg">
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3 rtl:space-x-reverse">
                   <div className="w-4 h-4 rounded-full" style={{ backgroundColor: type?.color }}></div>
                   <span className="font-medium text-foreground">{type?.type}</span>
                 </div>
-                <div className="text-right">
-                  <div className="text-sm font-medium text-foreground">{type?.count} users</div>
-                  <div className="text-xs text-muted-foreground">{type?.engagement}% engagement</div>
+                <div className="text-right rtl:text-left">
+                  <div className="text-sm font-medium text-foreground">{type?.count} {tCommon('labels.users')}</div>
+                  <div className="text-xs text-muted-foreground">{type?.engagement}% {t('charts.segments.user_behavior.engagement')}</div>
                 </div>
               </div>
             ))}
@@ -235,7 +238,7 @@ const SegmentedAnalytics = () => {
 
       {/* Activity Flow */}
       <div className="bg-card border border-border rounded-lg p-6">
-        <h4 className="text-lg font-semibold text-foreground mb-4">User Activity Flow</h4>
+        <h4 className="text-lg font-semibold text-foreground mb-4">{t('charts.segments.user_behavior.activity_flow')}</h4>
         <div className="space-y-4">
           {userBehaviorData?.activityFlow?.map((step, index) => (
             <div key={index} className="flex items-center space-x-4">
@@ -245,7 +248,7 @@ const SegmentedAnalytics = () => {
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-1">
                   <span className="font-medium text-foreground">{step?.step}</span>
-                  <span className="text-sm text-muted-foreground">{step?.users} users ({step?.conversion}%)</span>
+                  <span className="text-sm text-muted-foreground">{step?.users} {tCommon('labels.users')} ({step?.conversion}%)</span>
                 </div>
                 <div className="w-full bg-muted/20 rounded-full h-2">
                   <div 
@@ -266,10 +269,10 @@ const SegmentedAnalytics = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Security Score */}
         <div className="bg-card border border-border rounded-lg p-6">
-          <h4 className="text-lg font-semibold text-foreground mb-4">Security Score</h4>
+          <h4 className="text-lg font-semibold text-foreground mb-4">{t('charts.segments.compliance.security_score')}</h4>
           <div className="text-center mb-6">
             <div className="text-4xl font-bold text-primary mb-2">{complianceMetrics?.securityScore?.overall}</div>
-            <div className="text-sm text-muted-foreground">Overall Security Score</div>
+            <div className="text-sm text-muted-foreground">{t('charts.segments.compliance.overall_score')}</div>
           </div>
           <div className="space-y-3">
             {complianceMetrics?.securityScore?.categories?.map((category, index) => (
@@ -293,7 +296,7 @@ const SegmentedAnalytics = () => {
 
         {/* Regulatory Adherence */}
         <div className="bg-card border border-border rounded-lg p-6">
-          <h4 className="text-lg font-semibold text-foreground mb-4">Regulatory Adherence</h4>
+          <h4 className="text-lg font-semibold text-foreground mb-4">{t('charts.segments.compliance.regulatory_adherence')}</h4>
           <div className="space-y-4">
             {complianceMetrics?.regulatoryAdherence?.map((reg, index) => (
               <div key={index} className="p-3 border border-border rounded-lg">
@@ -306,8 +309,8 @@ const SegmentedAnalytics = () => {
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Score: {reg?.score}%</span>
-                  <span className="text-muted-foreground">Last audit: {reg?.last_audit}</span>
+                  <span className="text-muted-foreground">{t('charts.segments.compliance.score_label')}: {reg?.score}%</span>
+                  <span className="text-muted-foreground">{t('charts.segments.compliance.last_audit_label')}: {reg?.last_audit}</span>
                 </div>
               </div>
             ))}
@@ -317,15 +320,15 @@ const SegmentedAnalytics = () => {
 
       {/* Audit Trail */}
       <div className="bg-card border border-border rounded-lg p-6">
-        <h4 className="text-lg font-semibold text-foreground mb-4">Audit Trail Summary</h4>
+        <h4 className="text-lg font-semibold text-foreground mb-4">{t('charts.segments.compliance.audit_trail')}</h4>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border">
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Action Type</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Count</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Compliance</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Risk Level</th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">{t('charts.segments.compliance.headers.action_type')}</th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">{t('charts.segments.compliance.headers.count')}</th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">{t('charts.segments.compliance.headers.compliance')}</th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">{t('charts.segments.compliance.headers.risk_level')}</th>
               </tr>
             </thead>
             <tbody>
@@ -367,20 +370,20 @@ const SegmentedAnalytics = () => {
   return (
     <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-foreground">Segmented Analytics</h3>
-        <div className="flex items-center space-x-2">
+        <h3 className="text-lg font-semibold text-foreground">{t('charts.segments.title')}</h3>
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
           <Icon name="BarChart3" size={16} className="text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">Detailed Insights</span>
+          <span className="text-sm text-muted-foreground">{t('charts.segments.subtitle')}</span>
         </div>
       </div>
       {/* Tab Navigation */}
-      <div className="flex space-x-1 mb-6 bg-muted/20 p-1 rounded-lg">
+      <div className="flex space-x-1 rtl:space-x-reverse mb-6 bg-muted/20 p-1 rounded-lg">
         {tabs?.map((tab) => (
           <button
             key={tab?.id}
             onClick={() => setActiveTab(tab?.id)}
             className={`
-              flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200
+              flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-md text-sm font-medium transition-all duration-200
               ${activeTab === tab?.id 
                 ? 'bg-primary text-primary-foreground shadow-sm' 
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'

@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
 
 const DocumentPreviewModal = ({ isOpen, onClose, document }) => {
+  const { t } = useTranslation('document-management-console');
   if (!isOpen || !document) return null;
 
   const handleDownload = () => {
@@ -15,7 +17,7 @@ const DocumentPreviewModal = ({ isOpen, onClose, document }) => {
       <div className="bg-card rounded-xl shadow-lg border border-border max-w-4xl w-full max-h-[90vh] mx-4 overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 rtl:space-x-reverse">
             <span className="text-2xl">{document?.thumbnail}</span>
             <div>
               <h3 className="text-lg font-semibold text-foreground">{document?.filename}</h3>
@@ -24,9 +26,9 @@ const DocumentPreviewModal = ({ isOpen, onClose, document }) => {
               </p>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Button onClick={handleDownload} iconName="Download" variant="outline" size="sm">
-              Download
+              {t('actions.download')}
             </Button>
             <button
               onClick={onClose}
@@ -42,14 +44,14 @@ const DocumentPreviewModal = ({ isOpen, onClose, document }) => {
           <div className="bg-muted/30 rounded-lg border-2 border-dashed border-border flex items-center justify-center min-h-[400px]">
             <div className="text-center">
               <Icon name="FileText" size={64} className="text-muted-foreground mx-auto mb-4" />
-              <h4 className="text-lg font-medium text-foreground mb-2">Document Preview</h4>
+              <h4 className="text-lg font-medium text-foreground mb-2">{t('preview_modal.title')}</h4>
               <p className="text-muted-foreground mb-4">
-                Preview functionality would be implemented here for {document?.fileType?.split('/')?.pop()?.toUpperCase()} files
+                {t('preview_modal.description', { fileType: document?.fileType?.split('/')?.pop()?.toUpperCase() })}
               </p>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <p>File size: {Math.round(document?.size / 1024 / 1024 * 100) / 100} MB</p>
-                <p>Version: {document?.version}</p>
-                <p>Downloads: {document?.downloadCount}</p>
+                <p>{t('preview_modal.file_size')} {Math.round(document?.size / 1024 / 1024 * 100) / 100} MB</p>
+                <p>{t('preview_modal.version')} {document?.version}</p>
+                <p>{t('preview_modal.downloads')} {document?.downloadCount}</p>
               </div>
             </div>
           </div>

@@ -70,8 +70,17 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
+        // English fonts
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Space Grotesk', 'Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
+        
+        // Arabic fonts  
+        arabic: ['IBM Plex Sans Arabic', 'Tahoma', 'Arial', 'sans-serif'],
+        'arabic-display': ['IBM Plex Sans Arabic', 'Tahoma', 'serif'],
+        
+        // Utility classes
+        english: ['Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],

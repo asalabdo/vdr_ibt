@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../../components/ui/Header';
+import { useTranslation } from 'react-i18next';
 import FilterControls from './components/FilterControls';
 import KPIMetricsCards from './components/KPIMetricsCards';
 import DealTimelineChart from './components/DealTimelineChart';
@@ -10,6 +10,9 @@ import SegmentedAnalytics from './components/SegmentedAnalytics';
 import Button from '../../components/ui/Button';
 
 const DealAnalyticsIntelligenceDashboard = () => {
+  const { t } = useTranslation('deal-analytics-dashboard');
+  const { t: tCommon } = useTranslation('common');
+  
   const [filters, setFilters] = useState({
     dealTypes: [],
     dateRange: 'last30days',
@@ -45,33 +48,31 @@ const DealAnalyticsIntelligenceDashboard = () => {
     const now = new Date();
     const diff = Math.floor((now - date) / 1000);
     
-    if (diff < 60) return 'Just now';
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 60) return tCommon('time_ago.just_now');
+    if (diff < 3600) return tCommon('time_ago.minutes_ago', { count: Math.floor(diff / 60) });
+    return tCommon('time_ago.hours_ago', { count: Math.floor(diff / 3600) });
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      
       <main className="pt-4">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Page Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-2">
-                Deal Analytics & Intelligence Dashboard
+                {t('title')}
               </h1>
               <p className="text-muted-foreground">
-                Comprehensive transaction insights and predictive analytics for optimizing due diligence workflows
+                {t('subtitle')}
               </p>
             </div>
             
-            <div className="flex items-center space-x-4 mt-4 lg:mt-0">
-              <div className="flex items-center space-x-2 px-3 py-2 bg-muted/20 rounded-lg">
+            <div className="flex items-center space-x-4 rtl:space-x-reverse mt-4 lg:mt-0">
+              <div className="flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 bg-muted/20 rounded-lg">
                 <div className="w-2 h-2 bg-success rounded-full animate-pulse-subtle"></div>
                 <span className="text-sm text-muted-foreground">
-                  Updated {formatLastRefresh(lastRefresh)}
+                  {t('status.updated', { time: formatLastRefresh(lastRefresh) })}
                 </span>
               </div>
               
@@ -83,7 +84,7 @@ const DealAnalyticsIntelligenceDashboard = () => {
                 loading={isLoading}
                 disabled={isLoading}
               >
-                Refresh Data
+                {t('actions.refresh_data')}
               </Button>
               
               <Button
@@ -91,7 +92,7 @@ const DealAnalyticsIntelligenceDashboard = () => {
                 iconName="BookmarkPlus"
                 iconPosition="left"
               >
-                Save Analysis
+                {t('actions.save_analysis')}
               </Button>
             </div>
           </div>
@@ -126,9 +127,9 @@ const DealAnalyticsIntelligenceDashboard = () => {
           <div className="mt-8 p-6 bg-card border border-border rounded-lg">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-foreground mb-1">Quick Actions</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-1">{t('quick_actions.title')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Common tasks and shortcuts for deal analysis
+                  {t('quick_actions.subtitle')}
                 </p>
               </div>
               
@@ -139,7 +140,7 @@ const DealAnalyticsIntelligenceDashboard = () => {
                   iconName="Download"
                   iconPosition="left"
                 >
-                  Export Report
+                  {t('actions.export_report')}
                 </Button>
                 
                 <Button
@@ -148,7 +149,7 @@ const DealAnalyticsIntelligenceDashboard = () => {
                   iconName="Share"
                   iconPosition="left"
                 >
-                  Share Dashboard
+                  {t('actions.share_dashboard')}
                 </Button>
                 
                 <Button
@@ -157,7 +158,7 @@ const DealAnalyticsIntelligenceDashboard = () => {
                   iconName="Calendar"
                   iconPosition="left"
                 >
-                  Schedule Report
+                  {t('actions.schedule_report')}
                 </Button>
                 
                 <Button
@@ -166,7 +167,7 @@ const DealAnalyticsIntelligenceDashboard = () => {
                   iconName="Settings"
                   iconPosition="left"
                 >
-                  Customize View
+                  {t('actions.customize_view')}
                 </Button>
               </div>
             </div>

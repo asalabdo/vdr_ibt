@@ -1,0 +1,59 @@
+/* 
+ * Font Definitions for VDR Analytics Dashboard
+ * React + Tailwind Community Standard Approach
+ */
+
+/* 
+ * Fonts are preloaded in index.html for optimal performance
+ * Font switching handled by Tailwind classes (community standard)
+ */
+
+/* 
+ * Enhanced Typography for All Languages
+ * Applied globally, font switching handled by Tailwind classes
+ */
+body {
+  /* Improved text rendering for all fonts */
+  text-rendering: optimizeLegibility;
+  -webkit-font-feature-settings: "liga", "kern";
+  font-feature-settings: "liga", "kern";
+}
+
+/* 
+ * Enhanced Typography Classes
+ * These extend Tailwind's auto-generated .font-arabic and .font-english classes
+ * with language-specific optimizations that Tailwind cannot provide automatically
+ */
+
+/* Arabic Typography Enhancements - extends Tailwind's .font-arabic */
+.font-arabic {
+  /* Arabic-specific typography (international standards) */
+  font-variant-numeric: normal;
+  font-feature-settings: "liga" 1, "calt" 1, "kern" 1;
+  -webkit-font-feature-settings: "liga" 1, "calt" 1, "kern" 1;
+  
+  /* Arabic needs more line-height for readability */
+  line-height: 1.7;
+  
+  /* Arabic benefits from positive letter-spacing */
+  letter-spacing: 0.025em;
+  
+  /* Enhanced text rendering for Arabic scripts */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* English Typography Enhancements - extends Tailwind's .font-english */
+.font-english {
+  /* English-optimized typography */
+  line-height: 1.5;
+  
+  /* English benefits from negative letter-spacing */
+  letter-spacing: -0.025em;
+  
+  /* Enhanced text rendering for Latin scripts */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

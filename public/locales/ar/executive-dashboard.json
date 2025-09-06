@@ -1,0 +1,175 @@
+{
+  "title": "لوحة قيادة تدفق الصفقات التنفيذية",
+  "subtitle": "رؤى فورية حول أداء الصفقات وصحة مسار الصفقات",
+  "kpi": {
+    "total_deal_value": "إجمالي قيمة الصفقات",
+    "active_transactions": "المعاملات النشطة",
+    "success_rate": "معدل النجاح",
+    "average_time_to_close": "متوسط فترة إتمام الصفقة",
+    "descriptions": {
+      "active_pipeline": "مسار الصفقات النشط",
+      "faster_than_target": "أسرع من الهدف",
+      "in_progress": "قيد التقدم",
+      "above_benchmark": "أعلى من المعيار"
+    },
+    "units": {
+      "million": "م",
+      "billion": "ب"
+    }
+  },
+  "charts": {
+    "deal_volume": "حجم الصفقات",
+    "deal_volume_title": "حجم الصفقات ومتوسط القيمة",
+    "deal_volume_subtitle": "تحليلات المعاملات الشهرية مع تحليل الاتجاهات",
+    "avg_deal_size": "متوسط حجم الصفقة (مليون $)",
+    "pipeline_funnel": "قمع مسار الصفقات",
+    "performance_metrics": "مقاييس الأداء",
+    "labels": {
+      "volume": "الحجم",
+      "average_size": "متوسط حجم الصفقة",
+      "month": "الشهر",
+      "value": "القيمة"
+    }
+  },
+  "pipeline": {
+    "title": "مسار الصفقات",
+    "subtitle": "تحليل التحويل حسب المراحل",
+    "deals": "صفقات",
+    "overall_conversion_rate": "معدل التحويل الإجمالي",
+    "stages": {
+      "prospecting": "الاستطلاع",
+      "qualification": "التأهيل",
+      "proposal": "الاقتراح",
+      "negotiation": "التفاوض",
+      "closing": "الإغلاق"
+    },
+    "metrics": {
+      "count": "العدد",
+      "value": "القيمة",
+      "conversion_rate": "معدل التحويل"
+    }
+  },
+  "top_performing_rooms": {
+    "title": "أفضل غرف البيانات أداءً",
+    "subtitle": "بناءً على المشاركة والتحويل",
+    "avg_success_rate": "متوسط معدل النجاح",
+    "avg_close_time": "متوسط وقت الإغلاق",
+    "headers": {
+      "rank": "المرتبة",
+      "room": "الغرفة",
+      "participants": "المشاركون",
+      "active_users": "المستخدمون النشطون",
+      "avg_time": "متوسط الوقت",
+      "score": "النتيجة"
+    },
+    "labels": {
+      "deal_value": "قيمة الصفقة",
+      "participants": "مشاركين",
+      "active": "نشط"
+    }
+  },
+  "executive_summary": {
+    "title": "الملخص التنفيذي",
+    "subtitle": "الصفقات الرئيسية التي تحتاج انتباه",
+    "table": {
+      "deal_name": "اسم الصفقة",
+      "value": "القيمة",
+      "status": "الحالة",
+      "priority": "الأولوية",
+      "projected_close": "الإغلاق المتوقع",
+      "progress": "التقدم",
+      "actions": "الإجراءات"
+    },
+    "headers": {
+      "deal": "الصفقة",
+      "company": "الشركة",
+      "value": "القيمة",
+      "type": "النوع",
+      "status": "الحالة",
+      "priority": "الأولوية",
+      "timeline": "الجدول الزمني",
+      "progress": "التقدم"
+    },
+    "deal_types": {
+      "ma": "دمج واستحواذ",
+      "strategic": "استراتيجي",
+      "partnership": "شراكة",
+      "acquisition": "استحواذ"
+    },
+    "priority_levels": {
+      "high": "عالي",
+      "medium": "متوسط",
+      "low": "منخفض"
+    },
+    "timeline_labels": {
+      "days_remaining": "أيام متبقية",
+      "projected_close": "الإغلاق المتوقع"
+    }
+  },
+  "status": {
+    "active": "نشط",
+    "pending": "قيد الانتظار",
+    "completed": "مكتمل",
+    "critical": "حرج",
+    "on_track": "سير طبيعي",
+    "attention": "يتطلب متابعة",
+    "live_data": "بيانات مباشرة",
+    "last_updated": "آخر تحديث: {{time}}",
+    "data_source": "مصدر البيانات: VDR Core Analytics",
+    "active_sessions": "الجلسات النشطة: {{count}}"
+  },
+  "filters": {
+    "date_ranges": {
+      "q4_2024_current": "الربع الرابع 2024 (الحالي)",
+      "q3_2024": "الربع الثالث 2024",
+      "q2_2024": "الربع الثاني 2024",
+      "q1_2024": "الربع الأول 2024",
+      "fy_2024": "العام المالي 2024",
+      "custom": "نطاق مخصص"
+    },
+    "stages": {
+      "all": "جميع المراحل"
+    },
+    "regions": {
+      "global": "عالمي",
+      "north_america": "أمريكا الشمالية",
+      "europe": "أوروبا",
+      "asia_pacific": "آسيا والمحيط الهادئ",
+      "latin_america": "أمريكا اللاتينية"
+    },
+    "placeholders": {
+      "select_period": "اختر الفترة",
+      "all_stages": "جميع المراحل",
+      "global": "عالمي"
+    }
+  },
+  "actions": {
+    "export": "تصدير",
+    "view_all": "عرض الكل",
+    "view_quarterly": "عرض الربعي"
+  },
+
+  "symbols": {
+    "arrow": "←",
+    "bullet": "•"
+  },
+
+  "controls": {
+    "filters": {
+      "date_range": "المدى الزمني",
+      "stage": "المرحلة",
+      "region": "المنطقة",
+      "all": "الكل"
+    },
+    "actions": {
+      "export": "تصدير",
+      "refresh": "تحديث",
+      "drill_down": "تفصيل"
+    }
+  },
+  "empty_states": {
+    "no_data": "لا توجد بيانات متاحة",
+    "loading": "جاري التحميل...",
+    "error": "خطأ في تحميل البيانات"
+  }
+}

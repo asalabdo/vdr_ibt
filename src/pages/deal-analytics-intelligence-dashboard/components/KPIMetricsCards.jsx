@@ -1,75 +1,79 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 
 const KPIMetricsCards = () => {
+  const { t } = useTranslation('deal-analytics-dashboard');
+  const { t: tCommon } = useTranslation('common');
+
   const kpiMetrics = [
     {
       id: 'deal_velocity',
-      title: 'Deal Velocity',
+      title: t('kpis.deal_velocity.title'),
       value: '42.3',
-      unit: 'days',
+      unit: t('kpis.deal_velocity.unit'),
       change: -8.2,
-      changeLabel: 'vs last period',
+      changeLabel: t('kpis.change_labels.vs_last_period'),
       icon: 'Clock',
       color: 'text-primary',
       bgColor: 'bg-primary/10',
-      description: 'Average time to close',
+      description: t('kpis.deal_velocity.description'),
       confidence: 94,
       historical: [38, 45, 41, 39, 42, 44, 42]
     },
     {
       id: 'user_engagement',
-      title: 'User Engagement Score',
+      title: t('kpis.user_engagement.title'),
       value: '87.6',
-      unit: '%',
+      unit: t('kpis.user_engagement.unit'),
       change: 12.4,
-      changeLabel: 'vs last period',
+      changeLabel: t('kpis.change_labels.vs_last_period'),
       icon: 'Users',
       color: 'text-success',
       bgColor: 'bg-success/10',
-      description: 'Active participation rate',
+      description: t('kpis.user_engagement.description'),
       confidence: 91,
       historical: [82, 79, 85, 88, 86, 89, 88]
     },
     {
       id: 'document_utilization',
-      title: 'Document Utilization',
+      title: t('kpis.document_utilization.title'),
       value: '73.2',
-      unit: '%',
+      unit: t('kpis.document_utilization.unit'),
       change: 5.8,
-      changeLabel: 'vs last period',
+      changeLabel: t('kpis.change_labels.vs_last_period'),
       icon: 'FileText',
       color: 'text-accent',
       bgColor: 'bg-accent/10',
-      description: 'Documents accessed rate',
+      description: t('kpis.document_utilization.description'),
       confidence: 88,
       historical: [68, 71, 69, 75, 72, 74, 73]
     },
     {
       id: 'qa_efficiency',
-      title: 'Q&A Efficiency',
+      title: t('kpis.qa_efficiency.title'),
       value: '2.1',
-      unit: 'hrs',
+      unit: t('kpis.qa_efficiency.unit'),
       change: -15.3,
-      changeLabel: 'response time',
+      changeLabel: t('kpis.change_labels.response_time'),
       icon: 'MessageSquare',
       color: 'text-warning',
       bgColor: 'bg-warning/10',
-      description: 'Average response time',
+      description: t('kpis.qa_efficiency.description'),
       confidence: 96,
       historical: [2.8, 2.5, 2.3, 2.0, 2.2, 2.4, 2.1]
     },
     {
       id: 'success_probability',
-      title: 'AI Success Probability',
+      title: t('kpis.success_probability.title'),
       value: '78.9',
-      unit: '%',
+      unit: t('kpis.success_probability.unit'),
       change: 3.2,
-      changeLabel: 'confidence increase',
+      changeLabel: t('kpis.change_labels.confidence_increase'),
       icon: 'Brain',
       color: 'text-purple-400',
       bgColor: 'bg-purple-400/10',
-      description: 'Predicted deal success',
+      description: t('kpis.success_probability.description'),
       confidence: 92,
       historical: [75, 76, 74, 79, 77, 80, 79]
     }
@@ -81,7 +85,7 @@ const KPIMetricsCards = () => {
     const range = max - min;
     
     return (
-      <div className="flex items-end space-x-1 h-8">
+      <div className="flex items-end space-x-1 rtl:space-x-reverse h-8">
         {data?.map((value, index) => {
           const height = range === 0 ? 50 : ((value - min) / range) * 100;
           return (
@@ -105,14 +109,14 @@ const KPIMetricsCards = () => {
               <Icon name={metric?.icon} size={24} className={metric?.color} />
             </div>
             <div className="text-right">
-              <div className="text-xs text-muted-foreground">Confidence</div>
+              <div className="text-xs text-muted-foreground">{tCommon('confidence')}</div>
               <div className="text-sm font-medium text-foreground">{metric?.confidence}%</div>
             </div>
           </div>
 
           <div className="mb-3">
             <h3 className="text-sm font-medium text-muted-foreground mb-1">{metric?.title}</h3>
-            <div className="flex items-baseline space-x-2">
+            <div className="flex items-baseline space-x-2 rtl:space-x-reverse">
               <span className="text-2xl font-bold text-foreground">{metric?.value}</span>
               <span className="text-sm text-muted-foreground">{metric?.unit}</span>
             </div>
@@ -120,7 +124,7 @@ const KPIMetricsCards = () => {
           </div>
 
           <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-1 rtl:space-x-reverse">
               <Icon 
                 name={metric?.change >= 0 ? 'TrendingUp' : 'TrendingDown'} 
                 size={14} 

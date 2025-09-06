@@ -1,33 +1,36 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 const PredictiveInsightsPanel = () => {
+  const { t } = useTranslation('deal-analytics-dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [selectedDeal, setSelectedDeal] = useState('techcorp_acquisition');
 
   const dealInsights = {
     techcorp_acquisition: {
-      name: 'TechCorp Acquisition',
+      name: t('sample_data.deals.techcorp_acquisition'),
       successProbability: 78.9,
       confidenceLevel: 92,
       riskFactors: [
-        { factor: 'Regulatory Approval', risk: 'medium', impact: 15, description: 'Antitrust review pending in 2 jurisdictions' },
-        { factor: 'Due Diligence Completion', risk: 'low', impact: 8, description: 'Financial review 85% complete' },
-        { factor: 'Stakeholder Alignment', risk: 'high', impact: 22, description: 'Board approval required from 3 entities' }
+        { factor: t('sample_data.risk_factors.regulatory_approval'), risk: tCommon('status_values.medium'), impact: 15, description: t('insights.risk_descriptions.antitrust_review') },
+        { factor: t('sample_data.risk_factors.due_diligence_completion'), risk: tCommon('status_values.low'), impact: 8, description: t('insights.risk_descriptions.financial_review') },
+        { factor: t('sample_data.risk_factors.stakeholder_alignment'), risk: tCommon('status_values.high'), impact: 22, description: t('insights.risk_descriptions.board_approval') }
       ],
       bottlenecks: [
-        { area: 'Legal Documentation', severity: 'high', delay: '5-7 days', description: 'Contract amendments pending' },
-        { area: 'Financial Verification', severity: 'medium', delay: '2-3 days', description: 'Audit trail completion' }
+        { area: t('sample_data.bottlenecks.legal_documentation'), severity: tCommon('status_values.high'), delay: t('insights.delay_estimates.5_7_days'), description: t('insights.bottleneck_descriptions.contract_amendments') },
+        { area: t('sample_data.bottlenecks.financial_verification'), severity: tCommon('status_values.medium'), delay: t('insights.delay_estimates.2_3_days'), description: t('insights.bottleneck_descriptions.audit_trail') }
       ],
       recommendations: [
-        { priority: 'high', action: 'Accelerate regulatory filing', impact: '+12% success rate' },
-        { priority: 'medium', action: 'Schedule stakeholder alignment meeting', impact: '+8% success rate' },
-        { priority: 'low', action: 'Prepare contingency documentation', impact: '+3% success rate' }
+        { priority: tCommon('status_values.high'), action: t('insights.recommendations.accelerate_regulatory'), impact: t('insights.impact.plus_12_percent') },
+        { priority: tCommon('status_values.medium'), action: t('insights.recommendations.schedule_stakeholder_meeting'), impact: t('insights.impact.plus_8_percent') },
+        { priority: tCommon('status_values.low'), action: t('insights.recommendations.prepare_contingency'), impact: t('insights.impact.plus_3_percent') }
       ],
       timeline: {
-        estimated: '42 days',
-        optimistic: '35 days',
-        pessimistic: '58 days'
+        estimated: t('insights.timeline_estimates.42_days'),
+        optimistic: t('insights.timeline_estimates.35_days'),
+        pessimistic: t('insights.timeline_estimates.58_days')
       },
       keyMetrics: {
         userEngagement: 87,
@@ -72,10 +75,10 @@ const PredictiveInsightsPanel = () => {
       {/* Success Probability Card */}
       <div className="bg-card border border-border rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">AI Success Prediction</h3>
-          <div className="flex items-center space-x-2">
+          <h3 className="text-lg font-semibold text-foreground">{t('insights.prediction.title')}</h3>
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Icon name="Brain" size={16} className="text-primary" />
-            <span className="text-sm text-muted-foreground">ML Model v2.1</span>
+            <span className="text-sm text-muted-foreground">{t('insights.prediction.model_version')}</span>
           </div>
         </div>
 
@@ -105,14 +108,14 @@ const PredictiveInsightsPanel = () => {
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span className="text-2xl font-bold text-primary">{currentDeal?.successProbability}%</span>
-              <span className="text-xs text-muted-foreground">Success Rate</span>
+              <span className="text-xs text-muted-foreground">{t('insights.prediction.success_rate')}</span>
             </div>
           </div>
           
-          <div className="flex items-center justify-center space-x-4 text-sm">
-            <div className="flex items-center space-x-1">
+          <div className="flex items-center justify-center space-x-4 rtl:space-x-reverse text-sm">
+            <div className="flex items-center space-x-1 rtl:space-x-reverse">
               <Icon name="Target" size={14} className="text-success" />
-              <span className="text-muted-foreground">Confidence: {currentDeal?.confidenceLevel}%</span>
+              <span className="text-muted-foreground">{t('insights.prediction.confidence')}: {currentDeal?.confidenceLevel}%</span>
             </div>
           </div>
         </div>
@@ -120,18 +123,18 @@ const PredictiveInsightsPanel = () => {
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="text-center p-3 bg-muted/20 rounded-lg">
             <div className="text-lg font-semibold text-success">{currentDeal?.timeline?.optimistic}</div>
-            <div className="text-xs text-muted-foreground">Best Case</div>
+            <div className="text-xs text-muted-foreground">{t('insights.prediction.timeline.best_case')}</div>
           </div>
           <div className="text-center p-3 bg-muted/20 rounded-lg">
             <div className="text-lg font-semibold text-error">{currentDeal?.timeline?.pessimistic}</div>
-            <div className="text-xs text-muted-foreground">Worst Case</div>
+            <div className="text-xs text-muted-foreground">{t('insights.prediction.timeline.worst_case')}</div>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           {Object.entries(currentDeal?.keyMetrics)?.map(([key, value]) => (
             <div key={key} className="flex items-center justify-between p-2 bg-muted/10 rounded">
-              <span className="text-xs text-muted-foreground capitalize">{key?.replace(/([A-Z])/g, ' $1')}</span>
+              <span className="text-xs text-muted-foreground">{t(`insights.key_metrics.${key}`)}</span>
               <span className="text-sm font-medium text-foreground">{value}%</span>
             </div>
           ))}
@@ -140,7 +143,7 @@ const PredictiveInsightsPanel = () => {
       {/* Risk Factors */}
       <div className="bg-card border border-border rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Risk Analysis</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('insights.risk_analysis.title')}</h3>
           <Icon name="AlertTriangle" size={16} className="text-warning" />
         </div>
 
@@ -149,11 +152,11 @@ const PredictiveInsightsPanel = () => {
             <div key={index} className="p-3 border border-border rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="font-medium text-foreground">{risk?.factor}</span>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 rtl:space-x-reverse">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRiskColor(risk?.risk)}`}>
                     {risk?.risk}
                   </span>
-                  <span className="text-sm text-muted-foreground">{risk?.impact}% impact</span>
+                  <span className="text-sm text-muted-foreground">{risk?.impact}% {t('insights.risk_analysis.impact')}</span>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">{risk?.description}</p>
@@ -164,7 +167,7 @@ const PredictiveInsightsPanel = () => {
       {/* Bottlenecks */}
       <div className="bg-card border border-border rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Current Bottlenecks</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('insights.bottlenecks.title')}</h3>
           <Icon name="Clock" size={16} className="text-error" />
         </div>
 
@@ -173,7 +176,7 @@ const PredictiveInsightsPanel = () => {
             <div key={index} className="p-3 border border-border rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="font-medium text-foreground">{bottleneck?.area}</span>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 rtl:space-x-reverse">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getSeverityColor(bottleneck?.severity)}`}>
                     {bottleneck?.severity}
                   </span>
@@ -188,7 +191,7 @@ const PredictiveInsightsPanel = () => {
       {/* Recommendations */}
       <div className="bg-card border border-border rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">AI Recommendations</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('insights.recommendations.title')}</h3>
           <Icon name="Lightbulb" size={16} className="text-accent" />
         </div>
 
@@ -196,7 +199,7 @@ const PredictiveInsightsPanel = () => {
           {currentDeal?.recommendations?.map((rec, index) => (
             <div key={index} className="p-3 border border-border rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 rtl:space-x-reverse">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(rec?.priority)}`}>
                     {rec?.priority}
                   </span>
@@ -210,7 +213,7 @@ const PredictiveInsightsPanel = () => {
 
         <div className="mt-4 pt-4 border-t border-border">
           <Button variant="primary" fullWidth iconName="ArrowRight" iconPosition="right">
-            Apply All Recommendations
+            {t('insights.recommendations.apply_all')}
           </Button>
         </div>
       </div>
