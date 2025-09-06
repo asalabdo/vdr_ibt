@@ -3,6 +3,9 @@ import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
+import { Separator } from '@/components/ui/separator';
 
 const GlobalControls = ({ onFiltersChange }) => {
   const { t } = useTranslation('executive-dashboard');
@@ -104,21 +107,50 @@ const GlobalControls = ({ onFiltersChange }) => {
           </div>
 
           <div className="flex items-center space-x-2 rtl:space-x-reverse">
-            <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
-              <Icon name="RefreshCw" size={16} />
-            </button>
-            <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
-              <Icon name="Download" size={16} />
-            </button>
-            <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
-              <Icon name="Settings" size={16} />
-            </button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Icon name="RefreshCw" size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t('actions.refresh_data', 'Refresh Data')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Icon name="Download" size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t('actions.export_data', 'Export Data')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Icon name="Settings" size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t('actions.dashboard_settings', 'Dashboard Settings')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 pt-4 border-t border-border">
-        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+      <div className="mt-4">
+        <Separator />
+        <div className="pt-4">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Icon name="Clock" size={14} />
             <span>{t('status.last_updated', 'Last updated: {{time}}', { time: tCommon('time_ago.minutes_ago', { count: 2 }) })}</span>
@@ -130,6 +162,7 @@ const GlobalControls = ({ onFiltersChange }) => {
           <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Icon name="Users" size={14} />
             <span>{t('status.active_sessions', 'Active sessions: {{count}}', { count: '1,247' })}</span>
+          </div>
           </div>
         </div>
       </div>

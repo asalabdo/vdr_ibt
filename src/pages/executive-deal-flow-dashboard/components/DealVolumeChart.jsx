@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
 
 const DealVolumeChart = ({ data, onDrillDown }) => {
   const { t } = useTranslation('executive-dashboard');
@@ -37,12 +38,13 @@ const DealVolumeChart = ({ data, onDrillDown }) => {
             <CardTitle>{t('charts.deal_volume_title', 'Deal Volume & Average Size')}</CardTitle>
             <CardDescription>{t('charts.deal_volume_subtitle', 'Monthly transaction analytics with trend analysis')}</CardDescription>
           </div>
-          <button
+          <Button 
+            variant="link" 
+            size="sm"
             onClick={onDrillDown}
-            className="text-sm text-primary hover:text-primary/80 transition-colors"
           >
             {t('actions.view_quarterly', 'View Quarterly')} {t('symbols.arrow', '→')}
-          </button>
+          </Button>
         </div>
       </CardHeader>
       <CardContent>

@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/Button';
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
 const ExecutiveSummaryTable = ({ deals }) => {
   const { t } = useTranslation('executive-dashboard');
@@ -63,10 +65,10 @@ const ExecutiveSummaryTable = ({ deals }) => {
             <CardDescription>{t('executive_summary.subtitle', 'Key deals requiring attention')}</CardDescription>
           </div>
           <div className="flex items-center space-x-2 rtl:space-x-reverse">
-            <button className="px-3 py-1.5 text-xs font-medium bg-muted/30 text-muted-foreground rounded-md hover:bg-muted/50 transition-colors">
+            <Button variant="secondary" size="sm">
+              <Icon name="Download" className="w-4 h-4 mr-2" />
               {t('actions.export', 'Export')}
-            </button>
-            <Icon name="Download" size={16} className="text-muted-foreground" />
+            </Button>
           </div>
         </div>
       </CardHeader>
@@ -140,9 +142,18 @@ const ExecutiveSummaryTable = ({ deals }) => {
                     </div>
                   </TableCell>
                   <TableCell className="text-right rtl:text-left">
-                    <button className="text-primary hover:text-primary/80 transition-colors">
-                      <Icon name="ExternalLink" size={14} />
-                    </button>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <Icon name="ExternalLink" size={14} />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{t('actions.view_deal_details', 'View Deal Details')}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </TableCell>
                 </TableRow>
               );

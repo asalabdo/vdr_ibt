@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Skeleton } from '@/components/ui/skeleton';
 import KPICard from './components/KPICard';
 import DealVolumeChart from './components/DealVolumeChart';
 import DealPipelineFunnel from './components/DealPipelineFunnel';
@@ -223,8 +224,8 @@ const ExecutiveDealFlowDashboard = () => {
 
             {/* Right Sidebar - 4 columns */}
             <div className="xl:col-span-4 space-y-6">
-              <DealPipelineFunnel stages={pipelineStages} />
               <TopPerformingRooms rooms={topRooms} />
+              <DealPipelineFunnel stages={pipelineStages} />
             </div>
           </div>
 
