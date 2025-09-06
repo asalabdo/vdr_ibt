@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 
 const DealPipelineFunnel = ({ stages }) => {
   const { t } = useTranslation('executive-dashboard');
@@ -23,14 +25,17 @@ const DealPipelineFunnel = ({ stages }) => {
   const maxCount = Math.max(...stages?.map(stage => stage?.count));
 
   return (
-    <div className="bg-card border border-border rounded-lg p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-lg font-semibold text-foreground">{t('pipeline.title', 'Deal Pipeline')}</h3>
-          <p className="text-sm text-muted-foreground">{t('pipeline.subtitle', 'Stage-wise conversion analysis')}</p>
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>{t('pipeline.title', 'Deal Pipeline')}</CardTitle>
+            <CardDescription>{t('pipeline.subtitle', 'Stage-wise conversion analysis')}</CardDescription>
+          </div>
+          <Icon name="Filter" size={16} className="text-muted-foreground" />
         </div>
-        <Icon name="Filter" size={16} className="text-muted-foreground" />
-      </div>
+      </CardHeader>
+      <CardContent>
       <div className="space-y-4">
         {stages?.map((stage, index) => (
           <div key={stage?.name} className="relative">
@@ -48,12 +53,10 @@ const DealPipelineFunnel = ({ stages }) => {
             </div>
             
             <div className="relative">
-              <div className="w-full h-2 bg-muted/30 rounded-full overflow-hidden">
-                <div
-                  className={`h-full ${getStageColor(index)} transition-all duration-500 ease-out`}
-                  style={{ width: `${getStageWidth(stage?.count, maxCount)}%` }}
-                />
-              </div>
+              <Progress 
+                value={getStageWidth(stage?.count, maxCount)} 
+                className="w-full h-2" 
+              />
               
               {stage?.conversionRate && (
                 <div className="absolute -right-2 rtl:-left-2 rtl:right-auto -top-1 bg-popover border border-border rounded px-2 py-1">
@@ -80,7 +83,8 @@ const DealPipelineFunnel = ({ stages }) => {
           </span>
         </div>
       </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

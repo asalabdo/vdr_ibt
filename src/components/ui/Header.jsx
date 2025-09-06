@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icon from '../AppIcon';
-import Button from './Button';
+import { Button } from '@/components/ui/Button';
 import LanguageToggle from './LanguageToggle';
 import DarkModeToggle from './DarkModeToggle';
 

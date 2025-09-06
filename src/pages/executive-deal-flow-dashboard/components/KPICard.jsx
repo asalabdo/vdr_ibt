@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
+import { Card, CardContent } from '@/components/ui/card';
 
 const KPICard = ({ title, value, change, changeType, icon, subtitle, trend }) => {
   const { t } = useTranslation('executive-dashboard');
@@ -19,7 +20,8 @@ const KPICard = ({ title, value, change, changeType, icon, subtitle, trend }) =>
   };
 
   return (
-    <div className="bg-card border border-border rounded-lg p-6 hover:shadow-elevation-1 transition-all duration-200">
+    <Card className="hover:shadow-elevation-1 transition-all duration-200">
+      <CardContent className="p-6">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3 rtl:space-x-reverse">
           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -54,7 +56,8 @@ const KPICard = ({ title, value, change, changeType, icon, subtitle, trend }) =>
           </div>
         )}
       </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

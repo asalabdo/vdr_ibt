@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
-import Select from '../../../components/ui/Select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent } from '@/components/ui/card';
 
 const GlobalControls = ({ onFiltersChange }) => {
   const { t } = useTranslation('executive-dashboard');
@@ -52,7 +53,8 @@ const GlobalControls = ({ onFiltersChange }) => {
   };
 
   return (
-    <div className="bg-card border border-border rounded-lg p-6 mb-6">
+    <Card className="mb-6">
+      <CardContent className="p-6">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
         <div className="flex items-center space-x-4 rtl:space-x-reverse">
           <div className="flex items-center space-x-2 rtl:space-x-reverse">
@@ -67,29 +69,38 @@ const GlobalControls = ({ onFiltersChange }) => {
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
-            <Select
-              options={dateRangeOptions}
-              value={selectedDateRange}
-              onChange={(value) => handleFilterChange('dateRange', value)}
-              placeholder={t('filters.placeholders.select_period', 'Select period')}
-              className="w-full sm:w-40"
-            />
+            <Select value={selectedDateRange} onValueChange={(value) => handleFilterChange('dateRange', value)}>
+              <SelectTrigger className="w-full sm:w-40">
+                <SelectValue placeholder={t('filters.placeholders.select_period', 'Select period')} />
+              </SelectTrigger>
+              <SelectContent>
+                {dateRangeOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-            <Select
-              options={stageOptions}
-              value={selectedStage}
-              onChange={(value) => handleFilterChange('stage', value)}
-              placeholder={t('filters.placeholders.all_stages', 'All stages')}
-              className="w-full sm:w-36"
-            />
+            <Select value={selectedStage} onValueChange={(value) => handleFilterChange('stage', value)}>
+              <SelectTrigger className="w-full sm:w-36">
+                <SelectValue placeholder={t('filters.placeholders.all_stages', 'All stages')} />
+              </SelectTrigger>
+              <SelectContent>
+                {stageOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-            <Select
-              options={regionOptions}
-              value={selectedRegion}
-              onChange={(value) => handleFilterChange('region', value)}
-              placeholder={t('filters.placeholders.global', 'Global')}
-              className="w-full sm:w-36"
-            />
+            <Select value={selectedRegion} onValueChange={(value) => handleFilterChange('region', value)}>
+              <SelectTrigger className="w-full sm:w-36">
+                <SelectValue placeholder={t('filters.placeholders.global', 'Global')} />
+              </SelectTrigger>
+              <SelectContent>
+                {regionOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="flex items-center space-x-2 rtl:space-x-reverse">
@@ -122,7 +133,8 @@ const GlobalControls = ({ onFiltersChange }) => {
           </div>
         </div>
       </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

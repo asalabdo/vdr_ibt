@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 const DealVolumeChart = ({ data, onDrillDown }) => {
   const { t } = useTranslation('executive-dashboard');
@@ -29,19 +30,22 @@ const DealVolumeChart = ({ data, onDrillDown }) => {
   };
 
   return (
-    <div className="bg-card border border-border rounded-lg p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-lg font-semibold text-foreground">{t('charts.deal_volume_title', 'Deal Volume & Average Size')}</h3>
-          <p className="text-sm text-muted-foreground">{t('charts.deal_volume_subtitle', 'Monthly transaction analytics with trend analysis')}</p>
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>{t('charts.deal_volume_title', 'Deal Volume & Average Size')}</CardTitle>
+            <CardDescription>{t('charts.deal_volume_subtitle', 'Monthly transaction analytics with trend analysis')}</CardDescription>
+          </div>
+          <button
+            onClick={onDrillDown}
+            className="text-sm text-primary hover:text-primary/80 transition-colors"
+          >
+            {t('actions.view_quarterly', 'View Quarterly')} {t('symbols.arrow', '→')}
+          </button>
         </div>
-        <button
-          onClick={onDrillDown}
-          className="text-sm text-primary hover:text-primary/80 transition-colors"
-        >
-          {t('actions.view_quarterly', 'View Quarterly')} {t('symbols.arrow', '→')}
-        </button>
-      </div>
+      </CardHeader>
+      <CardContent>
       
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
@@ -84,7 +88,8 @@ const DealVolumeChart = ({ data, onDrillDown }) => {
           </ComposedChart>
         </ResponsiveContainer>
       </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

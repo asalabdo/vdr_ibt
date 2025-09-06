@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 const TopPerformingRooms = ({ rooms }) => {
   const { t } = useTranslation('executive-dashboard');
@@ -20,16 +21,19 @@ const TopPerformingRooms = ({ rooms }) => {
   };
 
   return (
-    <div className="bg-card border border-border rounded-lg p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-lg font-semibold text-foreground">{t('top_performing_rooms.title', 'Top Performing Rooms')}</h3>
-          <p className="text-sm text-muted-foreground">{t('top_performing_rooms.subtitle', 'Based on engagement & conversion')}</p>
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>{t('top_performing_rooms.title', 'Top Performing Rooms')}</CardTitle>
+            <CardDescription>{t('top_performing_rooms.subtitle', 'Based on engagement & conversion')}</CardDescription>
+          </div>
+          <button className="text-sm text-primary hover:text-primary/80 transition-colors">
+            {t('actions.view_all', 'View All')} {t('symbols.arrow', '→')}
+          </button>
         </div>
-        <button className="text-sm text-primary hover:text-primary/80 transition-colors">
-          {t('actions.view_all', 'View All')} {t('symbols.arrow', '→')}
-        </button>
-      </div>
+      </CardHeader>
+      <CardContent>
       <div className="space-y-4">
         {rooms?.map((room, index) => {
           const rankInfo = getRankIcon(index + 1);
@@ -77,7 +81,8 @@ const TopPerformingRooms = ({ rooms }) => {
           </div>
         </div>
       </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

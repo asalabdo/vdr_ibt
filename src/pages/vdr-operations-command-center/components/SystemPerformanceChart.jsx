@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import Icon from '../../../components/AppIcon';
-import Button from '../../../components/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 const SystemPerformanceChart = () => {
   const { t } = useTranslation('vdr-operations-dashboard');

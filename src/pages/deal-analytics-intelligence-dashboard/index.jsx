@@ -7,7 +7,7 @@ import UserEngagementHeatmap from './components/UserEngagementHeatmap';
 import PredictiveInsightsPanel from './components/PredictiveInsightsPanel';
 import SegmentedAnalytics from './components/SegmentedAnalytics';
 
-import Button from '../../components/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 const DealAnalyticsIntelligenceDashboard = () => {
   const { t } = useTranslation('deal-analytics-dashboard');

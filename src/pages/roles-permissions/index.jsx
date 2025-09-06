@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../components/ui/Header';
-import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import Icon from '../../components/AppIcon';
 import RoleCard from './components/RoleCard';
 import CreateRoleModal from './components/CreateRoleModal';
