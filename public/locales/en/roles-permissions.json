@@ -1,0 +1,119 @@
+{
+  "title": "Roles & Permissions",
+  "subtitle": "Manage system roles and their permissions",
+  
+  "actions": {
+    "create_role": "Create Role",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "creating": "Creating...",
+    "create": "Create Role"
+  },
+
+  "stats": {
+    "total_roles": "Total Roles",
+    "total_users": "Total Users",
+    "active_roles": "Active Roles"
+  },
+
+  "search": {
+    "placeholder": "Search roles...",
+    "no_results_title": "No roles found",
+    "no_results_description": "Try adjusting your search criteria",
+    "empty_state_description": "Create your first role to get started"
+  },
+
+  "role_card": {
+    "role_id": "Role ID:",
+    "permissions": "Permissions:",
+    "users": "users"
+  },
+
+  "create_modal": {
+    "title": "Create New Role",
+    "role_name_label": "Role Name",
+    "role_name_placeholder": "Enter role name",
+    "description_label": "Description",
+    "description_placeholder": "Describe the role's purpose and responsibilities",
+    "permissions_label": "Permissions"
+  },
+
+  "permissions": {
+    "view_questions": {
+      "label": "View Questions",
+      "description": "View all questions and answers"
+    },
+    "reply_questions": {
+      "label": "Reply Questions", 
+      "description": "Reply to questions"
+    },
+    "approve_answers": {
+      "label": "Approve Answers",
+      "description": "Approve or reject answers"
+    },
+    "upload_files": {
+      "label": "Upload Files",
+      "description": "Upload documents and files"
+    },
+    "user_management": {
+      "label": "User Management",
+      "description": "Manage user accounts"
+    },
+    "role_management": {
+      "label": "Role Management",
+      "description": "Create and edit roles"
+    },
+    "system_settings": {
+      "label": "System Settings",
+      "description": "Access system configuration"
+    },
+    "view_documents": {
+      "label": "View Documents",
+      "description": "View documents and files"
+    },
+    "download_documents": {
+      "label": "Download Documents",
+      "description": "Download documents and files"
+    }
+  },
+
+  "permission_names": {
+    "view_questions": "view questions",
+    "reply_questions": "reply questions",
+    "approve_answers": "approve answers",
+    "upload_files": "upload files",
+    "user_management": "user management",
+    "role_management": "role management",
+    "system_settings": "system settings",
+    "view_documents": "view documents",
+    "download_documents": "download documents"
+  },
+
+  "time": {
+    "just_now": "Just now",
+    "minutes_ago": "{{count}}m ago",
+    "hours_ago": "{{count}}h ago",
+    "days_ago": "{{count}}d ago"
+  },
+
+  "mock_data": {
+    "roles": {
+      "admin": {
+        "name": "Admin",
+        "description": "Full system access and management"
+      },
+      "qa_observer_full": {
+        "name": "Q&A Observer – Full Control",
+        "description": "Can view and reply to questions"
+      },
+      "qa_observer_view": {
+        "name": "Q&A Observer – View Only", 
+        "description": "Can only view questions"
+      },
+      "document_viewer": {
+        "name": "Document Viewer",
+        "description": "View documents and basic interactions"
+      }
+    }
+  }
+}

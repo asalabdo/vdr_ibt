@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Header from '../../components/ui/Header';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
@@ -7,15 +8,16 @@ import RoleCard from './components/RoleCard';
 import CreateRoleModal from './components/CreateRoleModal';
 
 const RolesPermissions = () => {
+  const { t } = useTranslation('roles-permissions');
   const [searchQuery, setSearchQuery] = useState('');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  // Mock roles data
-  const [roles] = useState([
+  // Mock roles data using translation keys
+  const [rolesData] = useState([
     {
       id: 1,
-      name: 'Admin',
-      description: 'Full system access and management',
+      nameKey: 'mock_data.roles.admin.name',
+      descriptionKey: 'mock_data.roles.admin.description',
       userCount: 1,
       createdDate: '2025-08-31T10:00:00Z',
       permissions: [
@@ -30,8 +32,8 @@ const RolesPermissions = () => {
     },
     {
       id: 2,
-      name: 'Q&A Observer – Full Control',
-      description: 'Can view and reply to questions',
+      nameKey: 'mock_data.roles.qa_observer_full.name',
+      descriptionKey: 'mock_data.roles.qa_observer_full.description',
       userCount: 2,
       createdDate: '2025-08-31T10:00:00Z',
       permissions: [
@@ -46,8 +48,8 @@ const RolesPermissions = () => {
     },
     {
       id: 3,
-      name: 'Q&A Observer – View Only',
-      description: 'Can only view questions',
+      nameKey: 'mock_data.roles.qa_observer_view.name',
+      descriptionKey: 'mock_data.roles.qa_observer_view.description',
       userCount: 2,
       createdDate: '2025-08-31T10:00:00Z',
       permissions: [
@@ -62,8 +64,8 @@ const RolesPermissions = () => {
     },
     {
       id: 4,
-      name: 'Document Viewer',
-      description: 'View documents and basic interactions',
+      nameKey: 'mock_data.roles.document_viewer.name',
+      descriptionKey: 'mock_data.roles.document_viewer.description',
       userCount: 0,
       createdDate: '2025-08-30T14:30:00Z',
       permissions: [
@@ -78,6 +80,13 @@ const RolesPermissions = () => {
     }
   ]);
 
+  // Transform keys to actual translated text
+  const roles = rolesData.map(roleData => ({
+    ...roleData,
+    name: t(roleData.nameKey),
+    description: t(roleData.descriptionKey)
+  }));
+
   const filteredRoles = roles?.filter(role => 
     role?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
     role?.description?.toLowerCase()?.includes(searchQuery?.toLowerCase())
@@ -89,15 +98,21 @@ const RolesPermissions = () => {
     activeRoles: roles?.filter(role => role?.userCount > 0)?.length || 0
   };
 
-  const availablePermissions = [
-    { name: 'view_questions', label: 'View Questions', description: 'View all questions and answers' },
-    { name: 'reply_questions', label: 'Reply Questions', description: 'Reply to questions' },
-    { name: 'approve_answers', label: 'Approve Answers', description: 'Approve or reject answers' },
-    { name: 'upload_files', label: 'Upload Files', description: 'Upload documents and files' },
-    { name: 'user_management', label: 'User Management', description: 'Manage user accounts' },
-    { name: 'role_management', label: 'Role Management', description: 'Create and edit roles' },
-    { name: 'system_settings', label: 'System Settings', description: 'Access system configuration' }
+  const availablePermissionsData = [
+    { name: 'view_questions', labelKey: 'permissions.view_questions.label', descriptionKey: 'permissions.view_questions.description' },
+    { name: 'reply_questions', labelKey: 'permissions.reply_questions.label', descriptionKey: 'permissions.reply_questions.description' },
+    { name: 'approve_answers', labelKey: 'permissions.approve_answers.label', descriptionKey: 'permissions.approve_answers.description' },
+    { name: 'upload_files', labelKey: 'permissions.upload_files.label', descriptionKey: 'permissions.upload_files.description' },
+    { name: 'user_management', labelKey: 'permissions.user_management.label', descriptionKey: 'permissions.user_management.description' },
+    { name: 'role_management', labelKey: 'permissions.role_management.label', descriptionKey: 'permissions.role_management.description' },
+    { name: 'system_settings', labelKey: 'permissions.system_settings.label', descriptionKey: 'permissions.system_settings.description' }
   ];
+
+  const availablePermissions = availablePermissionsData.map(permission => ({
+    ...permission,
+    label: t(permission.labelKey),
+    description: t(permission.descriptionKey)
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -107,9 +122,11 @@ const RolesPermissions = () => {
           {/* Header Section */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
             <div className="mb-4 lg:mb-0">
-              <h1 className="text-3xl font-bold text-foreground mb-2">Roles & Permissions</h1>
+              <h1 className="text-3xl font-bold text-foreground mb-2">
+                {t('title')}
+              </h1>
               <p className="text-muted-foreground">
-                Manage system roles and their permissions
+                {t('subtitle')}
               </p>
             </div>
             
@@ -118,43 +135,43 @@ const RolesPermissions = () => {
               variant="default"
               onClick={() => setIsCreateModalOpen(true)}
             >
-              Create Role
+              {t('actions.create_role')}
             </Button>
           </div>
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 rtl:space-x-reverse">
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Icon name="Shield" size={20} className="text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Roles</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.total_roles')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.totalRoles}</p>
                 </div>
               </div>
             </div>
             
             <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 rtl:space-x-reverse">
                 <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
                   <Icon name="Users" size={20} className="text-success" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Users</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.total_users')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.totalUsers}</p>
                 </div>
               </div>
             </div>
             
             <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 rtl:space-x-reverse">
                 <div className="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center">
                   <Icon name="CheckCircle" size={20} className="text-warning" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Active Roles</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('stats.active_roles')}</p>
                   <p className="text-2xl font-bold text-foreground">{stats?.activeRoles}</p>
                 </div>
               </div>
@@ -164,13 +181,13 @@ const RolesPermissions = () => {
           {/* Search */}
           <div className="mb-6">
             <div className="relative">
-              <Icon name="Search" size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+              <Icon name="Search" size={20} className="absolute left-3 rtl:right-3 rtl:left-auto top-1/2 transform -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search roles..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e?.target?.value || '')}
-                className="pl-10"
+                className="pl-10 rtl:pr-10 rtl:pl-3"
               />
             </div>
           </div>
@@ -188,10 +205,11 @@ const RolesPermissions = () => {
               <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
                 <Icon name="Shield" size={32} className="text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-medium text-foreground mb-2">No roles found</h3>
+              <h3 className="text-lg font-medium text-foreground mb-2">{t('search.no_results_title')}</h3>
               <p className="text-muted-foreground mb-4">
                 {searchQuery 
-                  ? 'Try adjusting your search criteria' :'Create your first role to get started'
+                  ? t('search.no_results_description') 
+                  : t('search.empty_state_description')
                 }
               </p>
               <Button 
@@ -199,7 +217,7 @@ const RolesPermissions = () => {
                 variant="default"
                 onClick={() => setIsCreateModalOpen(true)}
               >
-                Create Role
+                {t('actions.create_role')}
               </Button>
             </div>
           )}
