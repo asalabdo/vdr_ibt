@@ -3,13 +3,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icon from '../AppIcon';
 import { Button } from '@/components/ui/Button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import LanguageToggle from './LanguageToggle';
 import DarkModeToggle from './DarkModeToggle';
 
 const Header = ({ onToggleSidebar }) => {
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [lastDataRefresh, setLastDataRefresh] = useState(new Date());
-  const userMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { t: tNav } = useTranslation('navigation');
@@ -46,17 +48,6 @@ const Header = ({ onToggleSidebar }) => {
   ];
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (userMenuRef?.current && !userMenuRef?.current?.contains(event?.target)) {
-        setIsUserMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  useEffect(() => {
     const interval = setInterval(() => {
       setLastDataRefresh(new Date());
     }, 30000); // Update every 30 seconds
@@ -87,57 +78,60 @@ const Header = ({ onToggleSidebar }) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-card border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border/40 shadow-sm">
       <div className="flex items-center justify-between h-16 px-6">
         {/* Logo Section */}
         <div className="flex items-center space-x-8 rtl:space-x-reverse">
           <div 
-            className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer"
+            className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer group transition-all duration-200 hover:scale-105"
             onClick={() => navigate('/')}
           >
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Icon name="Database" size={20} color="var(--color-primary-foreground)" />
+            <div className="w-10 h-10 flex items-center justify-center transition-all duration-300">
+              <Icon name="Database" size={24} className="text-blue-500 dark:text-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" />
             </div>
             <div className="flex flex-col">
-              <span className="text-lg font-semibold text-foreground"> VDR </span>
-              <span className="text-xs text-muted-foreground -mt-1">IBTIKARYA</span>
+              <span className="text-xl font-bold text-foreground group-hover:text-primary transition-colors"> VDR </span>
+              <span className="text-xs text-muted-foreground font-medium">IBTIKARYA</span>
             </div>
           </div>
 
           {/* Navigation Items */}
-          <nav className="hidden lg:flex items-center space-x-1 rtl:space-x-reverse">
+          <nav className="hidden lg:flex items-center space-x-2 rtl:space-x-reverse">
             {navigationItems?.map((item) => {
               const isActive = location?.pathname === item?.path;
               return (
-                <button
+                <Button
                   key={item?.path}
+                  variant="ghost"
+                  size="sm"
                   onClick={() => handleNavigation(item?.path)}
-                                     className={`
-                     flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-lg text-sm font-medium
-                     transition-all duration-200 relative group
-                     ${isActive 
-                       ? 'bg-primary text-primary-foreground shadow-md ring-1 ring-primary/10 font-semibold' 
-                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/60 hover:shadow-sm'
-                     }
-                   `}
+                  className={`
+                    relative group transition-all duration-300 h-10
+                    ${isActive 
+                      ? 'text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300' 
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/80 hover:shadow-md'
+                    }
+                  `}
                   title={item?.tooltip}
                 >
-                  <Icon name={item?.icon} size={16} />
-                  <span>{item?.label}</span>
+                  <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                    <Icon name={item?.icon} size={16} />
+                    <span className="font-medium">{item?.label}</span>
+                  </div>
                   {/* Active indicator */}
                   {isActive && (
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 h-0.5 bg-primary-foreground/40 rounded-full"></div>
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-blue-500 dark:bg-blue-400 rounded-full shadow-sm"></div>
                   )}
-                </button>
+                </Button>
               );
             })}
           </nav>
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center space-x-1 rtl:space-x-reverse">
+        <div className="flex items-center space-x-4 rtl:space-x-reverse">
           {/* Theme Controls */}
-          <div className="flex items-center space-x-1 rtl:space-x-reverse">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             {/* Language Toggle */}
             <LanguageToggle />
 
@@ -146,117 +140,124 @@ const Header = ({ onToggleSidebar }) => {
           </div>
 
           {/* Divider */}
-          <div className="h-5 w-px bg-border/60 mx-3"></div>
+          <Separator orientation="vertical" className="h-6" />
 
           {/* Data Status Indicator */}
-          <div className="hidden md:flex items-center space-x-2 rtl:space-x-reverse px-3 py-1.5 bg-muted/20 rounded-md">
-            <div className="w-1.5 h-1.5 bg-success rounded-full animate-pulse"></div>
-            <span className="text-xs text-muted-foreground font-medium">
+          <Badge className="hidden md:flex items-center space-x-2 rtl:space-x-reverse bg-green-500/10 text-green-700 dark:bg-green-500/20 dark:text-green-300 border-green-500/30 hover:bg-green-500/20 transition-all duration-200">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-xs font-semibold">
               {tCommon('header.updated')} {formatLastRefresh(lastDataRefresh)}
             </span>
-          </div>
+          </Badge>
 
           {/* User Menu */}
-          <div className="relative" ref={userMenuRef}>
-            <button
-              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              className="flex items-center space-x-2 rtl:space-x-reverse px-2 py-1.5 rounded-lg hover:bg-muted/50 transition-all duration-200 group"
-            >
-              <div className="w-7 h-7 bg-primary rounded-full flex items-center justify-center ring-2 ring-background shadow-sm">
-                <Icon name="User" size={14} color="var(--color-primary-foreground)" />
-              </div>
-              <div className="hidden sm:block text-left">
-                <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">John Executive</div>
-                <div className="text-xs text-muted-foreground">Senior Analyst</div>
-              </div>
-              <Icon 
-                name="ChevronDown" 
-                size={14} 
-                className={`text-muted-foreground group-hover:text-foreground transition-all duration-200 ${
-                  isUserMenuOpen ? 'rotate-180' : ''
-                }`}
-              />
-            </button>
-
-            {/* User Dropdown */}
-            {isUserMenuOpen && (
-              <div className="absolute right-0 top-full mt-2 w-64 bg-popover border border-border rounded-lg shadow-elevation-2 py-2">
-                <div className="px-4 py-3 border-b border-border">
-                  <div className="text-sm font-medium text-popover-foreground">John Executive</div>
-                  <div className="text-xs text-muted-foreground">john.executive@company.com</div>
-                  <div className="text-xs text-muted-foreground mt-1">Senior Analyst • Executive Access</div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="ghost" 
+                className="relative h-10 rounded-lg px-3 hover:bg-muted/80 transition-all duration-200 group"
+              >
+                <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                  <Avatar className="h-8 w-8 ring-2 ring-primary/20 shadow-sm">
+                    <AvatarImage src="/api/placeholder/32/32" alt="User" />
+                    <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold text-sm">
+                      JE
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="hidden sm:flex flex-col text-left">
+                    <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                      John Executive
+                    </span>
+                    <span className="text-xs text-muted-foreground">Senior Analyst</span>
+                  </div>
+                  <Icon 
+                    name="ChevronDown" 
+                    size={14} 
+                    className="text-muted-foreground group-hover:text-foreground transition-all duration-200"
+                  />
                 </div>
-                
-                <div className="py-2">
-                  <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
-                    <Icon name="User" size={16} />
-                    <span>{tCommon('user.profile_settings')}</span>
-                  </button>
-                  <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
-                    <Icon name="Settings" size={16} />
-                    <span>{tCommon('user.dashboard_preferences')}</span>
-                  </button>
-                  <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
-                    <Icon name="Bell" size={16} />
-                    <span>{tCommon('user.notification_settings')}</span>
-                  </button>
-                  <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-popover-foreground hover:bg-muted/50 transition-colors">
-                    <Icon name="HelpCircle" size={16} />
-                    <span>{tCommon('user.help_support')}</span>
-                  </button>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-64" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">John Executive</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    john.executive@company.com
+                  </p>
+                  <Badge variant="secondary" className="w-fit mt-1 text-xs">
+                    Executive Access
+                  </Badge>
                 </div>
-                
-                <div className="border-t border-border pt-4">
-                  <button className="w-full flex items-center space-x-3 rtl:space-x-reverse px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors">
-                    <Icon name="LogOut" size={16} />
-                    <span>{tCommon('user.sign_out')}</span>
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <Icon name="User" size={16} className="mr-2" />
+                <span>{tCommon('user.profile_settings', 'Profile Settings')}</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Icon name="Settings" size={16} className="mr-2" />
+                <span>{tCommon('user.dashboard_preferences', 'Dashboard Preferences')}</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Icon name="Bell" size={16} className="mr-2" />
+                <span>{tCommon('user.notification_settings', 'Notification Settings')}</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Icon name="HelpCircle" size={16} className="mr-2" />
+                <span>{tCommon('user.help_support', 'Help & Support')}</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950">
+                <Icon name="LogOut" size={16} className="mr-2" />
+                <span>{tCommon('user.sign_out', 'Sign Out')}</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* Menu Button (visible on all sizes) */}
-          <button
+          <Button
             onClick={() => onToggleSidebar && onToggleSidebar()}
-            className="p-2 rounded-lg hover:bg-muted/50 transition-all duration-200 group ml-2"
+            variant="ghost"
+            size="icon"
+            className="h-10 w-10 rounded-lg hover:bg-muted/80 transition-all duration-200 group"
             aria-label="Toggle sidebar"
           >
-            <div className="flex items-center justify-center w-5 h-5">
-              <Icon 
-                name="Menu" 
-                size={18} 
-                className="text-muted-foreground group-hover:text-foreground transition-colors" 
-              />
-            </div>
-          </button>
+            <Icon 
+              name="Menu" 
+              size={18} 
+              className="text-muted-foreground group-hover:text-foreground transition-colors" 
+            />
+          </Button>
         </div>
       </div>
       {/* Mobile Navigation */}
-      <div className="lg:hidden border-t border-border bg-card">
-        <nav className="flex overflow-x-auto py-2 px-4 space-x-1 rtl:space-x-reverse">
+      <div className="lg:hidden border-t border-border/50 bg-background/95 backdrop-blur-sm">
+        <nav className="flex overflow-x-auto py-3 px-4 space-x-2 rtl:space-x-reverse">
           {navigationItems?.map((item) => {
             const isActive = location?.pathname === item?.path;
             return (
-              <button
+              <Button
                 key={item?.path}
+                variant="ghost"
+                size="sm"
                 onClick={() => handleNavigation(item?.path)}
-                                 className={`
-                   flex flex-col items-center space-y-1 px-3 py-2 rounded-lg text-xs font-medium
-                   transition-all duration-200 whitespace-nowrap min-w-fit relative
-                   ${isActive 
-                     ? 'bg-primary text-primary-foreground shadow-md ring-1 ring-primary/10 font-semibold' 
-                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/60 hover:shadow-sm'
-                   }
-                 `}
+                 className={`
+                    flex flex-col items-center space-y-1 px-4 py-3 min-w-fit relative h-auto
+                    transition-all duration-300 whitespace-nowrap
+                    ${isActive 
+                      ? 'text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300' 
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/80 hover:shadow-sm'
+                    }
+                `}
               >
                 <Icon name={item?.icon} size={16} />
-                <span>{item?.label}</span>
+                <span className="text-xs font-medium">{item?.label}</span>
                 {/* Active indicator for mobile */}
                 {isActive && (
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-4 h-0.5 bg-primary-foreground/40 rounded-full"></div>
+                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-blue-500 dark:bg-blue-400 rounded-full shadow-sm"></div>
                 )}
-              </button>
+              </Button>
             );
           })}
         </nav>
