@@ -8,7 +8,7 @@ import SystemPerformanceChart from './components/SystemPerformanceChart';
 import ActiveDataRoomsGrid from './components/ActiveDataRoomsGrid';
 import RecentUserSessions from './components/RecentUserSessions';
 import Icon from '../../components/AppIcon';
-import Button from '../../components/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 
 

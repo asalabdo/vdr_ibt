@@ -1,6 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/Button';
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
 const ExecutiveSummaryTable = ({ deals }) => {
   const { t } = useTranslation('executive-dashboard');
@@ -51,54 +57,55 @@ const ExecutiveSummaryTable = ({ deals }) => {
   };
 
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden">
-      <div className="p-6 border-b border-border">
+    <Card className="overflow-hidden">
+      <CardHeader className="border-b border-border">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-foreground">{t('executive_summary.title', 'Executive Summary')}</h3>
-            <p className="text-sm text-muted-foreground">{t('executive_summary.subtitle', 'Key deals requiring attention')}</p>
+            <CardTitle>{t('executive_summary.title', 'Executive Summary')}</CardTitle>
+            <CardDescription>{t('executive_summary.subtitle', 'Key deals requiring attention')}</CardDescription>
           </div>
           <div className="flex items-center space-x-2 rtl:space-x-reverse">
-            <button className="px-3 py-1.5 text-xs font-medium bg-muted/30 text-muted-foreground rounded-md hover:bg-muted/50 transition-colors">
+            <Button variant="secondary" size="sm">
+              <Icon name="Download" className="w-4 h-4 mr-2" />
               {t('actions.export', 'Export')}
-            </button>
-            <Icon name="Download" size={16} className="text-muted-foreground" />
+            </Button>
           </div>
         </div>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-muted/20">
-            <tr>
-              <th className="text-left rtl:text-right p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+      </CardHeader>
+      <CardContent className="p-0">
+        <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-left rtl:text-right">
                 {t('executive_summary.table.deal_name', 'Deal Name')}
-              </th>
-              <th className="text-left rtl:text-right p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              </TableHead>
+              <TableHead className="text-left rtl:text-right">
                 {t('executive_summary.table.value', 'Value')}
-              </th>
-              <th className="text-left rtl:text-right p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              </TableHead>
+              <TableHead className="text-left rtl:text-right">
                 {t('executive_summary.table.status', 'Status')}
-              </th>
-              <th className="text-left rtl:text-right p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              </TableHead>
+              <TableHead className="text-left rtl:text-right">
                 {t('executive_summary.table.priority', 'Priority')}
-              </th>
-              <th className="text-left rtl:text-right p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              </TableHead>
+              <TableHead className="text-left rtl:text-right">
                 {t('executive_summary.table.projected_close', 'Projected Close')}
-              </th>
-              <th className="text-left rtl:text-right p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              </TableHead>
+              <TableHead className="text-left rtl:text-right">
                 {t('executive_summary.table.progress', 'Progress')}
-              </th>
-              <th className="text-right rtl:text-left p-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              </TableHead>
+              <TableHead className="text-right rtl:text-left">
                 {t('executive_summary.table.actions', 'Actions')}
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {deals?.map((deal) => {
               const priorityInfo = getPriorityIcon(deal?.priority);
               return (
-                <tr key={deal?.id} className="hover:bg-muted/10 transition-colors">
-                  <td className="p-4">
+                <TableRow key={deal?.id}>
+                  <TableCell>
                     <div className="flex items-center space-x-3 rtl:space-x-reverse">
                       <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
                         <Icon name="FileText" size={14} className="text-primary" />
@@ -108,49 +115,54 @@ const ExecutiveSummaryTable = ({ deals }) => {
                         <div className="text-xs text-muted-foreground">{deal?.company}</div>
                       </div>
                     </div>
-                  </td>
-                  <td className="p-4">
+                  </TableCell>
+                  <TableCell>
                     <div className="text-sm font-medium text-foreground">{deal?.value}</div>
                     <div className="text-xs text-muted-foreground">{deal?.type}</div>
-                  </td>
-                  <td className="p-4">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(deal?.status)}`}>
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={getStatusColor(deal?.status)}>
                       {deal?.status}
-                    </span>
-                  </td>
-                  <td className="p-4">
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
                       <Icon name={priorityInfo?.icon} size={14} className={priorityInfo?.color} />
                       <span className="text-sm text-foreground capitalize">{deal?.priority}</span>
                     </div>
-                  </td>
-                  <td className="p-4">
+                  </TableCell>
+                  <TableCell>
                     <div className="text-sm text-foreground">{formatDate(deal?.projectedClose)}</div>
                     <div className="text-xs text-muted-foreground">{deal?.daysRemaining} {tCommon('units.days')}</div>
-                  </td>
-                  <td className="p-4">
+                  </TableCell>
+                  <TableCell>
                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                      <div className="flex-1 bg-muted/30 rounded-full h-2">
-                        <div
-                          className="bg-primary h-2 rounded-full transition-all duration-300"
-                          style={{ width: `${deal?.progress}%` }}
-                        />
-                      </div>
+                      <Progress value={deal?.progress} className="flex-1" />
                       <span className="text-xs text-muted-foreground w-8">{deal?.progress}%</span>
                     </div>
-                  </td>
-                  <td className="p-4 text-right rtl:text-left">
-                    <button className="text-primary hover:text-primary/80 transition-colors">
-                      <Icon name="ExternalLink" size={14} />
-                    </button>
-                  </td>
-                </tr>
+                  </TableCell>
+                  <TableCell className="text-right rtl:text-left">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <Icon name="ExternalLink" size={14} />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{t('actions.view_deal_details', 'View Deal Details')}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          </TableBody>
+        </Table>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

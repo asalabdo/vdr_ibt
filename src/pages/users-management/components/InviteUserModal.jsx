@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Button from '../../../components/ui/Button';
-import Input from '../../../components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import Icon from '../../../components/AppIcon';
 
 const InviteUserModal = ({ isOpen, onClose, availableRoles }) => {

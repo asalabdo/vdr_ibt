@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import Icon from '../../../components/AppIcon';
-import Button from '../../../components/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 const SecurityTimeline = () => {
   const { t } = useTranslation('compliance-security-dashboard');

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
-import Button from '../../../components/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
   const { t } = useTranslation('data-rooms-management');
