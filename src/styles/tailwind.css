@@ -5,46 +5,6 @@
 
 @layer base {
   :root {
-    /* Background Colors */
-    --color-background: #0f172a; /* slate-900 */
-    --color-foreground: #f8fafc; /* slate-50 */
-    --color-card: #1e293b; /* slate-800 */
-    --color-card-foreground: #f8fafc; /* slate-50 */
-    --color-popover: #1e293b; /* slate-800 */
-    --color-popover-foreground: #f8fafc; /* slate-50 */
-    
-    /* Muted Colors */
-    --color-muted: #334155; /* slate-700 */
-    --color-muted-foreground: #94a3b8; /* slate-400 */
-    
-    /* Primary Colors */
-    --color-primary: #1e40af; /* blue-800 */
-    --color-primary-foreground: #f8fafc; /* slate-50 */
-    
-    /* Secondary Colors */
-    --color-secondary: #64748b; /* slate-500 */
-    --color-secondary-foreground: #f8fafc; /* slate-50 */
-    
-    /* Accent Colors */
-    --color-accent: #0ea5e9; /* sky-500 */
-    --color-accent-foreground: #f8fafc; /* slate-50 */
-    
-    /* Status Colors */
-    --color-success: #059669; /* emerald-600 */
-    --color-success-foreground: #f0fdf4; /* green-50 */
-    --color-warning: #d97706; /* amber-600 */
-    --color-warning-foreground: #fffbeb; /* amber-50 */
-    --color-error: #dc2626; /* red-600 */
-    --color-error-foreground: #fef2f2; /* red-50 */
-    --color-destructive: #dc2626; /* red-600 */
-    --color-destructive-foreground: #fef2f2; /* red-50 */
-    
-    /* Border and Input Colors */
-    --color-border: rgba(148, 163, 184, 0.2); /* slate-400 with opacity */
-    --color-input: #334155; /* slate-700 */
-    --color-ring: #0ea5e9; /* sky-500 */
-    
-    /* Radius */
     --radius: 0.5rem;
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -54,54 +14,48 @@
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
+    --secondary: 210 40% 96%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
+    --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
+    --accent: 210 40% 96%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 222.2 47.4% 11.2%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-  }
-  
-  * {
-    @apply border-border;
-  }
-  
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-  
-  /* Custom scrollbar for dark theme */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-::-webkit-scrollbar-track  {
     
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    @apply bg-muted rounded-full;
-  }
-::-webkit-scrollbar-thumb:hover  {
+    /* Additional color mappings for chart components */
+    --success: 142 76% 36%;
+    --success-foreground: 355.7 100% 97.3%;
+    --warning: 47.9 95.8% 53.1%;
+    --warning-foreground: 26 83.3% 14.1%;
+    --error: 0 84.2% 60.2%;
+    --error-foreground: 210 40% 98%;
     
+    /* Sidebar variables for completeness */
+    --sidebar: 210 40% 98%;
+    --sidebar-foreground: 222.2 84% 4.9%;
+    --sidebar-primary: 222.2 47.4% 11.2%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222.2 47.4% 11.2%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 222.2 47.4% 11.2%;
   }
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 222.2 47.4% 11.2%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 222.2 47.4% 11.2%;
     --popover-foreground: 210 40% 98%;
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
@@ -121,84 +75,53 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-  }
-}
+    
+    /* Additional color mappings for chart components */
+    --success: 142 76% 36%;
+    --success-foreground: 355.7 100% 97.3%;
+    --warning: 47.9 95.8% 53.1%;
+    --warning-foreground: 26 83.3% 14.1%;
+    --error: 0 62.8% 30.6%;
+    --error-foreground: 210 40% 98%;
+    
+    /* Sidebar variables for dark mode */
+    --sidebar: 222.2 47.4% 11.2%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 222.2 47.4% 11.2%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 212.7 26.8% 83.9%;
 
-@layer components {
-  /* Custom shadow utilities for elevation system */
-  .shadow-elevation-1 {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  }
-  
-  .shadow-elevation-2 {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  }
-  
-  .shadow-elevation-3 {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  }
-  
-  /* Animation utilities */
-  .animate-pulse-subtle {
-    animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-  
-  @keyframes pulse-subtle {
-    0%, 100% {
-      opacity: 1;
+
+    /* Custom scrollbar for dark theme */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
     }
-    50% {
-      opacity: 0.8;
+    
+    ::-webkit-scrollbar-track {
+      @apply bg-background;
     }
-  }
-  
-  .animate-shimmer {
-    animation: shimmer 1.5s ease-in-out infinite;
-    background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.1), transparent);
-    background-size: 200% 100%;
-  }
-  
-  @keyframes shimmer {
-    0% {
-      background-position: -200% 0;
+    
+    ::-webkit-scrollbar-thumb {
+      @apply bg-muted rounded-full;
     }
-    100% {
-      background-position: 200% 0;
+    
+    ::-webkit-scrollbar-thumb:hover {
+      @apply bg-muted-foreground;
     }
   }
-}
 
-/* Light theme overrides (applied when <html> has class "light") */
-:root.light {
-  --color-background: #f8fafc; /* slate-50 */
-  --color-foreground: #0f172a; /* slate-900 */
-  --color-card: #ffffff; /* white */
-  --color-card-foreground: #0f172a; /* slate-900 */
-  --color-popover: #ffffff;
-  --color-popover-foreground: #0f172a;
-
-  --color-muted: #e6eef8; /* light muted */
-  --color-muted-foreground: #475569; /* slate-600 */
-
-  --color-primary: #1e40af; /* keep primary blue */
-  --color-primary-foreground: #ffffff;
-
-  --color-secondary: #64748b;
-  --color-secondary-foreground: #0f172a;
-
-  --color-accent: #0ea5e9;
-  --color-accent-foreground: #0f172a;
-
-  --color-success: #059669;
-  --color-success-foreground: #ecfdf5;
-  --color-warning: #d97706;
-  --color-warning-foreground: #fffbeb;
-  --color-error: #dc2626;
-  --color-error-foreground: #fff1f2;
-
-  --color-border: rgba(2,6,23,0.06);
-  --color-input: #f1f5f9;
-  --color-ring: #0ea5e9;
-
-  --radius: 0.5rem;
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  
 }

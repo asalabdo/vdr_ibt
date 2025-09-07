@@ -87,7 +87,7 @@ const Header = ({ onToggleSidebar }) => {
             onClick={() => navigate('/')}
           >
             <div className="w-10 h-10 flex items-center justify-center transition-all duration-300">
-              <Icon name="Database" size={24} className="text-blue-500 dark:text-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" />
+              <Icon name="Database" size={24} className="text-primary group-hover:text-primary/80 transition-colors duration-300" />
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-bold text-foreground group-hover:text-primary transition-colors"> VDR </span>
@@ -108,7 +108,7 @@ const Header = ({ onToggleSidebar }) => {
                   className={`
                     relative group transition-all duration-300 h-10
                     ${isActive 
-                      ? 'text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300' 
+                      ? 'text-primary hover:text-primary/80' 
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/80 hover:shadow-md'
                     }
                   `}
@@ -120,7 +120,7 @@ const Header = ({ onToggleSidebar }) => {
                   </div>
                   {/* Active indicator */}
                   {isActive && (
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-blue-500 dark:bg-blue-400 rounded-full shadow-sm"></div>
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-primary rounded-full shadow-sm"></div>
                   )}
                 </Button>
               );
@@ -143,8 +143,8 @@ const Header = ({ onToggleSidebar }) => {
           <Separator orientation="vertical" className="h-6" />
 
           {/* Data Status Indicator */}
-          <Badge className="hidden md:flex items-center space-x-2 rtl:space-x-reverse bg-green-500/10 text-green-700 dark:bg-green-500/20 dark:text-green-300 border-green-500/30 hover:bg-green-500/20 transition-all duration-200">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <Badge className="hidden md:flex items-center space-x-2 rtl:space-x-reverse bg-success/10 text-success border-success/30 hover:bg-success/20 transition-all duration-200">
+            <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
             <span className="text-xs font-semibold">
               {tCommon('header.updated')} {formatLastRefresh(lastDataRefresh)}
             </span>
@@ -208,7 +208,7 @@ const Header = ({ onToggleSidebar }) => {
                 <span>{tCommon('user.help_support', 'Help & Support')}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950">
+              <DropdownMenuItem className="cursor-pointer text-error focus:text-error focus:bg-error/10">
                 <Icon name="LogOut" size={16} className="mr-2" />
                 <span>{tCommon('user.sign_out', 'Sign Out')}</span>
               </DropdownMenuItem>
@@ -246,7 +246,7 @@ const Header = ({ onToggleSidebar }) => {
                     flex flex-col items-center space-y-1 px-4 py-3 min-w-fit relative h-auto
                     transition-all duration-300 whitespace-nowrap
                     ${isActive 
-                      ? 'text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300' 
+                      ? 'text-primary hover:text-primary/80' 
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/80 hover:shadow-sm'
                     }
                 `}
@@ -255,7 +255,7 @@ const Header = ({ onToggleSidebar }) => {
                 <span className="text-xs font-medium">{item?.label}</span>
                 {/* Active indicator for mobile */}
                 {isActive && (
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-blue-500 dark:bg-blue-400 rounded-full shadow-sm"></div>
+                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-primary rounded-full shadow-sm"></div>
                 )}
               </Button>
             );

@@ -10,7 +10,7 @@ const DealVolumeChart = ({ data, onDrillDown }) => {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload?.length) {
       return (
-        <div className="bg-popover border border-border rounded-lg p-3 shadow-elevation-2">
+        <div className="bg-popover border border-border rounded-lg p-3 shadow-md">
           <p className="text-sm font-medium text-popover-foreground mb-2">{label}</p>
           {payload?.map((entry, index) => (
             <div key={index} className="flex items-center space-x-2 text-sm">
@@ -52,21 +52,21 @@ const DealVolumeChart = ({ data, onDrillDown }) => {
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis 
               dataKey="month" 
-              stroke="var(--color-muted-foreground)"
+              stroke="hsl(var(--muted-foreground))"
               fontSize={12}
             />
             <YAxis 
               yAxisId="left"
-              stroke="var(--color-muted-foreground)"
+              stroke="hsl(var(--muted-foreground))"
               fontSize={12}
             />
             <YAxis 
               yAxisId="right" 
               orientation="right"
-              stroke="var(--color-muted-foreground)"
+              stroke="hsl(var(--muted-foreground))"
               fontSize={12}
             />
             <Tooltip content={<CustomTooltip />} />
@@ -74,7 +74,7 @@ const DealVolumeChart = ({ data, onDrillDown }) => {
             <Bar 
               yAxisId="left"
               dataKey="dealVolume" 
-              fill="var(--color-primary)"
+              fill="hsl(var(--chart-1))"
               name={t('charts.deal_volume', 'Deal Volume')}
               radius={[2, 2, 0, 0]}
             />
@@ -82,10 +82,10 @@ const DealVolumeChart = ({ data, onDrillDown }) => {
               yAxisId="right"
               type="monotone" 
               dataKey="avgDealSize" 
-              stroke="var(--color-accent)"
+              stroke="hsl(var(--chart-2))"
               strokeWidth={3}
               name={t('charts.avg_deal_size', 'Avg Deal Size ($M)')}
-              dot={{ fill: 'var(--color-accent)', strokeWidth: 2, r: 4 }}
+              dot={{ fill: 'hsl(var(--chart-2))', strokeWidth: 2, r: 4 }}
             />
           </ComposedChart>
         </ResponsiveContainer>

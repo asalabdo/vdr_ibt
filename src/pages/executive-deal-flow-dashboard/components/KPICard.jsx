@@ -10,15 +10,15 @@ const KPICard = ({ title, value, change, changeType, icon, subtitle, trend }) =>
 
   const getKPIInfo = () => {
     if (changeType === 'positive') return { 
-      textColor: 'text-green-600 dark:text-green-400', 
-      bgColor: 'bg-green-500/10 dark:bg-green-500/20',
-      badgeColor: 'bg-green-500/20 text-green-700 dark:bg-green-500/30 dark:text-green-300',
+      textColor: 'text-success', 
+      bgColor: 'bg-success/10',
+      badgeColor: 'bg-success/20 text-success',
       icon: 'TrendingUp' 
     };
     if (changeType === 'negative') return { 
-      textColor: 'text-red-600 dark:text-red-400', 
-      bgColor: 'bg-red-500/10 dark:bg-red-500/20',
-      badgeColor: 'bg-red-500/20 text-red-700 dark:bg-red-500/30 dark:text-red-300',
+      textColor: 'text-error', 
+      bgColor: 'bg-error/10',
+      badgeColor: 'bg-error/20 text-error',
       icon: 'TrendingDown' 
     };
     return { 
@@ -31,10 +31,10 @@ const KPICard = ({ title, value, change, changeType, icon, subtitle, trend }) =>
 
   const getIconInfo = () => {
     const iconConfigs = {
-      'DollarSign': { bg: 'bg-blue-500/20 dark:bg-blue-500/30', color: 'text-blue-600 dark:text-blue-400' },
-      'Clock': { bg: 'bg-purple-500/20 dark:bg-purple-500/30', color: 'text-purple-600 dark:text-purple-400' },
-      'Activity': { bg: 'bg-orange-500/20 dark:bg-orange-500/30', color: 'text-orange-600 dark:text-orange-400' },
-      'TrendingUp': { bg: 'bg-green-500/20 dark:bg-green-500/30', color: 'text-green-600 dark:text-green-400' }
+      'DollarSign': { bg: 'bg-primary/20', color: 'text-primary' },
+      'Clock': { bg: 'bg-accent/20', color: 'text-accent-foreground' },
+      'Activity': { bg: 'bg-warning/20', color: 'text-warning' },
+      'TrendingUp': { bg: 'bg-success/20', color: 'text-success' }
     };
     return iconConfigs[icon] || { bg: 'bg-primary/20', color: 'text-primary' };
   };
