@@ -1,0 +1,56 @@
+{
+  "title": "مرحباً بك مرة أخرى",
+  "subtitle": "قم بتسجيل الدخول إلى حسابك للمتابعة",
+  
+  "fields": {
+    "username": {
+      "label": "اسم المستخدم أو البريد الإلكتروني",
+      "placeholder": "أدخل اسم المستخدم أو البريد الإلكتروني"
+    },
+    "password": {
+      "label": "كلمة المرور",
+      "placeholder": "أدخل كلمة المرور"
+    },
+    "remember_me": "تذكرني"
+  },
+  
+  "buttons": {
+    "sign_in": "تسجيل الدخول",
+    "signing_in": "جارٍ تسجيل الدخول...",
+    "demo_login": "تجربة العرض التوضيحي"
+  },
+  
+  "links": {
+    "forgot_password": "نسيت كلمة المرور؟"
+  },
+  
+  "sections": {
+    "demo_access": "أو جرب الوصول التجريبي"
+  },
+  
+  "validation": {
+    "username_required": "اسم المستخدم أو البريد الإلكتروني مطلوب",
+    "password_required": "كلمة المرور مطلوبة",
+    "password_min_length": "يجب أن تكون كلمة المرور 6 أحرف على الأقل"
+  },
+  
+  "errors": {
+    "login_failed": "فشل تسجيل الدخول: {{message}}",
+    "network_error": "خطأ في الشبكة. يرجى التحقق من الاتصال.",
+    "invalid_credentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
+    "account_locked": "الحساب مقفل مؤقتاً. يرجى المحاولة مرة أخرى لاحقاً.",
+    "server_error": "خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقاً."
+  },
+  
+  "help": {
+    "need_help": "تحتاج مساعدة؟",
+    "contact_support": "اتصل بالدعم",
+    "documentation": "الوثائق"
+  },
+  
+  "footer": {
+    "company": "ابتكاريا",
+    "all_rights_reserved": "جميع الحقوق محفوظة",
+    "version": "الإصدار"
+  }
+}

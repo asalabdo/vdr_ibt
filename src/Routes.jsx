@@ -18,6 +18,7 @@ import Header from '@/components/ui/Header';
 import Icon from '@/components/AppIcon';
 import { useTranslation } from 'react-i18next';
 import TestAuth from '@/components/TestAuth';
+import Login from '@/pages/Login';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
@@ -155,39 +156,47 @@ const Routes = () => {
   const toggleSidebar = () => setIsSidebarOpen((s) => !s);
 
 
+  // Layout component for protected routes
+  const AppLayout = ({ children }) => (
+    <>
+      <Header onToggleSidebar={toggleSidebar} />
+      <div className="pt-4 bg-background min-h-screen">
+        <div className="max-w-7xl mx-auto py-8 flex gap-2">
+          <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
+          <main className="flex-1">
+            {children}
+          </main>
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <BrowserRouter>
       <ErrorBoundary>
-        {/* Top-level routes that might need to render above/layout-level components can remain here */}
-
         <ScrollToTop />
-        <Header onToggleSidebar={toggleSidebar} />
+        
+        <RouterRoutes>
+          {/* Authentication Routes - No Layout */}
+          <Route path="/login" element={<Login />} />
+          
+          {/* Protected Routes - With Layout */}
+          <Route path="/deal-analytics-intelligence-dashboard" element={<AppLayout><DealAnalyticsIntelligenceDashboard /></AppLayout>} />
+          <Route path="/vdr-operations-command-center" element={<AppLayout><VDROperationsCommandCenter /></AppLayout>} />
+          <Route path="/compliance-security-monitoring-dashboard" element={<AppLayout><ComplianceSecurityMonitoringDashboard /></AppLayout>} />
+          <Route path="/executive-deal-flow-dashboard" element={<AppLayout><ExecutiveDealFlowDashboard /></AppLayout>} />
 
-        <div className="pt-4 bg-background min-h-screen">
-          <div className="max-w-7xl mx-auto py-8 flex gap-2">
-            <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
-
-            <main className="flex-1">
-              <RouterRoutes>
-                <Route path="/deal-analytics-intelligence-dashboard" element={<DealAnalyticsIntelligenceDashboard />} />
-                <Route path="/vdr-operations-command-center" element={<VDROperationsCommandCenter />} />
-                <Route path="/compliance-security-monitoring-dashboard" element={<ComplianceSecurityMonitoringDashboard />} />
-                <Route path="/executive-deal-flow-dashboard" element={<ExecutiveDealFlowDashboard />} />
-
-                <Route path="/" element={<ExecutiveDealFlowDashboard />} />
-                <Route path="/data-rooms-management" element={<DataRoomsManagement />} />
-                <Route path="/q-a-management-center" element={<QAManagementCenter />} />
-                <Route path="/document-management-console" element={<DocumentManagementConsole />} />
-                <Route path="/users-management" element={<UsersManagement />} />
-                <Route path="/roles-permissions" element={<RolesPermissions />} />
-                <Route path="/audit-logs" element={<AuditLogs />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/test-auth" element={<TestAuth />} />
-                <Route path="*" element={<NotFound />} />
-              </RouterRoutes>
-            </main>
-          </div>
-        </div>
+          <Route path="/" element={<AppLayout><ExecutiveDealFlowDashboard /></AppLayout>} />
+          <Route path="/data-rooms-management" element={<AppLayout><DataRoomsManagement /></AppLayout>} />
+          <Route path="/q-a-management-center" element={<AppLayout><QAManagementCenter /></AppLayout>} />
+          <Route path="/document-management-console" element={<AppLayout><DocumentManagementConsole /></AppLayout>} />
+          <Route path="/users-management" element={<AppLayout><UsersManagement /></AppLayout>} />
+          <Route path="/roles-permissions" element={<AppLayout><RolesPermissions /></AppLayout>} />
+          <Route path="/audit-logs" element={<AppLayout><AuditLogs /></AppLayout>} />
+          <Route path="/settings" element={<AppLayout><Settings /></AppLayout>} />
+          <Route path="/test-auth" element={<AppLayout><TestAuth /></AppLayout>} />
+          <Route path="*" element={<AppLayout><NotFound /></AppLayout>} />
+        </RouterRoutes>
       </ErrorBoundary>
     </BrowserRouter>
   );

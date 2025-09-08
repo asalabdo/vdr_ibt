@@ -1,0 +1,56 @@
+{
+  "title": "Welcome Back",
+  "subtitle": "Sign in to your VDR account to continue",
+  
+  "fields": {
+    "username": {
+      "label": "Username or Email",
+      "placeholder": "Enter your username or email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password"
+    },
+    "remember_me": "Remember me"
+  },
+  
+  "buttons": {
+    "sign_in": "Sign In",
+    "signing_in": "Signing In...",
+    "demo_login": "Demo Login"
+  },
+  
+  "links": {
+    "forgot_password": "Forgot password?"
+  },
+  
+  "sections": {
+    "demo_access": "or try demo access"
+  },
+  
+  "validation": {
+    "username_required": "Username or email is required",
+    "password_required": "Password is required",
+    "password_min_length": "Password must be at least 6 characters"
+  },
+  
+  "errors": {
+    "login_failed": "Login failed: {{message}}",
+    "network_error": "Network error. Please check your connection.",
+    "invalid_credentials": "Invalid username or password",
+    "account_locked": "Account is temporarily locked. Please try again later.",
+    "server_error": "Server error. Please try again later."
+  },
+  
+  "help": {
+    "need_help": "Need help?",
+    "contact_support": "Contact Support",
+    "documentation": "Documentation"
+  },
+  
+  "footer": {
+    "company": "Ibtikarya",
+    "all_rights_reserved": "All rights reserved",
+    "version": "Version"
+  }
+}
