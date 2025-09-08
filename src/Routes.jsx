@@ -17,8 +17,9 @@ import Settings from '@/pages/settings';
 import Header from '@/components/ui/Header';
 import Icon from '@/components/AppIcon';
 import { useTranslation } from 'react-i18next';
-import TestAuth from '@/components/TestAuth';
 import Login from '@/pages/Login';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import PublicRoute from '@/components/auth/PublicRoute';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
@@ -177,25 +178,80 @@ const Routes = () => {
         <ScrollToTop />
         
         <RouterRoutes>
-          {/* Authentication Routes - No Layout */}
-          <Route path="/login" element={<Login />} />
+          {/* Public Routes - Login Page (redirects if authenticated) */}
+          <Route path="/login" element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } />
           
-          {/* Protected Routes - With Layout */}
-          <Route path="/deal-analytics-intelligence-dashboard" element={<AppLayout><DealAnalyticsIntelligenceDashboard /></AppLayout>} />
-          <Route path="/vdr-operations-command-center" element={<AppLayout><VDROperationsCommandCenter /></AppLayout>} />
-          <Route path="/compliance-security-monitoring-dashboard" element={<AppLayout><ComplianceSecurityMonitoringDashboard /></AppLayout>} />
-          <Route path="/executive-deal-flow-dashboard" element={<AppLayout><ExecutiveDealFlowDashboard /></AppLayout>} />
+          {/* Protected Routes - Require Authentication */}
+          <Route path="/deal-analytics-intelligence-dashboard" element={
+            <ProtectedRoute>
+              <AppLayout><DealAnalyticsIntelligenceDashboard /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/vdr-operations-command-center" element={
+            <ProtectedRoute>
+              <AppLayout><VDROperationsCommandCenter /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/compliance-security-monitoring-dashboard" element={
+            <ProtectedRoute>
+              <AppLayout><ComplianceSecurityMonitoringDashboard /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/executive-deal-flow-dashboard" element={
+            <ProtectedRoute>
+              <AppLayout><ExecutiveDealFlowDashboard /></AppLayout>
+            </ProtectedRoute>
+          } />
 
-          <Route path="/" element={<AppLayout><ExecutiveDealFlowDashboard /></AppLayout>} />
-          <Route path="/data-rooms-management" element={<AppLayout><DataRoomsManagement /></AppLayout>} />
-          <Route path="/q-a-management-center" element={<AppLayout><QAManagementCenter /></AppLayout>} />
-          <Route path="/document-management-console" element={<AppLayout><DocumentManagementConsole /></AppLayout>} />
-          <Route path="/users-management" element={<AppLayout><UsersManagement /></AppLayout>} />
-          <Route path="/roles-permissions" element={<AppLayout><RolesPermissions /></AppLayout>} />
-          <Route path="/audit-logs" element={<AppLayout><AuditLogs /></AppLayout>} />
-          <Route path="/settings" element={<AppLayout><Settings /></AppLayout>} />
-          <Route path="/test-auth" element={<AppLayout><TestAuth /></AppLayout>} />
-          <Route path="*" element={<AppLayout><NotFound /></AppLayout>} />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <AppLayout><ExecutiveDealFlowDashboard /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/data-rooms-management" element={
+            <ProtectedRoute>
+              <AppLayout><DataRoomsManagement /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/q-a-management-center" element={
+            <ProtectedRoute>
+              <AppLayout><QAManagementCenter /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/document-management-console" element={
+            <ProtectedRoute>
+              <AppLayout><DocumentManagementConsole /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/users-management" element={
+            <ProtectedRoute>
+              <AppLayout><UsersManagement /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/roles-permissions" element={
+            <ProtectedRoute>
+              <AppLayout><RolesPermissions /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/audit-logs" element={
+            <ProtectedRoute>
+              <AppLayout><AuditLogs /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <AppLayout><Settings /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="*" element={
+            <ProtectedRoute>
+              <AppLayout><NotFound /></AppLayout>
+            </ProtectedRoute>
+          } />
         </RouterRoutes>
       </ErrorBoundary>
     </BrowserRouter>
