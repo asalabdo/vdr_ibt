@@ -17,6 +17,7 @@ import Settings from '@/pages/settings';
 import Header from '@/components/ui/Header';
 import Icon from '@/components/AppIcon';
 import { useTranslation } from 'react-i18next';
+import TestAuth from '@/components/TestAuth';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
@@ -181,6 +182,7 @@ const Routes = () => {
                 <Route path="/roles-permissions" element={<RolesPermissions />} />
                 <Route path="/audit-logs" element={<AuditLogs />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/test-auth" element={<TestAuth />} />
                 <Route path="*" element={<NotFound />} />
               </RouterRoutes>
             </main>

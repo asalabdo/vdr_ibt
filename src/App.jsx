@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
+import { QueryClientProvider } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import Routes from "./Routes";
 import { useFont } from "./hooks/useFont";
+import { queryClient } from './lib/queryClient';
 
 function App() {
   const { i18n } = useTranslation();
@@ -18,9 +20,11 @@ function App() {
 
   // React Community Standard: Apply font via className wrapper
   return (
-    <div className={`${fontClass} ${dirClass}`}>
-      <Routes />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className={`${fontClass} ${dirClass}`}>
+        <Routes />
+      </div>
+    </QueryClientProvider>
   );
 }
 

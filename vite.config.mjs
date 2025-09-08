@@ -22,6 +22,26 @@ export default defineConfig({
     port: "4028",
     host: "0.0.0.0",
     strictPort: true,
-    allowedHosts: ['.amazonaws.com', '.builtwithrocket.new']
+    allowedHosts: ['.amazonaws.com', '.builtwithrocket.new'],
+    proxy: {
+      // Proxy all Nextcloud API requests to avoid CORS issues
+      '/api/nextcloud': {
+        target: 'https://ibtikarya.sa',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api\/nextcloud/, ''),
+        configure: (proxy, options) => {
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            console.log('🔄 Proxying request:', req.method, req.url);
+          });
+          proxy.on('proxyRes', (proxyRes, req, res) => {
+            console.log('✅ Proxy response:', proxyRes.statusCode, req.url);
+          });
+          proxy.on('error', (err, req, res) => {
+            console.log('❌ Proxy error:', err.message, req.url);
+          });
+        }
+      }
+    }
   }
 });

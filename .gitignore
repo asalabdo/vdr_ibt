@@ -10,3 +10,4 @@ Docs/
 .cursor/
 changes.txt
 tasks/
+.cursorignore

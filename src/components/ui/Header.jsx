@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import LanguageToggle from './LanguageToggle';
 import DarkModeToggle from './DarkModeToggle';
+import { useAuth } from '@/hooks/api';
 
 const Header = ({ onToggleSidebar }) => {
   const [lastDataRefresh, setLastDataRefresh] = useState(new Date());
@@ -16,6 +17,42 @@ const Header = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
   const { t: tNav } = useTranslation('navigation');
   const { t: tCommon } = useTranslation('common');
+  
+  // Authentication state
+  const { 
+    user, 
+    isAuthenticated, 
+    isLoading, 
+    logout, 
+    isLoggingOut,
+    hasPermission 
+  } = useAuth();
+
+  // Helper function to generate user initials for avatar
+  const getUserInitials = (user) => {
+    if (!user) return 'U';
+    const displayName = user.displayname || user.username || 'User';
+    const names = displayName.split(' ');
+    if (names.length >= 2) {
+      return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+    }
+    return displayName.slice(0, 2).toUpperCase();
+  };
+
+  // Helper function to get user role display
+  const getUserRole = (user) => {
+    if (!user) return 'User';
+    if (user.isAdmin) return 'Administrator';
+    if (user.groups?.includes('managers')) return 'Manager';
+    if (user.groups?.includes('editors')) return 'Editor';
+    return 'User';
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    logout();
+    navigate('/'); // Redirect to home after logout
+  };
 
 
 
@@ -151,6 +188,7 @@ const Header = ({ onToggleSidebar }) => {
           </Badge>
 
           {/* User Menu */}
+          {isAuthenticated ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button 
@@ -159,16 +197,18 @@ const Header = ({ onToggleSidebar }) => {
               >
                 <div className="flex items-center space-x-3 rtl:space-x-reverse">
                   <Avatar className="h-8 w-8 ring-2 ring-primary/20 shadow-sm">
-                    <AvatarImage src="/api/placeholder/32/32" alt="User" />
+                    <AvatarImage src="" alt={user?.displayname || 'User'} />
                     <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold text-sm">
-                      JE
+                      {isLoading ? '...' : getUserInitials(user)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="hidden sm:flex flex-col text-left">
                     <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                      John Executive
+                      {isLoading ? 'Loading...' : (user?.displayname || user?.username || 'User')}
                     </span>
-                    <span className="text-xs text-muted-foreground">Senior Analyst</span>
+                    <span className="text-xs text-muted-foreground">
+                      {isLoading ? '...' : getUserRole(user)}
+                    </span>
                   </div>
                   <Icon 
                     name="ChevronDown" 
@@ -181,12 +221,14 @@ const Header = ({ onToggleSidebar }) => {
             <DropdownMenuContent className="w-64" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">John Executive</p>
+                  <p className="text-sm font-medium leading-none">
+                    {isLoading ? 'Loading...' : (user?.displayname || user?.username || 'User')}
+                  </p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    john.executive@company.com
+                    {isLoading ? '...' : (user?.email || 'No email provided')}
                   </p>
                   <Badge variant="secondary" className="w-fit mt-1 text-xs">
-                    Executive Access
+                    {isLoading ? '...' : (user?.isAdmin ? 'Admin Access' : `${getUserRole(user)} Access`)}
                   </Badge>
                 </div>
               </DropdownMenuLabel>
@@ -208,12 +250,28 @@ const Header = ({ onToggleSidebar }) => {
                 <span>{tCommon('user.help_support', 'Help & Support')}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer text-error focus:text-error focus:bg-error/10">
-                <Icon name="LogOut" size={16} className="mr-2" />
-                <span>{tCommon('user.sign_out', 'Sign Out')}</span>
+              <DropdownMenuItem 
+                className="cursor-pointer text-error focus:text-error focus:bg-error/10"
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+              >
+                <Icon name={isLoggingOut ? "Loader2" : "LogOut"} size={16} className={`mr-2 ${isLoggingOut ? 'animate-spin' : ''}`} />
+                <span>{isLoggingOut ? 'Signing Out...' : tCommon('user.sign_out', 'Sign Out')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          ) : (
+            /* Show login button when not authenticated */
+            <Button 
+              onClick={() => navigate('/login')} // You can create a login page
+              variant="default"
+              size="sm"
+              className="h-9"
+            >
+              <Icon name="LogIn" size={16} className="mr-2" />
+              Sign In
+            </Button>
+          )}
 
           {/* Menu Button (visible on all sizes) */}
           <Button
