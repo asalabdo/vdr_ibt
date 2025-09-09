@@ -7,6 +7,7 @@
     "export_rooms": "تصدير الغرف", 
     "bulk_invite": "دعوة جماعية",
     "view_details": "عرض التفاصيل",
+    "edit": "تحرير",
     "manage_users": "إدارة المستخدمين",
     "settings": "الإعدادات",
     "export": "تصدير",
@@ -14,7 +15,10 @@
     "filters": "التصفيات",
     "sort": "ترتيب",
     "clear_all": "مسح الكل",
-    "apply": "تطبيق"
+    "apply": "تطبيق",
+    "refresh": "تحديث",
+    "refreshing": "جاري التحديث...",
+    "coming_soon": "قريباً!"
   },
 
   "stats": {
@@ -65,7 +69,82 @@
     }
   },
 
+  "create_modal": {
+    "title": "إنشاء غرفة بيانات جديدة",
+    "description": "إنشاء غرفة بيانات جديدة مع ضوابط وصول آمنة للمجموعات.",
+    "mountpoint": "اسم غرفة البيانات",
+    "mountpoint_placeholder": "مثال: project-alpha، legal-docs",
+    "mountpoint_hint": "استخدم الأحرف والأرقام والشرطات والشرطات السفلية فقط",
+    "storage_quota": "حصة التخزين",
+    "quota_hint": "تحديد حد التخزين لغرفة البيانات هذه",
+    "quota_unlimited": "غير محدود",
+    "groups": "تعيين المجموعات",
+    "groups_hint": "اختر المجموعات التي ستتمكن من الوصول إلى غرفة البيانات هذه",
+    "no_groups": "لا توجد مجموعات متاحة",
+    "cancel": "إلغاء",
+    "create": "إنشاء غرفة البيانات",
+    "creating": "جاري الإنشاء...",
+    "success_title": "تم إنشاء غرفة البيانات بنجاح!",
+    "success_description": "تم إنشاء وتكوين غرفة البيانات \"{roomName}\".",
+    "errors": {
+      "mountpoint_invalid": "اسم نقطة التحميل يمكن أن يحتوي على أحرف وأرقام وشرطات وشرطات سفلية فقط"
+    }
+  },
+
+  "details_modal": {
+    "title": "تفاصيل غرفة البيانات: {{roomName}}",
+    "description": "معلومات شاملة حول غرفة البيانات وإعدادها.",
+    "loading_title": "تحميل تفاصيل غرفة البيانات...",
+    "loading_description": "يرجى الانتظار بينما نقوم بتحميل معلومات غرفة البيانات...",
+    "edit_settings": "تحرير الإعدادات",
+    "close": "إغلاق",
+    "unlimited": "غير محدود",
+    "error_loading": "فشل في تحميل تفاصيل غرفة البيانات",
+    "retry": "إعادة المحاولة",
+    "acl_enabled": "تم تمكين ACL",
+    "acl_disabled": "تم تعطيل ACL",
+    "has_managers": "مُدارة",
+    "basic_info": "المعلومات الأساسية",
+    "mount_point": "نقطة التحميل",
+    "room_id": "معرف الغرفة",
+    "groups_count": "المجموعات المعينة",
+    "managers_count": "المديرون",
+    "storage_info": "معلومات التخزين",
+    "current_size": "الحجم الحالي",
+    "storage_quota": "حصة التخزين",
+    "storage_usage": "استخدام التخزين",
+    "groups_permissions": "المجموعات والصلاحيات",
+    "assigned_groups": "المجموعات المعينة",
+    "no_groups": "لم يتم تعيين مجموعات",
+    "total_permissions": "إجمالي الصلاحيات",
+    "managers": "المديرون"
+  },
+
+  "edit_modal": {
+    "title": "تحرير إعدادات غرفة البيانات",
+    "description": "تحديث حصة التخزين وإعدادات التحكم في الوصول لـ \"{{roomName}}\".",
+    "storage_quota": "حصة التخزين",
+    "quota_unlimited": "غير محدود",
+    "quota_hint": "تحديد حد التخزين (اتركه فارغاً للحصول على تخزين غير محدود)",
+    "acl_settings": "إعدادات التحكم في الوصول",
+    "acl_enabled": "تمكين الصلاحيات المتقدمة (ACL)",
+    "acl_hint": "تمكين التحكم الدقيق في صلاحيات المجموعات",
+    "cancel": "إلغاء",
+    "save": "حفظ التغييرات",
+    "saving": "جاري الحفظ...",
+    "success_title": "تم تحديث الإعدادات بنجاح!",
+    "success_description": "تم تحديث إعدادات غرفة البيانات."
+  },
+
   "room_card": {
+    "room_id": "معرف الغرفة: {{id}}",
+    "mount_point": "نقطة التحميل: {{mountPoint}}",
+    "mount_point_label": "نقطة التحميل",
+    "id_label": "المعرف", 
+    "groups": "مجموعات",
+    "managers": "المديرين",
+    "setup_completion": "اكتمال الإعداد",
+    "unlimited_quota": "غير محدود",
     "created_by": "تم إنشاؤها بواسطة {{creator}}",
     "users": "مستخدمين",
     "completion": "الإنجاز",
@@ -76,9 +155,15 @@
     "updated": "تم التحديث {{date}}",
     "status_labels": {
       "active": "نشطة",
+      "inactive": "غير نشطة",
       "archived": "مؤرشفة", 
       "pending": "معلقة"
     }
+  },
+
+  "table": {
+    "error_loading": "فشل في تحميل غرف البيانات",
+    "retry": "إعادة المحاولة"
   },
 
   "sample_data": {

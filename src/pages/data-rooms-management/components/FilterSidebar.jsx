@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Icon from '../../../components/AppIcon';
 import { Button } from '@/components/ui/Button';
 
-const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
+const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange, dataRooms = [] }) => {
   const { t } = useTranslation('data-rooms-management');
   
   const handleFilterChange = (filterType, value) => {
@@ -12,6 +12,50 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
       [filterType]: value
     });
   };
+
+  // Calculate real counts from data
+  const getStatusCounts = () => {
+    const total = dataRooms.length;
+    const active = dataRooms.filter(room => room?.isActive).length;
+    const archived = dataRooms.filter(room => !room?.isActive).length;
+    const pending = 0; // This would need additional status logic from your data model
+    
+    return { total, active, archived, pending };
+  };
+
+  const getDealTypeCounts = () => {
+    // Since Group Folders don't have deal types, we'll simulate based on naming patterns
+    // In a real VDR system, you'd have this data in your room metadata
+    const total = dataRooms.length;
+    const ma = dataRooms.filter(room => 
+      room?.roomName?.toLowerCase().includes('ma') || 
+      room?.roomName?.toLowerCase().includes('merger')
+    ).length;
+    const dueDiligence = dataRooms.filter(room => 
+      room?.roomName?.toLowerCase().includes('dd') || 
+      room?.roomName?.toLowerCase().includes('diligence')
+    ).length;
+    const legalReview = dataRooms.filter(room => 
+      room?.roomName?.toLowerCase().includes('legal') || 
+      room?.roomName?.toLowerCase().includes('contract')
+    ).length;
+    
+    return { total, ma, dueDiligence, legalReview };
+  };
+
+  const getActivityCounts = () => {
+    // Activity levels based on group count and usage
+    const total = dataRooms.length;
+    const high = dataRooms.filter(room => room?.groupsCount >= 3).length;
+    const medium = dataRooms.filter(room => room?.groupsCount === 2).length;
+    const low = dataRooms.filter(room => room?.groupsCount <= 1).length;
+    
+    return { total, high, medium, low };
+  };
+
+  const statusCounts = getStatusCounts();
+  const dealTypeCounts = getDealTypeCounts();
+  const activityCounts = getActivityCounts();
 
   const clearAllFilters = () => {
     onFilterChange({
@@ -56,10 +100,10 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
             </h4>
             <div className="space-y-2">
               {[
-                { value: 'all', label: t('filters.status.all'), count: 4 },
-                { value: 'active', label: t('filters.status.active'), count: 3 },
-                { value: 'archived', label: t('filters.status.archived'), count: 1 },
-                { value: 'pending', label: t('filters.status.pending'), count: 0 }
+                { value: 'all', label: t('filters.status.all'), count: statusCounts.total },
+                { value: 'active', label: t('filters.status.active'), count: statusCounts.active },
+                { value: 'archived', label: t('filters.status.archived'), count: statusCounts.archived },
+                { value: 'pending', label: t('filters.status.pending'), count: statusCounts.pending }
               ]?.map((option) => (
                 <button
                   key={option?.value}
@@ -85,10 +129,10 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
             </h4>
             <div className="space-y-2">
               {[
-                { value: 'all', label: t('filters.deal_type.all'), count: 4 },
-                { value: 'ma', label: t('filters.deal_type.ma'), count: 1 },
-                { value: 'due_diligence', label: t('filters.deal_type.due_diligence'), count: 2 },
-                { value: 'legal_review', label: t('filters.deal_type.legal_review'), count: 1 }
+                { value: 'all', label: t('filters.deal_type.all'), count: dealTypeCounts.total },
+                { value: 'ma', label: t('filters.deal_type.ma'), count: dealTypeCounts.ma },
+                { value: 'due_diligence', label: t('filters.deal_type.due_diligence'), count: dealTypeCounts.dueDiligence },
+                { value: 'legal_review', label: t('filters.deal_type.legal_review'), count: dealTypeCounts.legalReview }
               ]?.map((option) => (
                 <button
                   key={option?.value}
@@ -114,10 +158,10 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
             </h4>
             <div className="space-y-2">
               {[
-                { value: 'all', label: t('filters.activity.all'), count: 4 },
-                { value: 'high', label: t('filters.activity.high'), count: 2 },
-                { value: 'medium', label: t('filters.activity.medium'), count: 1 },
-                { value: 'low', label: t('filters.activity.low'), count: 1 }
+                { value: 'all', label: t('filters.activity.all'), count: activityCounts.total },
+                { value: 'high', label: t('filters.activity.high'), count: activityCounts.high },
+                { value: 'medium', label: t('filters.activity.medium'), count: activityCounts.medium },
+                { value: 'low', label: t('filters.activity.low'), count: activityCounts.low }
               ]?.map((option) => (
                 <button
                   key={option?.value}

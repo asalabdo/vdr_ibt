@@ -30,8 +30,21 @@ export {
   useUsersManagement,
 } from './useUsers';
 
+// Data Rooms management hooks
+export {
+  useDataRooms,
+  useDataRoomDetails,
+  useAvailableGroups,
+  useCreateDataRoom,
+  useUpdateDataRoom,
+  useDeleteDataRoom,
+  useAddGroupToDataRoom,
+  useSetGroupPermissions,
+  useRemoveGroupFromDataRoom,
+  useDataRoomsManagement,
+} from './useDataRooms';
+
 // Future hooks will be exported here:
-// export { useDataRooms, useDataRoom } from './useDataRooms';
 // export { useFiles, useFileUpload } from './useFiles';
 // export { useAuditLogs } from './useAuditLogs';
 // export { useNotifications } from './useNotifications';

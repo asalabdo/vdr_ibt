@@ -17,9 +17,9 @@ export {
 // API Functions
 export { authAPI } from './auth';
 export { usersAPI } from './users';
+export { dataRoomsAPI } from './dataRooms';
 
 // Future API exports will be added here:
-// export { dataRoomsAPI } from './dataRooms';
 // export { filesAPI } from './files';
 // export { auditLogsAPI } from './auditLogs';
 // export { notificationsAPI } from './notifications';

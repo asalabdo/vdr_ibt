@@ -7,6 +7,7 @@
     "export_rooms": "Export Rooms", 
     "bulk_invite": "Bulk Invite",
     "view_details": "View Details",
+    "edit": "Edit",
     "manage_users": "Manage Users",
     "settings": "Settings",
     "export": "Export",
@@ -14,7 +15,10 @@
     "filters": "Filters",
     "sort": "Sort",
     "clear_all": "Clear All",
-    "apply": "Apply"
+    "apply": "Apply",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "coming_soon": "Coming soon!"
   },
 
   "stats": {
@@ -65,7 +69,82 @@
     }
   },
 
+  "create_modal": {
+    "title": "Create New Data Room",
+    "description": "Create a new data room with secure group access controls.",
+    "mountpoint": "Data Room Name",
+    "mountpoint_placeholder": "e.g., project-alpha, legal-docs",
+    "mountpoint_hint": "Use letters, numbers, hyphens, and underscores only",
+    "storage_quota": "Storage Quota",
+    "quota_hint": "Set storage limit for this data room",
+    "quota_unlimited": "Unlimited",
+    "groups": "Assign Groups",
+    "groups_hint": "Select groups that will have access to this data room",
+    "no_groups": "No groups available",
+    "cancel": "Cancel",
+    "create": "Create Data Room",
+    "creating": "Creating...",
+    "success_title": "Data room created successfully!",
+    "success_description": "Data room \"{roomName}\" has been created and configured.",
+    "errors": {
+      "mountpoint_invalid": "Mount point name can only contain letters, numbers, hyphens, and underscores"
+    }
+  },
+
+  "details_modal": {
+    "title": "Data Room Details: {{roomName}}",
+    "description": "Comprehensive information about the data room and its configuration.",
+    "loading_title": "Loading Data Room Details...",
+    "loading_description": "Please wait while we load the data room information...",
+    "edit_settings": "Edit Settings",
+    "close": "Close",
+    "unlimited": "Unlimited",
+    "error_loading": "Failed to load data room details",
+    "retry": "Retry",
+    "acl_enabled": "ACL Enabled",
+    "acl_disabled": "ACL Disabled",
+    "has_managers": "Managed",
+    "basic_info": "Basic Information",
+    "mount_point": "Mount Point",
+    "room_id": "Room ID",
+    "groups_count": "Assigned Groups",
+    "managers_count": "Managers",
+    "storage_info": "Storage Information",
+    "current_size": "Current Size",
+    "storage_quota": "Storage Quota",
+    "storage_usage": "Storage Usage",
+    "groups_permissions": "Groups & Permissions",
+    "assigned_groups": "Assigned Groups",
+    "no_groups": "No groups assigned",
+    "total_permissions": "Total Permissions",
+    "managers": "Managers"
+  },
+
+  "edit_modal": {
+    "title": "Edit Data Room Settings",
+    "description": "Update storage quota and access control settings for \"{{roomName}}\".",
+    "storage_quota": "Storage Quota",
+    "quota_unlimited": "Unlimited",
+    "quota_hint": "Set storage limit (leave empty for unlimited)",
+    "acl_settings": "Access Control Settings",
+    "acl_enabled": "Enable Advanced Permissions (ACL)",
+    "acl_hint": "Enable fine-grained permission control for groups",
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "success_title": "Settings updated successfully!",
+    "success_description": "Data room settings have been updated."
+  },
+
   "room_card": {
+    "room_id": "Room ID: {{id}}",
+    "mount_point": "Mount point: {{mountPoint}}",
+    "mount_point_label": "Mount Point",
+    "id_label": "ID", 
+    "groups": "groups",
+    "managers": "Managers",
+    "setup_completion": "Setup Completion",
+    "unlimited_quota": "Unlimited",
     "created_by": "Created by {{creator}}",
     "users": "users",
     "completion": "Completion",
@@ -75,10 +154,16 @@
     "created": "Created {{date}}",
     "updated": "Updated {{date}}",
     "status_labels": {
-      "active": "ACTIVE",
+      "active": "Active",
+      "inactive": "Inactive",
       "archived": "ARCHIVED", 
       "pending": "PENDING"
     }
+  },
+
+  "table": {
+    "error_loading": "Failed to load data rooms",
+    "retry": "Retry"
   },
 
   "sample_data": {

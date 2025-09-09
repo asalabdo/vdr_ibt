@@ -68,7 +68,8 @@
   "participants": "participants",
   "header": {
     "updated": "Updated",
-    "toggle_theme": "Toggle theme"
+    "toggle_theme": "Toggle theme",
+    "toggle_language": "Toggle language"
   },
   "labels": {
     "users": "users",

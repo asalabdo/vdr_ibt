@@ -1,17 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
+import { useDataRooms } from '@/hooks/api';
 import Header from '../../components/ui/Header';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '../../components/AppIcon';
 import DataRoomCard from './components/DataRoomCard';
 import FilterSidebar from './components/FilterSidebar';
+import CreateDataRoomModal from './components/CreateDataRoomModal';
+import DataRoomDetailsModal from './components/DataRoomDetailsModal';
+import EditDataRoomModal from './components/EditDataRoomModal';
 
 const DataRoomsManagement = () => {
-  const { t, ready } = useTranslation('data-rooms-management');
+  const { t } = useTranslation('data-rooms-management');
   
   const [searchQuery, setSearchQuery] = useState('');
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [detailsModal, setDetailsModal] = useState({ open: false, roomId: null });
+  const [editModal, setEditModal] = useState({ open: false, roomId: null });
   const [selectedFilters, setSelectedFilters] = useState({
     status: 'all',
     dealType: 'all',
@@ -19,113 +31,166 @@ const DataRoomsManagement = () => {
     dateRange: 'all'
   });
 
-  // Mock data for data rooms - only initialize when translations are ready
-  const dataRooms = ready ? [
-    {
-      id: 1,
-      name: t('sample_data.rooms.project_alpha.name'),
-      description: t('sample_data.rooms.project_alpha.description'),
-      creator: t('sample_data.user_roles.admin_user'),
-      userCount: 8,
-      fileCount: 24,
-      storageUsed: '2.1 GB',
-      createdDate: '2025-08-31',
-      lastActivity: '2025-08-31',
-      status: 'active',
-      dealType: 'ma',
-      dealTypeDisplay: t('sample_data.deal_types.ma'),
-      completionScore: 85,
-      securityScore: 94,
-      avatars: [
-        { name: 'John Doe', initials: 'JD' },
-        { name: 'Jane Smith', initials: 'JS' },
-        { name: 'Mike Johnson', initials: 'MJ' },
-        { name: 'Sarah Wilson', initials: 'SW' }
-      ]
-    },
-    {
-      id: 2,
-      name: t('sample_data.rooms.legal_documents.name'),
-      description: t('sample_data.rooms.legal_documents.description'),
-      creator: t('sample_data.user_roles.admin_user'),
-      userCount: 12,
-      fileCount: 18,
-      storageUsed: '1.8 GB',
-      createdDate: '2025-08-30',
-      lastActivity: '2025-08-31',
-      status: 'active',
-      dealType: 'legal_review',
-      dealTypeDisplay: t('sample_data.deal_types.legal_review'),
-      completionScore: 67,
-      securityScore: 98,
-      avatars: [
-        { name: t('sample_data.user_roles.legal_advisor'), initials: 'LA' },
-        { name: t('sample_data.user_roles.contract_manager'), initials: 'CM' },
-        { name: t('sample_data.user_roles.compliance_officer'), initials: 'CO' }
-      ]
-    },
-    {
-      id: 3,
-      name: t('sample_data.rooms.financial_reports.name'),
-      description: t('sample_data.rooms.financial_reports.description'),
-      creator: t('sample_data.user_roles.admin_user'),
-      userCount: 15,
-      fileCount: 32,
-      storageUsed: '4.2 GB',
-      createdDate: '2025-08-29',
-      lastActivity: '2025-08-30',
-      status: 'archived',
-      dealType: 'due_diligence',
-      dealTypeDisplay: t('sample_data.deal_types.due_diligence'),
-      completionScore: 100,
-      securityScore: 92,
-      avatars: [
-        { name: t('sample_data.user_roles.cfo'), initials: 'CF' },
-        { name: t('sample_data.user_roles.financial_analyst'), initials: 'FA' },
-        { name: t('sample_data.user_roles.auditor'), initials: 'AU' },
-        { name: t('sample_data.user_roles.investment_manager'), initials: 'IM' }
-      ]
-    },
-    {
-      id: 4,
-      name: t('sample_data.rooms.due_diligence_materials.name'),
-      description: t('sample_data.rooms.due_diligence_materials.description'),
-      creator: t('sample_data.user_roles.admin_user'),
-      userCount: 22,
-      fileCount: 156,
-      storageUsed: '8.7 GB',
-      createdDate: '2025-08-25',
-      lastActivity: '2025-08-31',
-      status: 'active',
-      dealType: 'due_diligence',
-      dealTypeDisplay: t('sample_data.deal_types.due_diligence'),
-      completionScore: 78,
-      securityScore: 96,
-      avatars: [
-        { name: t('sample_data.user_roles.deal_manager'), initials: 'DM' },
-        { name: t('sample_data.user_roles.analyst'), initials: 'AN' },
-        { name: t('sample_data.user_roles.reviewer'), initials: 'RV' },
-        { name: t('sample_data.user_roles.partner'), initials: 'PT' }
-      ]
-    }
-  ] : [];
+  // Fetch real data rooms using the API
+  const { 
+    data: dataRoomsData, 
+    isLoading, 
+    error, 
+    refetch 
+  } = useDataRooms({ search: searchQuery });
 
+  // Get data rooms from API response
+  const dataRooms = dataRoomsData?.dataRooms || [];
+
+  // Handle create data room
+  const handleCreateRoom = () => {
+    setIsCreateModalOpen(true);
+  };
+
+  const handleCloseCreateModal = () => {
+    setIsCreateModalOpen(false);
+  };
+
+  // Handle data room actions
+  const handleViewDetails = (roomId) => {
+    setDetailsModal({ open: true, roomId });
+  };
+
+  const handleCloseDetails = () => {
+    setDetailsModal({ open: false, roomId: null });
+  };
+
+  const handleEditRoom = (roomId) => {
+    setEditModal({ open: true, roomId });
+  };
+
+  const handleCloseEdit = () => {
+    setEditModal({ open: false, roomId: null });
+  };
+
+
+  // Filter rooms based on search and filters (already filtered by API search)
   const filteredRooms = dataRooms?.filter(room => {
-    const matchesSearch = room?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-                         room?.description?.toLowerCase()?.includes(searchQuery?.toLowerCase());
-    const matchesStatus = selectedFilters?.status === 'all' || room?.status === selectedFilters?.status;
-    const matchesDealType = selectedFilters?.dealType === 'all' || room?.dealType === selectedFilters?.dealType;
-    
-    return matchesSearch && matchesStatus && matchesDealType;
+    // API already handles search, so we only need to apply local filters
+    const matchesStatus = selectedFilters?.status === 'all' || 
+      (room?.isActive ? 'active' : 'inactive') === selectedFilters?.status;
+    // For now, we'll simplify dealType filtering since it's not in the API data
+    return matchesStatus;
   });
 
+  // Calculate stats from real data
   const stats = {
     total: dataRooms?.length || 0,
-    active: dataRooms?.filter(room => room?.status === 'active')?.length || 0,
-    archived: dataRooms?.filter(room => room?.status === 'archived')?.length || 0,
-    totalUsers: dataRooms?.reduce((sum, room) => sum + (room?.userCount || 0), 0),
-    totalFiles: dataRooms?.reduce((sum, room) => sum + (room?.fileCount || 0), 0)
+    active: dataRooms?.filter(room => room?.isActive)?.length || 0,
+    archived: dataRooms?.filter(room => !room?.isActive)?.length || 0,
+    totalUsers: dataRooms?.reduce((sum, room) => sum + (room?.groupsCount || 0), 0),
+    totalFiles: dataRooms?.length || 0 // API doesn't provide file counts yet
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="pt-4">
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            {/* Header Skeleton */}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
+              <div className="mb-4 lg:mb-0">
+                <Skeleton className="h-9 w-64 mb-2" />
+                <Skeleton className="h-5 w-48" />
+              </div>
+              <div className="flex items-center space-x-3">
+                <Skeleton className="h-10 w-32" />
+                <Skeleton className="h-10 w-32" />
+                <Skeleton className="h-10 w-32" />
+              </div>
+            </div>
+            
+            <Separator className="my-8" />
+            
+            {/* Stats Skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Card key={i}>
+                  <CardContent className="p-4">
+                    <div className="flex items-center space-x-3">
+                      <Skeleton className="w-10 h-10 rounded-lg" />
+                      <div className="space-y-1">
+                        <Skeleton className="h-4 w-16" />
+                        <Skeleton className="h-6 w-8" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            {/* Grid Skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <Card key={i}>
+                  <CardContent className="p-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center space-x-3">
+                        <Skeleton className="w-12 h-12 rounded-lg" />
+                        <div className="space-y-1">
+                          <Skeleton className="h-5 w-32" />
+                          <Skeleton className="h-4 w-24" />
+                        </div>
+                      </div>
+                      <Skeleton className="h-16 w-full" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="pt-4">
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
+              <div className="mb-4 lg:mb-0">
+                <h1 className="text-3xl font-bold text-foreground mb-2">
+                  {t('title')}
+                </h1>
+                <p className="text-muted-foreground">
+                  {t('subtitle')}
+                </p>
+              </div>
+            </div>
+            
+            <Separator className="my-8" />
+            
+            <Alert variant="destructive">
+              <Icon name="AlertCircle" size={16} />
+              <AlertDescription className="flex items-center justify-between">
+                <span>{t('table.error_loading')}: {error.message}</span>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => refetch()}
+                  className="ml-4 gap-1"
+                >
+                  <Icon name="RefreshCw" size={14} />
+                  {t('table.retry')}
+                </Button>
+              </AlertDescription>
+            </Alert>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -144,89 +209,104 @@ const DataRoomsManagement = () => {
             </div>
             
             <div className="flex items-center space-x-3 rtl:space-x-reverse">
-              <Button iconName="Plus" variant="default">
+              <Button variant="default" onClick={handleCreateRoom} className="gap-2">
+                <Icon name="Plus" size={16} />
                 {t('actions.create_room')}
               </Button>
-              <Button iconName="Download" variant="success">
+              <Button variant="success" className="gap-2">
+                <Icon name="Download" size={16} />
                 {t('actions.export_rooms')}
               </Button>
-              <Button iconName="Users" variant="outline">
+              <Button variant="outline" className="gap-2">
+                <Icon name="Users" size={16} />
                 {t('actions.bulk_invite')}
               </Button>
             </div>
           </div>
+          
+          <Separator className="my-8" />
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-            <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <Icon name="FolderOpen" size={20} className="text-primary" />
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Icon name="FolderOpen" size={20} className="text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {t('stats.total_rooms')}
+                    </p>
+                    <p className="text-2xl font-bold text-foreground">{stats?.total}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {t('stats.total_rooms')}
-                  </p>
-                  <p className="text-2xl font-bold text-foreground">{stats?.total}</p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
             
-            <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
-                  <Icon name="CheckCircle" size={20} className="text-success" />
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                  <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+                    <Icon name="CheckCircle" size={20} className="text-success" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {t('stats.active')}
+                    </p>
+                    <p className="text-2xl font-bold text-foreground">{stats?.active}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {t('stats.active')}
-                  </p>
-                  <p className="text-2xl font-bold text-foreground">{stats?.active}</p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
             
-            <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
-                  <Icon name="Archive" size={20} className="text-muted-foreground" />
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                  <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                    <Icon name="Archive" size={20} className="text-muted-foreground" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {t('stats.archived')}
+                    </p>
+                    <p className="text-2xl font-bold text-foreground">{stats?.archived}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {t('stats.archived')}
-                  </p>
-                  <p className="text-2xl font-bold text-foreground">{stats?.archived}</p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
             
-            <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Icon name="Users" size={20} className="text-blue-600" />
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                  <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                    <Icon name="Users" size={20} className="text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {t('stats.total_users')}
+                    </p>
+                    <p className="text-2xl font-bold text-foreground">{stats?.totalUsers}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {t('stats.total_users')}
-                  </p>
-                  <p className="text-2xl font-bold text-foreground">{stats?.totalUsers}</p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
             
-            <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Icon name="FileText" size={20} className="text-purple-600" />
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                  <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
+                    <Icon name="FileText" size={20} className="text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {t('stats.total_files')}
+                    </p>
+                    <p className="text-2xl font-bold text-foreground">{stats?.totalFiles}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {t('stats.total_files')}
-                  </p>
-                  <p className="text-2xl font-bold text-foreground">{stats?.totalFiles}</p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Search and Filter Controls */}
@@ -244,13 +324,24 @@ const DataRoomsManagement = () => {
             
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
               <Button
-                iconName="Filter"
+                variant="outline"
+                onClick={() => refetch()}
+                disabled={isLoading}
+                className="gap-2"
+              >
+                <Icon name="RefreshCw" size={14} className={isLoading ? "animate-spin" : ""} />
+                {isLoading ? t('actions.refreshing') : t('actions.refresh')}
+              </Button>
+              <Button
                 variant="outline"
                 onClick={() => setIsFilterSidebarOpen(!isFilterSidebarOpen)}
+                className="gap-2"
               >
+                <Icon name="Filter" size={14} />
                 {t('actions.filters')}
               </Button>
-              <Button iconName="SortDesc" variant="outline">
+              <Button variant="outline" className="gap-2">
+                <Icon name="SortDesc" size={14} />
                 {t('actions.sort')}
               </Button>
             </div>
@@ -260,28 +351,33 @@ const DataRoomsManagement = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRooms?.map((room) => (
               <DataRoomCard
-                key={room?.id}
+                key={room?.roomId}
                 room={room}
+                onViewDetails={handleViewDetails}
+                onEdit={handleEditRoom}
               />
             ))}
           </div>
 
           {/* Empty State */}
           {filteredRooms?.length === 0 && (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-                <Icon name="FolderOpen" size={32} className="text-muted-foreground" />
-              </div>
-              <h3 className="text-lg font-medium text-foreground mb-2">
-                {t('search.no_results')}
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                {searchQuery ? t('search.no_results_description') : t('search.empty_state_description')}
-              </p>
-              <Button iconName="Plus" variant="default">
-                {t('actions.create_room')}
-              </Button>
-            </div>
+            <Card className="text-center py-12">
+              <CardContent className="pt-6">
+                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icon name="FolderOpen" size={32} className="text-muted-foreground" />
+                </div>
+                <CardTitle className="text-lg mb-2">
+                  {t('search.no_results')}
+                </CardTitle>
+                <p className="text-muted-foreground mb-4">
+                  {searchQuery ? t('search.no_results_description') : t('search.empty_state_description')}
+                </p>
+                <Button variant="default" onClick={handleCreateRoom} className="gap-2">
+                  <Icon name="Plus" size={16} />
+                  {t('actions.create_room')}
+                </Button>
+              </CardContent>
+            </Card>
           )}
         </div>
       </main>
@@ -291,6 +387,27 @@ const DataRoomsManagement = () => {
         onClose={() => setIsFilterSidebarOpen(false)}
         filters={selectedFilters}
         onFilterChange={setSelectedFilters}
+        dataRooms={dataRooms}
+      />
+      
+      {/* Create Data Room Modal */}
+      <CreateDataRoomModal 
+        isOpen={isCreateModalOpen}
+        onClose={handleCloseCreateModal}
+      />
+      
+      {/* Data Room Details Modal */}
+      <DataRoomDetailsModal 
+        isOpen={detailsModal.open}
+        onClose={handleCloseDetails}
+        roomId={detailsModal.roomId}
+      />
+      
+      {/* Edit Data Room Modal */}
+      <EditDataRoomModal 
+        isOpen={editModal.open}
+        onClose={handleCloseEdit}
+        room={editModal.roomId ? dataRooms?.find(room => room.roomId === editModal.roomId) : null}
       />
     </div>
   );

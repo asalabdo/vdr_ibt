@@ -61,13 +61,16 @@ export const endpoints = {
   },
 
   // ===== GROUP FOLDERS (Alternative VDR approach) =====
+  // Note: Group Folders app uses its own API structure, not standard OCS
   groupFolders: {
-    list: '/ocs/v2.php/apps/groupfolders/folders',
-    create: '/ocs/v2.php/apps/groupfolders/folders',
-    details: (folderId) => `/ocs/v2.php/apps/groupfolders/folders/${folderId}`,
-    delete: (folderId) => `/ocs/v2.php/apps/groupfolders/folders/${folderId}`,
-    addGroup: (folderId) => `/ocs/v2.php/apps/groupfolders/folders/${folderId}/groups`,
-    setPermissions: (folderId, groupId) => `/ocs/v2.php/apps/groupfolders/folders/${folderId}/groups/${groupId}`,
+    list: '/index.php/apps/groupfolders/folders',
+    create: '/index.php/apps/groupfolders/folders',
+    details: (folderId) => `/index.php/apps/groupfolders/folders/${folderId}`,
+    delete: (folderId) => `/index.php/apps/groupfolders/folders/${folderId}`,
+    addGroup: (folderId) => `/index.php/apps/groupfolders/folders/${folderId}/groups`,
+    setPermissions: (folderId, groupId) => `/index.php/apps/groupfolders/folders/${folderId}/groups/${groupId}`,
+    setQuota: (folderId) => `/index.php/apps/groupfolders/folders/${folderId}/quota`,
+    setACL: (folderId) => `/index.php/apps/groupfolders/folders/${folderId}/acl`,
   },
 
   // ===== CALENDAR (CalDAV) =====
