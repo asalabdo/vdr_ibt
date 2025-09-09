@@ -6,12 +6,17 @@ import { Button } from '@/components/ui/Button';
 const DarkModeToggle = ({ variant = 'ghost', size = 'sm' }) => {
   const { t } = useTranslation();
   
-  // Theme state management (same logic as Header.jsx)
+  // Auto-detect system theme or use stored preference
   const [isDark, setIsDark] = useState(() => {
     try {
       const stored = localStorage.getItem('theme');
       if (stored) return stored === 'dark';
-      return document?.documentElement?.classList?.contains('dark');
+      
+      // Auto-detect system preference
+      if (window.matchMedia) {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      return false;
     } catch (e) {
       return false;
     }
@@ -26,14 +31,21 @@ const DarkModeToggle = ({ variant = 'ghost', size = 'sm' }) => {
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
       }
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
     } catch (e) {
       // ignore
     }
   }, [isDark]);
 
   const handleToggle = () => {
-    setIsDark((current) => !current);
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+    
+    // Store user preference
+    try {
+      localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+    } catch (e) {
+      // ignore
+    }
   };
 
   return (
