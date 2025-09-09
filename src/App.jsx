@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Routes from "./Routes";
 import { useFont } from "./hooks/useFont";
 import { queryClient } from './lib/queryClient';
+import { Toaster } from '@/components/ui/sonner';
 
 function App() {
   const { i18n } = useTranslation();
@@ -23,6 +24,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div className={`${fontClass} ${dirClass}`}>
         <Routes />
+        <Toaster />
       </div>
     </QueryClientProvider>
   );

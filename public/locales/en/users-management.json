@@ -3,6 +3,7 @@
   "subtitle": "Manage user accounts and access permissions",
   
   "actions": {
+    "create_user": "Create User",
     "invite_user": "Invite User",
     "export_users": "Export Users",
     "edit": "Edit",
@@ -74,6 +75,63 @@
     "approve_answers": "approve answers",
     "upload_files": "upload files",
     "user_management": "user management"
+  },
+
+  "create_user_modal": {
+    "title": "Create New User",
+    "description": "Add a new user to the system with access permissions.",
+    "username": "Username",
+    "username_placeholder": "Enter username (e.g., john.doe)",
+    "display_name": "Display Name",
+    "display_name_placeholder": "Enter full name (e.g., John Doe)",
+    "email": "Email Address",
+    "email_placeholder": "Enter email address",
+    "password": "Password",
+    "password_placeholder": "Enter password (min 8 characters)",
+    "password_hint": "Password must be at least 8 characters long",
+    "generate_password": "Generate secure password",
+    "generate_password_info": "A secure password will be generated automatically when the user is created.",
+    "groups": "User Groups",
+    "cancel": "Cancel",
+    "create": "Create User",
+    "creating": "Creating...",
+    "form": {
+      "errors": {
+        "username_required": "Username is required",
+        "username_min_length": "Username must be at least 3 characters",
+        "password_required": "Password is required",
+        "password_min_length": "Password must be at least 8 characters",
+        "email_invalid": "Please enter a valid email address"
+      }
+    }
+  },
+
+  "table": {
+    "title": "User Management",
+    "users_count": "{{count}} user",
+    "users_count_plural": "{{count}} users",
+    "search_placeholder": "Search users...",
+    "refresh_tooltip": "Refresh user list",
+    "error_loading": "Error loading users",
+    "retry": "Retry",
+    "no_users_title": "No users found",
+    "no_users_description": "No users have been added to the system yet.",
+    "no_search_results": "No users match your search criteria.",
+    "clear_search": "Clear search",
+    "user": "User",
+    "contact": "Contact",
+    "groups": "Groups",
+    "status": "Status",
+    "actions": "Actions",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "enable_user": "Enable user",
+    "disable_user": "Disable user", 
+    "delete_user": "Delete user",
+    "confirm_delete_title": "Delete User",
+    "confirm_delete_description": "Are you sure you want to delete user '{{userId}}'? This action cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete"
   },
 
   "mock_data": {

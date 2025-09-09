@@ -3,6 +3,7 @@
   "subtitle": "إدارة حسابات المستخدمين وصلاحيات الوصول",
   
   "actions": {
+    "create_user": "إنشاء مستخدم",
     "invite_user": "دعوة مستخدم",
     "export_users": "تصدير المستخدمين",
     "edit": "تحرير",
@@ -74,6 +75,63 @@
     "approve_answers": "الموافقة على الإجابات",
     "upload_files": "رفع الملفات",
     "user_management": "إدارة المستخدمين"
+  },
+
+  "create_user_modal": {
+    "title": "إنشاء مستخدم جديد",
+    "description": "إضافة مستخدم جديد إلى النظام مع صلاحيات الوصول.",
+    "username": "اسم المستخدم",
+    "username_placeholder": "أدخل اسم المستخدم (مثل: أحمد.محمد)",
+    "display_name": "الاسم المعروض",
+    "display_name_placeholder": "أدخل الاسم الكامل (مثل: أحمد محمد)",
+    "email": "عنوان البريد الإلكتروني",
+    "email_placeholder": "أدخل عنوان البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "password_placeholder": "أدخل كلمة المرور (8 أحرف على الأقل)",
+    "password_hint": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "generate_password": "توليد كلمة مرور آمنة",
+    "generate_password_info": "سيتم توليد كلمة مرور آمنة تلقائياً عند إنشاء المستخدم.",
+    "groups": "مجموعات المستخدم",
+    "cancel": "إلغاء",
+    "create": "إنشاء مستخدم",
+    "creating": "جاري الإنشاء...",
+    "form": {
+      "errors": {
+        "username_required": "اسم المستخدم مطلوب",
+        "username_min_length": "يجب أن يكون اسم المستخدم 3 أحرف على الأقل",
+        "password_required": "كلمة المرور مطلوبة",
+        "password_min_length": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+        "email_invalid": "يرجى إدخال عنوان بريد إلكتروني صحيح"
+      }
+    }
+  },
+
+  "table": {
+    "title": "إدارة المستخدمين",
+    "users_count": "{{count}} مستخدم",
+    "users_count_plural": "{{count}} مستخدمين",
+    "search_placeholder": "البحث عن المستخدمين...",
+    "refresh_tooltip": "تحديث قائمة المستخدمين",
+    "error_loading": "خطأ في تحميل المستخدمين",
+    "retry": "إعادة المحاولة",
+    "no_users_title": "لا توجد مستخدمين",
+    "no_users_description": "لم يتم إضافة أي مستخدمين إلى النظام بعد.",
+    "no_search_results": "لا يوجد مستخدمين يطابقون معايير البحث.",
+    "clear_search": "مسح البحث",
+    "user": "المستخدم",
+    "contact": "جهة الاتصال",
+    "groups": "المجموعات",
+    "status": "الحالة",
+    "actions": "الإجراءات",
+    "enabled": "مفعل",
+    "disabled": "معطل",
+    "enable_user": "تفعيل المستخدم",
+    "disable_user": "تعطيل المستخدم", 
+    "delete_user": "حذف المستخدم",
+    "confirm_delete_title": "حذف المستخدم",
+    "confirm_delete_description": "هل أنت متأكد من حذف المستخدم '{{userId}}'؟ لا يمكن التراجع عن هذا الإجراء.",
+    "cancel": "إلغاء",
+    "delete": "حذف"
   },
 
   "mock_data": {
