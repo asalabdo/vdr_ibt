@@ -44,6 +44,19 @@ export {
   useDataRoomsManagement,
 } from './useDataRooms';
 
+// Groups management hooks
+export {
+  useGroups,
+  useGroupDetails,
+  useGroupSubadmins,
+  useSearchGroups,
+  useGroupMemberCounts,
+  useCreateGroup,
+  useUpdateGroup,
+  useDeleteGroup,
+  useGroupManagement,
+} from './useGroups';
+
 // Future hooks will be exported here:
 // export { useFiles, useFileUpload } from './useFiles';
 // export { useAuditLogs } from './useAuditLogs';

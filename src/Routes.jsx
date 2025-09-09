@@ -8,6 +8,7 @@ import VDROperationsCommandCenter from '@/pages/vdr-operations-command-center';
 import ComplianceSecurityMonitoringDashboard from '@/pages/compliance-security-monitoring-dashboard';
 import ExecutiveDealFlowDashboard from '@/pages/executive-deal-flow-dashboard';
 import DataRoomsManagement from '@/pages/data-rooms-management';
+import GroupsManagement from '@/pages/groups-management';
 import QAManagementCenter from '@/pages/q-a-management-center';
 import DocumentManagementConsole from '@/pages/document-management-console';
 import UsersManagement from '@/pages/users-management';
@@ -42,9 +43,10 @@ const Sidebar = ({ isOpen, onClose }) => {
       items: [
         { label: t('routes.home'), path: '/', icon: 'Home' },
         { label: t('routes.data_rooms'), path: '/data-rooms-management', icon: 'Folder' },
+        { label: t('routes.groups'), path: '/groups-management', icon: 'Users' },
         { label: t('routes.q_a_center'), path: '/q-a-management-center', icon: 'MessageSquare' },
         { label: t('routes.document_console'), path: '/document-management-console', icon: 'FileText' },
-        { label: t('routes.users'), path: '/users-management', icon: 'Users' },
+        { label: t('routes.users'), path: '/users-management', icon: 'UserCog' },
         { label: t('routes.roles_permissions'), path: '/roles-permissions', icon: 'Key' },
         { label: t('routes.audit_logs'), path: '/audit-logs', icon: 'Clipboard' },
         { label: t('routes.notifications'), path: '/notifications', icon: 'Bell' },
@@ -217,6 +219,11 @@ const Routes = () => {
           <Route path="/data-rooms-management" element={
             <ProtectedRoute>
               <AppLayout><DataRoomsManagement /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/groups-management" element={
+            <ProtectedRoute>
+              <AppLayout><GroupsManagement /></AppLayout>
             </ProtectedRoute>
           } />
           <Route path="/q-a-management-center" element={

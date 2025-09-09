@@ -239,9 +239,23 @@ const CreateDataRoomModal = ({ isOpen, onClose }) => {
                   ) : (
                     <div className="text-center py-6">
                       <Icon name="Users" size={24} className="mx-auto text-muted-foreground mb-2" />
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-muted-foreground mb-3">
                         {t('create_modal.no_groups', { defaultValue: 'No groups available' })}
                       </p>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        {t('create_modal.create_groups_hint', { defaultValue: 'Create groups first to assign access permissions to your data rooms.' })}
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="gap-2"
+                        onClick={() => {
+                          window.open('/groups-management', '_blank');
+                        }}
+                      >
+                        <Icon name="Plus" size={14} />
+                        {t('create_modal.manage_groups', { defaultValue: 'Manage Groups' })}
+                      </Button>
                     </div>
                   )}
                   

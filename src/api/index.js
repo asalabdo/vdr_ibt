@@ -16,6 +16,7 @@ export {
 
 // API Functions
 export { authAPI } from './auth';
+export { groupsAPI } from './groups';
 export { usersAPI } from './users';
 export { dataRoomsAPI } from './dataRooms';
 

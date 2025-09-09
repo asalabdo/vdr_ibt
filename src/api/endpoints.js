@@ -33,11 +33,14 @@ export const endpoints = {
 
   // ===== GROUP MANAGEMENT =====
   groups: {
-    list: '/ocs/v1.php/cloud/groups',
-    search: '/ocs/v1.php/cloud/groups', // Add ?search=term
-    create: '/ocs/v1.php/cloud/groups',
-    details: (groupId) => `/ocs/v1.php/cloud/groups/${groupId}`,
-    delete: (groupId) => `/ocs/v1.php/cloud/groups/${groupId}`,
+    list: '/ocs/v2.php/cloud/groups',
+    search: '/ocs/v2.php/cloud/groups', // Add ?search=term
+    create: '/ocs/v2.php/cloud/groups',
+    details: (groupId) => `/ocs/v2.php/cloud/groups/${groupId}`,
+    members: (groupId) => `/ocs/v2.php/cloud/groups/${groupId}`,
+    update: (groupId) => `/ocs/v2.php/cloud/groups/${groupId}`,
+    delete: (groupId) => `/ocs/v2.php/cloud/groups/${groupId}`,
+    subadmins: (groupId) => `/ocs/v2.php/cloud/groups/${groupId}/subadmins`,
   },
 
   // ===== FILES & WEBDAV =====

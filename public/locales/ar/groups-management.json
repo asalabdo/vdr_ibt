@@ -1,0 +1,130 @@
+{
+  "title": "إدارة المجموعات",
+  "subtitle": "إنشاء وإدارة مجموعات المستخدمين للتحكم في الوصول والتعاون",
+  
+  "actions": {
+    "create_group": "إنشاء مجموعة",
+    "export_groups": "تصدير المجموعات",
+    "manage_groups": "إدارة المجموعات",
+    "view_data_rooms": "غرف البيانات",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "view_details": "عرض التفاصيل",
+    "refresh": "تحديث",
+    "refreshing": "جاري التحديث...",
+    "retry": "إعادة المحاولة",
+    "sort": "ترتيب"
+  },
+
+  "stats": {
+    "total_groups": "إجمالي المجموعات",
+    "active": "نشط",
+    "with_members": "تحتوي على أعضاء",
+    "empty": "فارغة"
+  },
+
+  "search": {
+    "placeholder": "البحث عن المجموعات بالاسم...",
+    "no_results": "لم يتم العثور على مجموعات",
+    "no_results_description": "لا توجد مجموعات تطابق معايير البحث. جرب تعديل مصطلحات البحث.",
+    "empty_state_description": "ابدأ بإنشاء مجموعتك الأولى لتنظيم المستخدمين وإدارة الصلاحيات."
+  },
+
+  "group_card": {
+    "group_id": "معرف المجموعة: {{id}}",
+    "id_display": "المعرف: {{id}}",
+    "no_description": "لا يوجد وصف متاح",
+    "status": {
+      "active": "نشط"
+    },
+    "members": "أعضاء",
+    "no_members": "لا يوجد أعضاء حتى الآن",
+    "permissions": "الصلاحيات",
+    "standard": "قياسي",
+    "id_label": "المعرف",
+    "created": "تاريخ الإنشاء"
+  },
+
+  "create_modal": {
+    "title": "إنشاء مجموعة جديدة",
+    "description": "إنشاء مجموعة جديدة لتنظيم المستخدمين وإدارة الصلاحيات بفعالية.",
+    "group_id": "معرف المجموعة",
+    "group_id_placeholder": "مثل: developers, marketing, admins",
+    "group_id_hint": "معرف فريد يُستخدم داخلياً. استخدم الحروف والأرقام والشرطات والشرطات السفلية فقط.",
+    "display_name": "اسم العرض",
+    "display_name_placeholder": "مثل: فريق التطوير, قسم التسويق",
+    "display_name_hint": "اسم مقروء يظهر في الواجهة. يتم استخدام معرف المجموعة افتراضياً إذا لم يتم توفيره.",
+    "optional": "اختياري",
+    "info_hint": "تفاصيل المجموعة الأساسية للتعريف والعرض",
+    "info_message": "يمكنك إضافة مستخدمين إلى هذه المجموعة وإدارة الصلاحيات بعد الإنشاء.",
+    "cancel": "إلغاء",
+    "create": "إنشاء مجموعة",
+    "creating": "جاري الإنشاء...",
+    "success_title": "تم إنشاء المجموعة بنجاح!",
+    "success_description": "تم إنشاء المجموعة \"{{groupName}}\" وهي جاهزة للاستخدام.",
+    "error_title": "فشل في إنشاء المجموعة",
+    "errors": {
+      "group_id_required": "معرف المجموعة مطلوب",
+      "group_id_min_length": "يجب أن يكون معرف المجموعة على الأقل حرفين",
+      "group_id_invalid": "يمكن أن يحتوي معرف المجموعة على الحروف والأرقام والشرطات والشرطات السفلية فقط",
+      "display_name_max_length": "يجب أن يكون اسم العرض أقل من 100 حرف"
+    }
+  },
+
+  "edit_modal": {
+    "title": "تعديل إعدادات المجموعة",
+    "description": "تحديث إعدادات \"{{groupName}}\".",
+    "loading_description": "جاري تحميل معلومات المجموعة...",
+    "group_info": "معلومات المجموعة",
+    "group_info_hint": "تحديث معلومات العرض لهذه المجموعة",
+    "group_id": "معرف المجموعة",
+    "readonly": "للقراءة فقط",
+    "group_id_hint": "لا يمكن تغيير معرف المجموعة بعد الإنشاء",
+    "display_name": "اسم العرض",
+    "display_name_placeholder": "اسم المجموعة المقروء",
+    "display_name_hint": "سيظهر هذا الاسم في الواجهة وقوائم المجموعات",
+    "current_status": "الحالة الحالية",
+    "member_count": "الأعضاء",
+    "status": "الحالة",
+    "status_active": "نشط",
+    "cancel": "إلغاء",
+    "save": "حفظ التغييرات",
+    "saving": "جاري الحفظ...",
+    "success_title": "تم تحديث المجموعة بنجاح!",
+    "success_description": "تم تحديث إعدادات المجموعة.",
+    "error_title": "فشل في تحديث المجموعة",
+    "error_loading": "فشل في تحميل تفاصيل المجموعة",
+    "errors": {
+      "display_name_required": "اسم العرض مطلوب",
+      "display_name_max_length": "يجب أن يكون اسم العرض أقل من 100 حرف"
+    }
+  },
+
+  "details_modal": {
+    "loading_title": "جاري تحميل المجموعة...",
+    "members_count": "أعضاء",
+    "status_active": "نشط",
+    "empty": "فارغة",
+    "basic_info": "المعلومات الأساسية",
+    "group_id": "معرف المجموعة",
+    "display_name": "اسم العرض",
+    "member_count": "الأعضاء",
+    "status": "الحالة",
+    "created_at": "تاريخ الإنشاء",
+    "members": "الأعضاء",
+    "subadmins": "المشرفون المساعدون",
+    "admin": "مشرف",
+    "subadmin": "مشرف مساعد",
+    "member": "عضو",
+    "no_members": "هذه المجموعة ليس بها أعضاء حتى الآن",
+    "add_members_hint": "أضف مستخدمين إلى هذه المجموعة للبدء",
+    "no_groups": "لا توجد مجموعات متاحة",
+    "error_loading": "خطأ في تحميل تفاصيل المجموعة",
+    "retry": "إعادة المحاولة",
+    "close": "إغلاق"
+  },
+
+  "errors": {
+    "loading_failed": "فشل في تحميل المجموعات"
+  }
+}

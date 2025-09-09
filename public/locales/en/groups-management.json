@@ -1,0 +1,130 @@
+{
+  "title": "Groups Management",
+  "subtitle": "Create and manage user groups for access control and collaboration",
+  
+  "actions": {
+    "create_group": "Create Group",
+    "export_groups": "Export Groups",
+    "manage_groups": "Manage Groups",
+    "view_data_rooms": "Data Rooms",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view_details": "View Details",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "retry": "Retry",
+    "sort": "Sort"
+  },
+
+  "stats": {
+    "total_groups": "Total Groups",
+    "active": "Active",
+    "with_members": "With Members",
+    "empty": "Empty"
+  },
+
+  "search": {
+    "placeholder": "Search groups by name...",
+    "no_results": "No groups found",
+    "no_results_description": "No groups match your search criteria. Try adjusting your search terms.",
+    "empty_state_description": "Get started by creating your first group to organize users and manage permissions."
+  },
+
+  "group_card": {
+    "group_id": "Group ID: {{id}}",
+    "id_display": "ID: {{id}}",
+    "no_description": "No description available",
+    "status": {
+      "active": "Active"
+    },
+    "members": "members",
+    "no_members": "No members yet",
+    "permissions": "Permissions",
+    "standard": "Standard",
+    "id_label": "ID",
+    "created": "Created"
+  },
+
+  "create_modal": {
+    "title": "Create New Group",
+    "description": "Create a new group to organize users and manage permissions effectively.",
+    "group_id": "Group ID",
+    "group_id_placeholder": "e.g., developers, marketing, admins",
+    "group_id_hint": "Unique identifier used internally. Use letters, numbers, hyphens, and underscores only.",
+    "display_name": "Display Name",
+    "display_name_placeholder": "e.g., Development Team, Marketing Department",
+    "display_name_hint": "Human-readable name shown in the interface. Defaults to Group ID if not provided.",
+    "optional": "optional",
+    "info_hint": "Basic group details for identification and display",
+    "info_message": "You can add users to this group and manage permissions after creation.",
+    "cancel": "Cancel",
+    "create": "Create Group",
+    "creating": "Creating...",
+    "success_title": "Group created successfully!",
+    "success_description": "Group \"{{groupName}}\" has been created and is ready to use.",
+    "error_title": "Failed to create group",
+    "errors": {
+      "group_id_required": "Group ID is required",
+      "group_id_min_length": "Group ID must be at least 2 characters",
+      "group_id_invalid": "Group ID can only contain letters, numbers, hyphens, and underscores",
+      "display_name_max_length": "Display name must be less than 100 characters"
+    }
+  },
+
+  "edit_modal": {
+    "title": "Edit Group Settings",
+    "description": "Update settings for \"{{groupName}}\".",
+    "loading_description": "Loading group information...",
+    "group_info": "Group Information",
+    "group_info_hint": "Update display information for this group",
+    "group_id": "Group ID",
+    "readonly": "read-only",
+    "group_id_hint": "Group ID cannot be changed after creation",
+    "display_name": "Display Name",
+    "display_name_placeholder": "Human-readable group name",
+    "display_name_hint": "This name will be shown in the interface and group listings",
+    "current_status": "Current Status",
+    "member_count": "Members",
+    "status": "Status",
+    "status_active": "Active",
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "success_title": "Group updated successfully!",
+    "success_description": "Group settings have been updated.",
+    "error_title": "Failed to update group",
+    "error_loading": "Failed to load group details",
+    "errors": {
+      "display_name_required": "Display name is required",
+      "display_name_max_length": "Display name must be less than 100 characters"
+    }
+  },
+
+  "details_modal": {
+    "loading_title": "Loading group...",
+    "members_count": "members",
+    "status_active": "Active",
+    "empty": "Empty",
+    "basic_info": "Basic Information",
+    "group_id": "Group ID",
+    "display_name": "Display Name",
+    "member_count": "Members",
+    "status": "Status",
+    "created_at": "Created",
+    "members": "Members",
+    "subadmins": "Subadmins",
+    "admin": "Admin",
+    "subadmin": "Subadmin",
+    "member": "Member",
+    "no_members": "This group has no members yet",
+    "add_members_hint": "Add users to this group to get started",
+    "no_groups": "No groups available",
+    "error_loading": "Error loading group details",
+    "retry": "Retry",
+    "close": "Close"
+  },
+
+  "errors": {
+    "loading_failed": "Failed to load groups"
+  }
+}
