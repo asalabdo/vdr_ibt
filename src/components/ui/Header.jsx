@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import LanguageToggle from './LanguageToggle';
 import DarkModeToggle from './DarkModeToggle';
+import NotificationBell from './NotificationBell';
 import { useAuth } from '@/hooks/api';
 
 const Header = ({ onToggleSidebar }) => {
@@ -174,6 +175,9 @@ const Header = ({ onToggleSidebar }) => {
 
             {/* Dark Mode Toggle */}
             <DarkModeToggle />
+            
+            {/* Notifications Bell */}
+            {isAuthenticated && <NotificationBell />}
           </div>
 
           {/* Divider */}

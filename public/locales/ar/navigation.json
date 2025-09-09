@@ -15,6 +15,7 @@
     "users": "المستخدمون",
     "roles_permissions": "الأدوار والصلاحيات",
     "audit_logs": "سجلات التدقيق",
+    "notifications": "الإشعارات",
     "settings": "الإعدادات"
   }
 }

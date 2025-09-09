@@ -14,6 +14,7 @@ import UsersManagement from '@/pages/users-management';
 import RolesPermissions from '@/pages/roles-permissions';
 import AuditLogs from '@/pages/audit-logs';
 import Settings from '@/pages/settings';
+import NotificationsPage from '@/pages/notifications';
 import Header from '@/components/ui/Header';
 import Icon from '@/components/AppIcon';
 import { useTranslation } from 'react-i18next';
@@ -46,6 +47,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         { label: t('routes.users'), path: '/users-management', icon: 'Users' },
         { label: t('routes.roles_permissions'), path: '/roles-permissions', icon: 'Key' },
         { label: t('routes.audit_logs'), path: '/audit-logs', icon: 'Clipboard' },
+        { label: t('routes.notifications'), path: '/notifications', icon: 'Bell' },
         { label: t('routes.settings'), path: '/settings', icon: 'Settings' }
       ]
     }
@@ -245,6 +247,11 @@ const Routes = () => {
           <Route path="/settings" element={
             <ProtectedRoute>
               <AppLayout><Settings /></AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/notifications" element={
+            <ProtectedRoute>
+              <AppLayout><NotificationsPage /></AppLayout>
             </ProtectedRoute>
           } />
           <Route path="*" element={

@@ -15,6 +15,7 @@
     "users": "Users",
     "roles_permissions": "Roles & Permissions",
     "audit_logs": "Audit Logs",
+    "notifications": "Notifications",
     "settings": "Settings"
   }
 }
