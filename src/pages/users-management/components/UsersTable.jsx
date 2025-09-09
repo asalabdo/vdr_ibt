@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { 
@@ -18,13 +18,14 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from '@/components/ui/pagination';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,6 +37,8 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import Icon from '@/components/AppIcon';
+import UserDetailsModal from './UserDetailsModal';
+import EditUserModal from './EditUserModal';
 
 /**
  * Users Table Component
@@ -44,18 +47,48 @@ import Icon from '@/components/AppIcon';
 const UsersTable = () => {
   const { t } = useTranslation('users-management');
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const [deleteDialog, setDeleteDialog] = useState({ open: false, userId: null });
+  const [userDetailsModal, setUserDetailsModal] = useState({ open: false, userId: null });
+  const [editUserModal, setEditUserModal] = useState({ open: false, userId: null });
   
-  // Fetch users
+  // Pagination constants
+  const USERS_PER_PAGE = 10;
+  
+  // Fetch users (no search parameter since we filter locally)
   const { 
     data: usersData, 
     isLoading, 
     error, 
     refetch 
-  } = useUsers({ 
-    search: searchTerm || undefined 
-  });
+  } = useUsers();
 
+  // Get users data - already formatted by the API
+  const users = usersData?.users || [];
+  
+  // Filter based on search if needed
+  const filteredUsers = searchTerm
+    ? users.filter(user => 
+        user.username.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : users;
+  
+  // Pagination calculations
+  const totalUsers = filteredUsers.length;
+  const totalPages = Math.ceil(totalUsers / USERS_PER_PAGE);
+  const startIndex = (currentPage - 1) * USERS_PER_PAGE;
+  const endIndex = startIndex + USERS_PER_PAGE;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+  
+  // Reset to first page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+  
+  // Handle page changes
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
   
   // Mutations
   const deleteUserMutation = useDeleteUser({
@@ -68,7 +101,7 @@ const UsersTable = () => {
       });
     },
     onError: (error) => {
-      console.error('❌ Failed to delete user:', error.message);
+      console.error('Failed to delete user:', error.message);
       
       // Show error toast
       toast.error('Failed to delete user', {
@@ -85,7 +118,7 @@ const UsersTable = () => {
       });
     },
     onError: (error) => {
-      console.error('❌ Failed to enable user:', error.message);
+      console.error('Failed to enable user:', error.message);
       
       // Show error toast
       toast.error('Failed to enable user', {
@@ -102,7 +135,7 @@ const UsersTable = () => {
       });
     },
     onError: (error) => {
-      console.error('❌ Failed to disable user:', error.message);
+      console.error('Failed to disable user:', error.message);
       
       // Show error toast
       toast.error('Failed to disable user', {
@@ -128,37 +161,55 @@ const UsersTable = () => {
       enableUserMutation.mutate(userId);
     }
   };
+
+  const handleViewUserDetails = (userId) => {
+    setUserDetailsModal({ open: true, userId });
+  };
+
+  const handleCloseUserDetails = () => {
+    setUserDetailsModal({ open: false, userId: null });
+  };
+
+  const handleEditUser = (userId) => {
+    setEditUserModal({ open: true, userId });
+  };
+
+  const handleCloseEditUser = () => {
+    setEditUserModal({ open: false, userId: null });
+  };
   
   // Helper function to get user initials for avatar
   const getUserInitials = (user) => {
-    const name = user.displayname || user.username;
+    if (!user) return '?';
+    const name = user.displayname || user.username || '';
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
   
   if (isLoading) {
     return (
       <Card>
-        <CardHeader>
+        <CardHeader className="pb-4 space-y-3">
           <div className="flex items-center justify-between">
-            <Skeleton className="h-6 w-48" />
-            <Skeleton className="h-6 w-16" />
+            <Skeleton className="h-5 w-32" />
+            <Skeleton className="h-5 w-12" />
           </div>
-          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-9 w-64" />
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <Skeleton className="h-10 w-10 rounded-full" />
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-32" />
-                    <Skeleton className="h-3 w-24" />
+              <div key={i} className="flex items-center justify-between py-2">
+                <div className="flex items-center space-x-3">
+                  <Skeleton className="h-9 w-9 rounded-full" />
+                  <div className="space-y-1">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-3 w-20" />
                   </div>
                 </div>
                 <div className="flex space-x-2">
+                  <Skeleton className="h-8 w-16" />
                   <Skeleton className="h-8 w-20" />
-                  <Skeleton className="h-8 w-8" />
+                  <Skeleton className="h-8 w-20" />
                 </div>
               </div>
             ))}
@@ -188,48 +239,45 @@ const UsersTable = () => {
     );
   }
   
-  const users = usersData?.users || [];
-  
   return (
     <TooltipProvider>
       <Card>
-        <CardHeader className="space-y-4">
+        <CardHeader className="pb-4 space-y-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2 text-xl">
-              <Icon name="Users" size={20} />
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Icon name="Users" size={18} />
               {t('table.title')}
             </CardTitle>
-            <Badge variant="secondary" className="px-3 py-1">
-              {t(users.length === 1 ? 'table.users_count' : 'table.users_count_plural', { count: users.length })}
+            <Badge variant="secondary" className="px-2 py-1 text-xs">
+              {t(totalUsers === 1 ? 'table.users_count' : 'table.users_count_plural', { count: totalUsers })}
             </Badge>
           </div>
           
-          <Separator />
-          
           {/* Search and Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="relative flex-1 max-w-sm">
               <Icon 
                 name="Search" 
-                size={16} 
+                size={14} 
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" 
               />
               <Input
                 placeholder={t('table.search_placeholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9"
+                className="pl-9 h-9 text-sm"
               />
             </div>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button 
                   variant="outline" 
-                  size="icon"
+                  size="sm"
                   onClick={() => refetch()}
                   disabled={isLoading}
+                  className="h-9 w-9 p-0"
                 >
-                  <Icon name="RefreshCw" size={16} className={isLoading ? "animate-spin" : ""} />
+                  <Icon name="RefreshCw" size={14} className={isLoading ? "animate-spin" : ""} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -240,184 +288,205 @@ const UsersTable = () => {
         </CardHeader>
       
         <CardContent>
-          {users.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="rounded-full bg-muted/20 p-4 mb-4">
-                <Icon name="Users" size={32} className="text-muted-foreground" />
+          {totalUsers === 0 ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <div className="rounded-full bg-muted/20 p-3 mb-3">
+                <Icon name="Users" size={24} className="text-muted-foreground" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">{t('table.no_users_title')}</h3>
-              <p className="text-muted-foreground text-sm max-w-sm">
+              <h3 className="font-semibold text-base mb-1">{t('table.no_users_title')}</h3>
+              <p className="text-muted-foreground text-xs max-w-sm">
                 {searchTerm ? t('table.no_search_results') : t('table.no_users_description')}
               </p>
               {searchTerm && (
                 <Button 
                   variant="outline" 
                   onClick={() => setSearchTerm('')}
-                  className="mt-4 gap-2"
+                  size="sm"
+                  className="mt-3 gap-1"
                 >
-                  <Icon name="X" size={14} />
+                  <Icon name="X" size={12} />
                   {t('table.clear_search')}
                 </Button>
               )}
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>{t('table.user')}</TableHead>
-                    <TableHead>{t('table.contact')}</TableHead>
-                    <TableHead>{t('table.groups')}</TableHead>
-                    <TableHead>{t('table.status')}</TableHead>
-                    <TableHead className="w-[50px]"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users.map((user) => (
-                    <TableRow key={user.id} className="group">
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <Avatar className="h-10 w-10">
-                            <AvatarFallback className="bg-primary/10 text-primary font-medium">
-                              {getUserInitials(user)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="min-w-0 flex-1">
-                            <p className="font-medium text-sm">{user.displayname}</p>
-                            <p className="text-muted-foreground text-xs">@{user.username}</p>
+            <>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead className="text-xs font-medium text-muted-foreground">{t('table.user')}</TableHead>
+                      <TableHead className="text-xs font-medium text-muted-foreground w-[300px]">{t('table.actions')}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedUsers.map((user) => (
+                      <TableRow key={user.id} className="group hover:bg-muted/30">
+                        <TableCell className="py-3">
+                          <div className="flex items-center gap-3">
+                            <Avatar className="h-9 w-9">
+                              <AvatarFallback className="bg-primary/10 text-primary font-medium text-xs">
+                                {getUserInitials(user)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="min-w-0 flex-1">
+                              <p className="font-medium text-sm">{user.username}</p>
+                              <p className="text-muted-foreground text-xs">{t('table.click_to_view_details')}</p>
+                            </div>
                           </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="space-y-1">
-                          <p className="text-sm">{user.email || '-'}</p>
-                          {user.isAdmin && (
-                            <Badge variant="outline" className="text-xs">
-                              <Icon name="Shield" size={10} className="mr-1" />
-                              Admin
-                            </Badge>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap gap-1 max-w-48">
-                          {user.groups.length > 0 ? (
-                            user.groups.slice(0, 2).map((group) => (
-                              <Badge key={group} variant="outline" className="text-xs">
-                                {group}
-                              </Badge>
-                            ))
-                          ) : (
-                            <span className="text-muted-foreground text-sm">-</span>
-                          )}
-                          {user.groups.length > 2 && (
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Badge variant="outline" className="text-xs cursor-pointer">
-                                  +{user.groups.length - 2}
-                                </Badge>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <div className="space-y-1">
-                                  {user.groups.slice(2).map(group => (
-                                    <p key={group} className="text-xs">{group}</p>
-                                  ))}
-                                </div>
-                              </TooltipContent>
-                            </Tooltip>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge 
-                          variant={user.enabled ? "default" : "secondary"}
-                          className={user.enabled ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" : ""}
-                        >
-                          <Icon 
-                            name={user.enabled ? "CheckCircle" : "XCircle"} 
-                            size={12} 
-                            className="mr-1" 
-                          />
-                          {user.enabled ? t('table.enabled') : t('table.disabled')}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
+                        </TableCell>
+                        <TableCell className="py-3">
+                          <div className="flex items-center gap-2">
                             <Button 
-                              variant="ghost" 
-                              size="icon"
-                              className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => handleEditUser(user.id)}
+                              className="gap-1 h-8 px-3"
                             >
-                              <Icon name="MoreHorizontal" size={16} />
+                              <Icon name="Edit" size={12} />
+                              {t('table.edit_user')}
                             </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48">
-                            <DropdownMenuLabel>{t('table.actions')}</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem 
-                              onClick={() => handleToggleUserStatus(user.id, user.enabled)}
-                              disabled={enableUserMutation.isPending || disableUserMutation.isPending}
+                            
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => handleViewUserDetails(user.id)}
+                              className="gap-1 h-8 px-3"
                             >
-                              <Icon 
-                                name={user.enabled ? "UserX" : "UserCheck"} 
-                                size={14} 
-                                className="mr-2" 
-                              />
-                              {user.enabled ? t('table.disable_user') : t('table.enable_user')}
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem 
+                              <Icon name="Eye" size={12} />
+                              {t('table.view_details')}
+                            </Button>
+                            
+                            <Button 
+                              variant="outline" 
+                              size="sm"
                               onClick={() => handleDeleteUser(user.id)}
                               disabled={deleteUserMutation.isPending}
-                              className="text-destructive focus:text-destructive"
+                              className="gap-1 h-8 px-3 text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
                             >
-                              <Icon name="Trash2" size={14} className="mr-2" />
+                              {deleteUserMutation.isPending ? (
+                                <Icon name="Loader2" size={12} className="animate-spin" />
+                              ) : (
+                                <Icon name="Trash2" size={12} />
+                              )}
                               {t('table.delete_user')}
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="mt-6 flex items-center justify-between">
+                  <div className="text-sm text-muted-foreground">
+                    Showing {startIndex + 1} to {Math.min(endIndex, totalUsers)} of {totalUsers} users
+                  </div>
+                  <Pagination className="mx-0 w-auto justify-end">
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                          className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                      
+                      {[...Array(totalPages)].map((_, index) => {
+                        const pageNumber = index + 1;
+                        // Show first page, last page, current page, and pages around current page
+                        const showPage = pageNumber === 1 || 
+                                        pageNumber === totalPages || 
+                                        (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1);
+                        
+                        if (!showPage) {
+                          // Show ellipsis for gaps
+                          if (pageNumber === currentPage - 2 || pageNumber === currentPage + 2) {
+                            return (
+                              <PaginationItem key={pageNumber}>
+                                <PaginationEllipsis />
+                              </PaginationItem>
+                            );
+                          }
+                          return null;
+                        }
+                        
+                        return (
+                          <PaginationItem key={pageNumber}>
+                            <PaginationLink
+                              onClick={() => handlePageChange(pageNumber)}
+                              isActive={currentPage === pageNumber}
+                              className="cursor-pointer"
+                            >
+                              {pageNumber}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      })}
+                      
+                      <PaginationItem>
+                        <PaginationNext 
+                          onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                          className={currentPage >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
+            </>
           )}
         </CardContent>
       </Card>
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialog.open} onOpenChange={(open) => !open && setDeleteDialog({ open: false, userId: null })}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2">
-              <Icon name="AlertTriangle" size={20} className="text-destructive" />
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader className="pb-3">
+            <AlertDialogTitle className="flex items-center gap-2 text-base">
+              <Icon name="AlertTriangle" size={18} className="text-destructive" />
               {t('table.confirm_delete_title')}
             </AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogDescription className="text-sm">
               {t('table.confirm_delete_description', { userId: deleteDialog.userId })}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={deleteUserMutation.isPending}>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel disabled={deleteUserMutation.isPending} size="sm">
               {t('table.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDeleteUser}
               disabled={deleteUserMutation.isPending}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              size="sm"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 gap-1"
             >
               {deleteUserMutation.isPending ? (
-                <Icon name="Loader2" size={14} className="animate-spin mr-2" />
+                <Icon name="Loader2" size={12} className="animate-spin" />
               ) : (
-                <Icon name="Trash2" size={14} className="mr-2" />
+                <Icon name="Trash2" size={12} />
               )}
               {t('table.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* User Details Modal */}
+      <UserDetailsModal 
+        isOpen={userDetailsModal.open}
+        onClose={handleCloseUserDetails}
+        userId={userDetailsModal.userId}
+      />
+
+      {/* Edit User Modal */}
+      <EditUserModal 
+        isOpen={editUserModal.open}
+        onClose={handleCloseEditUser}
+        userId={editUserModal.userId}
+      />
     </TooltipProvider>
   );
 };

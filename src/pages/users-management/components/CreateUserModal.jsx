@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/Checkbox';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -18,14 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import Icon from '../../../components/AppIcon';
+import Icon from '@/components/AppIcon';
 
 /**
  * Create User Modal Component
@@ -50,8 +42,6 @@ const CreateUserModal = ({ isOpen, onClose }) => {
   // Create user mutation
   const createUserMutation = useCreateUser({
     onSuccess: (data) => {
-      console.log('✅ User created successfully:', data);
-      
       // Show success toast
       toast.success('User created successfully!', {
         description: `User "${data.user.displayname}" has been created and added to the system.`,
@@ -59,7 +49,7 @@ const CreateUserModal = ({ isOpen, onClose }) => {
       
       // Show warnings if some groups failed to assign
       if (data.warnings && data.warnings.length > 0) {
-        console.warn('⚠️ Group assignment warnings:', data.warnings);
+        console.warn('Group assignment warnings:', data.warnings);
         toast.warning('Group assignment warning', {
           description: data.warnings.join('. '),
         });
@@ -79,7 +69,7 @@ const CreateUserModal = ({ isOpen, onClose }) => {
       setCopySuccess(false);
     },
     onError: (error) => {
-      console.error('❌ Failed to create user:', error.message);
+      console.error('Failed to create user:', error.message);
       
       // Show error toast
       toast.error('Failed to create user', {
@@ -192,55 +182,58 @@ const CreateUserModal = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalClose}>
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+        <DialogHeader className="pb-4">
           <DialogTitle className="flex items-center gap-2">
-            <Icon name="UserPlus" size={20} />
+            <Icon name="UserPlus" size={18} />
             {t('create_user_modal.title')}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-sm">
             {t('create_user_modal.description')}
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Username Field */}
-          <div className="space-y-2">
-            <Label htmlFor="userid" className="text-sm font-medium">
-              {t('create_user_modal.username')} *
-            </Label>
-            <Input
-              id="userid"
-              type="text"
-              value={formData.userid}
-              onChange={(e) => handleInputChange('userid', e.target.value)}
-              placeholder={t('create_user_modal.username_placeholder')}
-              className={errors.userid ? 'border-destructive' : ''}
-              disabled={createUserMutation.isPending}
-            />
-            {errors.userid && (
-              <p className="text-sm text-destructive">{errors.userid}</p>
-            )}
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            {/* Username Field */}
+            <div className="space-y-1">
+              <Label htmlFor="userid" className="text-xs font-medium text-muted-foreground">
+                {t('create_user_modal.username')} *
+              </Label>
+              <Input
+                id="userid"
+                type="text"
+                value={formData.userid}
+                onChange={(e) => handleInputChange('userid', e.target.value)}
+                placeholder={t('create_user_modal.username_placeholder')}
+                className={`text-sm ${errors.userid ? 'border-destructive' : ''}`}
+                disabled={createUserMutation.isPending}
+              />
+              {errors.userid && (
+                <p className="text-xs text-destructive">{errors.userid}</p>
+              )}
+            </div>
 
-          {/* Display Name Field */}
-          <div className="space-y-2">
-            <Label htmlFor="displayName" className="text-sm font-medium">
-              {t('create_user_modal.display_name')}
-            </Label>
-            <Input
-              id="displayName"
-              type="text"
-              value={formData.displayName}
-              onChange={(e) => handleInputChange('displayName', e.target.value)}
-              placeholder={t('create_user_modal.display_name_placeholder')}
-              disabled={createUserMutation.isPending}
-            />
+            {/* Display Name Field */}
+            <div className="space-y-1">
+              <Label htmlFor="displayName" className="text-xs font-medium text-muted-foreground">
+                {t('create_user_modal.display_name')}
+              </Label>
+              <Input
+                id="displayName"
+                type="text"
+                value={formData.displayName}
+                onChange={(e) => handleInputChange('displayName', e.target.value)}
+                placeholder={t('create_user_modal.display_name_placeholder')}
+                className="text-sm"
+                disabled={createUserMutation.isPending}
+              />
+            </div>
           </div>
 
           {/* Email Field */}
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium">
+          <div className="space-y-1">
+            <Label htmlFor="email" className="text-xs font-medium text-muted-foreground">
               {t('create_user_modal.email')}
             </Label>
             <Input
@@ -249,19 +242,19 @@ const CreateUserModal = ({ isOpen, onClose }) => {
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               placeholder={t('create_user_modal.email_placeholder')}
-              className={errors.email ? 'border-destructive' : ''}
+              className={`text-sm ${errors.email ? 'border-destructive' : ''}`}
               disabled={createUserMutation.isPending}
             />
             {errors.email && (
-              <p className="text-sm text-destructive">{errors.email}</p>
+              <p className="text-xs text-destructive">{errors.email}</p>
             )}
           </div>
 
           <Separator />
 
           {/* Password Section */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">
+          <div className="space-y-1">
+            <Label className="text-xs font-medium text-muted-foreground">
               {t('create_user_modal.password')} *
             </Label>
             <div className="relative">
@@ -270,7 +263,7 @@ const CreateUserModal = ({ isOpen, onClose }) => {
                 value={formData.password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
                 placeholder={t('create_user_modal.password_placeholder')}
-                className={errors.password ? 'border-destructive pr-20' : 'pr-20'}
+                className={`text-sm ${errors.password ? 'border-destructive pr-20' : 'pr-20'}`}
                 disabled={createUserMutation.isPending}
               />
               <div className="absolute right-1 top-1/2 -translate-y-1/2 flex gap-1">
@@ -284,7 +277,7 @@ const CreateUserModal = ({ isOpen, onClose }) => {
                       className="h-8 w-8 p-0"
                       disabled={createUserMutation.isPending}
                     >
-                      <Icon name={showPassword ? "EyeOff" : "Eye"} size={14} />
+                      <Icon name={showPassword ? "EyeOff" : "Eye"} size={12} />
                     </Button>
                     <Button
                       type="button"
@@ -294,7 +287,7 @@ const CreateUserModal = ({ isOpen, onClose }) => {
                       className="h-8 w-8 p-0"
                       disabled={createUserMutation.isPending}
                     >
-                      <Icon name={copySuccess ? "Check" : "Copy"} size={14} />
+                      <Icon name={copySuccess ? "Check" : "Copy"} size={12} />
                     </Button>
                   </>
                 )}
@@ -306,12 +299,12 @@ const CreateUserModal = ({ isOpen, onClose }) => {
                   className="h-8 w-8 p-0"
                   disabled={createUserMutation.isPending}
                 >
-                  <Icon name="RefreshCw" size={14} />
+                  <Icon name="RefreshCw" size={12} />
                 </Button>
               </div>
             </div>
             {errors.password && (
-              <p className="text-sm text-destructive">{errors.password}</p>
+              <p className="text-xs text-destructive">{errors.password}</p>
             )}
             <p className="text-xs text-muted-foreground">
               {t('create_user_modal.password_hint')}
@@ -321,8 +314,8 @@ const CreateUserModal = ({ isOpen, onClose }) => {
           <Separator />
 
           {/* Groups Section */}
-          <div className="space-y-3">
-            <Label className="text-sm font-medium">
+          <div className="space-y-2">
+            <Label className="text-xs font-medium text-muted-foreground">
               {t('create_user_modal.groups')}
             </Label>
             <div className="grid grid-cols-2 gap-2">
@@ -334,16 +327,16 @@ const CreateUserModal = ({ isOpen, onClose }) => {
                     onCheckedChange={() => handleGroupToggle(group)}
                     disabled={createUserMutation.isPending}
                   />
-                  <Label htmlFor={group} className="text-sm cursor-pointer capitalize">
+                  <Label htmlFor={group} className="text-xs cursor-pointer capitalize">
                     {group}
                   </Label>
                 </div>
               ))}
             </div>
             {formData.groups.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-2">
+              <div className="flex flex-wrap gap-1 mt-1">
                 {formData.groups.map((group) => (
-                  <Badge key={group} variant="secondary" className="text-xs">
+                  <Badge key={group} variant="secondary" className="text-xs py-0 px-2">
                     {group}
                   </Badge>
                 ))}
@@ -360,12 +353,13 @@ const CreateUserModal = ({ isOpen, onClose }) => {
           )}
         </form>
 
-        <DialogFooter className="gap-2">
+        <div className="flex justify-end gap-2 pt-3">
           <Button
             type="button"
             variant="outline"
             onClick={handleModalClose}
             disabled={createUserMutation.isPending}
+            size="sm"
           >
             {t('create_user_modal.cancel')}
           </Button>
@@ -373,19 +367,20 @@ const CreateUserModal = ({ isOpen, onClose }) => {
             type="submit"
             onClick={handleSubmit}
             disabled={createUserMutation.isPending}
+            size="sm"
             className="gap-2"
           >
             {createUserMutation.isPending ? (
-              <Icon name="Loader2" size={16} className="animate-spin" />
+              <Icon name="Loader2" size={14} className="animate-spin" />
             ) : (
-              <Icon name="UserPlus" size={16} />
+              <Icon name="UserPlus" size={14} />
             )}
             {createUserMutation.isPending 
               ? t('create_user_modal.creating')
               : t('create_user_modal.create')
             }
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );

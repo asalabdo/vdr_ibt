@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../../components/ui/Header';
+import Header from '@/components/ui/Header';
 import { Button } from '@/components/ui/Button';
 import { Separator } from '@/components/ui/separator';
-import Icon from '../../components/AppIcon';
+import Icon from '@/components/AppIcon';
 import UsersTable from './components/UsersTable';
 import CreateUserModal from './components/CreateUserModal';
 
@@ -42,10 +42,6 @@ const UsersManagement = () => {
               >
                 <Icon name="Plus" size={16} />
                 {t('actions.create_user')}
-              </Button>
-              <Button variant="outline" className="gap-2">
-                <Icon name="Download" size={16} />
-                {t('actions.export_users')}
               </Button>
             </div>
           </div>
