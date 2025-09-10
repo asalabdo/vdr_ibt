@@ -89,6 +89,12 @@ export {
   useAdvancedSharing,
 } from './useSharing';
 
+// Audit Logs management hooks
+export {
+  useAuditLogStats,
+  useExportAuditLogs,
+  useAuditLogsManagement,
+} from './useAuditLogs';
+
 // Future hooks will be exported here:
-// export { useAuditLogs } from './useAuditLogs';
 // export { useNotifications } from './useNotifications';

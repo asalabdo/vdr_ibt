@@ -21,7 +21,7 @@ export { usersAPI } from './users';
 export { dataRoomsAPI } from './dataRooms';
 export { filesAPI } from './files';
 export { sharingAPI } from './sharing';
+export { auditLogsAPI } from './auditLogs';
 
 // Future API exports will be added here:
-// export { auditLogsAPI } from './auditLogs';
 // export { notificationsAPI } from './notifications';

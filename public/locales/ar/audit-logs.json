@@ -1,139 +1,135 @@
 {
   "title": "سجلات التدقيق",
-  "subtitle": "مراقبة أنشطة النظام والأحداث الأمنية",
-  
-  "actions": {
-    "export_logs": "تصدير السجلات",
-    "security_report": "تقرير الأمان",
-    "clear_filters": "مسح جميع الفلاتر",
-    "filters": "الفلاتر",
-    "date_range": "النطاق الزمني",
-    "more": "المزيد",
-    "less": "أقل"
+  "description": "مراقبة وتحليل أنشطة النظام وأحداث الأمان",
+  "refresh": "تحديث",
+  "exportButton": "تصدير",
+  "filterButton": "تصفية",
+  "searchPlaceholder": "البحث في سجلات التدقيق...",
+  "totalLogs": "سجلات",
+  "noLogs": "لم يتم العثور على سجلات تدقيق",
+  "retry": "حاول مرة أخرى",
+  "previous": "السابق",
+  "next": "التالي",
+  "pageInfo": "الصفحة {{current}} من {{total}}",
+  "totalEntries": "{{total}} إجمالي الإدخالات",
+  "yes": "نعم",
+  "no": "لا",
+  "close": "إغلاق",
+  "cancel": "إلغاء",
+  "copied": "تم النسخ",
+  "copyRawData": "نسخ البيانات الأولية",
+  "securityEvent": "أمان",
+  "period": {
+    "24hours": "آخر 24 ساعة",
+    "7days": "آخر 7 أيام",
+    "30days": "آخر 30 يوم",
+    "90days": "آخر 90 يوم"
   },
-
-  "stats": {
-    "total_logs": "إجمالي السجلات",
-    "info_logs": "معلومات",
-    "warnings": "تحذيرات",
-    "errors": "أخطاء"
+  "tabs": {
+    "logs": "سجلات التدقيق",
+    "analytics": "التحليلات"
   },
-
-  "search": {
-    "placeholder": "البحث في سجلات التدقيق...",
-    "no_results_title": "لم يتم العثور على سجلات تدقيق",
-    "no_results_description": "جرب تعديل معايير البحث أو الفلاتر الخاصة بك",
-    "empty_state_description": "ستظهر سجلات التدقيق هنا عندما يتفاعل المستخدمون مع النظام"
+  "severity": {
+    "critical": "حرج",
+    "high": "عالي",
+    "medium": "متوسط",
+    "low": "منخفض"
   },
-
-  "filters": {
-    "title": "الفلاتر",
-    "action_type": {
-      "label": "نوع العملية",
-      "all": "جميع العمليات"
-    },
-    "user": {
-      "label": "المستخدم",
-      "all": "جميع المستخدمين"
-    },
-    "severity": {
-      "label": "مستوى الأهمية",
-      "all": "جميع المستويات",
-      "info": "معلوماتي",
-      "warning": "تحذيري",
-      "error": "خطأ"
-    },
-    "time_range": {
-      "label": "النطاق الزمني",
-      "today": "اليوم",
-      "yesterday": "أمس",
-      "week": "هذا الأسبوع",
-      "month": "هذا الشهر",
-      "custom": "نطاق مخصص"
-    }
+  "category": {
+    "security": "الأمان",
+    "files": "الملفات",
+    "users": "المستخدمين",
+    "data_rooms": "غرف البيانات",
+    "system": "النظام",
+    "apps": "التطبيقات",
+    "general": "عام"
   },
-
-  "log_entry": {
-    "user_details": "تفاصيل المستخدم",
-    "additional_information": "معلومات إضافية",
-    "user_agent": "وكيل المستخدم",
-    "labels": {
-      "email": "البريد الإلكتروني",
-      "ip_address": "عنوان IP",
-      "location": "الموقع"
-    }
+  "error": {
+    "loadLogs": "فشل في تحميل سجلات التدقيق",
+    "loadStats": "فشل في تحميل الإحصائيات"
   },
-
-  "actions_types": {
-    "document_download": "تحميل مستند",
-    "document_upload": "رفع مستند",
-    "user_login": "تسجيل دخول المستخدم",
-    "failed_login": "فشل تسجيل الدخول",
-    "permission_change": "تعديل الصلاحيات",
-    "qa_response": "الرد على الاستفسارات",
-    "document_access": "الوصول إلى المستندات",
-    "user_role_update": "تحديث دور المستخدم",
-    "system_access": "الدخول إلى النظام"
+  "filter": {
+    "title": "تصفية السجلات",
+    "clearAll": "مسح جميع التصفيات",
+    "dateRange": "نطاق التاريخ",
+    "dateRangeDescription": "تصفية السجلات حسب نطاق التاريخ",
+    "since": "من",
+    "until": "إلى",
+    "severity": "الخطورة",
+    "severityDescription": "تصفية حسب مستوى خطورة السجل",
+    "category": "الفئة",
+    "categoryDescription": "تصفية حسب فئة النشاط",
+    "apps": "التطبيقات",
+    "appsDescription": "تصفية حسب تطبيقات محددة",
+    "users": "المستخدمين",
+    "usersDescription": "تصفية حسب مستخدمين محددين"
   },
-
-  "severity_levels": {
-    "info": "معلوماتي",
-    "warning": "تحذيري",
-    "error": "خطأ"
+  "details": {
+    "title": "تفاصيل سجل التدقيق",
+    "summary": "الملخص",
+    "message": "الرسالة",
+    "subject": "الموضوع",
+    "timeline": "الخط الزمني",
+    "timestamp": "الطابع الزمني",
+    "timeAgo": "منذ",
+    "userInfo": "معلومات المستخدم",
+    "user": "المستخدم",
+    "author": "المؤلف",
+    "technical": "التفاصيل التقنية",
+    "logId": "معرف السجل",
+    "app": "التطبيق",
+    "type": "النوع",
+    "objectType": "نوع الكائن",
+    "objectId": "معرف الكائن",
+    "objectName": "اسم الكائن",
+    "classifications": "التصنيفات",
+    "isSecurityEvent": "حدث أمني",
+    "isDataEvent": "حدث بيانات",
+    "isSystemEvent": "حدث نظام",
+    "isUserEvent": "حدث مستخدم",
+    "rawData": "البيانات الأولية",
+    "rawDataDescription": "البيانات الأصلية من إدخال سجل التدقيق"
   },
-
-  "resource_types": {
-    "document": "مستند",
-    "system": "نظام",
-    "user": "مستخدم",
-    "room": "غرفة"
+  "analytics": {
+    "title": "تحليلات سجلات التدقيق",
+    "totalLogs": "إجمالي السجلات",
+    "securityEvents": "الأحداث الأمنية",
+    "dataEvents": "أحداث البيانات",
+    "systemEvents": "أحداث النظام",
+    "userEvents": "أحداث المستخدمين",
+    "severityBreakdown": "تفصيل الخطورة",
+    "severityDescription": "توزيع السجلات حسب مستوى الخطورة",
+    "categoryBreakdown": "تفصيل الفئات",
+    "categoryDescription": "توزيع السجلات حسب الفئة",
+    "topApps": "أهم التطبيقات",
+    "topAppsDescription": "التطبيقات التي تولد أكبر عدد من سجلات التدقيق",
+    "topUsers": "أكثر المستخدمين نشاطًا",
+    "topUsersDescription": "المستخدمون الذين لديهم أكبر نشاط في الفترة المحددة"
   },
-
-  "time": {
-    "just_now": "الآن",
-    "minutes_ago": "منذ {{count}} د",
-    "hours_ago": "منذ {{count}} س",
-    "days_ago": "منذ {{count}} ي"
-  },
-
-  "sample_data": {
-    "descriptions": {
-      "document_download": "تم تحميل {{fileName}}",
-      "document_upload": "تم رفع {{fileName}}",
-      "user_login": "محاولة تسجيل دخول ناجحة",
-      "failed_login": "محاولة تسجيل دخول فاشلة",
-      "permission_change": "تم تحديث صلاحيات المستخدم",
-      "qa_response": "تم الرد على الاستفسار #{{questionId}}"
-    },
-    "users": {
-      "admin_user": "مدير النظام",
-      "legal_advisor": "المستشار القانوني",
-      "financial_analyst": "المحلل المالي",
-      "qa_observer": "مراقب الاستفسارات",
-      "document_viewer": "مراجع المستندات"
-    },
-    "resources": {
-      "contract_draft": "مسودة_العقد.pdf",
-      "financial_report": "التقرير_المالي_الربع_الرابع.xlsx",
-      "legal_documents": "الوثائق القانونية",
-      "authentication_system": "نظام المصادقة",
-      "user_management": "إدارة المستخدمين"
-    },
-    "locations": {
-      "new_york": "نيويورك، الولايات المتحدة",
-      "san_francisco": "سان فرانسيسكو، الولايات المتحدة",
-      "london": "لندن، المملكة المتحدة",
-      "toronto": "تورونتو، كندا",
-      "unknown": "غير معروف"
-    },
-    "additional_data": {
-      "file_size": "حجم الملف",
-      "room": "غرفة البيانات",
-      "login_method": "طريقة تسجيل الدخول",
-      "session_duration": "مدة الجلسة",
-      "old_role": "الدور السابق",
-      "new_role": "الدور الجديد",
-      "question_priority": "أولوية الاستفسار"
-    }
+  "export": {
+    "title": "تصدير سجلات التدقيق",
+    "format": "تنسيق التصدير",
+    "formatDescription": "اختر تنسيق البيانات المصدرة",
+    "csvDescription": "القيم المفصولة بفواصل (موصى به لـ Excel)",
+    "jsonDescription": "تدوين كائن JavaScript (للمطورين)",
+    "dateRange": "نطاق التاريخ",
+    "dateRangeDescription": "حدد التصدير لفترة زمنية محددة (اختياري)",
+    "since": "من",
+    "until": "إلى",
+    "categories": "الفئات",
+    "categoriesDescription": "اختر فئات محددة لتضمينها (اختياري)",
+    "severities": "مستويات الخطورة",
+    "severitiesDescription": "اختر مستويات خطورة محددة لتضمينها (اختياري)",
+    "additionalOptions": "خيارات إضافية",
+    "includeRawData": "تضمين بيانات السجل الأولية (للتحليل المفصل)",
+    "activeFilters": "التصفيات النشطة:",
+    "dateRangeApplied": "تم تطبيق تصفية نطاق التاريخ",
+    "categoriesSelected": "تم اختيار {{count}} فئات",
+    "severitiesSelected": "تم اختيار {{count}} مستويات خطورة",
+    "error": "فشل التصدير: {{error}}",
+    "success": "تم التصدير بنجاح! يجب أن يبدأ تنزيل الملف.",
+    "reset": "إعادة تعيين النموذج",
+    "export": "تصدير",
+    "exporting": "جاري التصدير..."
   }
 }
