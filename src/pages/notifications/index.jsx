@@ -7,7 +7,6 @@ import {
   useClearAllNotifications,
   useNotificationAction 
 } from '@/hooks/api/useNotifications';
-import Header from '@/components/ui/Header';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/badge';
@@ -145,10 +144,7 @@ const NotificationsPage = () => {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="pt-4">
-          <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-6 py-8">
             <div className="space-y-6">
               <Skeleton className="h-12 w-64" />
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -171,18 +167,13 @@ const NotificationsPage = () => {
               </div>
             </div>
           </div>
-        </main>
-      </div>
     );
   }
 
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="pt-4">
-          <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-6 py-8">
             <Alert variant="destructive">
               <Icon name="AlertCircle" size={16} className="text-destructive dark:text-destructive-foreground" />
               <AlertDescription className="flex items-center justify-between">
@@ -199,16 +190,11 @@ const NotificationsPage = () => {
               </AlertDescription>
             </Alert>
           </div>
-        </main>
-      </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="pt-4">
-        <div className="max-w-4xl mx-auto px-6 py-8">
+    <div className="max-w-4xl mx-auto px-6 py-8">
           {/* Header */}
           <NotificationHeader 
             stats={stats}
@@ -318,8 +304,6 @@ const NotificationsPage = () => {
             )}
           </div>
         </div>
-      </main>
-    </div>
   );
 };
 

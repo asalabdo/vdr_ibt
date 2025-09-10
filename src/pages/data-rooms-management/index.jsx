@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useDataRooms } from '@/hooks/api';
-import Header from '../../components/ui/Header';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -90,10 +89,7 @@ const DataRoomsManagement = () => {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="pt-4">
-          <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="px-6 py-8">
             {/* Header Skeleton */}
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
               <div className="mb-4 lg:mb-0">
@@ -146,18 +142,13 @@ const DataRoomsManagement = () => {
               ))}
             </div>
           </div>
-        </main>
-      </div>
     );
   }
 
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="pt-4">
-          <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="px-6 py-8">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
               <div className="mb-4 lg:mb-0">
                 <h1 className="text-3xl font-bold text-foreground mb-2">
@@ -187,16 +178,11 @@ const DataRoomsManagement = () => {
               </AlertDescription>
             </Alert>
           </div>
-        </main>
-      </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="pt-4">
-        <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="px-6 py-8">
           {/* Header Section */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
             <div className="mb-4 lg:mb-0">
@@ -385,8 +371,6 @@ const DataRoomsManagement = () => {
               </CardContent>
             </Card>
           )}
-        </div>
-      </main>
       {/* Filter Sidebar */}
       <FilterSidebar
         isOpen={isFilterSidebarOpen}

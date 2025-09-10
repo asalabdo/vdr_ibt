@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '@/components/ui/Header';
 import { Button } from '@/components/ui/Button';
 import { Separator } from '@/components/ui/separator';
 import Icon from '@/components/AppIcon';
@@ -20,10 +19,7 @@ const UsersManagement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="pt-4">
-        <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="px-6 py-8">
           {/* Header Section */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
             <div className="mb-4 lg:mb-0">
@@ -50,8 +46,6 @@ const UsersManagement = () => {
 
           {/* Users Management Table */}
           <UsersTable />
-        </div>
-      </main>
 
       {/* Create User Modal */}
       <CreateUserModal 
