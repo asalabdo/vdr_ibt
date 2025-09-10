@@ -19,8 +19,9 @@ export { authAPI } from './auth';
 export { groupsAPI } from './groups';
 export { usersAPI } from './users';
 export { dataRoomsAPI } from './dataRooms';
+export { filesAPI } from './files';
+export { sharingAPI } from './sharing';
 
 // Future API exports will be added here:
-// export { filesAPI } from './files';
 // export { auditLogsAPI } from './auditLogs';
 // export { notificationsAPI } from './notifications';

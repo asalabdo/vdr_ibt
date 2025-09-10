@@ -1,47 +1,99 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
+import { useShares, useCreateShare, useCreatePublicLink } from '@/hooks/api';
 import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/Checkbox';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '../../../components/AppIcon';
 
-const PermissionManagerModal = ({ isOpen, onClose, document }) => {
+const PermissionManagerModal = ({ isOpen, onClose, file }) => {
   const { t } = useTranslation('document-management-console');
-  const [permissions, setPermissions] = useState({
-    read: true,
-    download: true,
-    edit: false,
-    delete: false
+  const [activeTab, setActiveTab] = useState('shares');
+  const [emailShare, setEmailShare] = useState('');
+  
+  // Fetch existing shares for the file
+  const { 
+    data: sharesData, 
+    isLoading: isLoadingShares,
+    error: sharesError 
+  } = useShares({ path: file?.path }, { 
+    enabled: isOpen && !!file?.path 
   });
 
-  if (!isOpen || !document) return null;
+  const shares = sharesData?.shares || [];
 
-  const handlePermissionChange = (permission) => {
-    setPermissions(prev => ({
-      ...prev,
-      [permission]: !prev?.[permission]
-    }));
+  // Create public link mutation
+  const createPublicLinkMutation = useCreatePublicLink({
+    onSuccess: (data) => {
+      toast.success(t('permissions_modal.public_link_created', { defaultValue: 'Public link created successfully!' }));
+    },
+    onError: (error) => {
+      toast.error(t('permissions_modal.public_link_error', { defaultValue: 'Failed to create public link' }), {
+        description: error.message,
+      });
+    }
+  });
+
+  // Create email share mutation
+  const createEmailShareMutation = useCreateShare({
+    onSuccess: (data) => {
+      toast.success(t('permissions_modal.email_share_created', { defaultValue: 'Email share created successfully!' }));
+      setEmailShare('');
+    },
+    onError: (error) => {
+      toast.error(t('permissions_modal.email_share_error', { defaultValue: 'Failed to create email share' }), {
+        description: error.message,
+      });
+    }
+  });
+
+  if (!isOpen || !file) return null;
+
+  const handleCreatePublicLink = () => {
+    createPublicLinkMutation.mutate({
+      path: file.path,
+      permissions: 1, // Read permission
+      expireDate: null // No expiration
+    });
   };
 
-  const handleSave = () => {
-    // Handle save permissions logic
-    console.log('Saving permissions:', permissions);
-    onClose();
+  const handleCreateEmailShare = () => {
+    if (!emailShare.trim()) return;
+    
+    createEmailShareMutation.mutate({
+      path: file.path,
+      shareType: 0, // User share
+      shareWith: emailShare.trim(),
+      permissions: 1 // Read permission
+    });
   };
 
-  const permissionOptions = [
-    { key: 'read', labelKey: 'permissions_modal.permissions.read.label', descriptionKey: 'permissions_modal.permissions.read.description' },
-    { key: 'download', labelKey: 'permissions_modal.permissions.download.label', descriptionKey: 'permissions_modal.permissions.download.description' },
-    { key: 'edit', labelKey: 'permissions_modal.permissions.edit.label', descriptionKey: 'permissions_modal.permissions.edit.description' },
-    { key: 'delete', labelKey: 'permissions_modal.permissions.delete.label', descriptionKey: 'permissions_modal.permissions.delete.description' }
-  ];
+  const getShareTypeName = (shareType) => {
+    switch (shareType) {
+      case 0: return 'User';
+      case 1: return 'Group';
+      case 3: return 'Public Link';
+      case 4: return 'Email';
+      default: return 'Unknown';
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-card rounded-xl shadow-lg border border-border max-w-lg w-full mx-4">
+      <div className="bg-card rounded-xl shadow-lg border border-border max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
           <div>
-            <h3 className="text-lg font-semibold text-foreground">{t('permissions_modal.title')}</h3>
-            <p className="text-sm text-muted-foreground">{document?.filename}</p>
+            <h3 className="text-lg font-semibold text-foreground">
+              {t('permissions_modal.title', { defaultValue: 'Share & Permissions' })}
+            </h3>
+            <p className="text-sm text-muted-foreground">{file?.name}</p>
           </div>
           <button
             onClick={onClose}
@@ -51,45 +103,172 @@ const PermissionManagerModal = ({ isOpen, onClose, document }) => {
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-6">
-          <div>
-            <h4 className="text-sm font-medium text-foreground mb-3">{t('permissions_modal.subtitle')}</h4>
-            <div className="space-y-3">
-              {permissionOptions?.map((option) => (
-                <div key={option?.key} className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-medium text-foreground">{t(option?.labelKey)}</div>
-                    <div className="text-xs text-muted-foreground">{t(option?.descriptionKey)}</div>
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={permissions?.[option?.key]}
-                    onChange={() => handlePermissionChange(option?.key)}
-                    className="rounded border-border h-4 w-4"
-                  />
-                </div>
-              ))}
-            </div>
+        <div className="overflow-y-auto max-h-[calc(90vh-140px)]">
+          {/* Tab Navigation */}
+          <div className="flex border-b border-border px-6">
+            <button
+              onClick={() => setActiveTab('shares')}
+              className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === 'shares' 
+                  ? 'border-primary text-primary' 
+                  : 'border-transparent text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              {t('permissions_modal.existing_shares', { defaultValue: 'Current Shares' })}
+            </button>
+            <button
+              onClick={() => setActiveTab('create')}
+              className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === 'create' 
+                  ? 'border-primary text-primary' 
+                  : 'border-transparent text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              {t('permissions_modal.create_share', { defaultValue: 'Create Share' })}
+            </button>
           </div>
 
-          <div className="bg-muted/30 rounded-lg p-4">
-            <div className="text-sm font-medium text-foreground mb-2">{t('permissions_modal.current_access')}</div>
-            <div className="text-xs text-muted-foreground space-y-1">
-              <div>{t('permissions_modal.owner')} {document?.owner?.name}</div>
-              <div>{t('permissions_modal.room')} {document?.room}</div>
-              <div>{t('permissions_modal.status')} {document?.status}</div>
-            </div>
+          {/* Content */}
+          <div className="p-6">
+            {activeTab === 'shares' && (
+              <div className="space-y-4">
+                <h4 className="text-sm font-medium text-foreground">
+                  {t('permissions_modal.existing_shares', { defaultValue: 'Existing Shares' })}
+                </h4>
+                
+                {isLoadingShares && (
+                  <div className="space-y-3">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <div key={i} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <Skeleton className="w-8 h-8 rounded" />
+                          <div className="space-y-1">
+                            <Skeleton className="h-4 w-32" />
+                            <Skeleton className="h-3 w-24" />
+                          </div>
+                        </div>
+                        <Skeleton className="h-6 w-16" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {sharesError && (
+                  <Alert variant="destructive">
+                    <Icon name="AlertCircle" size={16} />
+                    <AlertDescription>
+                      {t('permissions_modal.error_loading_shares', { defaultValue: 'Failed to load shares' })}: {sharesError.message}
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                {!isLoadingShares && !sharesError && shares.length > 0 && (
+                  <div className="space-y-3">
+                    {shares.map((share) => (
+                      <div key={share.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <Icon name="Share" size={20} className="text-muted-foreground" />
+                          <div>
+                            <p className="text-sm font-medium">{share.share_with || 'Public Link'}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {getShareTypeName(share.share_type)} • Created {new Date(share.stime * 1000).toLocaleDateString()}
+                            </p>
+                          </div>
+                        </div>
+                        <Badge variant="outline">{share.permissions}</Badge>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {!isLoadingShares && !sharesError && shares.length === 0 && (
+                  <div className="text-center py-8">
+                    <Icon name="Share" size={32} className="mx-auto text-muted-foreground mb-2" />
+                    <p className="text-sm text-muted-foreground">
+                      {t('permissions_modal.no_shares', { defaultValue: 'This file is not shared yet' })}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'create' && (
+              <div className="space-y-6">
+                {/* Public Link */}
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Icon name="Link" size={16} />
+                      {t('permissions_modal.public_link_title', { defaultValue: 'Public Link' })}
+                    </CardTitle>
+                    <CardDescription>
+                      {t('permissions_modal.public_link_description', { defaultValue: 'Create a public link that anyone with the URL can access' })}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button 
+                      onClick={handleCreatePublicLink}
+                      disabled={createPublicLinkMutation.isPending}
+                      className="gap-2"
+                      variant="outline"
+                    >
+                      {createPublicLinkMutation.isPending ? (
+                        <Icon name="Loader2" size={14} className="animate-spin" />
+                      ) : (
+                        <Icon name="Link" size={14} />
+                      )}
+                      {createPublicLinkMutation.isPending 
+                        ? t('permissions_modal.creating_link', { defaultValue: 'Creating...' })
+                        : t('permissions_modal.create_public_link', { defaultValue: 'Create Public Link' })
+                      }
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Email Share */}
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Icon name="Mail" size={16} />
+                      {t('permissions_modal.email_share_title', { defaultValue: 'Share with User' })}
+                    </CardTitle>
+                    <CardDescription>
+                      {t('permissions_modal.email_share_description', { defaultValue: 'Share with a specific user by email or username' })}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex gap-2">
+                      <Input
+                        type="email"
+                        placeholder={t('permissions_modal.email_placeholder', { defaultValue: 'Enter email or username' })}
+                        value={emailShare}
+                        onChange={(e) => setEmailShare(e.target.value)}
+                        disabled={createEmailShareMutation.isPending}
+                      />
+                      <Button 
+                        onClick={handleCreateEmailShare}
+                        disabled={createEmailShareMutation.isPending || !emailShare.trim()}
+                        className="gap-2"
+                      >
+                        {createEmailShareMutation.isPending ? (
+                          <Icon name="Loader2" size={14} className="animate-spin" />
+                        ) : (
+                          <Icon name="Mail" size={14} />
+                        )}
+                        {t('permissions_modal.share', { defaultValue: 'Share' })}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Footer */}
         <div className="flex items-center justify-end space-x-3 rtl:space-x-reverse p-6 border-t border-border">
           <Button onClick={onClose} variant="outline">
-            {t('actions.cancel')}
-          </Button>
-          <Button onClick={handleSave} variant="default">
-            {t('actions.save_changes')}
+            {t('actions.close', { defaultValue: 'Close' })}
           </Button>
         </div>
       </div>

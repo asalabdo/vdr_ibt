@@ -51,13 +51,44 @@ export {
   useGroupSubadmins,
   useSearchGroups,
   useGroupMemberCounts,
+  useUserSubadminGroups,
   useCreateGroup,
   useUpdateGroup,
   useDeleteGroup,
+  usePromoteUserToSubadmin,
+  useDemoteUserFromSubadmin,
   useGroupManagement,
 } from './useGroups';
 
+// Files management hooks
+export {
+  useListFiles,
+  useFileProperties,
+  useCreateFolder,
+  useDeleteItem,
+  useMoveItem,
+  useCopyItem,
+  useUploadFile,
+  useDownloadFile,
+  useFilesManagement,
+  useFileUpload,
+} from './useFiles';
+
+// Sharing management hooks
+export {
+  useShares,
+  useSharesByPath,
+  useShareDetails,
+  useCreateShare,
+  useUpdateShare,
+  useDeleteShare,
+  useCreatePublicLink,
+  useCreateEmailShare,
+  useCreateGroupShare,
+  useSharingManagement,
+  useAdvancedSharing,
+} from './useSharing';
+
 // Future hooks will be exported here:
-// export { useFiles, useFileUpload } from './useFiles';
 // export { useAuditLogs } from './useAuditLogs';
 // export { useNotifications } from './useNotifications';

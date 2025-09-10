@@ -444,6 +444,144 @@ const searchGroups = async (searchTerm, options = {}) => {
   }
 };
 
+/**
+ * Promote user to subadmin of a group
+ * @param {string} userId - User ID
+ * @param {string} groupId - Group ID
+ * @returns {Object} Operation result
+ */
+const promoteUserToSubadmin = async (userId, groupId) => {
+  try {
+    if (!userId?.trim() || !groupId?.trim()) {
+      throw new Error('User ID and Group ID are required');
+    }
+    
+    const formData = new FormData();
+    formData.append('groupid', groupId.trim());
+    
+    const response = await adminApiClient.post(`/ocs/v1.php/cloud/users/${userId}/subadmins`, formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'OCS-APIRequest': 'true'
+      },
+    });
+    
+    if (response.data?.ocs?.meta?.statuscode === 100) {
+      return {
+        success: true,
+        message: `User ${userId} promoted to subadmin of group ${groupId} successfully`
+      };
+    }
+    
+    // Handle specific error codes
+    const statusCode = response.data?.ocs?.meta?.statuscode;
+    if (statusCode === 101) {
+      throw new Error(`User '${userId}' does not exist`);
+    } else if (statusCode === 102) {
+      throw new Error(`Group '${groupId}' does not exist`);
+    } else if (statusCode === 103) {
+      throw new Error('Unknown failure occurred');
+    }
+    
+    throw new Error('Failed to promote user to subadmin');
+    
+  } catch (error) {
+    console.error(`❌ Failed to promote user ${userId} to subadmin of group ${groupId}:`, error.message);
+    throw new Error(error.response?.data?.ocs?.meta?.message || error.message || 'Failed to promote user to subadmin');
+  }
+};
+
+/**
+ * Demote user from subadmin of a group
+ * @param {string} userId - User ID
+ * @param {string} groupId - Group ID
+ * @returns {Object} Operation result
+ */
+const demoteUserFromSubadmin = async (userId, groupId) => {
+  try {
+    if (!userId?.trim() || !groupId?.trim()) {
+      throw new Error('User ID and Group ID are required');
+    }
+    
+    const formData = new FormData();
+    formData.append('groupid', groupId.trim());
+    
+    const response = await adminApiClient.delete(`/ocs/v1.php/cloud/users/${userId}/subadmins`, {
+      data: formData,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'OCS-APIRequest': 'true'
+      },
+    });
+    
+    if (response.data?.ocs?.meta?.statuscode === 100) {
+      return {
+        success: true,
+        message: `User ${userId} demoted from subadmin of group ${groupId} successfully`
+      };
+    }
+    
+    // Handle specific error codes
+    const statusCode = response.data?.ocs?.meta?.statuscode;
+    if (statusCode === 101) {
+      throw new Error(`User '${userId}' does not exist`);
+    } else if (statusCode === 102) {
+      throw new Error(`User is not a subadmin of the group or group does not exist`);
+    } else if (statusCode === 103) {
+      throw new Error('Unknown failure occurred');
+    }
+    
+    throw new Error('Failed to demote user from subadmin');
+    
+  } catch (error) {
+    console.error(`❌ Failed to demote user ${userId} from subadmin of group ${groupId}:`, error.message);
+    throw new Error(error.response?.data?.ocs?.meta?.message || error.message || 'Failed to demote user from subadmin');
+  }
+};
+
+/**
+ * Get subadmins for a user
+ * @param {string} userId - User ID
+ * @returns {Object} User subadmin groups
+ */
+const getUserSubadminGroups = async (userId) => {
+  try {
+    if (!userId?.trim()) {
+      throw new Error('User ID is required');
+    }
+    
+    const response = await adminApiClient.get(withJsonFormat(`/ocs/v1.php/cloud/users/${userId}/subadmins`));
+    
+    if (response.data?.ocs?.meta?.statuscode === 100) {
+      const subadminGroups = response.data.ocs.data || [];
+      
+      return {
+        success: true,
+        groups: subadminGroups.map(groupId => ({
+          id: groupId,
+          displayName: groupId,
+          type: 'subadmin'
+        })),
+        count: subadminGroups.length
+      };
+    }
+    
+    // Handle specific error codes
+    const statusCode = response.data?.ocs?.meta?.statuscode;
+    if (statusCode === 101) {
+      throw new Error(`User '${userId}' does not exist`);
+    } else if (statusCode === 102) {
+      throw new Error('Unknown failure occurred');
+    }
+    
+    throw new Error('Failed to fetch user subadmin groups');
+    
+  } catch (error) {
+    console.error(`❌ Failed to get subadmin groups for user ${userId}:`, error.message);
+    throw new Error(error.response?.data?.ocs?.meta?.message || error.message || 'Failed to get user subadmin groups');
+  }
+};
+
 // ===== EXPORTS =====
 
 /**
@@ -464,6 +602,9 @@ export const groupsAPI = {
   
   // Group subadmins
   getGroupSubadmins,
+  promoteUserToSubadmin,
+  demoteUserFromSubadmin,
+  getUserSubadminGroups,
   
   // Pure utility functions (exposed for testing and flexibility)
   formatGroupsList,

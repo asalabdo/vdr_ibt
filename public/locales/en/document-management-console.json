@@ -1,22 +1,31 @@
 {
-  "title": "Documents",
-  "subtitle": "Manage and access documents across all data rooms",
+  "title": "Files",
+  "subtitle": "Manage and access files across all data rooms",
 
   "actions": {
     "bulk_download": "Bulk Download",
     "generate_report": "Generate Report",
     "upload_document": "Upload Document",
+    "upload_file": "Upload Files",
     "download_all": "Download All",
     "approve": "Approve",
     "delete": "Delete",
     "download": "Download",
+    "move": "Move",
     "cancel": "Cancel",
     "save_changes": "Save Changes",
-    "clear_selection": "Clear selection"
+    "clear_selection": "Clear selection",
+    "download_success": "File downloaded successfully!",
+    "download_error": "Failed to download file",
+    "folder_download_info": "Folder download as ZIP will be implemented soon"
   },
 
   "stats": {
     "total_documents": "Total Documents",
+    "total_files": "Total Items",
+    "files": "Files",
+    "folders": "Folders", 
+    "total_size": "Total Size",
     "approved": "Approved",
     "pending": "Pending",
     "views_today": "Views Today"
@@ -31,6 +40,9 @@
 
   "filters": {
     "all_documents": "All Documents",
+    "all_items": "All Items",
+    "files_only": "Files Only",
+    "folders_only": "Folders Only",
     "approved": "Approved",
     "pending_approval": "Pending Approval"
   },
@@ -38,6 +50,10 @@
   "table": {
     "headers": {
       "document": "Document",
+      "name": "Name",
+      "type": "Type",
+      "path": "Path",
+      "modified": "Modified",
       "room": "Room", 
       "size": "Size",
       "uploaded_by": "Uploaded By",
@@ -52,14 +68,27 @@
     "pending": "pending"
   },
 
+  "file_types": {
+    "file": "File",
+    "folder": "Folder"
+  },
+
   "bulk_actions": {
     "selected_singular": "{{count}} document selected",
-    "selected_plural": "{{count}} documents selected"
+    "selected_plural": "{{count}} documents selected",
+    "delete_confirm": "Are you sure you want to delete {{count}} selected files? This action cannot be undone.",
+    "download_success": "File downloaded successfully!",
+    "download_error": "Failed to download file",
+    "delete_success": "Files deleted successfully!",
+    "delete_error": "Failed to delete files",
+    "multiple_download_info": "Multiple file download as ZIP will be implemented soon"
   },
 
   "tooltips": {
     "preview_document": "Preview document",
-    "download_document": "Download document", 
+    "preview_file": "Preview file",
+    "download_document": "Download document",
+    "download_file": "Download file", 
     "manage_permissions": "Manage permissions"
   },
 
@@ -68,9 +97,18 @@
   },
 
   "preview_modal": {
-    "title": "Document Preview",
+    "title": "File Preview",
     "description": "Preview functionality would be implemented here for {{fileType}} files",
+    "file_description": "Preview for {{fileType}} files is not available yet.",
+    "file_path": "Path",
     "file_size": "File size:",
+    "file_type": "Type",
+    "file_details": "File Details",
+    "folder_preview": "Folder Preview",
+    "folder_description": "This is a folder containing other files and folders.",
+    "image_load_failed": "Failed to load image preview",
+    "last_modified": "Modified",
+    "error_loading": "Failed to load file properties",
     "version": "Version:",
     "downloads": "Downloads:"
   },
@@ -130,5 +168,10 @@
       "financial_reports": "Financial Reports",
       "marketing_materials": "Marketing Materials"
     }
+  },
+  "navigation": {
+    "back": "Back",
+    "home": "Home",
+    "current_folder": "Current Folder"
   }
 }

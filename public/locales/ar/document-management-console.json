@@ -1,22 +1,31 @@
 {
-  "title": "المستندات",
-  "subtitle": "إدارة والوصول إلى المستندات عبر جميع غرف البيانات",
+  "title": "الملفات",
+  "subtitle": "إدارة والوصول إلى الملفات عبر جميع غرف البيانات",
 
   "actions": {
     "bulk_download": "تحميل مجمع",
     "generate_report": "إنشاء تقرير",
     "upload_document": "رفع مستند",
+    "upload_file": "رفع ملفات",
     "download_all": "تحميل الكل",
     "approve": "موافقة",
     "delete": "حذف",
     "download": "تحميل",
+    "move": "نقل",
     "cancel": "إلغاء",
     "save_changes": "حفظ التغييرات",
-    "clear_selection": "مسح التحديد"
+    "clear_selection": "مسح التحديد",
+    "download_success": "تم تحميل الملف بنجاح!",
+    "download_error": "فشل في تحميل الملف",
+    "folder_download_info": "سيتم تنفيذ تحميل المجلد كملف ZIP قريباً"
   },
 
   "stats": {
     "total_documents": "إجمالي المستندات",
+    "total_files": "إجمالي العناصر",
+    "files": "ملفات",
+    "folders": "مجلدات",
+    "total_size": "إجمالي الحجم",
     "approved": "موافق عليها",
     "pending": "قيد الانتظار",
     "views_today": "المشاهدات اليوم"
@@ -31,6 +40,9 @@
 
   "filters": {
     "all_documents": "جميع المستندات",
+    "all_items": "جميع العناصر",
+    "files_only": "الملفات فقط",
+    "folders_only": "المجلدات فقط",
     "approved": "موافق عليها",
     "pending_approval": "في انتظار الموافقة"
   },
@@ -38,6 +50,10 @@
   "table": {
     "headers": {
       "document": "المستند",
+      "name": "الاسم",
+      "type": "النوع",
+      "path": "المسار",
+      "modified": "تم التعديل",
       "room": "الغرفة", 
       "size": "الحجم",
       "uploaded_by": "رفع بواسطة",
@@ -52,14 +68,27 @@
     "pending": "قيد الانتظار"
   },
 
+  "file_types": {
+    "file": "ملف",
+    "folder": "مجلد"
+  },
+
   "bulk_actions": {
     "selected_singular": "{{count}} مستند محدد",
-    "selected_plural": "{{count}} مستندات محددة"
+    "selected_plural": "{{count}} مستندات محددة",
+    "delete_confirm": "هل أنت متأكد من أنك تريد حذف {{count}} ملف محدد؟ لا يمكن التراجع عن هذا الإجراء.",
+    "download_success": "تم تحميل الملف بنجاح!",
+    "download_error": "فشل في تحميل الملف",
+    "delete_success": "تم حذف الملفات بنجاح!",
+    "delete_error": "فشل في حذف الملفات",
+    "multiple_download_info": "سيتم تنفيذ تحميل عدة ملفات كملف ZIP قريباً"
   },
 
   "tooltips": {
     "preview_document": "معاينة المستند",
-    "download_document": "تحميل المستند", 
+    "preview_file": "معاينة الملف",
+    "download_document": "تحميل المستند",
+    "download_file": "تحميل الملف", 
     "manage_permissions": "إدارة الصلاحيات"
   },
 
@@ -68,9 +97,18 @@
   },
 
   "preview_modal": {
-    "title": "معاينة المستند",
+    "title": "معاينة الملف",
     "description": "سيتم تنفيذ وظيفة المعاينة هنا لملفات {{fileType}}",
+    "file_description": "معاينة ملفات {{fileType}} غير متاحة بعد.",
+    "file_path": "المسار",
     "file_size": "حجم الملف:",
+    "file_type": "النوع",
+    "file_details": "تفاصيل الملف",
+    "folder_preview": "معاينة المجلد",
+    "folder_description": "هذا مجلد يحتوي على ملفات ومجلدات أخرى.",
+    "image_load_failed": "فشل في تحميل معاينة الصورة",
+    "last_modified": "تم التعديل",
+    "error_loading": "فشل في تحميل خصائص الملف",
     "version": "الإصدار:",
     "downloads": "التحميلات:"
   },
@@ -130,5 +168,10 @@
       "financial_reports": "التقارير المالية",
       "marketing_materials": "مواد التسويق"
     }
+  },
+  "navigation": {
+    "back": "رجوع",
+    "home": "الرئيسية",
+    "current_folder": "المجلد الحالي"
   }
 }

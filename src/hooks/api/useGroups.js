@@ -344,6 +344,105 @@ export const useDeleteGroup = (options = {}) => {
 };
 
 /**
+ * Promote user to subadmin of a group
+ * @param {Object} options - Mutation options
+ * @param {Function} [options.onSuccess] - Success callback
+ * @param {Function} [options.onError] - Error callback
+ * @returns {Object} React Query mutation object
+ */
+export const usePromoteUserToSubadmin = (options = {}) => {
+  const queryClient = useQueryClient();
+  const { onSuccess, onError, ...mutationOptions } = options;
+  
+  return useMutation({
+    mutationFn: ({ userId, groupId }) => groupsAPI.promoteUserToSubadmin(userId, groupId),
+    onSuccess: (data, variables) => {
+      console.log('✅ User promoted to subadmin successfully:', variables.userId, 'in group', variables.groupId);
+      
+      // Invalidate related queries
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.groupSubadmins(variables.groupId) });
+      queryClient.invalidateQueries({ queryKey: ['userSubadminGroups', variables.userId] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.groups });
+      
+      // Call custom success callback
+      onSuccess?.(data, variables);
+    },
+    onError: (error, variables) => {
+      console.error('❌ Failed to promote user to subadmin:', error.message);
+      
+      // Call custom error callback
+      onError?.(error, variables);
+    },
+    ...mutationOptions,
+  });
+};
+
+/**
+ * Demote user from subadmin of a group
+ * @param {Object} options - Mutation options
+ * @param {Function} [options.onSuccess] - Success callback
+ * @param {Function} [options.onError] - Error callback
+ * @returns {Object} React Query mutation object
+ */
+export const useDemoteUserFromSubadmin = (options = {}) => {
+  const queryClient = useQueryClient();
+  const { onSuccess, onError, ...mutationOptions } = options;
+  
+  return useMutation({
+    mutationFn: ({ userId, groupId }) => groupsAPI.demoteUserFromSubadmin(userId, groupId),
+    onSuccess: (data, variables) => {
+      console.log('✅ User demoted from subadmin successfully:', variables.userId, 'from group', variables.groupId);
+      
+      // Invalidate related queries
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.groupSubadmins(variables.groupId) });
+      queryClient.invalidateQueries({ queryKey: ['userSubadminGroups', variables.userId] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.groups });
+      
+      // Call custom success callback
+      onSuccess?.(data, variables);
+    },
+    onError: (error, variables) => {
+      console.error('❌ Failed to demote user from subadmin:', error.message);
+      
+      // Call custom error callback
+      onError?.(error, variables);
+    },
+    ...mutationOptions,
+  });
+};
+
+/**
+ * Get user subadmin groups
+ * @param {string} userId - User ID
+ * @param {Object} options - Query options
+ * @param {boolean} [options.enabled=true] - Whether to enable the query
+ * @returns {Object} React Query result object
+ */
+export const useUserSubadminGroups = (userId, options = {}) => {
+  const { enabled = true, ...queryOptions } = options;
+  
+  return useQuery({
+    queryKey: ['userSubadminGroups', userId],
+    queryFn: () => groupsAPI.getUserSubadminGroups(userId),
+    enabled: enabled && !!userId,
+    staleTime: 1000 * 60 * 2, // 2 minutes
+    gcTime: 1000 * 60 * 5, // 5 minutes
+    retry: (failureCount, error) => {
+      // Don't retry if user doesn't exist
+      if (error?.message?.includes('does not exist')) {
+        return false;
+      }
+      return failureCount < 2;
+    },
+    select: (data) => ({
+      ...data,
+      groups: data.groups || [],
+    }),
+    ...queryOptions,
+  });
+};
+
+/**
  * Combined hook for group management operations
  * Provides all common group operations in a single hook
  * @returns {Object} All group management hooks and utilities
@@ -357,11 +456,14 @@ export const useGroupManagement = () => {
     useSearchGroups,
     useAvailableGroups,
     useGroupMemberCounts,
+    useUserSubadminGroups,
     
     // Mutations
     useCreateGroup,
     useUpdateGroup,
     useDeleteGroup,
+    usePromoteUserToSubadmin,
+    useDemoteUserFromSubadmin,
     
     // Query keys (for manual cache operations)
     queryKeys: QUERY_KEYS,
