@@ -62,17 +62,17 @@ const GroupDetailsModal = ({ isOpen, onClose, groupId }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg rtl:[&>button]:left-4 rtl:[&>button]:right-auto rtl:[&>button]:top-4">
         <DialogHeader>
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-2">
               <Icon name="Users" size={16} />
               <div>
-                <DialogTitle className="text-left">
+                <DialogTitle className="text-left rtl:text-right">
                   {group ? (group.displayName || group.id) : t('details_modal.loading_title', { defaultValue: 'Loading group...' })}
                 </DialogTitle>
                 {group && (
-                  <DialogDescription className="text-left mt-0">
+                  <DialogDescription className="text-left rtl:text-right mt-0">
                     {group.displayName !== group.id && (
                       <span>ID: {group.id} • </span>
                     )}
@@ -84,12 +84,12 @@ const GroupDetailsModal = ({ isOpen, onClose, groupId }) => {
             {group && (
               <div className="flex gap-1 mt-5">
                 <Badge variant="default" className="text-xs">
-                  <Icon name="CheckCircle" size={10} className="mr-1" />
+                  <Icon name="CheckCircle" size={10} className="mr-1 rtl:ml-1 rtl:mr-0" />
                   {t('details_modal.status_active', { defaultValue: 'Active' })}
                 </Badge>
                 {group.memberCount === 0 && (
                   <Badge variant="outline" className="text-xs border-orange-200 text-orange-700">
-                    <Icon name="UserX" size={10} className="mr-1" />
+                    <Icon name="UserX" size={10} className="mr-1 rtl:ml-1 rtl:mr-0" />
                     {t('details_modal.empty', { defaultValue: 'Empty' })}
                   </Badge>
                 )}
@@ -131,7 +131,7 @@ const GroupDetailsModal = ({ isOpen, onClose, groupId }) => {
                     variant="outline" 
                     size="sm" 
                     onClick={() => refetch()}
-                    className="ml-2 gap-1"
+                    className="ml-2 rtl:mr-2 rtl:ml-0 gap-1 rtl:flex-row-reverse"
                   >
                     <Icon name="RefreshCw" size={12} />
                     {t('details_modal.retry', { defaultValue: 'Retry' })}
@@ -144,9 +144,9 @@ const GroupDetailsModal = ({ isOpen, onClose, groupId }) => {
              {group && (
                <>
                  {/* Basic Information */}
-                <Card>
+                <Card className="rtl:text-right">
                   <CardHeader className="pb-1">
-                    <CardTitle className="text-sm flex items-center gap-2">
+                    <CardTitle className="text-sm flex items-center gap-2 rtl:flex-row-reverse rtl:text-right">
                       <Icon name="Info" size={14} />
                       {t('details_modal.basic_info', { defaultValue: 'Basic Information' })}
                     </CardTitle>
@@ -201,9 +201,9 @@ const GroupDetailsModal = ({ isOpen, onClose, groupId }) => {
                 </Card>
 
                 {/* Members */}
-                <Card>
+                <Card className="rtl:text-right">
                   <CardHeader className="pb-1">
-                    <CardTitle className="text-sm flex items-center gap-2">
+                    <CardTitle className="text-sm flex items-center gap-2 rtl:flex-row-reverse rtl:text-right">
                       <Icon name="Users" size={14} />
                       {t('details_modal.members', { defaultValue: 'Members' })} 
                       ({group.memberCount || 0})
@@ -235,7 +235,7 @@ const GroupDetailsModal = ({ isOpen, onClose, groupId }) => {
                               variant={getMemberBadgeVariant(member.type)} 
                               className="text-xs h-5 px-2"
                             >
-                              <Icon name={getMemberIcon(member.type)} size={8} className="mr-1" />
+                              <Icon name={getMemberIcon(member.type)} size={8} className="mr-1 rtl:ml-1 rtl:mr-0" />
                               {member.type === 'admin' 
                                 ? t('details_modal.admin', { defaultValue: 'Admin' })
                                 : member.type === 'subadmin'
@@ -262,9 +262,9 @@ const GroupDetailsModal = ({ isOpen, onClose, groupId }) => {
 
                 {/* Subadmins (if available) */}
                 {group.subadmins && group.subadmins.length > 0 && (
-                  <Card>
+                  <Card className="rtl:text-right">
                     <CardHeader className="pb-1">
-                      <CardTitle className="text-sm flex items-center gap-2">
+                      <CardTitle className="text-sm flex items-center gap-2 rtl:flex-row-reverse rtl:text-right">
                         <Icon name="Shield" size={14} />
                         {t('details_modal.subadmins', { defaultValue: 'Subadmins' })} 
                         ({group.subadmins.length})
@@ -274,7 +274,7 @@ const GroupDetailsModal = ({ isOpen, onClose, groupId }) => {
                       <div className="flex flex-wrap gap-1">
                         {group.subadmins.map((subadmin) => (
                           <Badge key={subadmin.id} variant="secondary" className="text-xs h-5 px-2">
-                            <Icon name="Shield" size={8} className="mr-1" />
+                            <Icon name="Shield" size={8} className="mr-1 rtl:ml-1 rtl:mr-0" />
                             {subadmin.displayName || subadmin.id}
                           </Badge>
                         ))}
@@ -287,7 +287,7 @@ const GroupDetailsModal = ({ isOpen, onClose, groupId }) => {
           </div>
         </ScrollArea>
 
-        <DialogFooter className="pt-1">
+        <DialogFooter className="pt-1 rtl:flex-row-reverse rtl:justify-end">
           <Button variant="outline" onClick={onClose} size="sm" className="w-full">
             {t('details_modal.close', { defaultValue: 'Close' })}
           </Button>

@@ -126,13 +126,13 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md rtl:[&>button]:left-4 rtl:[&>button]:right-auto rtl:[&>button]:top-4">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-left rtl:text-right">
             <Icon name="Users" size={16} />
             {t('create_modal.title', { defaultValue: 'Create New Group' })}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-left rtl:text-right">
             {t('create_modal.description', { 
               defaultValue: 'Create a new group to organize users and manage permissions effectively.' 
             })}
@@ -143,7 +143,7 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
           {/* Group Configuration */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-base">Group Information</CardTitle>
+              <CardTitle className="text-base">{t('create_modal.group_info', { defaultValue: 'Group Information' })}</CardTitle>
               <CardDescription className="text-sm">
                 {t('create_modal.info_hint', { 
                   defaultValue: 'Basic group details for identification and display' 
@@ -225,7 +225,7 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
           </Alert>
         </form>
 
-        <DialogFooter>
+        <DialogFooter className="rtl:flex-row-reverse">
           <Button
             type="button"
             variant="outline"
@@ -238,7 +238,7 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
             type="submit"
             onClick={handleSubmit}
             disabled={createGroupMutation.isPending || !formData.groupId.trim()}
-            className="gap-2"
+            className="gap-2 rtl:flex-row-reverse"
           >
             {createGroupMutation.isPending ? (
               <Icon name="Loader2" size={14} className="animate-spin" />

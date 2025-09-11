@@ -143,13 +143,13 @@ const EditGroupModal = ({ isOpen, onClose, groupId }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md rtl:[&>button]:left-4 rtl:[&>button]:right-auto rtl:[&>button]:top-4">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-left rtl:text-right">
             <Icon name="Settings" size={16} />
             {t('edit_modal.title', { defaultValue: 'Edit Group Settings' })}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-left rtl:text-right">
             {group 
               ? t('edit_modal.description', { 
                   defaultValue: 'Update settings for "{{groupName}}".',
@@ -283,7 +283,7 @@ const EditGroupModal = ({ isOpen, onClose, groupId }) => {
           )}
         </div>
 
-        <DialogFooter className="pt-2">
+        <DialogFooter className="pt-2 rtl:flex-row-reverse rtl:justify-end">
           <Button
             type="button"
             variant="outline"
@@ -298,7 +298,7 @@ const EditGroupModal = ({ isOpen, onClose, groupId }) => {
             onClick={handleSubmit}
             disabled={updateGroupMutation.isPending || !hasChanges || isLoadingGroup}
             size="sm"
-            className="gap-2"
+            className="gap-2 rtl:flex-row-reverse"
           >
             {updateGroupMutation.isPending ? (
               <Icon name="Loader2" size={14} className="animate-spin" />
