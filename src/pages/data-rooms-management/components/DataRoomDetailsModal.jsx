@@ -46,17 +46,17 @@ const DataRoomDetailsModal = ({ isOpen, onClose, roomId }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg rtl:[&>button]:left-4 rtl:[&>button]:right-auto rtl:[&>button]:top-4">
         <DialogHeader>
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-2">
               <Icon name="FolderOpen" size={16} />
               <div>
-                <DialogTitle className="text-left">
+                <DialogTitle className="rtl:text-right">
                   {room ? room.roomName : t('details_modal.loading_title')}
                 </DialogTitle>
                 {room && (
-                  <DialogDescription className="text-left mt-0">
+                  <DialogDescription className="rtl:text-right mt-0">
                     @{room.mountPoint} • {room.formattedSize}
                   </DialogDescription>
                 )}
@@ -71,14 +71,14 @@ const DataRoomDetailsModal = ({ isOpen, onClose, roomId }) => {
                   <Icon 
                     name={room.aclEnabled ? "Shield" : "ShieldOff"} 
                     size={10} 
-                    className="mr-1" 
+                    className="mr-1 rtl:ml-1 rtl:mr-0" 
                   />
-                  {room.aclEnabled ? 'ACL' : 'Basic'}
+                  {room.aclEnabled ? t('details_modal.acl_enabled') : t('details_modal.acl_disabled')}
                 </Badge>
                 {room.hasManagers && (
                   <Badge variant="outline" className="text-xs border-amber-200 text-amber-700">
-                    <Icon name="Crown" size={10} className="mr-1" />
-                    Managed
+                    <Icon name="Crown" size={10} className="mr-1 rtl:ml-1 rtl:mr-0" />
+                    {t('details_modal.has_managers')}
                   </Badge>
                 )}
               </div>
@@ -119,7 +119,7 @@ const DataRoomDetailsModal = ({ isOpen, onClose, roomId }) => {
                     variant="outline" 
                     size="sm" 
                     onClick={() => refetch()}
-                    className="ml-2 gap-1"
+                    className="ml-2 rtl:mr-2 rtl:ml-0 gap-1 rtl:flex-row-reverse"
                   >
                     <Icon name="RefreshCw" size={12} />
                     {t('details_modal.retry')}
@@ -132,29 +132,29 @@ const DataRoomDetailsModal = ({ isOpen, onClose, roomId }) => {
              {room && (
                <>
                  {/* Storage Information */}
-                <Card>
+                <Card className="rtl:text-right">
                   <CardHeader className="pb-1">
-                    <CardTitle className="text-sm flex items-center gap-2">
+                    <CardTitle className="text-sm flex items-center gap-2 rtl:flex-row-reverse rtl:text-right">
                       <Icon name="HardDrive" size={14} />
-                      Storage & Usage
+                      {t('details_modal.storage_info')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-2 space-y-2">
                     <div className="grid grid-cols-2 gap-3 text-xs">
                       <div>
-                        <p className="text-muted-foreground mb-0.5">Current Size</p>
+                        <p className="text-muted-foreground mb-0.5">{t('details_modal.current_size')}</p>
                         <p className="font-medium">{room.formattedSize}</p>
                       </div>
                       <div>
-                        <p className="text-muted-foreground mb-0.5">Quota</p>
+                        <p className="text-muted-foreground mb-0.5">{t('details_modal.storage_quota')}</p>
                         <p className="font-medium">{room.formattedQuota}</p>
                       </div>
                       <div>
-                        <p className="text-muted-foreground mb-0.5">Room ID</p>
+                        <p className="text-muted-foreground mb-0.5">{t('details_modal.room_id')}</p>
                         <p className="font-mono">{room.roomId}</p>
                       </div>
                       <div>
-                        <p className="text-muted-foreground mb-0.5">Groups</p>
+                        <p className="text-muted-foreground mb-0.5">{t('details_modal.groups_count')}</p>
                         <p className="font-medium">{room.groupsCount || 0}</p>
                       </div>
                     </div>
@@ -162,7 +162,7 @@ const DataRoomDetailsModal = ({ isOpen, onClose, roomId }) => {
                     {!room.isUnlimitedQuota && room.storageQuota > 0 && (
                       <div className="pt-2 border-t space-y-1">
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-muted-foreground">Storage Usage</span>
+                          <span className="text-muted-foreground">{t('details_modal.storage_usage')}</span>
                           <span className="font-medium">{getStorageUsagePercentage()}%</span>
                         </div>
                         <Progress value={getStorageUsagePercentage()} className="h-1" />
@@ -173,17 +173,17 @@ const DataRoomDetailsModal = ({ isOpen, onClose, roomId }) => {
 
                 {/* Access Control */}
                 {(room.hasGroups || room.hasManagers) && (
-                  <Card>
+                  <Card className="rtl:text-right">
                     <CardHeader className="pb-1">
-                      <CardTitle className="text-sm flex items-center gap-2">
+                      <CardTitle className="text-sm flex items-center gap-2 rtl:flex-row-reverse rtl:text-right">
                         <Icon name="Users" size={14} />
-                        Access Control
+                        {t('details_modal.groups_permissions')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="pt-2 space-y-2">
                       {room.hasGroups && (
                         <div>
-                          <p className="text-xs text-muted-foreground mb-1">Assigned Groups</p>
+                          <p className="text-xs text-muted-foreground mb-1">{t('details_modal.assigned_groups')}</p>
                           <div className="flex flex-wrap gap-1">
                             {room.groupsList && room.groupsList.length > 0 ? (
                               room.groupsList.map((group) => (
@@ -202,11 +202,11 @@ const DataRoomDetailsModal = ({ isOpen, onClose, roomId }) => {
                       
                       {room.hasManagers && (
                         <div className={room.hasGroups ? "pt-1 border-t" : ""}>
-                          <p className="text-xs text-muted-foreground mb-1">Managers</p>
+                          <p className="text-xs text-muted-foreground mb-1">{t('details_modal.managers')}</p>
                           <div className="flex flex-wrap gap-1">
                             {room.managers.map((manager) => (
                               <Badge key={manager.id || manager.displayname} variant="outline" className="text-xs h-5 px-2 border-amber-200 text-amber-700">
-                                <Icon name="Crown" size={8} className="mr-1" />
+                                <Icon name="Crown" size={8} className="mr-1 rtl:ml-1 rtl:mr-0" />
                                 {manager.displayname || manager.id || manager}
                               </Badge>
                             ))}
@@ -221,7 +221,7 @@ const DataRoomDetailsModal = ({ isOpen, onClose, roomId }) => {
           </div>
         </ScrollArea>
 
-        <DialogFooter className="pt-1">
+        <DialogFooter className="pt-1 rtl:flex-row-reverse rtl:justify-end">
           <Button variant="outline" onClick={onClose} size="sm" className="w-full">
             {t('details_modal.close')}
           </Button>

@@ -146,13 +146,13 @@ const CreateDataRoomModal = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalClose}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg rtl:[&>button]:left-4 rtl:[&>button]:right-auto rtl:[&>button]:top-4">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 rtl:text-right">
             <Icon name="FolderPlus" size={16} />
             {t('create_modal.title', { defaultValue: 'Create New Data Room' })}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className=" rtl:text-right">
             {t('create_modal.description', { defaultValue: 'Create a new data room with secure group access controls.' })}
           </DialogDescription>
         </DialogHeader>
@@ -286,7 +286,7 @@ const CreateDataRoomModal = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="rtl:flex-row-reverse">
           <Button
             type="button"
             variant="outline"

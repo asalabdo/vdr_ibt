@@ -137,6 +137,7 @@
     "storage_quota": "Storage Quota",
     "quota_unlimited": "Unlimited",
     "quota_hint": "Set storage limit (leave empty for unlimited)",
+    "storage_used": "Used:",
     "acl_settings": "Access Control Settings",
     "acl_enabled": "Enable Advanced Permissions (ACL)",
     "acl_hint": "Enable fine-grained permission control for groups",

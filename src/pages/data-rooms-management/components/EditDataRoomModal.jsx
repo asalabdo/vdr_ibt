@@ -144,13 +144,13 @@ const EditDataRoomModal = ({ isOpen, onClose, room }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md rtl:[&>button]:left-4 rtl:[&>button]:right-auto rtl:[&>button]:top-4">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-left rtl:text-right">
             <Icon name="Settings" size={16} />
             {t('edit_modal.title', { defaultValue: 'Edit Data Room Settings' })}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-left rtl:text-right">
             {t('edit_modal.description', { 
               defaultValue: 'Update storage quota and access control settings for "{{roomName}}".',
               roomName: room.roomName 
@@ -164,14 +164,14 @@ const EditDataRoomModal = ({ isOpen, onClose, room }) => {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Icon name="HardDrive" size={14} />
-                Storage Quota
+                {t('edit_modal.storage_quota', { defaultValue: 'Storage Quota' })}
               </CardTitle>
               <CardDescription className="text-xs">
                 {t('edit_modal.quota_hint', { defaultValue: 'Set storage limit (leave empty for unlimited)' })}
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-1 space-y-2">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 rtl:space-x-reverse rtl:space-x-2">
                 <Checkbox
                   id="unlimited-quota"
                   checked={formData.quota === -3}
@@ -222,12 +222,12 @@ const EditDataRoomModal = ({ isOpen, onClose, room }) => {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Icon name="Shield" size={14} />
-                Access Control
+                {t('edit_modal.acl_settings', { defaultValue: 'Access Control' })}
                 {room.currentSize > 0 && (
                   <>
                     <span className="text-muted-foreground">•</span>
                     <span className="text-xs font-normal text-muted-foreground">
-                      Used: {room.formattedSize}
+                      {t('edit_modal.storage_used', { defaultValue: 'Used:' })} {room.formattedSize}
                       {!room.isUnlimitedQuota && room.storageQuota > 0 && (
                         <span className="ml-1">
                           ({Math.round((room.currentSize / room.storageQuota) * 100)}%)
@@ -242,7 +242,7 @@ const EditDataRoomModal = ({ isOpen, onClose, room }) => {
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-1">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 rtl:space-x-reverse rtl:space-x-2">
                 <Checkbox
                   id="acl-enabled"
                   checked={formData.aclEnabled}
@@ -265,7 +265,7 @@ const EditDataRoomModal = ({ isOpen, onClose, room }) => {
           )}
         </div>
 
-        <DialogFooter className="pt-2">
+        <DialogFooter className="pt-2 rtl:flex-row-reverse rtl:justify-end">
           <Button
             type="button"
             variant="outline"
@@ -280,7 +280,7 @@ const EditDataRoomModal = ({ isOpen, onClose, room }) => {
             onClick={handleSubmit}
             disabled={updateDataRoomMutation.isPending}
             size="sm"
-            className="gap-2"
+            className="gap-2 rtl:flex-row-reverse"
           >
             {updateDataRoomMutation.isPending ? (
               <Icon name="Loader2" size={14} className="animate-spin" />
