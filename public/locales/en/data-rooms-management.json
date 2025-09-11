@@ -18,7 +18,8 @@
     "apply": "Apply",
     "refresh": "Refresh",
     "refreshing": "Refreshing...",
-    "coming_soon": "Coming soon!"
+    "coming_soon": "Coming soon!",
+    "manage_groups": "Manage Groups"
   },
 
   "stats": {
@@ -72,6 +73,8 @@
   "create_modal": {
     "title": "Create New Data Room",
     "description": "Create a new data room with secure group access controls.",
+    "room_configuration": "Room Configuration",
+    "group_access": "Group Access",
     "mountpoint": "Data Room Name",
     "mountpoint_placeholder": "e.g., project-alpha, legal-docs",
     "mountpoint_hint": "Use letters, numbers, hyphens, and underscores only",
@@ -80,13 +83,21 @@
     "quota_unlimited": "Unlimited",
     "groups": "Assign Groups",
     "groups_hint": "Select groups that will have access to this data room",
+    "loading_groups": "Loading available groups...",
+    "groups_error": "Failed to load groups",
     "no_groups": "No groups available",
+    "create_groups_hint": "Create groups first to assign access permissions to your data rooms.",
+    "manage_groups": "Manage Groups",
     "cancel": "Cancel",
     "create": "Create Data Room",
     "creating": "Creating...",
     "success_title": "Data room created successfully!",
     "success_description": "Data room \"{roomName}\" has been created and configured.",
+    "warning_title": "Group assignment warning",
+    "error_title": "Failed to create data room",
     "errors": {
+      "mountpoint_required": "Mount point name is required",
+      "mountpoint_min_length": "Mount point name must be at least 3 characters",
       "mountpoint_invalid": "Mount point name can only contain letters, numbers, hyphens, and underscores"
     }
   },
@@ -132,8 +143,12 @@
     "cancel": "Cancel",
     "save": "Save Changes",
     "saving": "Saving...",
-    "success_title": "Settings updated successfully!",
-    "success_description": "Data room settings have been updated."
+    "success_title": "Data room updated successfully!",
+    "success_description": "Data room settings have been updated.",
+    "error_title": "Failed to update data room",
+    "errors": {
+      "quota_invalid": "Please enter a valid quota value"
+    }
   },
 
   "room_card": {

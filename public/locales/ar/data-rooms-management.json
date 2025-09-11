@@ -18,7 +18,8 @@
     "apply": "تطبيق",
     "refresh": "تحديث",
     "refreshing": "جاري التحديث...",
-    "coming_soon": "قريباً!"
+    "coming_soon": "قريباً!",
+    "manage_groups": "إدارة المجموعات"
   },
 
   "stats": {
@@ -72,6 +73,8 @@
   "create_modal": {
     "title": "إنشاء غرفة بيانات جديدة",
     "description": "إنشاء غرفة بيانات جديدة مع ضوابط وصول آمنة للمجموعات.",
+    "room_configuration": "إعدادات الغرفة",
+    "group_access": "وصول المجموعات",
     "mountpoint": "اسم غرفة البيانات",
     "mountpoint_placeholder": "مثال: project-alpha، legal-docs",
     "mountpoint_hint": "استخدم الأحرف والأرقام والشرطات والشرطات السفلية فقط",
@@ -80,13 +83,21 @@
     "quota_unlimited": "غير محدود",
     "groups": "تعيين المجموعات",
     "groups_hint": "اختر المجموعات التي ستتمكن من الوصول إلى غرفة البيانات هذه",
+    "loading_groups": "تحميل المجموعات المتاحة...",
+    "groups_error": "فشل في تحميل المجموعات",
     "no_groups": "لا توجد مجموعات متاحة",
+    "create_groups_hint": "أنشئ المجموعات أولاً لتعيين صلاحيات الوصول إلى غرف البيانات الخاصة بك.",
+    "manage_groups": "إدارة المجموعات",
     "cancel": "إلغاء",
     "create": "إنشاء غرفة البيانات",
     "creating": "جاري الإنشاء...",
     "success_title": "تم إنشاء غرفة البيانات بنجاح!",
     "success_description": "تم إنشاء وتكوين غرفة البيانات \"{roomName}\".",
+    "warning_title": "تحذير تعيين المجموعة",
+    "error_title": "فشل في إنشاء غرفة البيانات",
     "errors": {
+      "mountpoint_required": "اسم نقطة التحميل مطلوب",
+      "mountpoint_min_length": "يجب أن يكون اسم نقطة التحميل 3 أحرف على الأقل",
       "mountpoint_invalid": "اسم نقطة التحميل يمكن أن يحتوي على أحرف وأرقام وشرطات وشرطات سفلية فقط"
     }
   },
@@ -132,8 +143,12 @@
     "cancel": "إلغاء",
     "save": "حفظ التغييرات",
     "saving": "جاري الحفظ...",
-    "success_title": "تم تحديث الإعدادات بنجاح!",
-    "success_description": "تم تحديث إعدادات غرفة البيانات."
+    "success_title": "تم تحديث غرفة البيانات بنجاح!",
+    "success_description": "تم تحديث إعدادات غرفة البيانات.",
+    "error_title": "فشل في تحديث غرفة البيانات",
+    "errors": {
+      "quota_invalid": "يرجى إدخال قيمة حصة صحيحة"
+    }
   },
 
   "room_card": {

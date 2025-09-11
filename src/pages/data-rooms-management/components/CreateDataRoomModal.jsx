@@ -161,7 +161,7 @@ const CreateDataRoomModal = ({ isOpen, onClose }) => {
           {/* Data Room Name */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-base">Room Configuration</CardTitle>
+              <CardTitle className="text-base">{t('create_modal.room_configuration')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="space-y-2">
@@ -189,7 +189,7 @@ const CreateDataRoomModal = ({ isOpen, onClose }) => {
           {/* Groups Selection */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-base">Group Access</CardTitle>
+              <CardTitle className="text-base">{t('create_modal.group_access')}</CardTitle>
               <CardDescription>
                 {t('create_modal.groups_hint', { defaultValue: 'Select groups that will have access to this data room' })}
               </CardDescription>

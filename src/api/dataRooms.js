@@ -450,7 +450,7 @@ const getAvailableGroups = async (options = {}) => {
     
     const response = await adminApiClient.get(url);
     
-    if (response.data?.ocs?.meta?.statuscode === 100) {
+    if (response.data?.ocs?.meta?.statuscode === 200) {
       const groups = response.data.ocs.data?.groups || [];
       
       return {
