@@ -106,6 +106,20 @@
     "topUsers": "أكثر المستخدمين نشاطًا",
     "topUsersDescription": "المستخدمون الذين لديهم أكبر نشاط في الفترة المحددة"
   },
+  "table": {
+    "user": "المستخدم",
+    "activity": "النشاط",
+    "severity": "الخطورة",
+    "time": "الوقت",
+    "actions": "الإجراءات",
+    "view": "عرض",
+    "no_search_results": "لا توجد سجلات مطابقة للبحث",
+    "no_logs_available": "لا توجد سجلات تدقيق متاحة للفترة المحددة",
+    "clear_search": "مسح البحث"
+  },
+  "pagination": {
+    "showing": "عرض {{start}} إلى {{end}} من {{total}} سجلات"
+  },
   "export": {
     "title": "تصدير سجلات التدقيق",
     "format": "تنسيق التصدير",

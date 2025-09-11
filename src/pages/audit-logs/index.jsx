@@ -195,13 +195,13 @@ const AuditLogs = () => {
                 </p>
               </div>
               
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 rtl:space-x-reverse">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={handleRefresh}
                   disabled={statsLoading}
-                  className="gap-2"
+                  className="gap-2 rtl:space-x-reverse"
                 >
                   <Icon name="RefreshCw" size={16} className={statsLoading ? 'animate-spin' : ''} />
                   {t('refresh', 'Refresh')}
@@ -211,7 +211,7 @@ const AuditLogs = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => setIsExportModalOpen(true)}
-                  className="gap-2"
+                  className="gap-2 rtl:space-x-reverse"
                 >
                   <Icon name="Download" size={16} />
                   {t('exportButton', 'Export')}
@@ -221,7 +221,7 @@ const AuditLogs = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => setIsFilterOpen(true)}
-                  className="gap-2"
+                  className="gap-2 rtl:space-x-reverse"
                 >
                   <Icon name="Filter" size={16} />
                   {t('filterButton', 'Filter')}
@@ -236,7 +236,7 @@ const AuditLogs = () => {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {Object.entries(severityStats).map(([severity, count]) => (
                   <Card key={severity} className="p-3">
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-3 rtl:space-x-reverse">
                       <div className={`p-2 rounded-lg ${
                         severity === 'critical' ? 'bg-destructive/10 text-destructive' :
                         severity === 'high' ? 'bg-warning/10 text-warning' :
@@ -263,11 +263,11 @@ const AuditLogs = () => {
           <Tabs defaultValue="logs" value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
             <div className="mx-6 mt-4">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="logs" className="flex items-center space-x-2">
+                <TabsTrigger value="logs" className="flex items-center space-x-2 rtl:space-x-reverse rtl:order-2">
                   <Icon name="Activity" size={16} />
                   <span>{t('tabs.logs', 'Audit Logs')}</span>
                 </TabsTrigger>
-                <TabsTrigger value="analytics" className="flex items-center space-x-2">
+                <TabsTrigger value="analytics" className="flex items-center space-x-2 rtl:space-x-reverse rtl:order-1">
                   <Icon name="BarChart3" size={16} />
                   <span>{t('tabs.analytics', 'Analytics')}</span>
                 </TabsTrigger>
@@ -277,8 +277,8 @@ const AuditLogs = () => {
             <TabsContent value="logs" className="flex-1 overflow-hidden mt-4">
                 <Card className="mx-6">
                   <CardHeader className="pb-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="flex items-center gap-2 text-lg">
+                    <div className="flex items-center justify-between rtl:flex-row-reverse">
+                      <CardTitle className="flex items-center gap-2 text-lg rtl:space-x-reverse">
                         <Icon name="Activity" size={18} />
                         {t('tabs.logs', 'Audit Logs')}
                       </CardTitle>
@@ -288,20 +288,20 @@ const AuditLogs = () => {
                     </div>
                     
                     {/* Search and Actions */}
-                    <div className="flex items-center gap-3">
-                      <div className="relative flex-1 max-w-sm">
-                        <Icon 
-                          name="Search" 
-                          size={14} 
-                          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" 
-                        />
-                        <Input
-                          placeholder={t('searchPlaceholder', 'Search audit logs...')}
-                          value={searchQuery}
-                          onChange={handleSearch}
-                          className="pl-9 h-9 text-sm"
-                        />
-                      </div>
+                      <div className="flex items-center gap-3 rtl:space-x-reverse">
+                        <div className="relative flex-1 max-w-sm">
+                          <Icon 
+                            name="Search" 
+                            size={14} 
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground rtl:left-auto rtl:right-3" 
+                          />
+                          <Input
+                            placeholder={t('searchPlaceholder', 'Search audit logs...')}
+                            value={searchQuery}
+                            onChange={handleSearch}
+                            className="pl-9 h-9 text-sm rtl:pl-3 rtl:pr-9"
+                          />
+                        </div>
                       
                       
                       <Tooltip>
@@ -365,7 +365,7 @@ const AuditLogs = () => {
                         </div>
                         <h3 className="font-semibold text-base mb-1">{t('noLogs', 'No audit logs found')}</h3>
                         <p className="text-muted-foreground text-xs max-w-sm">
-                          {searchQuery ? 'No logs match your search' : 'No audit logs available for the selected period'}
+                          {searchQuery ? t('table.no_search_results', 'No logs match your search') : t('table.no_logs_available', 'No audit logs available for the selected period')}
                         </p>
                         {searchQuery && (
                           <Button 
@@ -375,7 +375,7 @@ const AuditLogs = () => {
                             className="mt-3 gap-1"
                           >
                             <Icon name="X" size={12} />
-                            Clear search
+                            {t('table.clear_search', 'Clear search')}
                           </Button>
                         )}
                       </div>
@@ -385,11 +385,11 @@ const AuditLogs = () => {
                           <Table>
                             <TableHeader>
                               <TableRow className="hover:bg-transparent">
-                                <TableHead className="text-xs font-medium text-muted-foreground">User</TableHead>
-                                <TableHead className="text-xs font-medium text-muted-foreground">Activity</TableHead>
-                                <TableHead className="text-xs font-medium text-muted-foreground">Severity</TableHead>
-                                <TableHead className="text-xs font-medium text-muted-foreground">Time</TableHead>
-                                <TableHead className="text-xs font-medium text-muted-foreground w-[100px]">Actions</TableHead>
+                                <TableHead className="text-xs font-medium text-muted-foreground">{t('table.user', 'User')}</TableHead>
+                                <TableHead className="text-xs font-medium text-muted-foreground">{t('table.activity', 'Activity')}</TableHead>
+                                <TableHead className="text-xs font-medium text-muted-foreground">{t('table.severity', 'Severity')}</TableHead>
+                                <TableHead className="text-xs font-medium text-muted-foreground">{t('table.time', 'Time')}</TableHead>
+                                <TableHead className="text-xs font-medium text-muted-foreground w-[100px]">{t('table.actions', 'Actions')}</TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -438,7 +438,7 @@ const AuditLogs = () => {
                                       className="gap-1 h-7 px-2 text-xs"
                                     >
                                       <Icon name="Eye" size={10} />
-                                      View
+                                      {t('table.view', 'View')}
                                     </Button>
                                   </TableCell>
                                 </TableRow>
@@ -449,18 +449,22 @@ const AuditLogs = () => {
                         
                         {/* Pagination Controls */}
                         {totalPages > 1 && (
-                          <div className="mt-6 flex items-center justify-between">
-                            <div className="text-sm text-muted-foreground">
-                              Showing {startIndex + 1} to {Math.min(startIndex + logs.length, totalLogs)} of {totalLogs} logs
-                            </div>
-                            <Pagination className="mx-0 w-auto justify-end">
-                              <PaginationContent>
-                                <PaginationItem>
-                                  <PaginationPrevious 
-                                    onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                                    className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                                  />
-                                </PaginationItem>
+                            <div className="mt-6 flex items-center justify-between rtl:flex-row-reverse">
+                              <div className="text-sm text-muted-foreground">
+                                {t('pagination.showing', 'Showing {{start}} to {{end}} of {{total}} logs', {
+                                  start: startIndex + 1,
+                                  end: Math.min(startIndex + logs.length, totalLogs),
+                                  total: totalLogs
+                                })}
+                              </div>
+                              <Pagination className="mx-0 w-auto justify-end rtl:justify-start">
+                                <PaginationContent className="rtl:flex-row-reverse">
+                                  <PaginationItem>
+                                    <PaginationPrevious 
+                                      onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                                      className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                                    />
+                                  </PaginationItem>
                                 
                                 {[...Array(totalPages)].map((_, index) => {
                                   const pageNumber = index + 1;

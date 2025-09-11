@@ -28,8 +28,8 @@
   "tabs": {
     "logs": "Audit Logs",
     "analytics": "Analytics"
-    },
-    "severity": {
+  },
+  "severity": {
     "critical": "Critical",
     "high": "High",
     "medium": "Medium",
@@ -105,6 +105,20 @@
     "topAppsDescription": "Applications generating the most audit logs",
     "topUsers": "Most Active Users",
     "topUsersDescription": "Users with the most activity in the selected period"
+  },
+  "table": {
+    "user": "User",
+    "activity": "Activity",
+    "severity": "Severity",
+    "time": "Time",
+    "actions": "Actions",
+    "view": "View",
+    "no_search_results": "No logs match your search",
+    "no_logs_available": "No audit logs available for the selected period",
+    "clear_search": "Clear search"
+  },
+  "pagination": {
+    "showing": "Showing {{start}} to {{end}} of {{total}} logs"
   },
   "export": {
     "title": "Export Audit Logs",
