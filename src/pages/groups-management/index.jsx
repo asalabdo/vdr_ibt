@@ -13,6 +13,8 @@ import GroupCard from './components/GroupCard';
 import CreateGroupModal from './components/CreateGroupModal';
 import GroupDetailsModal from './components/GroupDetailsModal';
 import EditGroupModal from './components/EditGroupModal';
+import DeleteGroupModal from './components/DeleteGroupModal';
+import ManageGroupMembersModal from './components/ManageGroupMembersModal';
 
 const GroupsManagement = () => {
   const { t } = useTranslation('groups-management');
@@ -21,6 +23,8 @@ const GroupsManagement = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [detailsModal, setDetailsModal] = useState({ open: false, groupId: null });
   const [editModal, setEditModal] = useState({ open: false, groupId: null });
+  const [deleteModal, setDeleteModal] = useState({ open: false, group: null });
+  const [membersModal, setMembersModal] = useState({ open: false, groupId: null });
 
   // Fetch groups using the API
   const { 
@@ -73,6 +77,26 @@ const GroupsManagement = () => {
 
   const handleCloseEdit = () => {
     setEditModal({ open: false, groupId: null });
+  };
+
+  const handleDeleteGroup = (groupId) => {
+    // Find the group data to pass to the modal
+    const groupToDelete = groupsWithMemberData.find(group => group.id === groupId);
+    if (groupToDelete) {
+      setDeleteModal({ open: true, group: groupToDelete });
+    }
+  };
+
+  const handleCloseDelete = () => {
+    setDeleteModal({ open: false, group: null });
+  };
+
+  const handleManageMembers = (groupId) => {
+    setMembersModal({ open: true, groupId });
+  };
+
+  const handleCloseMembers = () => {
+    setMembersModal({ open: false, groupId: null });
   };
 
   // Calculate stats from real data
@@ -195,10 +219,6 @@ const GroupsManagement = () => {
                 <Icon name="Plus" size={16} />
                 {t('actions.create_group', { defaultValue: 'Create Group' })}
               </Button>
-              <Button variant="success" className="gap-2">
-                <Icon name="Download" size={16} />
-                {t('actions.export_groups', { defaultValue: 'Export Groups' })}
-              </Button>
               <Button 
                 variant="outline" 
                 className="gap-2"
@@ -319,6 +339,8 @@ const GroupsManagement = () => {
                 group={group}
                 onViewDetails={handleViewDetails}
                 onEdit={handleEditGroup}
+                onDelete={handleDeleteGroup}
+                onManageMembers={handleManageMembers}
               />
             ))}
           </div>
@@ -365,6 +387,20 @@ const GroupsManagement = () => {
         isOpen={editModal.open}
         onClose={handleCloseEdit}
         groupId={editModal.groupId}
+      />
+      
+      {/* Delete Group Modal */}
+      <DeleteGroupModal 
+        isOpen={deleteModal.open}
+        onClose={handleCloseDelete}
+        group={deleteModal.group}
+      />
+      
+      {/* Manage Group Members Modal */}
+      <ManageGroupMembersModal 
+        isOpen={membersModal.open}
+        onClose={handleCloseMembers}
+        groupId={membersModal.groupId}
       />
     </div>
   );

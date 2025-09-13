@@ -4,16 +4,17 @@
   
   "actions": {
     "create_group": "Create Group",
-    "export_groups": "Export Groups",
     "manage_groups": "Manage Groups",
     "view_data_rooms": "Data Rooms",
     "edit": "Edit",
     "delete": "Delete",
     "view_details": "View Details",
+    "manage_members": "Manage Members",
     "refresh": "Refresh",
     "refreshing": "Refreshing...",
     "retry": "Retry",
-    "sort": "Sort"
+    "sort": "Sort",
+    "protected_group": "Protected Group"
   },
 
   "stats": {
@@ -121,6 +122,51 @@
     "no_groups": "No groups available",
     "error_loading": "Error loading group details",
     "retry": "Retry",
+    "close": "Close"
+  },
+
+  "delete_modal": {
+    "title": "Delete Group",
+    "description": "This action cannot be undone. This will permanently delete the group and remove all associated permissions.",
+    "group_info": "Group to be deleted",
+    "group_name": "Group Name",
+    "group_id": "Group ID",
+    "member_count": "Members",
+    "members_warning": "This group has {{count}} member(s). Deleting it will remove their group-based permissions and access to shared resources.",
+    "final_warning_title": "Warning:",
+    "final_warning": "This action is irreversible. All group permissions, shared folder access, and member associations will be permanently lost.",
+    "success_title": "Group deleted successfully!",
+    "success_description": "Group \"{{groupName}}\" has been permanently deleted.",
+    "error_title": "Failed to delete group",
+    "cancel": "Cancel",
+    "delete": "Delete Group",
+    "deleting": "Deleting...",
+    "protected_group_warning": "This is a system group that cannot be deleted. The admin group is required for Nextcloud operation."
+  },
+
+  "manage_members": {
+    "title": "Manage Members - {{groupName}}",
+    "description": "Add or remove users from this group. Changes take effect immediately.",
+    "loading_title": "Loading group...",
+    "loading_description": "Loading group information...",
+    "current_members": "Current Members",
+    "current_members_hint": "Users who are currently members of this group",
+    "add_members": "Add Members",
+    "add_members_hint": "Search for users to add to this group",
+    "search_users": "Search Users",
+    "search_placeholder": "Type username or display name...",
+    "no_members": "This group has no members yet",
+    "no_search_results": "No users found matching \"{{searchTerm}}\"",
+    "try_different_search": "Try a different search term",
+    "start_searching": "Start typing to search for users",
+    "admin": "Admin",
+    "subadmin": "Subadmin", 
+    "member": "Member",
+    "user_added_success": "User added to group successfully!",
+    "user_added_error": "Failed to add user to group",
+    "user_removed_success": "User removed from group successfully!",
+    "user_removed_error": "Failed to remove user from group",
+    "error_loading": "Failed to load group details",
     "close": "Close"
   },
 

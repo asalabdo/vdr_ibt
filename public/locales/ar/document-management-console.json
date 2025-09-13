@@ -26,7 +26,10 @@
     "delete_error": "فشل في حذف الملف",
     "deleting": "جاري الحذف...",
     "retry": "إعادة المحاولة",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "upload_to_dataroom": "رفع إلى غرفة البيانات",
+    "upload_and_share": "رفع ومشاركة",
+    "sharing": "جاري المشاركة..."
   },
 
   "stats": {
@@ -194,7 +197,18 @@
     "error_single": "فشل في رفع {{fileName}}: {{error}}",
     "error_general": "فشل في الرفع: {{error}}",
     "error_file_too_large": "حجم الملف يتجاوز حد 100 ميجابايت: {{fileName}} ({{size}})",
-    "size_info_short": "حتى 500 ميجابايت • الملفات الكبيرة تستخدم الرفع المجزأ"
+    "size_info_short": "حتى 500 ميجابايت • الملفات الكبيرة تستخدم الرفع المجزأ",
+    "destination_title": "أين تريد رفع هذه الملفات؟",
+    "personal_files": "الملفات الشخصية",
+    "personal_description": "رفع إلى مجلدك الشخصي (يمكن مشاركتها مع المجموعات لاحقاً)",
+    "team_dataroom": "غرفة البيانات الجماعية",
+    "dataroom_description": "رفع إلى مجلد مشترك للفريق (متاح تلقائياً لأعضاء الفريق)",
+    "select_dataroom": "اختر غرفة البيانات الجماعية",
+    "choose_dataroom": "اختر غرفة بيانات...",
+    "loading_datarooms": "تحميل غرف البيانات...",
+    "dataroom_access_info": "ستكون الملفات متاحة للمجموعات: {{groups}}",
+    "share_with_groups": "مشاركة مع المجموعات (اختياري)",
+    "success_dataroom": "تم رفع {{count}} ملف بنجاح إلى {{roomName}}"
   },
 
   "errors": {

@@ -1,11 +1,17 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useFileUpload } from '@/hooks/api';
+import { useFileUpload, useGroups, useDataRooms, useCreateShare } from '@/hooks/api';
 import { useAuthStatus } from '@/hooks/api';
 import { Button } from '@/components/ui/Button';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/Checkbox';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { shareTypes } from '../../../api/endpoints';
 import Icon from '../../../components/AppIcon';
 
 const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }) => {
@@ -23,6 +29,12 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
   const [completedUploads, setCompletedUploads] = useState([]);
   const [failedUploads, setFailedUploads] = useState([]);
   const [isDragOver, setIsDragOver] = useState(false);
+  
+  // New state for upload destination and sharing
+  const [uploadDestination, setUploadDestination] = useState('personal'); // 'personal' or 'dataroom'
+  const [selectedDataRoom, setSelectedDataRoom] = useState('');
+  const [selectedGroups, setSelectedGroups] = useState([]);
+  const [isSharing, setIsSharing] = useState(false);
   
   const fileInputRef = useRef(null);
   const dragCounter = useRef(0);
@@ -43,6 +55,29 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
       }));
     }
   });
+  
+  // Data rooms and groups hooks
+  const { data: dataRoomsData, isLoading: isLoadingDataRooms } = useDataRooms({
+    enabled: uploadDestination === 'dataroom'
+  });
+  const { data: groupsData, isLoading: isLoadingGroups } = useGroups({
+    enabled: uploadDestination === 'personal'
+  });
+  
+  // Create share mutation for automatic sharing
+  const createShareMutation = useCreateShare({
+    onSuccess: (data) => {
+      console.log('✅ File shared successfully with group:', data.share.shareWith);
+    },
+    onError: (error) => {
+      console.error('❌ Failed to share file:', error.message);
+      toast.error(`Failed to share file: ${error.message}`);
+    }
+  });
+  
+  // Extract data with fallbacks
+  const dataRooms = dataRoomsData?.dataRooms || [];
+  const groups = groupsData?.groups || [];
 
   // Reset state when modal opens/closes
   useEffect(() => {
@@ -53,9 +88,36 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
       setUploadProgress({});
       setCompletedUploads([]);
       setFailedUploads([]);
+      setUploadDestination('personal');
+      setSelectedDataRoom('');
+      setSelectedGroups([]);
+      setIsSharing(false);
       resetUpload();
     }
   }, [isOpen, resetUpload]);
+  
+  // Helper functions
+  const toggleGroupSelection = (groupId, checked) => {
+    setSelectedGroups(prev => 
+      checked 
+        ? [...prev, groupId]
+        : prev.filter(id => id !== groupId)
+    );
+  };
+  
+  const getGroupName = (groupId) => {
+    const group = groups.find(g => g.id === groupId);
+    return group?.displayName || groupId;
+  };
+  
+  const getDataRoomGroups = (dataRoomId) => {
+    const room = dataRooms.find(r => r.id === dataRoomId);
+    return room?.groupsList?.join(', ') || '';
+  };
+  
+  const getSelectedDataRoom = () => {
+    return dataRooms.find(r => r.id === selectedDataRoom);
+  };
 
   // File validation
   const validateFile = (file) => {
@@ -236,32 +298,103 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
     setUploadProgress({});
   };
 
-  // Start upload process
+  // Start upload process with enhanced destination and sharing logic
   const startUpload = async () => {
     if (files.length === 0) return;
+    
+    // Validation
+    if (uploadDestination === 'dataroom' && !selectedDataRoom) {
+      toast.error('Please select a data room for upload');
+      return;
+    }
 
     setIsUploading(true);
     setUploadProgress({ total: files.length, current: 0 });
     
     try {
-      // Use the uploadMultiple function from the hook
-      // Handle root path correctly - if currentPath is '/', pass empty string as basePath
-      const uploadBasePath = currentPath === '/' ? '' : currentPath.replace(/^\/+/, '');
-      const results = await uploadMultiple(files, currentUsername, uploadBasePath);
+      let uploadBasePath;
+      let uploadResults;
       
-      // Process results
-      const successful = results.filter(result => result.success);
-      const failed = results.filter(result => !result.success);
+      if (uploadDestination === 'dataroom') {
+        // Upload to Data Room (Group Folder)
+        const selectedRoom = getSelectedDataRoom();
+        if (!selectedRoom) {
+          throw new Error('Selected data room not found');
+        }
+        
+        // Group Folders are mounted directly with their mount point name
+        // The mount point is the folder name that appears in the user's directory
+        uploadBasePath = selectedRoom.mountPoint || selectedRoom.roomName;
+        toast.info(`Uploading to data room: ${selectedRoom.roomName}`);
+        
+      } else {
+        // Upload to Personal directory (current behavior)
+        uploadBasePath = currentPath === '/' ? '' : currentPath.replace(/^\/+/, '');
+      }
+      
+      // Use the uploadMultiple function from the hook
+      uploadResults = await uploadMultiple(files, currentUsername, uploadBasePath);
+      
+      // Process upload results
+      const successful = uploadResults.filter(result => result.success);
+      const failed = uploadResults.filter(result => !result.success);
       
       setCompletedUploads(successful);
       setFailedUploads(failed);
       
+      // Handle sharing for personal uploads
+      if (uploadDestination === 'personal' && selectedGroups.length > 0 && successful.length > 0) {
+        setIsSharing(true);
+        
+        // Share each successfully uploaded file with selected groups
+        const sharingPromises = [];
+        
+        for (const uploadResult of successful) {
+          const filePath = uploadBasePath ? `/${uploadBasePath}/${uploadResult.file}` : `/${uploadResult.file}`;
+          
+          for (const groupId of selectedGroups) {
+            sharingPromises.push(
+              createShareMutation.mutateAsync({
+                path: filePath,
+                shareType: shareTypes.GROUP, // shareType: 1
+                shareWith: groupId,
+                permissions: ['read', 'update', 'create', 'delete', 'share'] // Full permissions
+              }).catch(error => {
+                console.error(`Failed to share ${uploadResult.file} with group ${groupId}:`, error);
+                return { error: error.message, file: uploadResult.file, group: groupId };
+              })
+            );
+          }
+        }
+        
+        // Wait for all sharing operations to complete
+        const sharingResults = await Promise.all(sharingPromises);
+        const sharingErrors = sharingResults.filter(result => result?.error);
+        
+        if (sharingErrors.length > 0) {
+          toast.warning(`Files uploaded but some sharing failed: ${sharingErrors.length} errors`);
+        } else {
+          toast.success(`Files uploaded and shared with ${selectedGroups.length} group(s)`);
+        }
+        
+        setIsSharing(false);
+      }
+      
       // Show success message
       if (successful.length > 0) {
-        toast.success(t('upload.success_multiple', {
-          defaultValue: `Successfully uploaded ${successful.length} file(s)`,
-          count: successful.length
-        }));
+        if (uploadDestination === 'dataroom') {
+          const room = getSelectedDataRoom();
+          toast.success(t('upload.success_dataroom', {
+            defaultValue: `Successfully uploaded ${successful.length} file(s) to ${room?.roomName}`,
+            count: successful.length,
+            roomName: room?.roomName
+          }));
+        } else {
+          toast.success(t('upload.success_multiple', {
+            defaultValue: `Successfully uploaded ${successful.length} file(s)`,
+            count: successful.length
+          }));
+        }
       }
       
       // Show error messages for failed uploads
@@ -293,6 +426,7 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
       })));
     } finally {
       setIsUploading(false);
+      setIsSharing(false);
       setUploadProgress({});
     }
   };
@@ -313,9 +447,9 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-card rounded-xl shadow-lg border border-border max-w-2xl w-full max-h-[90vh] mx-4 overflow-hidden">
+      <div className="bg-card rounded-xl shadow-lg border border-border max-w-2xl w-full max-h-[90vh] mx-4 overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
+        <div className="flex items-center justify-between p-6 border-b border-border flex-shrink-0">
           <div className="flex items-center space-x-3 rtl:space-x-reverse">
             <Icon name="Upload" size={24} className="text-primary" />
             <div>
@@ -340,8 +474,8 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
           </Button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+        {/* Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-6">
           {/* Drop Zone */}
           <div
             className={`relative border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
@@ -394,27 +528,182 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
             />
           </div>
 
-          {/* Upload Progress */}
-          {isUploading && uploadProgress.total && (
-            <div className="mt-6 p-4 bg-muted/30 rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium">
-                  {t('upload.uploading', { defaultValue: 'Uploading files...' })}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  {typeof uploadProgress.current === 'object' 
-                    ? `${Math.round(uploadProgress.current?.percent || 0)}%`
-                    : `${uploadProgress.current || 0} / ${uploadProgress.total || 0}`
-                  }
-                </span>
+          {/* Upload Destination and Sharing Options */}
+          <div className="mt-6 space-y-4">
+            {/* Upload Destination Selector */}
+            <div className="p-4 bg-muted/20 rounded-lg border border-border">
+              <Label className="text-sm font-medium mb-3 block">
+                {t('upload.destination_title', { defaultValue: 'Where do you want to upload these files?' })}
+              </Label>
+              
+              <RadioGroup value={uploadDestination} onValueChange={setUploadDestination} className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <RadioGroupItem value="personal" id="personal" />
+                  <Label htmlFor="personal" className="flex items-center gap-2 cursor-pointer">
+                    <Icon name="User" size={16} className="text-muted-foreground" />
+                    <div>
+                      <div className="font-medium">{t('upload.personal_files', { defaultValue: 'Personal Files' })}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {t('upload.personal_description', { defaultValue: 'Upload to your personal directory (can share with groups later)' })}
+                      </div>
+                    </div>
+                  </Label>
+                </div>
+                
+                <div className="flex items-center space-x-3">
+                  <RadioGroupItem value="dataroom" id="dataroom" />
+                  <Label htmlFor="dataroom" className="flex items-center gap-2 cursor-pointer">
+                    <Icon name="Users" size={16} className="text-muted-foreground" />
+                    <div>
+                      <div className="font-medium">{t('upload.team_dataroom', { defaultValue: 'Team Data Room' })}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {t('upload.dataroom_description', { defaultValue: 'Upload to a shared team folder (automatically accessible to team members)' })}
+                      </div>
+                    </div>
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            {/* Data Room Selector */}
+            {uploadDestination === 'dataroom' && (
+              <div className="p-4 border border-border rounded-lg">
+                <Label className="text-sm font-medium mb-2 block">
+                  {t('upload.select_dataroom', { defaultValue: 'Select Team Data Room' })}
+                </Label>
+                
+                {isLoadingDataRooms ? (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Icon name="Loader2" size={16} className="animate-spin" />
+                    {t('upload.loading_datarooms', { defaultValue: 'Loading data rooms...' })}
+                  </div>
+                ) : dataRooms.length > 0 ? (
+                  <>
+                    <Select value={selectedDataRoom} onValueChange={setSelectedDataRoom}>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t('upload.choose_dataroom', { defaultValue: 'Choose a data room...' })} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {dataRooms.map(room => (
+                          <SelectItem key={room.id} value={room.id}>
+                            <div className="flex items-center justify-between w-full">
+                              <span>{room.roomName}</span>
+                              {room.groupsList.length > 0 && (
+                                <Badge variant="outline" className="ml-2 text-xs">
+                                  {room.groupsList.join(', ')}
+                                </Badge>
+                              )}
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    
+                    {selectedDataRoom && (
+                      <div className="mt-2 p-2 bg-blue-50 dark:bg-blue-950/20 rounded text-xs text-blue-700 dark:text-blue-300">
+                        <Icon name="Info" size={12} className="inline mr-1" />
+                        {t('upload.dataroom_access_info', { 
+                          defaultValue: 'Files will be accessible to groups: {{groups}}',
+                          groups: getDataRoomGroups(selectedDataRoom)
+                        })}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="text-sm text-muted-foreground">
+                    {t('upload.no_datarooms', { defaultValue: 'No data rooms available. Contact your administrator to create team data rooms.' })}
+                  </div>
+                )}
               </div>
-              <Progress 
-                value={typeof uploadProgress.current === 'object' 
-                  ? Math.min(100, Math.max(0, uploadProgress.current?.percent || 0))
-                  : Math.min(100, Math.max(0, ((uploadProgress.current || 0) / (uploadProgress.total || 1)) * 100))
-                } 
-                className="h-2" 
-              />
+            )}
+
+            {/* Group Sharing Options for Personal Files */}
+            {uploadDestination === 'personal' && (
+              <div className="p-4 border border-border rounded-lg">
+                <Label className="text-sm font-medium mb-3 block">
+                  {t('upload.share_with_groups', { defaultValue: 'Share with Groups (Optional)' })}
+                </Label>
+                
+                {isLoadingGroups ? (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Icon name="Loader2" size={16} className="animate-spin" />
+                    {t('upload.loading_groups', { defaultValue: 'Loading groups...' })}
+                  </div>
+                ) : groups.length > 0 ? (
+                  <>
+                    <div className="space-y-2 max-h-32 overflow-y-auto">
+                      {groups.map(group => (
+                        <div key={group.id} className="flex items-center space-x-2">
+                          <Checkbox 
+                            id={group.id}
+                            checked={selectedGroups.includes(group.id)}
+                            onCheckedChange={(checked) => toggleGroupSelection(group.id, checked)}
+                          />
+                          <Label htmlFor={group.id} className="text-sm flex-1 cursor-pointer">
+                            {group.displayName}
+                            <span className="text-muted-foreground ml-1">
+                              ({group.memberCount || 0} members)
+                            </span>
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {selectedGroups.length > 0 && (
+                      <div className="mt-3 p-2 bg-blue-50 dark:bg-blue-950/20 rounded text-xs text-blue-700 dark:text-blue-300">
+                        <Icon name="Share" size={12} className="inline mr-1" />
+                        {t('upload.sharing_preview', {
+                          defaultValue: 'Files will be shared with: {{groups}}',
+                          groups: selectedGroups.map(id => getGroupName(id)).join(', ')
+                        })}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="text-sm text-muted-foreground">
+                    {t('upload.no_groups', { defaultValue: 'No groups available for sharing.' })}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Upload Progress */}
+          {(isUploading || isSharing) && (
+            <div className="mt-6">
+              {/* Upload Progress */}
+              {isUploading && uploadProgress.total && (
+                <div className="p-4 bg-muted/30 rounded-lg mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">
+                      {t('upload.uploading', { defaultValue: 'Uploading files...' })}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {typeof uploadProgress.current === 'object' 
+                        ? `${Math.round(uploadProgress.current?.percent || 0)}%`
+                        : `${uploadProgress.current || 0} / ${uploadProgress.total || 0}`
+                      }
+                    </span>
+                  </div>
+                  <Progress 
+                    value={typeof uploadProgress.current === 'object' 
+                      ? Math.min(100, Math.max(0, uploadProgress.current?.percent || 0))
+                      : Math.min(100, Math.max(0, ((uploadProgress.current || 0) / (uploadProgress.total || 1)) * 100))
+                    } 
+                    className="h-2" 
+                  />
+                </div>
+              )}
+              
+              {/* Sharing Progress */}
+              {isSharing && (
+                <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                  <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-300">
+                    <Icon name="Share" size={16} className="animate-pulse" />
+                    {t('upload.sharing_files', { defaultValue: 'Sharing files with selected groups...' })}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -504,8 +793,8 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
           )}
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between p-6 border-t border-border">
+        {/* Footer - Fixed at bottom */}
+        <div className="flex-shrink-0 flex items-center justify-between p-6 border-t border-border bg-card">
           <div className="text-sm text-muted-foreground">
             {hasFiles && (
               <span>
@@ -529,7 +818,12 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
             </Button>
             <Button
               onClick={startUpload}
-              disabled={!hasFiles || isUploading}
+              disabled={
+                !hasFiles || 
+                isUploading || 
+                isSharing ||
+                (uploadDestination === 'dataroom' && !selectedDataRoom)
+              }
               className="min-w-[100px]"
             >
               {isUploading ? (
@@ -537,10 +831,20 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
                   <Icon name="Loader2" size={16} className="mr-2 animate-spin" />
                   {t('actions.uploading', { defaultValue: 'Uploading...' })}
                 </>
+              ) : isSharing ? (
+                <>
+                  <Icon name="Share" size={16} className="mr-2 animate-pulse" />
+                  {t('actions.sharing', { defaultValue: 'Sharing...' })}
+                </>
               ) : (
                 <>
                   <Icon name="Upload" size={16} className="mr-2" />
-                  {t('actions.upload', { defaultValue: 'Upload' })}
+                  {uploadDestination === 'dataroom' 
+                    ? t('actions.upload_to_dataroom', { defaultValue: 'Upload to Data Room' })
+                    : selectedGroups.length > 0
+                      ? t('actions.upload_and_share', { defaultValue: 'Upload & Share' })
+                      : t('actions.upload', { defaultValue: 'Upload' })
+                  }
                 </>
               )}
             </Button>

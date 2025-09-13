@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 
-const DataRoomCard = ({ room, onViewDetails, onEdit, onManageUsers, onArchive }) => {
+const DataRoomCard = ({ room, onViewDetails, onEdit, onDelete, onManageGroups }) => {
   const { t, i18n } = useTranslation('data-rooms-management');
   const { t: tCommon } = useTranslation('common');
 
@@ -90,6 +90,18 @@ const DataRoomCard = ({ room, onViewDetails, onEdit, onManageUsers, onArchive })
             <DropdownMenuItem onClick={() => onEdit?.(room.roomId)}>
               <Icon name="Settings" size={14} className="mr-2" />
               {t('actions.edit', { defaultValue: 'Edit' })}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onManageGroups?.(room.roomId)}>
+              <Icon name="Users" size={14} className="mr-2" />
+              {t('actions.manage_groups', { defaultValue: 'Manage Groups' })}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem 
+              onClick={() => onDelete?.(room)} 
+              className="text-destructive focus:text-destructive"
+            >
+              <Icon name="Trash2" size={14} className="mr-2" />
+              {t('actions.delete', { defaultValue: 'Delete' })}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

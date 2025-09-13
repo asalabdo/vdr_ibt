@@ -14,9 +14,11 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 
-const GroupCard = ({ group, onViewDetails, onEdit, onDelete }) => {
+const GroupCard = ({ group, onViewDetails, onEdit, onDelete, onManageMembers }) => {
   const { t, i18n } = useTranslation('groups-management');
   const { t: tCommon } = useTranslation('common');
+
+  const isProtectedGroup = group?.id?.toLowerCase() === 'admin';
 
   const getMemberCountColor = (count) => {
     if (count === 0) return 'bg-muted text-muted-foreground';
@@ -84,14 +86,36 @@ const GroupCard = ({ group, onViewDetails, onEdit, onDelete }) => {
                 <Icon name="Settings" size={14} className="mr-2" />
                 {t('actions.edit', { defaultValue: 'Edit' })}
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem 
-                onClick={() => onDelete?.(group.id)} 
-                className="text-destructive focus:text-destructive"
-              >
-                <Icon name="Trash2" size={14} className="mr-2" />
-                {t('actions.delete', { defaultValue: 'Delete' })}
+              <DropdownMenuItem onClick={() => onManageMembers?.(group.id)}>
+                <Icon name="Users" size={14} className="mr-2" />
+                {t('actions.manage_members', { defaultValue: 'Manage Members' })}
               </DropdownMenuItem>
+              
+              {!isProtectedGroup && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem 
+                    onClick={() => onDelete?.(group.id)} 
+                    className="text-destructive focus:text-destructive"
+                  >
+                    <Icon name="Trash2" size={14} className="mr-2" />
+                    {t('actions.delete', { defaultValue: 'Delete' })}
+                  </DropdownMenuItem>
+                </>
+              )}
+              
+              {isProtectedGroup && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem 
+                    disabled 
+                    className="text-muted-foreground"
+                  >
+                    <Icon name="Shield" size={14} className="mr-2" />
+                    {t('actions.protected_group', { defaultValue: 'Protected Group' })}
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

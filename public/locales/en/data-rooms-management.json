@@ -19,7 +19,8 @@
     "refresh": "Refresh",
     "refreshing": "Refreshing...",
     "coming_soon": "Coming soon!",
-    "manage_groups": "Manage Groups"
+    "manage_groups": "Manage Groups",
+    "delete": "Delete"
   },
 
   "stats": {
@@ -220,5 +221,51 @@
       "reviewer": "Reviewer",
       "partner": "Partner"
     }
+  },
+
+  "delete_modal": {
+    "title": "Delete Data Room",
+    "description": "Are you sure you want to delete \"{{roomName}}\"? This action cannot be undone.",
+    "groups_warning_title": "Warning:",
+    "groups_warning": "This data room has {{count}} group(s) with access. Deleting it will remove all group permissions and shared files.",
+    "storage_warning": "Current storage used: {{size}}. All files in this data room will be permanently deleted.",
+    "final_warning_title": "Warning:",
+    "final_warning": "This action is irreversible. All data, group permissions, and shared access will be permanently lost.",
+    "cancel": "Cancel",
+    "delete": "Delete Data Room",
+    "deleting": "Deleting...",
+    "success_title": "Data room deleted successfully!",
+    "success_description": "Data room \"{{roomName}}\" has been permanently deleted.",
+    "error_title": "Failed to delete data room"
+  },
+
+  "manage_groups": {
+    "loading_title": "Loading...",
+    "loading_description": "Loading data room information...",
+    "title": "Manage Groups - {{roomName}}",
+    "description": "Add or remove groups and set their permissions for this data room. Changes take effect immediately.",
+    "error_loading": "Failed to load data",
+    "current_groups": "Current Groups",
+    "current_groups_hint": "Groups currently with access to this data room",
+    "no_groups": "No groups have access to this data room",
+    "add_groups": "Add Groups",
+    "add_groups_hint": "Select groups to give access to this data room",
+    "no_available_groups": "No groups available",
+    "create_groups": "Create Groups",
+    "assigned": "Assigned",
+    "close": "Close",
+    "add_success": "Group added successfully",
+    "add_error": "Failed to add group",
+    "remove_success": "Group removed successfully",
+    "remove_error": "Failed to remove group",
+    "permissions_success": "Permissions updated successfully",
+    "permissions_error": "Failed to update permissions"
+  },
+
+  "permissions": {
+    "read_only": "Read Only",
+    "read_write": "Read & Write",
+    "full_access": "Full Access",
+    "custom": "Custom"
   }
 }

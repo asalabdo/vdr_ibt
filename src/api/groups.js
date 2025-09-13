@@ -343,16 +343,33 @@ const deleteGroup = async (groupId) => {
       throw new Error('Group ID is required');
     }
     
-    const response = await adminApiClient.delete(withJsonFormat(endpoints.groups.delete(groupId)));
+    // Check for protected groups (based on Nextcloud documentation)
+    const protectedGroups = ['admin'];
+    if (protectedGroups.includes(groupId.toLowerCase())) {
+      throw new Error(`Cannot delete the '${groupId}' group - it is a system group`);
+    }
+    
+    console.log(`🗑️ Deleting group: ${groupId}`);
+    const url = withJsonFormat(endpoints.groups.delete(groupId));
+    console.log(`🌐 DELETE URL: ${url}`);
+    
+    const response = await adminApiClient.delete(url);
+    
+    console.log(`📨 Delete response:`, {
+      status: response.status,
+      statusCode: response.data?.ocs?.meta?.statuscode,
+      message: response.data?.ocs?.meta?.message
+    });
     
     if (response.data?.ocs?.meta?.statuscode === 200) {
+      console.log(`✅ Group '${groupId}' deleted successfully`);
       return {
         success: true,
         message: `Group '${groupId}' has been deleted successfully`
       };
     }
     
-    // Handle specific error codes
+    // Handle specific error codes from Nextcloud documentation
     const statusCode = response.data?.ocs?.meta?.statuscode;
     if (statusCode === 101) {
       throw new Error(`Group '${groupId}' does not exist`);
@@ -363,7 +380,13 @@ const deleteGroup = async (groupId) => {
     throw new Error('Failed to delete group');
     
   } catch (error) {
-    console.error(`❌ Failed to delete group ${groupId}:`, error.message);
+    console.error(`❌ Failed to delete group ${groupId}:`, {
+      message: error.message,
+      status: error.response?.status,
+      statusCode: error.response?.data?.ocs?.meta?.statuscode,
+      apiMessage: error.response?.data?.ocs?.meta?.message,
+      fullError: error.response?.data
+    });
     
     if (error.response?.status === 404) {
       throw new Error(`Group '${groupId}' not found`);

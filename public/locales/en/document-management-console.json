@@ -25,7 +25,10 @@
     "delete_success": "File deleted successfully!",
     "delete_error": "Failed to delete file",
     "deleting": "Deleting...",
-    "retry": "Retry"
+    "retry": "Retry",
+    "upload_to_dataroom": "Upload to Data Room",
+    "upload_and_share": "Upload & Share",
+    "sharing": "Sharing..."
   },
 
   "stats": {
@@ -192,7 +195,19 @@
     "failed_uploads": "Failed to upload {{count}} file(s)",
     "error_single": "Failed to upload {{fileName}}: {{error}}",
     "error_general": "Upload failed: {{error}}",
-    "error_file_too_large": "File size exceeds 100MB limit: {{fileName}} ({{size}})"
+    "error_file_too_large": "File size exceeds 100MB limit: {{fileName}} ({{size}})",
+    "size_info_short": "Up to 500MB • Large files use chunked upload",
+    "destination_title": "Where do you want to upload these files?",
+    "personal_files": "Personal Files",
+    "personal_description": "Upload to your personal directory (can share with groups later)",
+    "team_dataroom": "Team Data Room",
+    "dataroom_description": "Upload to a shared team folder (automatically accessible to team members)",
+    "select_dataroom": "Select Team Data Room",
+    "choose_dataroom": "Choose a data room...",
+    "loading_datarooms": "Loading data rooms...",
+    "dataroom_access_info": "Files will be accessible to groups: {{groups}}",
+    "share_with_groups": "Share with Groups (Optional)",
+    "success_dataroom": "Successfully uploaded {{count}} file(s) to {{roomName}}"
   },
 
   "errors": {

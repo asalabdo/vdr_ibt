@@ -319,11 +319,28 @@ export const useDeleteGroup = (options = {}) => {
       // Remove specific group data from cache
       queryClient.removeQueries({ queryKey: QUERY_KEYS.groupDetails(groupId) });
       queryClient.removeQueries({ queryKey: QUERY_KEYS.groupSubadmins(groupId) });
+      queryClient.removeQueries({ queryKey: QUERY_KEYS.groupMembers(groupId) });
+      
+      // Remove from search cache (any search that might have included this group)
+      queryClient.removeQueries({ queryKey: ['groups', 'search'], exact: false });
+      queryClient.removeQueries({ queryKey: ['groupMemberCounts'], exact: false });
       
       // Invalidate related queries
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.groups });
       queryClient.invalidateQueries({ queryKey: ['availableGroups'] });
       queryClient.invalidateQueries({ queryKey: ['dataRooms'] }); // Groups are used in data rooms
+      queryClient.invalidateQueries({ queryKey: ['users'] }); // User lists might show group memberships
+      
+      // Update any existing groups lists to remove the deleted group
+      queryClient.setQueriesData({ queryKey: ['groups'] }, (oldData) => {
+        if (!oldData?.groups) return oldData;
+        
+        return {
+          ...oldData,
+          groups: oldData.groups.filter(group => group.id !== groupId),
+          total: Math.max(0, (oldData.total || oldData.groups.length) - 1)
+        };
+      });
       
       // Call custom success callback
       onSuccess?.(data, groupId);

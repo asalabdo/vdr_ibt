@@ -14,6 +14,8 @@ import FilterSidebar from './components/FilterSidebar';
 import CreateDataRoomModal from './components/CreateDataRoomModal';
 import DataRoomDetailsModal from './components/DataRoomDetailsModal';
 import EditDataRoomModal from './components/EditDataRoomModal';
+import DeleteDataRoomModal from './components/DeleteDataRoomModal';
+import ManageDataRoomGroupsModal from './components/ManageDataRoomGroupsModal';
 
 const DataRoomsManagement = () => {
   const { t } = useTranslation('data-rooms-management');
@@ -23,6 +25,8 @@ const DataRoomsManagement = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [detailsModal, setDetailsModal] = useState({ open: false, roomId: null });
   const [editModal, setEditModal] = useState({ open: false, roomId: null });
+  const [deleteModal, setDeleteModal] = useState({ open: false, room: null });
+  const [manageGroupsModal, setManageGroupsModal] = useState({ open: false, roomId: null });
   const [selectedFilters, setSelectedFilters] = useState({
     status: 'all',
     dealType: 'all',
@@ -65,6 +69,22 @@ const DataRoomsManagement = () => {
 
   const handleCloseEdit = () => {
     setEditModal({ open: false, roomId: null });
+  };
+
+  const handleDeleteRoom = (room) => {
+    setDeleteModal({ open: true, room });
+  };
+
+  const handleCloseDelete = () => {
+    setDeleteModal({ open: false, room: null });
+  };
+
+  const handleManageGroups = (roomId) => {
+    setManageGroupsModal({ open: true, roomId });
+  };
+
+  const handleCloseManageGroups = () => {
+    setManageGroupsModal({ open: false, roomId: null });
   };
 
 
@@ -347,6 +367,8 @@ const DataRoomsManagement = () => {
                 room={room}
                 onViewDetails={handleViewDetails}
                 onEdit={handleEditRoom}
+                onDelete={handleDeleteRoom}
+                onManageGroups={handleManageGroups}
               />
             ))}
           </div>
@@ -398,6 +420,20 @@ const DataRoomsManagement = () => {
         isOpen={editModal.open}
         onClose={handleCloseEdit}
         room={editModal.roomId ? dataRooms?.find(room => room.roomId === editModal.roomId) : null}
+      />
+      
+      {/* Delete Data Room Modal */}
+      <DeleteDataRoomModal 
+        isOpen={deleteModal.open}
+        onClose={handleCloseDelete}
+        room={deleteModal.room}
+      />
+      
+      {/* Manage Data Room Groups Modal */}
+      <ManageDataRoomGroupsModal 
+        isOpen={manageGroupsModal.open}
+        onClose={handleCloseManageGroups}
+        roomId={manageGroupsModal.roomId}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useShares, useCreateShare, useCreatePublicLink } from '@/hooks/api';
+import { useShares, useCreateShare, useCreatePublicLink, useCreateGroupShare, useGroups } from '@/hooks/api';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
@@ -10,12 +10,15 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { shareTypes } from '../../../api/endpoints';
 import Icon from '../../../components/AppIcon';
 
 const PermissionManagerModal = ({ isOpen, onClose, file }) => {
   const { t } = useTranslation('document-management-console');
   const [activeTab, setActiveTab] = useState('shares');
   const [emailShare, setEmailShare] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState('');
   
   // Fetch existing shares for the file
   const { 
@@ -52,6 +55,25 @@ const PermissionManagerModal = ({ isOpen, onClose, file }) => {
       });
     }
   });
+  
+  // Fetch groups for group sharing
+  const { data: groupsData, isLoading: isLoadingGroups } = useGroups({
+    enabled: isOpen && activeTab === 'create'
+  });
+  const groups = groupsData?.groups || [];
+  
+  // Create group share mutation
+  const createGroupShareMutation = useCreateGroupShare({
+    onSuccess: (data) => {
+      toast.success(t('permissions_modal.group_share_created', { defaultValue: 'Group share created successfully!' }));
+      setSelectedGroup('');
+    },
+    onError: (error) => {
+      toast.error(t('permissions_modal.group_share_error', { defaultValue: 'Failed to create group share' }), {
+        description: error.message,
+      });
+    }
+  });
 
   if (!isOpen || !file) return null;
 
@@ -71,6 +93,17 @@ const PermissionManagerModal = ({ isOpen, onClose, file }) => {
       shareType: 0, // User share
       shareWith: emailShare.trim(),
       permissions: 1 // Read permission
+    });
+  };
+  
+  const handleCreateGroupShare = () => {
+    if (!selectedGroup) return;
+    
+    createGroupShareMutation.mutate({
+      path: file.path,
+      shareType: shareTypes.GROUP, // Group share (shareType: 1)
+      shareWith: selectedGroup,
+      permissions: ['read', 'update', 'create', 'delete', 'share'] // Full permissions
     });
   };
 
@@ -258,6 +291,62 @@ const PermissionManagerModal = ({ isOpen, onClose, file }) => {
                         {t('permissions_modal.share', { defaultValue: 'Share' })}
                       </Button>
                     </div>
+                  </CardContent>
+                </Card>
+
+                {/* Group Share */}
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Icon name="Users" size={16} />
+                      {t('permissions_modal.group_share_title', { defaultValue: 'Share with Group' })}
+                    </CardTitle>
+                    <CardDescription>
+                      {t('permissions_modal.group_share_description', { defaultValue: 'Share with an entire group of users' })}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex gap-2">
+                      <Select value={selectedGroup} onValueChange={setSelectedGroup}>
+                        <SelectTrigger className="flex-1">
+                          <SelectValue placeholder={t('permissions_modal.select_group', { defaultValue: 'Select a group...' })} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {groups.map(group => (
+                            <SelectItem key={group.id} value={group.id}>
+                              <div className="flex items-center justify-between w-full">
+                                <span>{group.displayName}</span>
+                                <Badge variant="outline" className="ml-2 text-xs">
+                                  {group.memberCount || 0} members
+                                </Badge>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Button 
+                        onClick={handleCreateGroupShare}
+                        disabled={!selectedGroup || createGroupShareMutation.isPending}
+                        className="gap-2"
+                        variant="outline"
+                      >
+                        {createGroupShareMutation.isPending ? (
+                          <Icon name="Loader2" size={14} className="animate-spin" />
+                        ) : (
+                          <Icon name="Users" size={14} />
+                        )}
+                        {createGroupShareMutation.isPending 
+                          ? t('permissions_modal.sharing', { defaultValue: 'Sharing...' })
+                          : t('permissions_modal.share_with_group', { defaultValue: 'Share' })
+                        }
+                      </Button>
+                    </div>
+                    
+                    {groups.length === 0 && (
+                      <div className="text-sm text-muted-foreground">
+                        {t('permissions_modal.no_groups_available', { defaultValue: 'No groups available for sharing.' })}
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
