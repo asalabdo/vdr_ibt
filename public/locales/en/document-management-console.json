@@ -3,9 +3,8 @@
   "subtitle": "Manage and access files across all data rooms",
 
   "actions": {
-    "bulk_download": "Bulk Download",
-    "generate_report": "Generate Report",
     "upload_document": "Upload Document",
+    "upload_files": "Upload Files",
     "upload_file": "Upload Files",
     "download_all": "Download All",
     "approve": "Approve",
@@ -13,11 +12,20 @@
     "download": "Download",
     "move": "Move",
     "cancel": "Cancel",
+    "upload": "Upload",
+    "uploading": "Uploading...",
     "save_changes": "Save Changes",
-    "clear_selection": "Clear selection",
     "download_success": "File downloaded successfully!",
     "download_error": "Failed to download file",
-    "folder_download_info": "Folder download as ZIP will be implemented soon"
+    "folder_download_info": "Folder download as ZIP will be implemented soon",
+    "delete_file_title": "Delete File",
+    "delete_folder_title": "Delete Folder",
+    "delete_file_confirm": "Are you sure you want to delete \"{{fileName}}\"? This action cannot be undone.",
+    "delete_folder_confirm": "Are you sure you want to delete the folder \"{{folderName}}\" and all its contents? This action cannot be undone.",
+    "delete_success": "File deleted successfully!",
+    "delete_error": "Failed to delete file",
+    "deleting": "Deleting...",
+    "retry": "Retry"
   },
 
   "stats": {
@@ -73,23 +81,15 @@
     "folder": "Folder"
   },
 
-  "bulk_actions": {
-    "selected_singular": "{{count}} document selected",
-    "selected_plural": "{{count}} documents selected",
-    "delete_confirm": "Are you sure you want to delete {{count}} selected files? This action cannot be undone.",
-    "download_success": "File downloaded successfully!",
-    "download_error": "Failed to download file",
-    "delete_success": "Files deleted successfully!",
-    "delete_error": "Failed to delete files",
-    "multiple_download_info": "Multiple file download as ZIP will be implemented soon"
-  },
-
   "tooltips": {
     "preview_document": "Preview document",
     "preview_file": "Preview file",
     "download_document": "Download document",
     "download_file": "Download file", 
-    "manage_permissions": "Manage permissions"
+    "manage_permissions": "Manage permissions",
+    "delete_item": "Delete {{type}}",
+    "delete_file": "Delete file",
+    "delete_folder": "Delete folder"
   },
 
   "drag_drop": {
@@ -173,5 +173,31 @@
     "back": "Back",
     "home": "Home",
     "current_folder": "Current Folder"
+  },
+
+  "upload": {
+    "title": "Upload Files",
+    "upload_to": "Upload to: {{path}}",
+    "upload_to_root": "Upload to root directory",
+    "drag_drop": "Drag and drop files here",
+    "drop_files": "Drop files here",
+    "or_click": "or click to browse files",
+    "select_files": "Select Files",
+    "uploading": "Uploading files...",
+    "files_to_upload": "Files to upload ({{count}})",
+    "files_ready": "{{count}} file(s) ready",
+    "clear_all": "Clear All",
+    "success_multiple": "Successfully uploaded {{count}} file(s)",
+    "completed_uploads": "Successfully uploaded {{count}} file(s)",
+    "failed_uploads": "Failed to upload {{count}} file(s)",
+    "error_single": "Failed to upload {{fileName}}: {{error}}",
+    "error_general": "Upload failed: {{error}}",
+    "error_file_too_large": "File size exceeds 100MB limit: {{fileName}} ({{size}})"
+  },
+
+  "errors": {
+    "loading_failed": "Failed to load files",
+    "network_error": "Network error occurred",
+    "permission_denied": "Permission denied"
   }
 }

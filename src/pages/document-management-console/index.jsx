@@ -1,31 +1,43 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useListFiles, useDownloadFile } from '@/hooks/api';
+import { useListFiles, useDownloadFile, useDeleteItem } from '@/hooks/api';
 import { useAuthStatus } from '@/hooks/api';
 import Header from '../../components/ui/Header';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from '@/components/ui/alert-dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import Icon from '../../components/AppIcon';
 import FilePreviewModal from './components/FilePreviewModal';
 import PermissionManagerModal from './components/PermissionManagerModal';
-import BulkActionToolbar from './components/BulkActionToolbar';
+import FileUploadModal from './components/FileUploadModal';
 
 const FilesManagementConsole = () => {
   const { t } = useTranslation('document-management-console');
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
-  const [selectedFiles, setSelectedFiles] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: 'lastModified', direction: 'desc' });
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [currentPath, setCurrentPath] = useState('/');
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   // Fetch files using the API (following the pattern from other pages)
   // Get current username from auth context or fallback to environment
@@ -64,6 +76,24 @@ const FilesManagementConsole = () => {
     onError: (error) => {
       toast.error(t('actions.download_error', { 
         defaultValue: 'Failed to download file' 
+      }), {
+        description: error.message,
+      });
+    }
+  });
+
+  // Delete file mutation
+  const deleteFileMutation = useDeleteItem({
+    onSuccess: (data, variables) => {
+      toast.success(t('actions.delete_success', { 
+        defaultValue: 'File deleted successfully!' 
+      }));
+      // Refresh the file list
+      refetch();
+    },
+    onError: (error) => {
+      toast.error(t('actions.delete_error', { 
+        defaultValue: 'Failed to delete file' 
       }), {
         description: error.message,
       });
@@ -169,23 +199,6 @@ const FilesManagementConsole = () => {
     }));
   };
 
-  // File selection handlers
-  const handleSelectFile = (filePath) => {
-    setSelectedFiles(prev => 
-      prev?.includes(filePath) 
-        ? prev?.filter(path => path !== filePath)
-        : [...prev, filePath]
-    );
-  };
-
-  const handleSelectAllFiles = () => {
-    if (selectedFiles?.length === sortedFiles?.length) {
-      setSelectedFiles([]);
-    } else {
-      setSelectedFiles(sortedFiles?.map(file => file?.path));
-    }
-  };
-
   const handleFilePreview = (file) => {
     setSelectedFile(file);
     setIsPreviewModalOpen(true);
@@ -214,6 +227,36 @@ const FilesManagementConsole = () => {
     });
   };
 
+  const handleFileDelete = (file) => {
+    setDeleteTarget({ file });
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+
+    try {
+      // Single file/folder deletion
+      const file = deleteTarget.file;
+      const relativePath = file.path.replace(/^\/remote\.php\/dav\/files\/[^/]+/, '') || `/${file.name}`;
+      
+      await deleteFileMutation.mutateAsync({
+        username: currentUsername,
+        itemPath: relativePath
+      });
+    } catch (error) {
+      // Error handling is managed by the mutation's onError
+    } finally {
+      setIsDeleteDialogOpen(false);
+      setDeleteTarget(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setIsDeleteDialogOpen(false);
+    setDeleteTarget(null);
+  };
+
   // Folder navigation handlers
   const handleFolderNavigation = (folder) => {
     if (!folder?.isDirectory) return;
@@ -223,7 +266,6 @@ const FilesManagementConsole = () => {
     const cleanPath = relativePath.replace(/\/+/g, '/'); // Clean up multiple slashes
     
     setCurrentPath(cleanPath);
-    setSelectedFiles([]); // Clear selection when navigating
     setSearchQuery(''); // Clear search when navigating
   };
 
@@ -233,20 +275,17 @@ const FilesManagementConsole = () => {
       pathParts.pop(); // Remove last directory
       const newPath = '/' + pathParts.join('/');
       setCurrentPath(newPath === '/' ? '/' : newPath);
-      setSelectedFiles([]);
       setSearchQuery('');
     }
   };
 
   const handleNavigateHome = () => {
     setCurrentPath('/');
-    setSelectedFiles([]);
     setSearchQuery('');
   };
 
   const handleNavigateToPath = (targetPath) => {
     setCurrentPath(targetPath || '/');
-    setSelectedFiles([]);
     setSearchQuery('');
   };
 
@@ -262,10 +301,30 @@ const FilesManagementConsole = () => {
 
   const handleDrop = (e) => {
     e?.preventDefault();
+    e?.stopPropagation();
     setIsDragOver(false);
-    // Handle file upload logic here
+    
+    // Handle file drop for upload
     const files = Array.from(e?.dataTransfer?.files || []);
-    console.log('Files dropped:', files);
+    if (files.length > 0) {
+      // Open upload modal with dropped files
+      setIsUploadModalOpen(true);
+      console.log('Files dropped:', files);
+    }
+  };
+
+  // Upload modal handlers
+  const handleUploadModalOpen = () => {
+    setIsUploadModalOpen(true);
+  };
+
+  const handleUploadModalClose = () => {
+    setIsUploadModalOpen(false);
+  };
+
+  const handleUploadComplete = () => {
+    // Refresh the file list after successful uploads
+    refetch();
   };
 
   // Loading state (following the pattern from other pages)
@@ -390,13 +449,13 @@ const FilesManagementConsole = () => {
             </div>
             
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <Button variant="default">
-                <Icon name="Download" className="w-4 h-4 mr-2" />
-                {t('actions.bulk_download')}
-              </Button>
-              <Button variant="outline">
-                <Icon name="FileText" className="w-4 h-4 mr-2" />
-                {t('actions.generate_report')}
+              <Button 
+                onClick={handleUploadModalOpen}
+                variant="default"
+                className="gap-2"
+              >
+                <Icon name="Upload" className="w-4 h-4" />
+                {t('actions.upload_files', { defaultValue: 'Upload Files' })}
               </Button>
             </div>
           </div>
@@ -549,15 +608,6 @@ const FilesManagementConsole = () => {
             </div>
           </div>
 
-          {/* Bulk Action Toolbar */}
-          {selectedFiles?.length > 0 && (
-            <BulkActionToolbar
-              selectedCount={selectedFiles?.length}
-              selectedFiles={selectedFiles}
-              onClearSelection={() => setSelectedFiles([])}
-            />
-          )}
-
           {/* Document Table */}
           <div 
             className={`bg-card rounded-xl shadow-sm border border-border overflow-hidden ${
@@ -580,14 +630,6 @@ const FilesManagementConsole = () => {
               <table className="w-full">
                 <thead className="bg-muted/50 border-b border-border">
                   <tr>
-                    <th className="text-left py-3 px-4">
-                      <input
-                        type="checkbox"
-                        checked={selectedFiles?.length === sortedFiles?.length && sortedFiles?.length > 0}
-                        onChange={handleSelectAllFiles}
-                        className="rounded border-border"
-                      />
-                    </th>
                     <th 
                       className="text-left py-3 px-4 font-medium text-foreground cursor-pointer hover:bg-muted/50 transition-colors"
                       onClick={() => handleSort('name')}
@@ -659,14 +701,6 @@ const FilesManagementConsole = () => {
                 <tbody className="divide-y divide-border">
                   {sortedFiles?.map((file) => (
                     <tr key={file?.path} className="hover:bg-muted/30 transition-colors">
-                      <td className="py-3 px-4">
-                        <input
-                          type="checkbox"
-                          checked={selectedFiles?.includes(file?.path)}
-                          onChange={() => handleSelectFile(file?.path)}
-                          className="rounded border-border"
-                        />
-                      </td>
                       <td className="py-3 px-4">
                         <div 
                           className={`flex items-center space-x-3 rtl:space-x-reverse ${
@@ -742,6 +776,21 @@ const FilesManagementConsole = () => {
                           >
                             <Icon name="Share" size={16} />
                           </button>
+                          <button
+                            onClick={() => handleFileDelete(file)}
+                            className="p-1 text-muted-foreground hover:text-destructive transition-colors"
+                            title={file?.isDirectory 
+                              ? t('tooltips.delete_folder', { defaultValue: 'Delete folder' })
+                              : t('tooltips.delete_file', { defaultValue: 'Delete file' })
+                            }
+                            disabled={deleteFileMutation.isPending}
+                          >
+                            {deleteFileMutation.isPending ? (
+                              <Icon name="Loader2" size={16} className="animate-spin" />
+                            ) : (
+                              <Icon name="Trash2" size={16} />
+                            )}
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -765,7 +814,7 @@ const FilesManagementConsole = () => {
                     : t('search.empty_state_description', { defaultValue: 'This directory is empty. Upload files or create folders to get started.' })
                   }
                 </p>
-                <Button variant="default" onClick={() => toast.info('Upload functionality will be implemented')}>
+                <Button variant="default" onClick={handleUploadModalOpen}>
                   <Icon name="Upload" className="w-4 h-4 mr-2" />
                   {t('actions.upload_file', { defaultValue: 'Upload Files' })}
                 </Button>
@@ -785,6 +834,66 @@ const FilesManagementConsole = () => {
         onClose={() => setIsPermissionModalOpen(false)}
         file={selectedFile}
       />
+      <FileUploadModal
+        isOpen={isUploadModalOpen}
+        onClose={handleUploadModalClose}
+        currentPath={currentPath}
+        onUploadComplete={handleUploadComplete}
+      />
+      
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <Icon name="AlertTriangle" size={20} className="text-destructive" />
+              {deleteTarget?.file?.isDirectory 
+                ? t('actions.delete_folder_title', { defaultValue: 'Delete Folder' })
+                : t('actions.delete_file_title', { defaultValue: 'Delete File' })
+              }
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteTarget?.file?.isDirectory ? (
+                <span>
+                  {t('actions.delete_folder_confirm', { 
+                    defaultValue: 'Are you sure you want to delete the folder "{{folderName}}" and all its contents? This action cannot be undone.',
+                    folderName: deleteTarget?.file?.name
+                  })}
+                </span>
+              ) : (
+                <span>
+                  {t('actions.delete_file_confirm', { 
+                    defaultValue: 'Are you sure you want to delete "{{fileName}}"? This action cannot be undone.',
+                    fileName: deleteTarget?.file?.name
+                  })}
+                </span>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={cancelDelete}>
+              {t('actions.cancel', { defaultValue: 'Cancel' })}
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={deleteFileMutation.isPending}
+            >
+              {deleteFileMutation.isPending ? (
+                <>
+                  <Icon name="Loader2" size={16} className="mr-2 animate-spin" />
+                  {t('actions.deleting', { defaultValue: 'Deleting...' })}
+                </>
+              ) : (
+                <>
+                  <Icon name="Trash2" size={16} className="mr-2" />
+                  {t('actions.delete', { defaultValue: 'Delete' })}
+                </>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

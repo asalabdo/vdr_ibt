@@ -3,9 +3,8 @@
   "subtitle": "إدارة والوصول إلى الملفات عبر جميع غرف البيانات",
 
   "actions": {
-    "bulk_download": "تحميل مجمع",
-    "generate_report": "إنشاء تقرير",
     "upload_document": "رفع مستند",
+    "upload_files": "رفع ملفات",
     "upload_file": "رفع ملفات",
     "download_all": "تحميل الكل",
     "approve": "موافقة",
@@ -13,11 +12,21 @@
     "download": "تحميل",
     "move": "نقل",
     "cancel": "إلغاء",
+    "upload": "رفع",
+    "uploading": "جاري الرفع...",
     "save_changes": "حفظ التغييرات",
-    "clear_selection": "مسح التحديد",
     "download_success": "تم تحميل الملف بنجاح!",
     "download_error": "فشل في تحميل الملف",
-    "folder_download_info": "سيتم تنفيذ تحميل المجلد كملف ZIP قريباً"
+    "folder_download_info": "سيتم تنفيذ تحميل المجلد كملف ZIP قريباً",
+    "delete_file_title": "حذف ملف",
+    "delete_folder_title": "حذف مجلد",
+    "delete_file_confirm": "هل أنت متأكد من أنك تريد حذف \"{{fileName}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+    "delete_folder_confirm": "هل أنت متأكد من أنك تريد حذف المجلد \"{{folderName}}\" وجميع محتوياته؟ لا يمكن التراجع عن هذا الإجراء.",
+    "delete_success": "تم حذف الملف بنجاح!",
+    "delete_error": "فشل في حذف الملف",
+    "deleting": "جاري الحذف...",
+    "retry": "إعادة المحاولة",
+    "close": "إغلاق"
   },
 
   "stats": {
@@ -73,23 +82,15 @@
     "folder": "مجلد"
   },
 
-  "bulk_actions": {
-    "selected_singular": "{{count}} مستند محدد",
-    "selected_plural": "{{count}} مستندات محددة",
-    "delete_confirm": "هل أنت متأكد من أنك تريد حذف {{count}} ملف محدد؟ لا يمكن التراجع عن هذا الإجراء.",
-    "download_success": "تم تحميل الملف بنجاح!",
-    "download_error": "فشل في تحميل الملف",
-    "delete_success": "تم حذف الملفات بنجاح!",
-    "delete_error": "فشل في حذف الملفات",
-    "multiple_download_info": "سيتم تنفيذ تحميل عدة ملفات كملف ZIP قريباً"
-  },
-
   "tooltips": {
     "preview_document": "معاينة المستند",
     "preview_file": "معاينة الملف",
     "download_document": "تحميل المستند",
     "download_file": "تحميل الملف", 
-    "manage_permissions": "إدارة الصلاحيات"
+    "manage_permissions": "إدارة الصلاحيات",
+    "delete_item": "حذف {{type}}",
+    "delete_file": "حذف ملف",
+    "delete_folder": "حذف مجلد"
   },
 
   "drag_drop": {
@@ -173,5 +174,31 @@
     "back": "رجوع",
     "home": "الرئيسية",
     "current_folder": "المجلد الحالي"
+  },
+
+  "upload": {
+    "title": "رفع الملفات",
+    "upload_to": "الرفع إلى: {{path}}",
+    "upload_to_root": "الرفع إلى المجلد الجذر",
+    "drag_drop": "اسحب وأفلت الملفات هنا",
+    "drop_files": "أفلت الملفات هنا",
+    "or_click": "أو انقر لتصفح الملفات",
+    "select_files": "اختيار ملفات",
+    "uploading": "جاري رفع الملفات...",
+    "files_to_upload": "الملفات المراد رفعها ({{count}})",
+    "files_ready": "{{count}} ملف جاهز",
+    "clear_all": "مسح الكل",
+    "success_multiple": "تم رفع {{count}} ملف بنجاح",
+    "completed_uploads": "تم رفع {{count}} ملف بنجاح",
+    "failed_uploads": "فشل في رفع {{count}} ملف",
+    "error_single": "فشل في رفع {{fileName}}: {{error}}",
+    "error_general": "فشل في الرفع: {{error}}",
+    "error_file_too_large": "حجم الملف يتجاوز حد 100 ميجابايت: {{fileName}} ({{size}})"
+  },
+
+  "errors": {
+    "loading_failed": "فشل في تحميل الملفات",
+    "network_error": "حدث خطأ في الشبكة",
+    "permission_denied": "تم رفض الإذن"
   }
 }
