@@ -381,22 +381,22 @@ const AuditLogs = () => {
                       </div>
                     ) : (
                       <>
-                        <div className="overflow-x-auto">
-                          <Table>
+                        <div className="overflow-x-auto" dir="auto">
+                          <Table className="table-fixed w-full">
                             <TableHeader>
                               <TableRow className="hover:bg-transparent">
-                                <TableHead className="text-xs font-medium text-muted-foreground">{t('table.user', 'User')}</TableHead>
-                                <TableHead className="text-xs font-medium text-muted-foreground">{t('table.activity', 'Activity')}</TableHead>
-                                <TableHead className="text-xs font-medium text-muted-foreground">{t('table.severity', 'Severity')}</TableHead>
-                                <TableHead className="text-xs font-medium text-muted-foreground">{t('table.time', 'Time')}</TableHead>
-                                <TableHead className="text-xs font-medium text-muted-foreground w-[100px]">{t('table.actions', 'Actions')}</TableHead>
+                                <TableHead className="text-xs font-medium text-muted-foreground text-left rtl:text-right">{t('table.user', 'User')}</TableHead>
+                                <TableHead className="text-xs font-medium text-muted-foreground text-left rtl:text-right">{t('table.activity', 'Activity')}</TableHead>
+                                <TableHead className="text-xs font-medium text-muted-foreground text-center rtl:text-center">{t('table.severity', 'Severity')}</TableHead>
+                                <TableHead className="text-xs font-medium text-muted-foreground text-left rtl:text-right">{t('table.time', 'Time')}</TableHead>
+                                <TableHead className="text-xs font-medium text-muted-foreground text-center rtl:text-center w-[100px]">{t('table.actions', 'Actions')}</TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
                               {logs.map((log) => (
                                 <TableRow key={log.id} className="group hover:bg-muted/30">
-                                  <TableCell className="py-3">
-                                    <div className="flex items-center gap-3">
+                                  <TableCell className="py-3 text-left rtl:text-right">
+                                    <div className="flex items-center gap-3 rtl:space-x-reverse">
                                       <Avatar className="h-8 w-8">
                                         <AvatarFallback className="bg-primary/10 text-primary font-medium text-xs">
                                           {getUserInitials(log)}
@@ -408,21 +408,23 @@ const AuditLogs = () => {
                                       </div>
                                     </div>
                                   </TableCell>
-                                  <TableCell className="py-3 max-w-md">
+                                  <TableCell className="py-3 max-w-md text-left rtl:text-right">
                                     <div className="space-y-1">
                                       <p className="text-sm font-medium truncate">{log.subject || log.message}</p>
                                       <p className="text-xs text-muted-foreground truncate">{log.message !== log.subject ? log.message : log.type}</p>
                                     </div>
                                   </TableCell>
-                                  <TableCell className="py-3">
-                                    <Badge 
-                                      variant="secondary" 
-                                      className={`text-xs py-0 px-2 ${getSeverityBadgeClass(log.severity)}`}
-                                    >
-                                      {t(`severity.${log.severity}`, log.severity)}
-                                    </Badge>
+                                  <TableCell className="py-3 text-center">
+                                    <div className="flex justify-center">
+                                      <Badge 
+                                        variant="secondary" 
+                                        className={`text-xs py-0 px-2 ${getSeverityBadgeClass(log.severity)}`}
+                                      >
+                                        {t(`severity.${log.severity}`, log.severity)}
+                                      </Badge>
+                                    </div>
                                   </TableCell>
-                                  <TableCell className="py-3">
+                                  <TableCell className="py-3 text-left rtl:text-right">
                                     <div className="text-xs space-y-1">
                                       <p className="font-medium">{formatTimestamp(log.timestamp)}</p>
                                       {log.relativeTime && (
@@ -430,16 +432,18 @@ const AuditLogs = () => {
                                       )}
                                     </div>
                                   </TableCell>
-                                  <TableCell className="py-3">
-                                    <Button 
-                                      variant="outline" 
-                                      size="sm"
-                                      onClick={() => handleLogClick(log)}
-                                      className="gap-1 h-7 px-2 text-xs"
-                                    >
-                                      <Icon name="Eye" size={10} />
-                                      {t('table.view', 'View')}
-                                    </Button>
+                                  <TableCell className="py-3 text-center">
+                                    <div className="flex justify-center">
+                                      <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => handleLogClick(log)}
+                                        className="gap-1 h-7 px-2 text-xs rtl:space-x-reverse"
+                                      >
+                                        <Icon name="Eye" size={10} />
+                                        {t('table.view', 'View')}
+                                      </Button>
+                                    </div>
                                   </TableCell>
                                 </TableRow>
                               ))}
