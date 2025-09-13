@@ -59,7 +59,7 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
 
   // File validation
   const validateFile = (file) => {
-    const maxSize = 100 * 1024 * 1024; // 100MB
+    const maxSize = 500 * 1024 * 1024; // 500MB - increased limit
     const allowedTypes = [
       // Documents
       'application/pdf',
@@ -108,11 +108,17 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
       return {
         valid: false,
         error: t('upload.error_file_too_large', { 
-          defaultValue: 'File size exceeds 100MB limit',
+          defaultValue: 'File size exceeds 500MB limit',
           fileName: file.name,
           size: formatFileSize(file.size || 0)
         })
       };
+    }
+
+    // Warn about large files that will use chunked upload
+    const chunkThreshold = 50 * 1024 * 1024; // 50MB
+    if ((file.size || 0) > chunkThreshold) {
+      console.log(`📦 Large file detected: ${file.name} (${formatFileSize(file.size || 0)}) - will use chunked upload`);
     }
 
     // Allow all file types for now, but warn about potentially unsupported types
@@ -338,7 +344,7 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
           {/* Drop Zone */}
           <div
-            className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+            className={`relative border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
               isDragOver
                 ? 'border-primary bg-primary/10'
                 : 'border-border hover:border-primary/50 hover:bg-muted/30'
@@ -350,26 +356,34 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
           >
             <Icon 
               name="Upload" 
-              size={48} 
-              className={`mx-auto mb-4 ${isDragOver ? 'text-primary' : 'text-muted-foreground'}`} 
+              size={32} 
+              className={`mx-auto mb-3 ${isDragOver ? 'text-primary' : 'text-muted-foreground'}`} 
             />
-            <h4 className="text-lg font-medium text-foreground mb-2">
+            <h4 className="text-base font-medium text-foreground mb-2">
               {isDragOver
                 ? t('upload.drop_files', { defaultValue: 'Drop files here' })
-                : t('upload.drag_drop', { defaultValue: 'Drag and drop files here' })
+                : t('upload.drag_drop', { defaultValue: 'Drag & drop files' })
               }
             </h4>
-            <p className="text-muted-foreground mb-4">
-              {t('upload.or_click', { defaultValue: 'or click to browse files' })}
+            <p className="text-sm text-muted-foreground mb-3">
+              {t('upload.or_click', { defaultValue: 'or click to browse' })}
             </p>
             <Button
               onClick={handleFileInputClick}
               variant="outline"
+              size="sm"
               disabled={isUploading}
+              className="mb-3"
             >
               <Icon name="FolderOpen" className="w-4 h-4 mr-2" />
               {t('upload.select_files', { defaultValue: 'Select Files' })}
             </Button>
+            <div className="text-xs text-muted-foreground bg-muted/20 rounded px-3 py-1">
+              <Icon name="Info" size={10} className="inline mr-1" />
+              {t('upload.size_info_short', { 
+                defaultValue: 'Up to 500MB • Large files use chunked upload' 
+              })}
+            </div>
             <input
               ref={fileInputRef}
               type="file"
@@ -437,9 +451,16 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
                         <p className="text-sm font-medium text-foreground truncate">
                           {file.name}
                         </p>
-                        <p className="text-xs text-muted-foreground">
-                          {formatFileSize(file.size || 0)}
-                        </p>
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-muted-foreground">
+                            {formatFileSize(file.size || 0)}
+                          </p>
+                          {(file.size || 0) > 50 * 1024 * 1024 && (
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                              {t('upload.chunked_upload', { defaultValue: 'Chunked Upload' })}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <Button
@@ -459,9 +480,9 @@ const FileUploadModal = ({ isOpen, onClose, currentPath = '', onUploadComplete }
 
           {/* Upload Results */}
           {hasCompletedUploads && (
-            <Alert className="mt-4 border-green-200 bg-green-50">
-              <Icon name="CheckCircle" className="text-green-600" size={16} />
-              <AlertDescription className="text-green-800">
+            <Alert className="mt-4 border-green-500/20 bg-green-500/10 dark:border-green-400/30 dark:bg-green-400/10">
+              <Icon name="CheckCircle" className="text-green-600 dark:text-green-400" size={16} />
+              <AlertDescription className="text-green-700 dark:text-green-300 font-medium">
                 {t('upload.completed_uploads', {
                   defaultValue: `Successfully uploaded ${completedUploads.length} file(s)`,
                   count: completedUploads.length

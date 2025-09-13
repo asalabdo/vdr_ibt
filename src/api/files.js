@@ -341,7 +341,89 @@ const copyItem = async (username, sourcePath, destinationPath, options = {}) => 
 };
 
 /**
- * Upload a file
+ * Calculate appropriate timeout for file upload based on file size
+ * @param {number} fileSize - File size in bytes
+ * @returns {number} Timeout in milliseconds
+ */
+const calculateUploadTimeout = (fileSize) => {
+  // Base timeout of 60 seconds
+  const baseTimeout = 60000;
+  
+  // Add 30 seconds per 10MB
+  const additionalTimeout = Math.ceil(fileSize / (10 * 1024 * 1024)) * 30000;
+  
+  // Maximum timeout of 10 minutes
+  const maxTimeout = 600000;
+  
+  return Math.min(baseTimeout + additionalTimeout, maxTimeout);
+};
+
+/**
+ * Upload file in chunks for better handling of large files
+ * @param {string} username - Username
+ * @param {string} filePath - Destination file path
+ * @param {File|Blob} fileData - File data to upload
+ * @param {Object} options - Upload options
+ * @returns {Object} Upload result
+ */
+const uploadFileChunked = async (username, filePath, fileData, options = {}) => {
+  const { onProgress } = options;
+  const chunkSize = 5 * 1024 * 1024; // 5MB chunks
+  const totalChunks = Math.ceil(fileData.size / chunkSize);
+  let uploadedBytes = 0;
+
+  try {
+    for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+      const start = chunkIndex * chunkSize;
+      const end = Math.min(start + chunkSize, fileData.size);
+      const chunk = fileData.slice(start, end);
+      
+      const webdavUrl = buildWebDAVUrl(username, filePath);
+      
+      const config = {
+        method: 'PUT',
+        url: webdavUrl,
+        data: chunk,
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Content-Range': `bytes ${start}-${end - 1}/${fileData.size}`,
+          'X-Upload-Chunk': chunkIndex.toString(),
+          'X-Upload-Total-Chunks': totalChunks.toString(),
+        },
+        timeout: 120000, // 2 minutes per chunk
+      };
+
+      // For multi-chunk uploads, use PATCH for intermediate chunks
+      if (totalChunks > 1 && chunkIndex < totalChunks - 1) {
+        config.method = 'PATCH';
+      }
+
+      await apiClient(config);
+      
+      uploadedBytes += chunk.size;
+      
+      // Report progress
+      if (onProgress && typeof onProgress === 'function') {
+        const percentCompleted = Math.round((uploadedBytes * 100) / fileData.size);
+        onProgress(percentCompleted, uploadedBytes, fileData.size);
+      }
+    }
+
+    return {
+      success: true,
+      message: `File "${filePath}" uploaded successfully`,
+      path: filePath,
+      method: 'chunked',
+    };
+    
+  } catch (error) {
+    console.error(`❌ Failed to upload file chunks for ${filePath}:`, error.message);
+    throw error;
+  }
+};
+
+/**
+ * Upload a file with intelligent size-based strategy
  * @param {string} username - Username
  * @param {string} filePath - Destination file path
  * @param {File|Blob|ArrayBuffer} fileData - File data to upload
@@ -357,13 +439,41 @@ const uploadFile = async (username, filePath, fileData, options = {}) => {
     }
     
     const { onProgress, overwrite = true } = options;
+    const fileSize = fileData.size || fileData.byteLength || 0;
     
+    // Check if file exists if overwrite is disabled
+    if (!overwrite) {
+      try {
+        const webdavUrl = buildWebDAVUrl(username, filePath);
+        await apiClient.head(webdavUrl);
+        throw new Error('File already exists and overwrite is disabled');
+      } catch (error) {
+        // If HEAD request fails (404), file doesn't exist, which is what we want
+        if (error.response?.status !== 404) {
+          throw error;
+        }
+      }
+    }
+    
+    // Use chunked upload for files larger than 50MB
+    const chunkThreshold = 50 * 1024 * 1024; // 50MB
+    
+    if (fileSize > chunkThreshold && (fileData instanceof File || fileData instanceof Blob)) {
+      console.log(`📦 Using chunked upload for large file: ${filePath} (${formatFileSize(fileSize)})`);
+      return await uploadFileChunked(username, filePath, fileData, options);
+    }
+    
+    // Standard upload for smaller files
     const webdavUrl = buildWebDAVUrl(username, filePath);
+    const timeout = calculateUploadTimeout(fileSize);
+    
+    console.log(`📤 Uploading file: ${filePath} (${formatFileSize(fileSize)}) with ${timeout/1000}s timeout`);
     
     const config = {
       method: 'PUT',
       url: webdavUrl,
       data: fileData,
+      timeout: timeout,
       headers: {
         'Content-Type': 'application/octet-stream',
       },
@@ -377,19 +487,6 @@ const uploadFile = async (username, filePath, fileData, options = {}) => {
       };
     }
     
-    // Check if file exists if overwrite is disabled
-    if (!overwrite) {
-      try {
-        await apiClient.head(webdavUrl);
-        throw new Error('File already exists and overwrite is disabled');
-      } catch (error) {
-        // If HEAD request fails (404), file doesn't exist, which is what we want
-        if (error.response?.status !== 404) {
-          throw error;
-        }
-      }
-    }
-    
     const response = await apiClient(config);
     
     return {
@@ -397,10 +494,25 @@ const uploadFile = async (username, filePath, fileData, options = {}) => {
       message: `File "${filePath}" uploaded successfully`,
       path: filePath,
       status: response.status,
+      method: 'standard',
     };
     
   } catch (error) {
     console.error(`❌ Failed to upload file ${filePath}:`, error.message);
+    
+    // Provide more specific error messages
+    if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+      throw new Error('Upload timeout - file may be too large or connection is slow');
+    } else if (error.response?.status === 507) {
+      throw new Error('Not enough storage space available');
+    } else if (error.response?.status === 413) {
+      throw new Error('File too large - exceeds server limits');
+    } else if (error.response?.status === 401) {
+      throw new Error('Authentication failed - please check your credentials');
+    } else if (error.response?.status === 403) {
+      throw new Error('Permission denied - you may not have write access to this location');
+    }
+    
     throw new Error(error.response?.data?.message || error.message || 'Failed to upload file');
   }
 };

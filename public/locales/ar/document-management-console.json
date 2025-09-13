@@ -193,7 +193,8 @@
     "failed_uploads": "فشل في رفع {{count}} ملف",
     "error_single": "فشل في رفع {{fileName}}: {{error}}",
     "error_general": "فشل في الرفع: {{error}}",
-    "error_file_too_large": "حجم الملف يتجاوز حد 100 ميجابايت: {{fileName}} ({{size}})"
+    "error_file_too_large": "حجم الملف يتجاوز حد 100 ميجابايت: {{fileName}} ({{size}})",
+    "size_info_short": "حتى 500 ميجابايت • الملفات الكبيرة تستخدم الرفع المجزأ"
   },
 
   "errors": {
