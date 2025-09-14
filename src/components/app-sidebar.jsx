@@ -279,7 +279,7 @@ export function AppSidebar() {
 
       <SidebarFooter className="border-t p-4">
         <div className="text-xs text-muted-foreground text-center">
-          © 2024 Ibtikarya VDR
+          © {new Date().getFullYear()} Ibtikarya VDR
         </div>
       </SidebarFooter>
     </Sidebar>
