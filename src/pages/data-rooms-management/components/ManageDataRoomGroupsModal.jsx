@@ -8,7 +8,7 @@ import {
   useRemoveGroupFromDataRoom,
   useSetGroupPermissions 
 } from '@/hooks/api';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';

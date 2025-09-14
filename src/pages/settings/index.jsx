@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../components/ui/Header';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import Icon from '../../components/AppIcon';
 import NotificationSettings from './components/NotificationSettings';
 import SecuritySettings from './components/SecuritySettings';

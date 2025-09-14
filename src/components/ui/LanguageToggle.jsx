@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../AppIcon';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 const LanguageToggle = ({ variant = 'ghost', size = 'sm' }) => {
   const { i18n, t } = useTranslation();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../AppIcon';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 const DarkModeToggle = ({ variant = 'ghost', size = 'sm' }) => {
   const { t } = useTranslation();

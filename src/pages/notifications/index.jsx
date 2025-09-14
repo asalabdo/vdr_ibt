@@ -7,7 +7,7 @@ import {
   useClearAllNotifications,
   useNotificationAction 
 } from '@/hooks/api/useNotifications';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

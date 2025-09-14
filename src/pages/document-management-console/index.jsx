@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { useListFiles, useDownloadFile, useDeleteItem } from '@/hooks/api';
 import { useAuthStatus, usePermissions } from '@/hooks/api';
 import Header from '../../components/ui/Header';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/Input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
