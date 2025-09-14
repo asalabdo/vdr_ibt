@@ -135,26 +135,31 @@ const getAdminCredentials = () => {
  * Request interceptor: Automatically inject authentication credentials
  * 
  * Features:
- * - Adds Basic Authentication headers to all requests
+ * - Adds Basic Authentication headers to requests without explicit auth
+ * - Respects explicitly provided authentication (e.g., for login)
  * - Provides debug logging in development mode
  * - Graceful handling when no credentials are available
  */
 apiClient.interceptors.request.use(
   (config) => {
-    const credentials = getCredentials();
-    
-    if (credentials) {
-      // Add Basic Authentication header
-      config.auth = {
-        username: credentials.username,
-        password: credentials.password
-      };
+    // Don't override if auth is explicitly provided (e.g., for login requests)
+    if (!config.auth) {
+      const credentials = getCredentials();
       
-      // Log request for debugging (only in development)
-      if (import.meta.env.VITE_LOG_LEVEL === 'debug') {
-        const env = import.meta.env.VITE_ENVIRONMENT || import.meta.env.MODE || 'unknown';
-        console.log(`🔗 [${env.toUpperCase()}] API Request: ${config.method?.toUpperCase()} ${config.url}`);
+      if (credentials) {
+        // Add Basic Authentication header
+        config.auth = {
+          username: credentials.username,
+          password: credentials.password
+        };
       }
+    }
+    
+    // Log request for debugging (only in development)
+    if (import.meta.env.VITE_LOG_LEVEL === 'debug') {
+      const env = import.meta.env.VITE_ENVIRONMENT || import.meta.env.MODE || 'unknown';
+      const authInfo = config.auth ? `(auth: ${config.auth.username})` : '(no auth)';
+      console.log(`🔗 [${env.toUpperCase()}] API Request: ${config.method?.toUpperCase()} ${config.url} ${authInfo}`);
     }
     
     return config;
@@ -188,8 +193,8 @@ apiClient.interceptors.response.use(
     if (error.response) {
       const { status, data } = error.response;
       
-      // Authentication error - clear stored credentials and redirect to login
-      if (status === 401 || status === 403) {
+      // Handle authentication and authorization errors
+      if (status === 401) {
         console.warn('🔒 Authentication failed - clearing stored credentials');
         localStorage.removeItem('nextcloud_username');
         localStorage.removeItem('nextcloud_token');
@@ -197,10 +202,20 @@ apiClient.interceptors.response.use(
         
         // Don't redirect if we're already on login page
         if (!window.location.pathname.includes('/login')) {
-          // In a real app, you might use your router here
           console.warn('🔒 Redirecting to login page');
           // window.location.href = '/login';
         }
+      } else if (status === 403) {
+        // Permission denied - log but don't clear credentials
+        console.warn('🚫 Permission denied for API call:', error.config?.url);
+        console.warn('💡 This might be due to insufficient user privileges (subadmin/admin required)');
+        
+        // Add user-friendly error message
+        const enhancedError = new Error(data?.ocs?.meta?.message || 'Access denied. You may need additional permissions to perform this action.');
+        enhancedError.isPermissionError = true;
+        enhancedError.statusCode = status;
+        enhancedError.originalError = error;
+        return Promise.reject(enhancedError);
       }
       
       // Log error for debugging

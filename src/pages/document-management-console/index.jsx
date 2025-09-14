@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useListFiles, useDownloadFile, useDeleteItem } from '@/hooks/api';
-import { useAuthStatus } from '@/hooks/api';
+import { useAuthStatus, usePermissions } from '@/hooks/api';
 import Header from '../../components/ui/Header';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -26,6 +26,13 @@ import FileUploadModal from './components/FileUploadModal';
 
 const FilesManagementConsole = () => {
   const { t } = useTranslation('document-management-console');
+  
+  // Get user permissions for document operations
+  const {
+    canUploadDocuments,
+    canDeleteDocuments,
+    hasPermission
+  } = usePermissions();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
@@ -291,7 +298,10 @@ const FilesManagementConsole = () => {
 
   const handleDragOver = (e) => {
     e?.preventDefault();
-    setIsDragOver(true);
+    // Only allow drag over if user has upload permission
+    if (canUploadDocuments) {
+      setIsDragOver(true);
+    }
   };
 
   const handleDragLeave = (e) => {
@@ -303,6 +313,11 @@ const FilesManagementConsole = () => {
     e?.preventDefault();
     e?.stopPropagation();
     setIsDragOver(false);
+    
+    // Only handle file drops if user has upload permission
+    if (!canUploadDocuments) {
+      return;
+    }
     
     // Handle file drop for upload
     const files = Array.from(e?.dataTransfer?.files || []);
@@ -449,14 +464,17 @@ const FilesManagementConsole = () => {
             </div>
             
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <Button 
-                onClick={handleUploadModalOpen}
-                variant="default"
-                className="gap-2"
-              >
-                <Icon name="Upload" className="w-4 h-4" />
-                {t('actions.upload_files', { defaultValue: 'Upload Files' })}
-              </Button>
+              {/* Upload button - Only show if user has upload permission */}
+              {canUploadDocuments && (
+                <Button 
+                  onClick={handleUploadModalOpen}
+                  variant="default"
+                  className="gap-2"
+                >
+                  <Icon name="Upload" className="w-4 h-4" />
+                  {t('actions.upload_files', { defaultValue: 'Upload Files' })}
+                </Button>
+              )}
             </div>
           </div>
 
@@ -613,9 +631,12 @@ const FilesManagementConsole = () => {
             className={`bg-card rounded-xl shadow-sm border border-border overflow-hidden ${
               isDragOver ? 'border-primary border-2 bg-primary/5' : ''
             }`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
+            // Only enable drag and drop if user has upload permission
+            {...(canUploadDocuments && {
+              onDragOver: handleDragOver,
+              onDragLeave: handleDragLeave,
+              onDrop: handleDrop
+            })}
           >
             {isDragOver && (
               <div className="absolute inset-0 bg-primary/10 flex items-center justify-center z-10">
@@ -753,7 +774,8 @@ const FilesManagementConsole = () => {
                       </td>
                       <td className="py-3 px-4">
                         <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                          {!file?.isDirectory && (
+                          {/* Preview - Available to all users with document view access */}
+                          {!file?.isDirectory && hasPermission('documents.view') && (
                             <button
                               onClick={() => handleFilePreview(file)}
                               className="p-1 text-muted-foreground hover:text-primary transition-colors"
@@ -762,35 +784,47 @@ const FilesManagementConsole = () => {
                               <Icon name="Eye" size={16} />
                             </button>
                           )}
-                          <button
-                            onClick={() => handleFileDownload(file)}
-                            className="p-1 text-muted-foreground hover:text-success transition-colors"
-                            title={t('tooltips.download_file', { defaultValue: 'Download file' })}
-                          >
-                            <Icon name="Download" size={16} />
-                          </button>
-                          <button
-                            onClick={() => handlePermissionManager(file)}
-                            className="p-1 text-muted-foreground hover:text-warning transition-colors"
-                            title={t('tooltips.manage_permissions', { defaultValue: 'Manage permissions' })}
-                          >
-                            <Icon name="Share" size={16} />
-                          </button>
-                          <button
-                            onClick={() => handleFileDelete(file)}
-                            className="p-1 text-muted-foreground hover:text-destructive transition-colors"
-                            title={file?.isDirectory 
-                              ? t('tooltips.delete_folder', { defaultValue: 'Delete folder' })
-                              : t('tooltips.delete_file', { defaultValue: 'Delete file' })
-                            }
-                            disabled={deleteFileMutation.isPending}
-                          >
-                            {deleteFileMutation.isPending ? (
-                              <Icon name="Loader2" size={16} className="animate-spin" />
-                            ) : (
-                              <Icon name="Trash2" size={16} />
-                            )}
-                          </button>
+                          
+                          {/* Download - Available to users with download permission */}
+                          {hasPermission('documents.download') && (
+                            <button
+                              onClick={() => handleFileDownload(file)}
+                              className="p-1 text-muted-foreground hover:text-success transition-colors"
+                              title={t('tooltips.download_file', { defaultValue: 'Download file' })}
+                            >
+                              <Icon name="Download" size={16} />
+                            </button>
+                          )}
+                          
+                          {/* Manage Permissions - Only for users with edit/admin permissions */}
+                          {(hasPermission('documents.edit') || hasPermission('data_rooms.manage')) && (
+                            <button
+                              onClick={() => handlePermissionManager(file)}
+                              className="p-1 text-muted-foreground hover:text-warning transition-colors"
+                              title={t('tooltips.manage_permissions', { defaultValue: 'Manage permissions' })}
+                            >
+                              <Icon name="Share" size={16} />
+                            </button>
+                          )}
+                          
+                          {/* Delete - Only for users with delete permission */}
+                          {canDeleteDocuments && (
+                            <button
+                              onClick={() => handleFileDelete(file)}
+                              className="p-1 text-muted-foreground hover:text-destructive transition-colors"
+                              title={file?.isDirectory 
+                                ? t('tooltips.delete_folder', { defaultValue: 'Delete folder' })
+                                : t('tooltips.delete_file', { defaultValue: 'Delete file' })
+                              }
+                              disabled={deleteFileMutation.isPending}
+                            >
+                              {deleteFileMutation.isPending ? (
+                                <Icon name="Loader2" size={16} className="animate-spin" />
+                              ) : (
+                                <Icon name="Trash2" size={16} />
+                              )}
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -814,10 +848,13 @@ const FilesManagementConsole = () => {
                     : t('search.empty_state_description', { defaultValue: 'This directory is empty. Upload files or create folders to get started.' })
                   }
                 </p>
-                <Button variant="default" onClick={handleUploadModalOpen}>
-                  <Icon name="Upload" className="w-4 h-4 mr-2" />
-                  {t('actions.upload_file', { defaultValue: 'Upload Files' })}
-                </Button>
+                {/* Upload button - Only show if user has upload permission */}
+                {canUploadDocuments && (
+                  <Button variant="default" onClick={handleUploadModalOpen}>
+                    <Icon name="Upload" className="w-4 h-4 mr-2" />
+                    {t('actions.upload_file', { defaultValue: 'Upload Files' })}
+                  </Button>
+                )}
               </div>
             )}
           </div>

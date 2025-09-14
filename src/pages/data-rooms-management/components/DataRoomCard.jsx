@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePermissions } from '@/hooks/api/useAuth';
 import Icon from '../../../components/AppIcon';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,6 +19,14 @@ import {
 const DataRoomCard = ({ room, onViewDetails, onEdit, onDelete, onManageGroups }) => {
   const { t, i18n } = useTranslation('data-rooms-management');
   const { t: tCommon } = useTranslation('common');
+  
+  // Get user permissions
+  const {
+    canManageDataRooms,
+    canCreateDataRooms,
+    isAdmin,
+    isSubadmin
+  } = usePermissions();
 
   const getStatusColor = (isEnabled) => {
     return isEnabled 
@@ -83,26 +92,41 @@ const DataRoomCard = ({ room, onViewDetails, onEdit, onDelete, onManageGroups })
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
+            {/* View Details - Available to all users */}
             <DropdownMenuItem onClick={() => onViewDetails?.(room.roomId)}>
               <Icon name="Eye" size={14} className="mr-2" />
               {t('actions.view_details')}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onEdit?.(room.roomId)}>
-              <Icon name="Settings" size={14} className="mr-2" />
-              {t('actions.edit', { defaultValue: 'Edit' })}
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onManageGroups?.(room.roomId)}>
-              <Icon name="Users" size={14} className="mr-2" />
-              {t('actions.manage_groups', { defaultValue: 'Manage Groups' })}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem 
-              onClick={() => onDelete?.(room)} 
-              className="text-destructive focus:text-destructive"
-            >
-              <Icon name="Trash2" size={14} className="mr-2" />
-              {t('actions.delete', { defaultValue: 'Delete' })}
-            </DropdownMenuItem>
+            
+            {/* Edit - Only for users who can manage data rooms */}
+            {canManageDataRooms && (
+              <DropdownMenuItem onClick={() => onEdit?.(room.roomId)}>
+                <Icon name="Settings" size={14} className="mr-2" />
+                {t('actions.edit', { defaultValue: 'Edit' })}
+              </DropdownMenuItem>
+            )}
+            
+            {/* Manage Groups - Only for users who can manage data rooms */}
+            {canManageDataRooms && (
+              <DropdownMenuItem onClick={() => onManageGroups?.(room.roomId)}>
+                <Icon name="Users" size={14} className="mr-2" />
+                {t('actions.manage_groups', { defaultValue: 'Manage Groups' })}
+              </DropdownMenuItem>
+            )}
+            
+            {/* Show separator only if user has management permissions */}
+            {canManageDataRooms && <DropdownMenuSeparator />}
+            
+            {/* Delete - Only for admins or users with full data room management */}
+            {canManageDataRooms && (
+              <DropdownMenuItem 
+                onClick={() => onDelete?.(room)} 
+                className="text-destructive focus:text-destructive"
+              >
+                <Icon name="Trash2" size={14} className="mr-2" />
+                {t('actions.delete', { defaultValue: 'Delete' })}
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

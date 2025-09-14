@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useDataRooms } from '@/hooks/api';
+import { usePermissions } from '@/hooks/api/useAuth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -19,6 +20,15 @@ import ManageDataRoomGroupsModal from './components/ManageDataRoomGroupsModal';
 
 const DataRoomsManagement = () => {
   const { t } = useTranslation('data-rooms-management');
+  
+  // Get user permissions
+  const {
+    canManageDataRooms,
+    canCreateDataRooms,
+    canAccessGroupsManagement,
+    isAdmin,
+    isSubadmin
+  } = usePermissions();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
@@ -215,24 +225,35 @@ const DataRoomsManagement = () => {
             </div>
             
             <div className="flex items-center space-x-3 rtl:space-x-reverse">
-              <Button variant="default" onClick={handleCreateRoom} className="gap-2">
-                <Icon name="Plus" size={16} />
-                {t('actions.create_room')}
-              </Button>
-              <Button variant="success" className="gap-2">
-                <Icon name="Download" size={16} />
-                {t('actions.export_rooms')}
-              </Button>
-              <Button 
-                variant="outline" 
-                className="gap-2"
-                onClick={() => {
-                  window.location.href = '/groups-management';
-                }}
-              >
-                <Icon name="Users" size={16} />
-                {t('actions.manage_groups', { defaultValue: 'Manage Groups' })}
-              </Button>
+              {/* Create Room - Only for users who can create data rooms */}
+              {canCreateDataRooms && (
+                <Button variant="default" onClick={handleCreateRoom} className="gap-2">
+                  <Icon name="Plus" size={16} />
+                  {t('actions.create_room')}
+                </Button>
+              )}
+              
+              {/* Export Rooms - Only for users who can manage data rooms */}
+              {canManageDataRooms && (
+                <Button variant="success" className="gap-2">
+                  <Icon name="Download" size={16} />
+                  {t('actions.export_rooms')}
+                </Button>
+              )}
+              
+              {/* Manage Groups - Only for users who can access groups management */}
+              {canAccessGroupsManagement && (
+                <Button 
+                  variant="outline" 
+                  className="gap-2"
+                  onClick={() => {
+                    window.location.href = '/groups-management';
+                  }}
+                >
+                  <Icon name="Users" size={16} />
+                  {t('actions.manage_groups', { defaultValue: 'Manage Groups' })}
+                </Button>
+              )}
             </div>
           </div>
           
@@ -386,10 +407,13 @@ const DataRoomsManagement = () => {
                 <p className="text-muted-foreground mb-4">
                   {searchQuery ? t('search.no_results_description') : t('search.empty_state_description')}
                 </p>
-                <Button variant="default" onClick={handleCreateRoom} className="gap-2">
-                  <Icon name="Plus" size={16} />
-                  {t('actions.create_room')}
-                </Button>
+                {/* Create Room button - Only show if user has permission */}
+                {canCreateDataRooms && (
+                  <Button variant="default" onClick={handleCreateRoom} className="gap-2">
+                    <Icon name="Plus" size={16} />
+                    {t('actions.create_room')}
+                  </Button>
+                )}
               </CardContent>
             </Card>
           )}

@@ -22,38 +22,103 @@ import { useTranslation } from 'react-i18next';
 import Login from '@/pages/Login';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import PublicRoute from '@/components/auth/PublicRoute';
+import PermissionGuard, { 
+  AdminGuard, 
+  SubadminGuard, 
+  UsersManagementGuard, 
+  GroupsManagementGuard,
+  AuditLogsGuard,
+  SystemSettingsGuard
+} from '@/components/PermissionGuard';
+import { usePermissions } from '@/hooks/api/useAuth';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
   const { t } = useTranslation('navigation'); // Use navigation namespace for all routes/sections
   const [openSections, setOpenSections] = React.useState({ Dashboard: false }); // Dashboard hidden by default
+  
+  // Get user permissions
+  const {
+    canAccessUsersManagement,
+    canAccessGroupsManagement,
+    canAccessAuditLogs,
+    canAccessRolesPermissions,
+    canManageDataRooms,
+    isAdmin,
+    isSubadmin,
+    role
+  } = usePermissions();
 
-  const routeSections = [
+  // Define route sections with permission requirements
+  const allRouteSections = [
     {
       section: t('sections.dashboard'),
       items: [
-        { label: t('routes.executive_overview'), path: '/executive-deal-flow-dashboard', icon: 'BarChart3' },
-        { label: t('routes.deal_intelligence'), path: '/deal-analytics-intelligence-dashboard', icon: 'TrendingUp' },
-        { label: t('routes.operations_center'), path: '/vdr-operations-command-center', icon: 'Monitor' },
-        { label: t('routes.compliance_security'), path: '/compliance-security-monitoring-dashboard', icon: 'Shield' },
+        { label: t('routes.executive_overview'), path: '/executive-deal-flow-dashboard', icon: 'BarChart3', requiresPermission: 'data_rooms.read' },
+        { label: t('routes.deal_intelligence'), path: '/deal-analytics-intelligence-dashboard', icon: 'TrendingUp', requiresPermission: 'audit.view' },
+        { label: t('routes.operations_center'), path: '/vdr-operations-command-center', icon: 'Monitor', requiresPermission: 'data_rooms.manage' },
+        { label: t('routes.compliance_security'), path: '/compliance-security-monitoring-dashboard', icon: 'Shield', requiresPermission: 'audit.view' },
       ]
     },
     {
       section: t('sections.workspace'),
       items: [
-        { label: t('routes.home'), path: '/', icon: 'Home' },
-        { label: t('routes.data_rooms'), path: '/data-rooms-management', icon: 'Folder' },
-        { label: t('routes.groups'), path: '/groups-management', icon: 'Users' },
-        { label: t('routes.q_a_center'), path: '/q-a-management-center', icon: 'MessageSquare' },
-        { label: t('routes.document_console'), path: '/document-management-console', icon: 'FileText' },
-        { label: t('routes.users'), path: '/users-management', icon: 'UserCog' },
-        { label: t('routes.roles_permissions'), path: '/roles-permissions', icon: 'Key' },
-        { label: t('routes.audit_logs'), path: '/audit-logs', icon: 'Clipboard' },
-        { label: t('routes.notifications'), path: '/notifications', icon: 'Bell' },
-        { label: t('routes.settings'), path: '/settings', icon: 'Settings' }
+        { label: t('routes.home'), path: '/', icon: 'Home', requiresPermission: null }, // Always accessible
+        { label: t('routes.data_rooms'), path: '/data-rooms-management', icon: 'Folder', requiresPermission: 'data_rooms.read' },
+        { label: t('routes.groups'), path: '/groups-management', icon: 'Users', requiresPermission: 'groups.manage' },
+        { label: t('routes.q_a_center'), path: '/q-a-management-center', icon: 'MessageSquare', requiresPermission: 'data_rooms.read' },
+        { label: t('routes.document_console'), path: '/document-management-console', icon: 'FileText', requiresPermission: 'documents.view' },
+        { label: t('routes.users'), path: '/users-management', icon: 'UserCog', requiresPermission: 'users.manage' },
+        { label: t('routes.roles_permissions'), path: '/roles-permissions', icon: 'Key', requiresAdmin: true },
+        { label: t('routes.audit_logs'), path: '/audit-logs', icon: 'Clipboard', requiresPermission: 'audit.view' },
+        { label: t('routes.notifications'), path: '/notifications', icon: 'Bell', requiresPermission: null }, // Always accessible
+        { label: t('routes.settings'), path: '/settings', icon: 'Settings', requiresPermission: null } // Always accessible
       ]
     }
   ];
+
+  // Filter route sections based on user permissions
+  const routeSections = allRouteSections.map(section => ({
+    ...section,
+    items: section.items.filter(item => {
+      // Always show items with no permission requirements
+      if (!item.requiresPermission && !item.requiresAdmin && !item.requiresSubadmin) {
+        return true;
+      }
+      
+      // Check admin requirement
+      if (item.requiresAdmin && !isAdmin) {
+        return false;
+      }
+      
+      // Check subadmin requirement
+      if (item.requiresSubadmin && !isSubadmin && !isAdmin) {
+        return false;
+      }
+      
+      // Check specific permission requirements
+      if (item.requiresPermission) {
+        switch (item.requiresPermission) {
+          case 'users.manage':
+            return canAccessUsersManagement;
+          case 'groups.manage':
+            return canAccessGroupsManagement;
+          case 'audit.view':
+            return canAccessAuditLogs;
+          case 'data_rooms.manage':
+            return canManageDataRooms;
+          case 'data_rooms.read':
+            return true; // Most users should have read access
+          case 'documents.view':
+            return true; // Most users should have document view access
+          default:
+            return true;
+        }
+      }
+      
+      return true;
+    })
+  })).filter(section => section.items.length > 0); // Remove empty sections
 
   const toggleSection = (name) => {
     setOpenSections((prev) => ({ ...prev, [name]: !prev[name] }));
@@ -197,12 +262,20 @@ const Routes = () => {
           } />
           <Route path="/vdr-operations-command-center" element={
             <ProtectedRoute>
-              <AppLayout><VDROperationsCommandCenter /></AppLayout>
+              <AppLayout>
+                <PermissionGuard permission="data_rooms.manage">
+                  <VDROperationsCommandCenter />
+                </PermissionGuard>
+              </AppLayout>
             </ProtectedRoute>
           } />
           <Route path="/compliance-security-monitoring-dashboard" element={
             <ProtectedRoute>
-              <AppLayout><ComplianceSecurityMonitoringDashboard /></AppLayout>
+              <AppLayout>
+                <AuditLogsGuard>
+                  <ComplianceSecurityMonitoringDashboard />
+                </AuditLogsGuard>
+              </AppLayout>
             </ProtectedRoute>
           } />
           <Route path="/executive-deal-flow-dashboard" element={
@@ -223,7 +296,11 @@ const Routes = () => {
           } />
           <Route path="/groups-management" element={
             <ProtectedRoute>
-              <AppLayout><GroupsManagement /></AppLayout>
+              <AppLayout>
+                <GroupsManagementGuard>
+                  <GroupsManagement />
+                </GroupsManagementGuard>
+              </AppLayout>
             </ProtectedRoute>
           } />
           <Route path="/q-a-management-center" element={
@@ -238,17 +315,29 @@ const Routes = () => {
           } />
           <Route path="/users-management" element={
             <ProtectedRoute>
-              <AppLayout><UsersManagement /></AppLayout>
+              <AppLayout>
+                <UsersManagementGuard>
+                  <UsersManagement />
+                </UsersManagementGuard>
+              </AppLayout>
             </ProtectedRoute>
           } />
           <Route path="/roles-permissions" element={
             <ProtectedRoute>
-              <AppLayout><RolesPermissions /></AppLayout>
+              <AppLayout>
+                <AdminGuard>
+                  <RolesPermissions />
+                </AdminGuard>
+              </AppLayout>
             </ProtectedRoute>
           } />
           <Route path="/audit-logs" element={
             <ProtectedRoute>
-              <AppLayout><AuditLogs /></AppLayout>
+              <AppLayout>
+                <AuditLogsGuard>
+                  <AuditLogs />
+                </AuditLogsGuard>
+              </AppLayout>
             </ProtectedRoute>
           } />
           <Route path="/settings" element={

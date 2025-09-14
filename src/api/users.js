@@ -99,6 +99,12 @@ const getUsers = async (options = {}) => {
     
   } catch (error) {
     console.error('❌ Failed to get users:', error.message);
+    
+    // Handle permission errors with user-friendly messages
+    if (error.isPermissionError || error.response?.status === 403) {
+      throw new Error('You need subadmin or admin privileges to access user management. Please contact your administrator.');
+    }
+    
     throw new Error(error.response?.data?.ocs?.meta?.message || error.message || 'Failed to get users');
   }
 };

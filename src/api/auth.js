@@ -9,16 +9,60 @@ import { endpoints, withJsonFormat } from './endpoints';
 // ===== PURE UTILITY FUNCTIONS =====
 
 /**
- * Calculate user permissions based on groups and user data
+ * Determine user role based on groups and subadmin status
+ * @param {Object} userData - User data from Nextcloud
+ * @returns {Object} User role information
+ */
+const getUserRole = (userData) => {
+  const { groups = [], subadmin = [] } = userData;
+  
+  // Check if user is admin
+  if (groups.includes('admin')) {
+    return {
+      role: 'admin',
+      level: 'full',
+      canManageUsers: true,
+      canManageAllGroups: true,
+      canAccessSystemSettings: true,
+      managedGroups: 'all'
+    };
+  }
+  
+  // Check if user is subadmin
+  if (subadmin.length > 0) {
+    return {
+      role: 'subadmin',
+      level: 'limited',
+      canManageUsers: true,
+      canManageAllGroups: false,
+      canAccessSystemSettings: false,
+      managedGroups: subadmin
+    };
+  }
+  
+  // Regular user
+  return {
+    role: 'user',
+    level: 'standard',
+    canManageUsers: false,
+    canManageAllGroups: false,
+    canAccessSystemSettings: false,
+    managedGroups: []
+  };
+};
+
+/**
+ * Calculate user permissions based on groups, subadmin status, and user data
  * @param {Object} userData - User data from Nextcloud
  * @returns {Array} Array of permission strings
  */
 const calculateUserPermissions = (userData) => {
   const permissions = ['user']; // Base permission for all users
-  const groups = userData.groups || [];
+  const { groups = [], subadmin = [] } = userData;
+  const userRole = getUserRole(userData);
   
-  // Admin permissions
-  if (groups.includes('admin')) {
+  // Admin permissions (full system access)
+  if (userRole.role === 'admin') {
     permissions.push(
       'admin',
       'system.config',
@@ -34,11 +78,27 @@ const calculateUserPermissions = (userData) => {
       'documents.download',
       'documents.delete',
       'audit.view',
-      'audit.export'
+      'audit.export',
+      'roles.manage'
     );
   }
   
-  // Manager permissions
+  // Subadmin permissions (limited admin access)
+  if (userRole.role === 'subadmin') {
+    permissions.push(
+      'users.manage', // Can manage users in assigned groups
+      'groups.manage', // Can manage assigned groups only
+      'data_rooms.manage', // Can manage data rooms for assigned groups
+      'data_rooms.create',
+      'data_rooms.write',
+      'data_rooms.read',
+      'documents.upload',
+      'documents.download',
+      'audit.view' // Limited scope audit access
+    );
+  }
+  
+  // Manager permissions (based on groups)
   if (groups.includes('managers')) {
     permissions.push(
       'data_rooms.create',
@@ -51,11 +111,12 @@ const calculateUserPermissions = (userData) => {
     );
   }
   
-  // Standard user permissions
+  // Standard user permissions (always included)
   permissions.push(
     'data_rooms.read',
     'documents.view',
     'documents.download',
+    'documents.upload',    // ✅ Allow regular users to upload files
     'profile.edit'
   );
   
@@ -77,20 +138,38 @@ const calculateUserPermissions = (userData) => {
  * @param {string} username - Username used for login
  * @returns {Object} Formatted user data
  */
-const formatUserData = (userData, username) => ({
-  id: userData.id,
-  username: username,
-  displayname: userData.displayname || userData['display-name'] || username,
-  email: userData.email || '',
-  groups: userData.groups || [],
-  permissions: calculateUserPermissions(userData),
-  quota: userData.quota || {},
-  isAdmin: (userData.groups || []).includes('admin'),
-  enabled: userData.enabled !== false,
-  language: userData.language || 'en',
-  locale: userData.locale || 'en',
-  lastLogin: userData.lastLogin || new Date().toISOString(),
-});
+const formatUserData = (userData, username) => {
+  const roleInfo = getUserRole(userData);
+  
+  return {
+    id: userData.id,
+    username: username,
+    displayname: userData.displayname || userData['display-name'] || username,
+    email: userData.email || '',
+    groups: userData.groups || [],
+    subadmin: userData.subadmin || [],
+    permissions: calculateUserPermissions(userData),
+    quota: userData.quota || {},
+    
+    // Role information
+    role: roleInfo.role,
+    roleLevel: roleInfo.level,
+    managedGroups: roleInfo.managedGroups,
+    
+    // Permission flags
+    isAdmin: roleInfo.role === 'admin',
+    isSubadmin: roleInfo.role === 'subadmin',
+    canManageUsers: roleInfo.canManageUsers,
+    canManageAllGroups: roleInfo.canManageAllGroups,
+    canAccessSystemSettings: roleInfo.canAccessSystemSettings,
+    
+    // User status
+    enabled: userData.enabled !== false,
+    language: userData.language || 'en',
+    locale: userData.locale || 'en',
+    lastLogin: userData.lastLogin || new Date().toISOString(),
+  };
+};
 
 /**
  * Store authentication data in localStorage
@@ -353,6 +432,7 @@ export const authAPI = {
   hasPermission,
   
   // Pure utility functions (exposed for testing and flexibility)
+  getUserRole,
   calculateUserPermissions,
   formatUserData,
   storeAuthData,

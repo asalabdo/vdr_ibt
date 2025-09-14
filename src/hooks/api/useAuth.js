@@ -90,14 +90,15 @@ export const useAuth = () => {
       // Clear all cached data
       queryClient.clear();
       
-      // Optionally redirect to login page
-      // window.location.href = '/login';
+      // Redirect to login page after successful logout
+      window.location.href = '/login';
     },
     onError: (error) => {
       console.error('❌ Logout error:', error.message);
       
-      // Even if logout fails, clear local data
+      // Even if logout fails, clear local data and redirect to login
       queryClient.clear();
+      window.location.href = '/login';
     },
   });
 
@@ -142,7 +143,18 @@ export const useAuth = () => {
     // Permission checking
     hasPermission: authAPI.hasPermission,
     isAdmin: user?.isAdmin || false,
+    isSubadmin: user?.isSubadmin || false,
     permissions: user?.permissions || [],
+    
+    // Role information
+    role: user?.role || 'user',
+    roleLevel: user?.roleLevel || 'standard',
+    managedGroups: user?.managedGroups || [],
+    
+    // Capability flags
+    canManageUsers: user?.canManageUsers || false,
+    canManageAllGroups: user?.canManageAllGroups || false,
+    canAccessSystemSettings: user?.canAccessSystemSettings || false,
 
     // Authentication operations
     login: loginMutation.mutate,
@@ -197,6 +209,10 @@ export const useAuthStatus = () => {
     hasUser: !!cachedUser,
     username: cachedUser?.username || cachedUser?.displayname || null,
     isAdmin: cachedUser?.isAdmin || false,
+    isSubadmin: cachedUser?.isSubadmin || false,
+    role: cachedUser?.role || 'user',
+    canManageUsers: cachedUser?.canManageUsers || false,
+    canManageAllGroups: cachedUser?.canManageAllGroups || false,
   };
 };
 
@@ -210,16 +226,31 @@ export const usePermissions = () => {
   return {
     permissions: user?.permissions || [],
     isAdmin: user?.isAdmin || false,
+    isSubadmin: user?.isSubadmin || false,
+    role: user?.role || 'user',
+    managedGroups: user?.managedGroups || [],
     hasPermission,
     
+    // Role-based capability checks
+    canManageUsers: user?.canManageUsers || false,
+    canManageAllGroups: user?.canManageAllGroups || false,
+    canAccessSystemSettings: user?.canAccessSystemSettings || false,
+    
     // Common permission checks
-    canManageUsers: hasPermission('users.manage'),
     canManageDataRooms: hasPermission('data_rooms.manage'),
     canCreateDataRooms: hasPermission('data_rooms.create'),
     canViewAuditLogs: hasPermission('audit.view'),
     canExportAuditLogs: hasPermission('audit.export'),
     canUploadDocuments: hasPermission('documents.upload'),
     canDeleteDocuments: hasPermission('documents.delete'),
+    canManageGroups: hasPermission('groups.manage'),
+    canManageRoles: hasPermission('roles.manage'),
+    
+    // UI/Navigation permissions
+    canAccessUsersManagement: hasPermission('users.manage'),
+    canAccessGroupsManagement: hasPermission('groups.manage'),
+    canAccessAuditLogs: hasPermission('audit.view'),
+    canAccessRolesPermissions: user?.isAdmin || false, // Admin only
   };
 };
 

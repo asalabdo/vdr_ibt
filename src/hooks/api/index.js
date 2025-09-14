@@ -12,6 +12,9 @@ export {
   useLoginForm,
 } from './useAuth';
 
+// Permission error handling
+export { usePermissionErrors } from './usePermissionErrors';
+
 // Users management hooks
 export {
   useUsers,

@@ -106,15 +106,31 @@ const Login = () => {
   };
 
   // Handle demo login
-  const handleDemoLogin = () => {
+  const handleDemoLogin = async () => {
     const demoCredentials = {
       username: import.meta.env.VITE_DEV_USERNAME,
       password: import.meta.env.VITE_DEV_APP_PASSWORD
     };
     
     if (demoCredentials.username && demoCredentials.password) {
+      console.log('🚀 Demo login initiated');
+      
+      // Update form to show demo credentials
       setFormData(demoCredentials);
-      login(demoCredentials);
+      
+      try {
+        // Login with demo credentials
+        await login(demoCredentials);
+        
+        // Successful login - redirect will be handled by useEffect
+        const from = location.state?.from?.pathname || '/';
+        navigate(from, { replace: true });
+        
+      } catch (error) {
+        console.error('Demo login failed:', error);
+      }
+    } else {
+      console.warn('⚠️ Demo credentials not configured in environment variables');
     }
   };
 
@@ -296,8 +312,17 @@ const Login = () => {
                   onClick={handleDemoLogin}
                   disabled={isLoggingIn}
                 >
-                  <Icon name="Zap" size={18} className="mr-2" />
-                  {t('buttons.demo_login')}
+                  {isLoggingIn ? (
+                    <>
+                      <Icon name="Loader2" size={18} className="animate-spin mr-2" />
+                      {t('buttons.signing_in')}
+                    </>
+                  ) : (
+                    <>
+                      <Icon name="Zap" size={18} className="mr-2" />
+                      {t('buttons.demo_login')}
+                    </>
+                  )}
                 </Button>
               </>
             )}

@@ -52,7 +52,8 @@ const Header = ({ onToggleSidebar }) => {
   // Handle logout
   const handleLogout = () => {
     logout();
-    navigate('/'); // Redirect to home after logout
+    // Force redirect to login page and refresh to ensure clean state
+    window.location.href = '/login';
   };
 
 
