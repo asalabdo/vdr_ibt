@@ -11,7 +11,6 @@ import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '../../components/AppIcon';
 import DataRoomCard from './components/DataRoomCard';
-import FilterSidebar from './components/FilterSidebar';
 import CreateDataRoomModal from './components/CreateDataRoomModal';
 import DataRoomDetailsModal from './components/DataRoomDetailsModal';
 import EditDataRoomModal from './components/EditDataRoomModal';
@@ -31,18 +30,11 @@ const DataRoomsManagement = () => {
   } = usePermissions();
   
   const [searchQuery, setSearchQuery] = useState('');
-  const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [detailsModal, setDetailsModal] = useState({ open: false, roomId: null });
   const [editModal, setEditModal] = useState({ open: false, roomId: null });
   const [deleteModal, setDeleteModal] = useState({ open: false, room: null });
   const [manageGroupsModal, setManageGroupsModal] = useState({ open: false, roomId: null });
-  const [selectedFilters, setSelectedFilters] = useState({
-    status: 'all',
-    dealType: 'all',
-    activity: 'all',
-    dateRange: 'all'
-  });
 
   // Fetch real data rooms using the API
   const { 
@@ -98,14 +90,8 @@ const DataRoomsManagement = () => {
   };
 
 
-  // Filter rooms based on search and filters (already filtered by API search)
-  const filteredRooms = dataRooms?.filter(room => {
-    // API already handles search, so we only need to apply local filters
-    const matchesStatus = selectedFilters?.status === 'all' || 
-      (room?.isActive ? 'active' : 'inactive') === selectedFilters?.status;
-    // For now, we'll simplify dealType filtering since it's not in the API data
-    return matchesStatus;
-  });
+  // Use data rooms directly (already filtered by API search)
+  const filteredRooms = dataRooms;
 
   // Calculate stats from real data
   const stats = {
@@ -233,13 +219,6 @@ const DataRoomsManagement = () => {
                 </Button>
               )}
               
-              {/* Export Rooms - Only for users who can manage data rooms */}
-              {canManageDataRooms && (
-                <Button variant="success" className="gap-2">
-                  <Icon name="Download" size={16} />
-                  {t('actions.export_rooms')}
-                </Button>
-              )}
               
               {/* Manage Groups - Only for users who can access groups management */}
               {canAccessGroupsManagement && (
@@ -365,14 +344,6 @@ const DataRoomsManagement = () => {
                 <Icon name="RefreshCw" size={14} className={isLoading ? "animate-spin" : ""} />
                 {isLoading ? t('actions.refreshing') : t('actions.refresh')}
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => setIsFilterSidebarOpen(!isFilterSidebarOpen)}
-                className="gap-2"
-              >
-                <Icon name="Filter" size={14} />
-                {t('actions.filters')}
-              </Button>
               <Button variant="outline" className="gap-2">
                 <Icon name="SortDesc" size={14} />
                 {t('actions.sort')}
@@ -417,14 +388,6 @@ const DataRoomsManagement = () => {
               </CardContent>
             </Card>
           )}
-      {/* Filter Sidebar */}
-      <FilterSidebar
-        isOpen={isFilterSidebarOpen}
-        onClose={() => setIsFilterSidebarOpen(false)}
-        filters={selectedFilters}
-        onFilterChange={setSelectedFilters}
-        dataRooms={dataRooms}
-      />
       
       {/* Create Data Room Modal */}
       <CreateDataRoomModal 
