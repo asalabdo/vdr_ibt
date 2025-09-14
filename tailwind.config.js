@@ -51,19 +51,19 @@ export default {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
   			},
-			success: {
-				DEFAULT: 'hsl(var(--success))',
-				foreground: 'hsl(var(--success-foreground))'
-			},
-			warning: {
-				DEFAULT: 'hsl(var(--warning))',
-				foreground: 'hsl(var(--warning-foreground))'
-			},
-			error: {
-				DEFAULT: 'hsl(var(--error))',
-				foreground: 'hsl(var(--error-foreground))'
-			},
-			chart: {
+  			success: {
+  				DEFAULT: 'hsl(var(--success))',
+  				foreground: 'hsl(var(--success-foreground))'
+  			},
+  			warning: {
+  				DEFAULT: 'hsl(var(--warning))',
+  				foreground: 'hsl(var(--warning-foreground))'
+  			},
+  			error: {
+  				DEFAULT: 'hsl(var(--error))',
+  				foreground: 'hsl(var(--error-foreground))'
+  			},
+  			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',
   				'3': 'hsl(var(--chart-3))',
@@ -71,7 +71,7 @@ export default {
   				'5': 'hsl(var(--chart-5))'
   			},
   			sidebar: {
-  				DEFAULT: 'hsl(var(--sidebar))',
+  				DEFAULT: 'hsl(var(--sidebar-background))',
   				foreground: 'hsl(var(--sidebar-foreground))',
   				primary: 'hsl(var(--sidebar-primary))',
   				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
@@ -186,7 +186,7 @@ export default {
   			'slide-in': 'slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   			'slide-out': 'slide-out 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   			'pulse-subtle': 'pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-  			'shimmer': 'shimmer 1.5s ease-in-out infinite'
+  			shimmer: 'shimmer 1.5s ease-in-out infinite'
   		},
   		keyframes: {
   			'accordion-down': {
@@ -245,7 +245,7 @@ export default {
   					opacity: '0.8'
   				}
   			},
-  			'shimmer': {
+  			shimmer: {
   				'0%': {
   					backgroundPosition: '-200% 0'
   				},

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes as RouterRoutes, Route, Link, useLocation } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Routes as RouterRoutes, Route } from "react-router-dom";
 import ScrollToTop from "@/components/ScrollToTop";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import NotFound from "@/pages/NotFound";
@@ -17,8 +17,6 @@ import AuditLogs from '@/pages/audit-logs';
 import Settings from '@/pages/settings';
 import NotificationsPage from '@/pages/notifications';
 import Header from '@/components/ui/Header';
-import Icon from '@/components/AppIcon';
-import { useTranslation } from 'react-i18next';
 import Login from '@/pages/Login';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import PublicRoute from '@/components/auth/PublicRoute';
@@ -30,215 +28,26 @@ import PermissionGuard, {
   AuditLogsGuard,
   SystemSettingsGuard
 } from '@/components/PermissionGuard';
-import { usePermissions } from '@/hooks/api/useAuth';
+import { AppSidebar } from '@/components/app-sidebar';
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from '@/components/ui/sidebar';
 
-const Sidebar = ({ isOpen, onClose }) => {
-  const location = useLocation();
-  const { t } = useTranslation('navigation'); // Use navigation namespace for all routes/sections
-  const [openSections, setOpenSections] = React.useState({ Dashboard: false }); // Dashboard hidden by default
-  
-  // Get user permissions
-  const {
-    canAccessUsersManagement,
-    canAccessGroupsManagement,
-    canAccessAuditLogs,
-    canAccessRolesPermissions,
-    canManageDataRooms,
-    isAdmin,
-    isSubadmin,
-    role
-  } = usePermissions();
-
-  // Define route sections with permission requirements
-  const allRouteSections = [
-    {
-      section: t('sections.dashboard'),
-      items: [
-        { label: t('routes.executive_overview'), path: '/executive-deal-flow-dashboard', icon: 'BarChart3', requiresPermission: 'data_rooms.read' },
-        { label: t('routes.deal_intelligence'), path: '/deal-analytics-intelligence-dashboard', icon: 'TrendingUp', requiresPermission: 'audit.view' },
-        { label: t('routes.operations_center'), path: '/vdr-operations-command-center', icon: 'Monitor', requiresPermission: 'data_rooms.manage' },
-        { label: t('routes.compliance_security'), path: '/compliance-security-monitoring-dashboard', icon: 'Shield', requiresPermission: 'audit.view' },
-      ]
-    },
-    {
-      section: t('sections.workspace'),
-      items: [
-        { label: t('routes.home'), path: '/', icon: 'Home', requiresPermission: null }, // Always accessible
-        { label: t('routes.data_rooms'), path: '/data-rooms-management', icon: 'Folder', requiresPermission: 'data_rooms.read' },
-        { label: t('routes.groups'), path: '/groups-management', icon: 'Users', requiresPermission: 'groups.manage' },
-        { label: t('routes.q_a_center'), path: '/q-a-management-center', icon: 'MessageSquare', requiresPermission: 'data_rooms.read' },
-        { label: t('routes.document_console'), path: '/document-management-console', icon: 'FileText', requiresPermission: 'documents.view' },
-        { label: t('routes.users'), path: '/users-management', icon: 'UserCog', requiresPermission: 'users.manage' },
-        { label: t('routes.roles_permissions'), path: '/roles-permissions', icon: 'Key', requiresAdmin: true },
-        { label: t('routes.audit_logs'), path: '/audit-logs', icon: 'Clipboard', requiresPermission: 'audit.view' },
-        { label: t('routes.notifications'), path: '/notifications', icon: 'Bell', requiresPermission: null }, // Always accessible
-        { label: t('routes.settings'), path: '/settings', icon: 'Settings', requiresPermission: null } // Always accessible
-      ]
-    }
-  ];
-
-  // Filter route sections based on user permissions
-  const routeSections = allRouteSections.map(section => ({
-    ...section,
-    items: section.items.filter(item => {
-      // Always show items with no permission requirements
-      if (!item.requiresPermission && !item.requiresAdmin && !item.requiresSubadmin) {
-        return true;
-      }
-      
-      // Check admin requirement
-      if (item.requiresAdmin && !isAdmin) {
-        return false;
-      }
-      
-      // Check subadmin requirement
-      if (item.requiresSubadmin && !isSubadmin && !isAdmin) {
-        return false;
-      }
-      
-      // Check specific permission requirements
-      if (item.requiresPermission) {
-        switch (item.requiresPermission) {
-          case 'users.manage':
-            return canAccessUsersManagement;
-          case 'groups.manage':
-            return canAccessGroupsManagement;
-          case 'audit.view':
-            return canAccessAuditLogs;
-          case 'data_rooms.manage':
-            return canManageDataRooms;
-          case 'data_rooms.read':
-            return true; // Most users should have read access
-          case 'documents.view':
-            return true; // Most users should have document view access
-          default:
-            return true;
-        }
-      }
-      
-      return true;
-    })
-  })).filter(section => section.items.length > 0); // Remove empty sections
-
-  const toggleSection = (name) => {
-    setOpenSections((prev) => ({ ...prev, [name]: !prev[name] }));
-  };
-
-  // On mobile, when sidebar is open we show a full panel; on desktop we collapse to icon-only when closed
-  return (
-    <>
-      {/* Mobile overlay when open */}
-      <div className={`lg:hidden ${isOpen ? 'fixed inset-0 z-40' : 'hidden'}`}>
-        <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-        <aside className="absolute right-0 top-0 h-full w-64 bg-card border-l border-border shadow-lg z-50">
-          <nav className="p-4 space-y-4">
-            {routeSections.map((section) => (
-              <div key={section.section}>
-                <button
-                  onClick={() => toggleSection(section.section)}
-                  className="w-full flex items-center justify-between px-1 mb-2"
-                >
-                  <div className="text-xs uppercase text-muted-foreground">{section.section}</div>
-                  <Icon name={openSections[section.section] ? 'ChevronDown' : 'ChevronRight'} size={16} />
-                </button>
-
-                {openSections[section.section] && (
-                  <div className="space-y-2">
-                    {section.items.map((item) => {
-                      const isActive = location.pathname === item.path;
-                      return (
-                        <Link
-                          key={item.path}
-                          to={item.path}
-                          onClick={onClose}
-                          className={`w-full flex items-start space-x-3 px-3 py-2 rounded-lg transition-colors text-sm ${isActive ? 'bg-primary/10 text-primary border border-primary/20' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'}`}
-                        >
-                          <div className="mt-0.5">
-                            <Icon name={item.icon} size={18} />
-                          </div>
-                          <div className="flex-1">
-                            <div className="font-medium">{item.label}</div>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            ))}
-          </nav>
-        </aside>
-      </div>
-
-      {/* Desktop sidebar (collapsible) */}
-      <aside className={`hidden lg:block h-[calc(100vh-4rem)] pt-6 sticky top-16 transition-all ${isOpen ? 'w-64' : 'w-20'}`}>
-        <nav className="space-y-4 px-2">
-          {routeSections.map((section) => (
-            <div key={section.section}>
-              <button
-                onClick={() => toggleSection(section.section)}
-                className={`w-full flex items-center justify-between ${isOpen ? 'px-1 text-xs uppercase text-muted-foreground mb-2' : 'px-0 mb-2'}`}
-              >
-                <div className="flex items-center space-x-2">
-                  <div className="w-6 flex justify-center">
-                    {/* optional placeholder for section icon */}
-                    <Icon name={section.section === 'Dashboard' ? 'Grid' : 'Layers'} size={16} />
-                  </div>
-                  <div className={`${isOpen ? '' : 'sr-only'}`}>{section.section}</div>
-                </div>
-                <Icon name={openSections[section.section] ? 'ChevronDown' : 'ChevronRight'} size={16} />
-              </button>
-
-              {openSections[section.section] && (
-                <div className="space-y-2">
-                  {section.items.map((item) => {
-                    const isActive = location.pathname === item.path;
-                    return (
-                      <Link
-                        key={item.path}
-                        to={item.path}
-                        className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors text-sm ${isActive ? 'bg-primary/10 text-primary border border-primary/20' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'}`}
-                      >
-                        <div className="w-6 flex justify-center">
-                          <Icon name={item.icon} size={18} />
-                        </div>
-                        <div className={`${isOpen ? 'flex-1' : 'sr-only'}`}>
-                          <div className="font-medium">{item.label}</div>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          ))}
-        </nav>
-      </aside>
-    </>
-  );
-};
 
 const Routes = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const openSidebar = () => setIsSidebarOpen(true);
-  const closeSidebar = () => setIsSidebarOpen(false);
-  const toggleSidebar = () => setIsSidebarOpen((s) => !s);
-
-
   // Layout component for protected routes
   const AppLayout = ({ children }) => (
-    <>
-      <Header onToggleSidebar={toggleSidebar} />
-      <div className="pt-4 bg-background min-h-screen">
-        <div className="max-w-7xl mx-auto py-8 flex gap-2">
-          <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
-          <main className="flex-1">
-            {children}
-          </main>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <Header />
+        <div className="flex-1 space-y-4 p-8 pt-6">
+          {children}
         </div>
-      </div>
-    </>
+      </SidebarInset>
+    </SidebarProvider>
   );
 
   return (

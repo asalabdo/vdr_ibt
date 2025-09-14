@@ -10,9 +10,10 @@ import { Separator } from '@/components/ui/separator';
 import LanguageToggle from './LanguageToggle';
 import DarkModeToggle from './DarkModeToggle';
 import NotificationBell from './NotificationBell';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAuth } from '@/hooks/api';
 
-const Header = ({ onToggleSidebar }) => {
+const Header = () => {
   const [lastDataRefresh, setLastDataRefresh] = useState(new Date());
   const location = useLocation();
   const navigate = useNavigate();
@@ -279,19 +280,7 @@ const Header = ({ onToggleSidebar }) => {
           )}
 
           {/* Menu Button (visible on all sizes) */}
-          <Button
-            onClick={() => onToggleSidebar && onToggleSidebar()}
-            variant="ghost"
-            size="icon"
-            className="h-10 w-10 rounded-lg hover:bg-muted/80 transition-all duration-200 group"
-            aria-label="Toggle sidebar"
-          >
-            <Icon 
-              name="Menu" 
-              size={18} 
-              className="text-muted-foreground group-hover:text-foreground transition-colors" 
-            />
-          </Button>
+          <SidebarTrigger className="h-10 w-10 rounded-lg hover:bg-muted/80 transition-all duration-200" />
         </div>
       </div>
       {/* Mobile Navigation */}
