@@ -43,7 +43,7 @@ const Routes = () => {
       <AppSidebar />
       <SidebarInset>
         <Header />
-        <div className="flex-1 space-y-4 p-8 pt-6">
+        <div className="flex-1 space-y-4 p-8 pt-12">
           {children}
         </div>
       </SidebarInset>
