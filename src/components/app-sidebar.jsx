@@ -25,11 +25,15 @@ import { usePermissions } from '@/hooks/api/useAuth';
 
 export function AppSidebar() {
   const location = useLocation();
-  const { t } = useTranslation('navigation');
+  const { t, i18n } = useTranslation('navigation');
   const [openSections, setOpenSections] = useState({ 
     dashboard: false, 
     workspace: true 
   });
+  
+  // Determine sidebar side based on language direction
+  const isRTL = i18n.language === 'ar';
+  const sidebarSide = isRTL ? 'right' : 'left';
   
   // Get user permissions
   const {
@@ -203,13 +207,13 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar variant="sidebar" className="border-r">
+    <Sidebar variant="inset" side={sidebarSide} className={isRTL ? "border-l" : "border-r"}>
       <SidebarHeader className="border-b px-6 py-4">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 rtl:space-x-reverse">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <AppIcon name="Building2" size={18} />
           </div>
-          <div className="grid flex-1 text-left text-sm leading-tight">
+          <div className="grid flex-1 text-left rtl:text-right text-sm leading-tight">
             <span className="truncate font-semibold">VDR Platform</span>
             <span className="truncate text-xs text-muted-foreground">
               {role === 'admin' ? 'Administrator' : role === 'subadmin' ? 'Sub Admin' : 'User'}
@@ -228,13 +232,13 @@ export function AppSidebar() {
           >
             <SidebarGroup>
               <SidebarGroupLabel asChild>
-                <CollapsibleTrigger className="flex w-full items-center gap-2 px-2 py-2 text-left text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground [&[data-state=open]>svg]:rotate-90">
+                <CollapsibleTrigger className="flex w-full items-center gap-2 rtl:space-x-reverse px-2 py-2 text-left rtl:text-right text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground [&[data-state=open]>svg]:rotate-90">
                   <AppIcon name={section.icon} size={16} />
                   <span className="flex-1">{section.section}</span>
                   <AppIcon 
                     name="ChevronRight" 
                     size={16} 
-                    className="transition-transform duration-200" 
+                    className={`transition-transform duration-200 ${isRTL ? 'rotate-180' : ''}`}
                   />
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
@@ -251,9 +255,9 @@ export function AppSidebar() {
                             isActive={isActive}
                             className="w-full"
                           >
-                            <Link to={item.path} className="flex items-center gap-3">
+                            <Link to={item.path} className="flex items-center gap-3 rtl:space-x-reverse">
                               <AppIcon name={item.icon} size={18} />
-                              <span className="flex-1 truncate">{item.label}</span>
+                              <span className="flex-1 truncate text-left rtl:text-right">{item.label}</span>
                               {/* Show admin badge for admin-only features */}
                               {item.requiresAdmin && (
                                 <Badge variant="secondary" className="text-xs">

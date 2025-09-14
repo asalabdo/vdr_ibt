@@ -122,16 +122,19 @@ const Header = () => {
       <div className="flex items-center justify-between h-16 px-6">
         {/* Logo Section */}
         <div className="flex items-center space-x-8 rtl:space-x-reverse">
-          <div 
-            className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer group transition-all duration-200 hover:scale-105"
-            onClick={() => navigate('/')}
-          >
-            <div className="w-10 h-10 flex items-center justify-center transition-all duration-300">
-              <Icon name="Database" size={24} className="text-primary group-hover:text-primary/80 transition-colors duration-300" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold text-foreground group-hover:text-primary transition-colors"> VDR </span>
-              <span className="text-xs text-muted-foreground font-medium">IBTIKARYA</span>
+          <div className="flex items-center space-x-3 rtl:space-x-reverse">
+            <SidebarTrigger className="h-10 w-10 rounded-lg hover:bg-muted/80 transition-all duration-200" />
+            <div 
+              className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer group transition-all duration-200 hover:scale-105"
+              onClick={() => navigate('/')}
+            >
+              <div className="w-10 h-10 flex items-center justify-center transition-all duration-300">
+                <Icon name="Database" size={24} className="text-primary group-hover:text-primary/80 transition-colors duration-300" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-foreground group-hover:text-primary transition-colors"> VDR </span>
+                <span className="text-xs text-muted-foreground font-medium">IBTIKARYA</span>
+              </div>
             </div>
           </div>
 
@@ -279,8 +282,6 @@ const Header = () => {
             </Button>
           )}
 
-          {/* Menu Button (visible on all sizes) */}
-          <SidebarTrigger className="h-10 w-10 rounded-lg hover:bg-muted/80 transition-all duration-200" />
         </div>
       </div>
       {/* Mobile Navigation */}
