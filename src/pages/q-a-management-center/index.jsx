@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../components/ui/Header';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
 
 import Icon from '../../components/AppIcon';
 import StatusCard from './components/StatusCard';
 import TalkQAPanel from './components/TalkQAPanel';
+import CreateRoomModal from './components/CreateRoomModal';
 import { useRooms } from '../../hooks/api';
 
 const QAManagementCenter = () => {
   const { t } = useTranslation('q-a-management-center');
   const [selectedRoomToken, setSelectedRoomToken] = useState('');
+  const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false);
 
   // Talk Q&A integration - get ALL rooms from API (not just Q&A tagged ones)
   const roomsQuery = useRooms();
@@ -32,13 +32,27 @@ const QAManagementCenter = () => {
       <main className="pt-4">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Header Section */}
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
-              {t('title', { defaultValue: 'Talk Message Center' })}
-            </h1>
-            <p className="text-muted-foreground">
-              {t('subtitle', { defaultValue: 'Real-time messaging powered by Nextcloud Talk' })}
-            </p>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+            <div className="mb-4 lg:mb-0">
+              <h1 className="text-3xl font-bold text-foreground mb-2">
+                {t('title', { defaultValue: 'Talk Message Center' })}
+              </h1>
+              <p className="text-muted-foreground">
+                {t('subtitle', { defaultValue: 'Real-time messaging powered by Nextcloud Talk' })}
+              </p>
+            </div>
+            
+            {!selectedRoomToken && (
+              <div className="flex items-center gap-3">
+                <Button 
+                  onClick={() => setIsCreateRoomModalOpen(true)}
+                  className="gap-2"
+                >
+                  <Icon name="Plus" size={16} />
+                  {t('actions.create_room', { defaultValue: 'Create Room' })}
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Simple Stats Cards - Real API Data Only */}
@@ -83,6 +97,13 @@ const QAManagementCenter = () => {
               onSelectRoom={setSelectedRoomToken}
             />
           </Card>
+          
+          {/* Create Room Modal */}
+          <CreateRoomModal 
+            isOpen={isCreateRoomModalOpen}
+            onClose={() => setIsCreateRoomModalOpen(false)}
+            t={t}
+          />
         </div>
       </main>
     </div>

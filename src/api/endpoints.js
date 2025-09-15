@@ -101,12 +101,17 @@ export const endpoints = {
   // ===== TALK (Chat & Video) =====
   talk: {
     rooms: '/ocs/v2.php/apps/spreed/api/v4/room',
+    createRoom: '/ocs/v2.php/apps/spreed/api/v4/room',
     roomDetails: (token) => `/ocs/v2.php/apps/spreed/api/v4/room/${token}`,
+    updateRoom: (token) => `/ocs/v2.php/apps/spreed/api/v4/room/${token}`,
+    deleteRoom: (token) => `/ocs/v2.php/apps/spreed/api/v4/room/${token}`,
     join: (token) => `/ocs/v2.php/apps/spreed/api/v4/room/${token}/participants/active`,
     leave: (token) => `/ocs/v2.php/apps/spreed/api/v4/room/${token}/participants/active`,
     messages: (token) => `/ocs/v2.php/apps/spreed/api/v1/chat/${token}`,
     sendMessage: (token) => `/ocs/v2.php/apps/spreed/api/v1/chat/${token}`,
     participants: (token) => `/ocs/v2.php/apps/spreed/api/v4/room/${token}/participants`,
+    addParticipant: (token) => `/ocs/v2.php/apps/spreed/api/v4/room/${token}/participants`,
+    removeParticipant: (token) => `/ocs/v2.php/apps/spreed/api/v4/room/${token}/participants`,
   },
 
   // ===== DECK (Kanban Boards) =====

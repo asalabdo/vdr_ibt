@@ -35,8 +35,7 @@
     "room_types": {
       "group_chat": "Group Chat",
       "personal": "Personal",
-      "changelog": "Changelog",
-      "public": "Public"
+      "changelog": "Changelog"
     }
   },
 
@@ -75,6 +74,161 @@
   },
 
   "message_types": {
-    "message": "Message"
+    "message": "Message",
+    "reply": "Reply"
+  },
+
+  "actions": {
+    "create_room": "Create Room"
+  },
+
+  "create_room_modal": {
+    "title": "Create Talk Room",
+    "description": "Create a new Talk room for messaging and communication.",
+    "room_name": "Room Name",
+    "room_name_placeholder": "Enter room name...",
+    "room_description": "Description",
+    "description_placeholder": "Optional room description...",
+    "participants": "Invite Participants",
+    "participants_hint": "Select users to invite to this room (optional).",
+    "public_tip_title": "💡 Tip: Want everyone to access this room?",
+    "public_tip_description": "Click \"Select All\" to invite all users to this room.",
+    "available_users": "Available Users ({{count}})",
+    "select_all": "Select All",
+    "deselect_all": "Deselect All",
+    "selected_users": "Selected Users",
+    "no_users_available": "No users available for invitation",
+    "cancel": "Cancel",
+    "create": "Create Room",
+    "creating": "Creating...",
+    "success_title": "Room created successfully!",
+    "success_description": "Talk room \"{{roomName}}\" has been created and is ready for use.",
+    "error_title": "Failed to create room",
+    "room_types": {
+      "group": "Group Chat",
+      "group_desc": "Private group chat with selected participants",
+      "one_to_one_desc": "Private conversation between two people"
+    },
+    "errors": {
+      "name_required": "Room name is required",
+      "name_min_length": "Room name must be at least 3 characters"
+    }
+  },
+
+  "room_management": {
+    "enter_room": "Enter Room",
+    "edit_room": "Edit Room",
+    "invite_users": "Invite Users",
+    "remove_users": "Remove Users",
+    "delete_room": "Delete Room",
+    "delete_success": "Room deleted successfully",
+    "delete_error": "Failed to delete room",
+    "delete_confirm": "Are you sure you want to delete this room? This action cannot be undone.",
+    "edit_coming_soon": "Edit room functionality coming soon",
+    "invite_coming_soon": "Invite users functionality coming soon"
+  },
+
+  "edit_room_modal": {
+    "title": "Edit Talk Room",
+    "description": "Update the room settings and configuration.",
+    "room_name": "Room Name",
+    "room_name_placeholder": "Enter room name...",
+    "room_description": "Description",
+    "description_placeholder": "Optional room description...",
+    "room_settings": "Room Settings",
+    "read_only": "Read-only Room",
+    "read_only_description": "Prevent users from posting new messages (only administrators can post)",
+    "cancel": "Cancel",
+    "update": "Update Room",
+    "updating": "Updating...",
+    "success_title": "Room updated successfully!",
+    "success_description": "Talk room \"{{roomName}}\" has been updated.",
+    "error_title": "Failed to update room",
+    "errors": {
+      "name_required": "Room name is required",
+      "name_min_length": "Room name must be at least 3 characters"
+    }
+  },
+
+  "invite_users_modal": {
+    "title": "Invite Users",
+    "description": "Select users to invite to \"{{roomName}}\"",
+    "current_participants": "Current Participants",
+    "current_participants_hint": "Users who are currently in this room",
+    "no_participants": "This room has no participants yet",
+    "invite_users": "Invite Users",
+    "invite_users_hint": "Select users to invite to this room",
+    "available_users": "Available Users",
+    "moderator": "Moderator",
+    "participant": "Participant",
+    "select_users": "Select Users to Invite",
+    "select_all": "Select All",
+    "deselect_all": "Deselect All",
+    "selected_users": "Selected Users",
+    "loading_users": "Loading users...",
+    "no_users_available": "No users available for invitation",
+    "all_users_in_room": "All users are already participants in this room",
+    "cancel": "Cancel",
+    "invite": "Invite Users ({{count}})",
+    "inviting": "Inviting...",
+    "success_all": "All users invited successfully!",
+    "success_all_description": "Successfully invited {{count}} users to \"{{roomName}}\".",
+    "success_partial": "Some users were invited successfully",
+    "success_partial_description": "{{successful}} users invited successfully, {{failed}} failed.",
+    "error_all": "Failed to invite users",
+    "error_all_description": "None of the selected users could be invited. Please try again.",
+    "error_title": "Failed to invite users",
+    "errors": {
+      "no_users_selected": "Please select at least one user to invite"
+    }
+  },
+
+  "remove_users_modal": {
+    "title": "Remove Participants",
+    "description": "Select participants to remove from \"{{roomName}}\"",
+    "current_participants": "Current Participants ({{count}})",
+    "removable_participants": "Removable Participants ({{count}})",
+    "participants_hint": "Select participants to remove from this room.",
+    "selected_participants": "Selected Participants",
+    "no_removable_participants": "No removable participants available",
+    "select_all": "Select All",
+    "deselect_all": "Deselect All",
+    "cancel": "Cancel",
+    "remove_participants": "Remove Participants",
+    "removing": "Removing...",
+    "success_all": "All participants removed successfully!",
+    "success_all_description": "Successfully removed {{count}} participants from \"{{roomName}}\".",
+    "success_partial": "Some participants were removed successfully",
+    "success_partial_description": "{{successful}} participants removed successfully, {{failed}} failed.",
+    "error_all": "Failed to remove participants",
+    "error_all_description": "None of the selected participants could be removed. Please try again.",
+    "error_title": "Failed to remove participants",
+    "errors": {
+      "no_users_selected": "Please select at least one participant to remove",
+      "general": "Failed to remove participants"
+    },
+    "success": {
+      "single": "Participant removed successfully",
+      "multiple": "{{count}} participants removed successfully"
+    },
+    "warning": {
+      "partial_failure": "Some participants could not be removed"
+    }
+  },
+
+  "delete_room_modal": {
+    "title": "Delete Talk Room",
+    "description": "Are you sure you want to delete \"{{roomName}}\"? This action cannot be undone.",
+    "participants_warning_title": "Warning:",
+    "participants_warning": "This room has {{count}} participant(s). Deleting it will remove all access and chat history.",
+    "messages_warning": "All messages and chat history in this room will be permanently deleted.",
+    "final_warning_title": "Warning:",
+    "final_warning": "This action is irreversible. All messages, participants, and shared access will be permanently lost.",
+    "cancel": "Cancel",
+    "delete": "Delete Room",
+    "deleting": "Deleting...",
+    "success_title": "Room deleted successfully!",
+    "success_description": "Talk room \"{{roomName}}\" has been permanently deleted.",
+    "error_title": "Failed to delete room"
   }
 }

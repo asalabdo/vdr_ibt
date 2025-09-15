@@ -197,9 +197,9 @@ const getQAMessages = async (roomToken, options = {}) => {
     // Show ALL messages, not just filtered ones
     const allMessages = [];
     
-    // First pass: create messages and skip system messages
+    // First pass: create TOP-LEVEL messages only (skip system messages and replies)
     messagesResult.messages.forEach(message => {
-      if (message.messageType !== 'system') {
+      if (message.messageType !== 'system' && !message.parent) {
         allMessages.push({
           ...message,
           answers: [],
@@ -317,11 +317,259 @@ const sendAnswer = async (roomToken, questionId, answer, options = {}) => {
 };
 
 /**
+ * Room Types for Talk API
+ */
+export const ROOM_TYPES = {
+  ONE_TO_ONE: 1,      // Direct chat between two users
+  GROUP: 2,           // Private group chat
+  PUBLIC: 3,          // Public room (anyone with link can join)
+  CHANGELOG: 4,       // System generated changelog room
+};
+
+/**
+ * Create a new Talk room
+ */
+const createRoom = async (roomData) => {
+  try {
+    console.log('🏗️ Creating Talk room:', roomData);
+    
+    // Step 1: Create the room with basic parameters only
+    const formData = new URLSearchParams();
+    formData.append('roomType', roomData.roomType || ROOM_TYPES.GROUP);
+    formData.append('roomName', roomData.roomName || '');
+    
+    // Add optional room parameters (but not invite - that's handled separately)
+    if (roomData.description) {
+      formData.append('description', roomData.description);
+    }
+    if (roomData.password) {
+      formData.append('password', roomData.password);
+    }
+    if (roomData.source) {
+      formData.append('source', roomData.source); // e.g., "groups"
+    }
+    if (roomData.objectType) {
+      formData.append('objectType', roomData.objectType);
+    }
+    if (roomData.objectId) {
+      formData.append('objectId', roomData.objectId);
+    }
+
+    const response = await apiClient.post(
+      withJsonFormat(endpoints.talk.createRoom),
+      formData,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'OCS-APIRequest': 'true',
+        },
+      }
+    );
+
+    console.log('✅ Room created successfully:', response.data);
+    
+    if (!response.data?.ocs?.data) {
+      throw new Error('Invalid room creation response format');
+    }
+
+    const createdRoom = formatRoomData(response.data.ocs.data);
+    
+    // Step 2: Add participants if provided
+    if (roomData.invite) {
+      console.log('👥 Adding participants to room:', roomData.invite);
+      
+      // Parse invite list (can be array or comma-separated string)
+      const participants = Array.isArray(roomData.invite) 
+        ? roomData.invite 
+        : roomData.invite.split(',').map(p => p.trim()).filter(p => p);
+      
+      // Add each participant
+      const addParticipantPromises = participants.map(participant => 
+        addParticipant(createdRoom.token, participant).catch(error => {
+          console.warn(`⚠️ Failed to add participant ${participant}:`, error.message);
+          return { error: error.message, participant };
+        })
+      );
+      
+      const participantResults = await Promise.allSettled(addParticipantPromises);
+      
+      // Collect any warnings for participants that couldn't be added
+      const warnings = participantResults
+        .filter(result => result.status === 'fulfilled' && result.value?.error)
+        .map(result => `Could not add ${result.value.participant}: ${result.value.error}`);
+      
+      if (warnings.length > 0) {
+        console.warn('⚠️ Participant warnings:', warnings);
+        return { ...createdRoom, warnings };
+      }
+    }
+    
+    return createdRoom;
+  } catch (error) {
+    console.error('❌ Failed to create Talk room:', error.message);
+    throw error;
+  }
+};
+
+/**
+ * Update an existing Talk room
+ */
+const updateRoom = async (roomToken, updateData) => {
+  try {
+    console.log('🔄 Updating Talk room:', roomToken, updateData);
+    
+    const formData = new URLSearchParams();
+    
+    // Add updateable fields
+    if (updateData.roomName !== undefined) {
+      formData.append('roomName', updateData.roomName);
+    }
+    if (updateData.description !== undefined) {
+      formData.append('description', updateData.description);
+    }
+    if (updateData.readOnly !== undefined) {
+      formData.append('readOnly', updateData.readOnly);
+    }
+
+    const response = await apiClient.put(
+      withJsonFormat(endpoints.talk.updateRoom(roomToken)),
+      formData,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'OCS-APIRequest': 'true',
+        },
+      }
+    );
+
+    console.log('✅ Room updated successfully:', response.data);
+    
+    if (response.data?.ocs?.data) {
+      return formatRoomData(response.data.ocs.data);
+    }
+    
+    throw new Error('Invalid room update response format');
+  } catch (error) {
+    console.error('❌ Failed to update Talk room:', error.message);
+    throw error;
+  }
+};
+
+/**
+ * Delete a Talk room
+ */
+const deleteRoom = async (roomToken) => {
+  try {
+    console.log('🗑️ Deleting Talk room:', roomToken);
+    
+    const response = await apiClient.delete(
+      withJsonFormat(endpoints.talk.deleteRoom(roomToken)),
+      {
+        headers: {
+          'OCS-APIRequest': 'true',
+        },
+      }
+    );
+
+    console.log('✅ Room deleted successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('❌ Failed to delete Talk room:', error.message);
+    throw error;
+  }
+};
+
+/**
+ * Get participants of a Talk room
+ */
+const getParticipants = async (roomToken) => {
+  try {
+    console.log('👥 Getting participants for room:', roomToken);
+    
+    const response = await apiClient.get(
+      withJsonFormat(endpoints.talk.participants(roomToken)),
+      {
+        headers: {
+          'OCS-APIRequest': 'true',
+        },
+      }
+    );
+
+    console.log('✅ Participants retrieved successfully:', response.data);
+    return {
+      participants: response.data.ocs.data || [],
+    };
+  } catch (error) {
+    console.error('❌ Failed to get participants:', error.message);
+    throw error;
+  }
+};
+
+/**
+ * Add participant to a Talk room
+ */
+const addParticipant = async (roomToken, newParticipant) => {
+  try {
+    console.log('👤 Adding participant to room:', roomToken, newParticipant);
+    
+    const formData = new URLSearchParams();
+    formData.append('newParticipant', newParticipant);
+
+    const response = await apiClient.post(
+      withJsonFormat(endpoints.talk.addParticipant(roomToken)),
+      formData,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'OCS-APIRequest': 'true',
+        },
+      }
+    );
+
+    console.log('✅ Participant added successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('❌ Failed to add participant:', error.message);
+    throw error;
+  }
+};
+
+/**
+ * Remove participant from a Talk room
+ */
+const removeParticipant = async (roomToken, participant) => {
+  try {
+    console.log('👤 Removing participant from room:', roomToken, participant);
+    
+    const response = await apiClient.delete(
+      withJsonFormat(`${endpoints.talk.removeParticipant(roomToken)}/${participant}`),
+      {
+        headers: {
+          'OCS-APIRequest': 'true',
+        },
+      }
+    );
+
+    console.log('✅ Participant removed successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('❌ Failed to remove participant:', error.message);
+    throw error;
+  }
+};
+
+/**
  * Clean Talk API exports - only what we actually use
  */
 export const talkAPI = {
   // Room management
   getRooms,
+  createRoom,
+  updateRoom,
+  deleteRoom,
+  getParticipants,
+  addParticipant,
+  removeParticipant,
   
   // Message management
   getMessages,
@@ -330,13 +578,14 @@ export const talkAPI = {
   sendQuestion,
   sendAnswer,
   
-  // Utility functions
-  formatRoomData,
-  formatMessageData,
+  // Utility functions (removed unused exports)
   
   // Permission functions
   canWriteToRoom,
   getRoomPermissionStatus,
+  
+  // Constants
+  ROOM_TYPES,
 };
 
 export default talkAPI;

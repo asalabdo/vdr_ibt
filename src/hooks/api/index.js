@@ -107,6 +107,13 @@ export {
   useSendAnswer,
   useRoomPermissions,
   useRoomsPermissions,
+  useParticipants,
+  useCreateRoom,
+  useUpdateRoom,
+  useDeleteRoom,
+  useAddParticipant,
+  useRemoveParticipant,
+  ROOM_TYPES,
 } from './useTalk';
 
 // Future hooks will be exported here:
