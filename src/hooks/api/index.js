@@ -99,5 +99,15 @@ export {
   useAuditLogsManagement,
 } from './useAuditLogs';
 
+// Talk message management hooks
+export {
+  useRooms,
+  useQAMessages,
+  useSendQuestion,
+  useSendAnswer,
+  useRoomPermissions,
+  useRoomsPermissions,
+} from './useTalk';
+
 // Future hooks will be exported here:
 // export { useNotifications } from './useNotifications';

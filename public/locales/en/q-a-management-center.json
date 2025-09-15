@@ -1,149 +1,80 @@
 {
-  "title": "Q&A Management",
-  "subtitle": "Manage questions and answers across all data rooms",
-  
-  "actions": {
-    "ask_question": "Ask Question",
-    "export_qa": "Export Q&A",
-    "send_response": "Send Response",
-    "view_in_room": "View in Room",
-    "assign_to_expert": "Assign to Expert",
-    "approve_response": "Approve Response",
-    "select_question": "Select a Question",
-    "close": "Close"
+  "title": "Talk Message Center",
+  "subtitle": "Real-time messaging powered by Nextcloud Talk",
+
+  "page": {
+    "back_to_rooms": "Back to Rooms"
   },
 
-  "status_cards": {
-    "pending": {
-      "title": "Pending",
-      "description": "Questions awaiting response"
+  "stats": {
+    "talk_rooms": {
+      "title": "Talk Rooms",
+      "description": "Connected Talk rooms"
     },
-    "answered": {
-      "title": "Answered", 
-      "description": "Questions with responses"
+    "active_rooms": {
+      "title": "Active Rooms",
+      "description": "Rooms with new messages"
     },
-    "approved": {
-      "title": "Approved",
-      "description": "Approved answers"
-    },
-    "high_priority": {
-      "title": "High Priority",
-      "description": "Urgent questions"
+    "unread_messages": {
+      "title": "Unread Messages",
+      "description": "Total unread messages"
     }
   },
 
-  "search": {
-    "placeholder": "Search questions and answers...",
-    "no_results": "No questions found",
-    "no_results_description": "Try adjusting your search criteria",
-    "empty_state_description": "No questions have been asked yet"
+  "loading": {
+    "rooms": "Loading rooms..."
   },
 
-  "filters": {
-    "status": {
-      "all": "All Status",
-      "pending": "Pending",
-      "answered": "Answered", 
-      "approved": "Approved"
-    },
-    "priority": {
-      "all": "All Priority",
-      "high": "High",
-      "medium": "Medium",
-      "low": "Low"
-    }
-  },
-
-  "question_card": {
-    "in_room": "in {{room}}",
-    "question_by": "Question by {{askedBy}}",
-    "response_by": "Response by {{respondedBy}}",
-    "responses_count": "{{count}} responses",
-    "response_count": "{{count}} response",
-    "attachments_count": "{{count}} attachments",
-    "attachment_count": "{{count}} attachment", 
-    "asked_time": "Asked {{timeAgo}}",
-    "updated_time": "{{timeAgo}}"
-  },
-
-  "detail_panel": {
-    "title": "Question Details",
+  "room_selection": {
+    "title": "Select a Talk Room",
+    "description": "Choose a room to view messages and participate in discussions",
     "empty_state": {
-      "title": "Select a Question",
-      "description": "Choose a question from the list to view details and respond"
+      "title": "No Talk Rooms Available",
+      "description": "Create a Talk room in Nextcloud first, then return here to view and participate in discussions."
     },
-    "question_info": {
-      "asked_by": "Asked by {{askedBy}}",
-      "in_room": "in {{room}}",
-      "question_id": "#{{id}}"
-    },
-    "form": {
-      "question_label": "Question",
-      "responses_title": "Responses ({{count}})",
-      "add_response_title": "Add Response",
-      "priority_label": "Priority Level",
-      "response_label": "Your Response",
-      "response_placeholder": "Type your response here..."
-    },
-    "status_labels": {
-      "approved": "Approved"
+    "room_types": {
+      "group_chat": "Group Chat",
+      "personal": "Personal",
+      "changelog": "Changelog",
+      "public": "Public"
     }
   },
 
-  "priority_levels": {
-    "high": "HIGH",
-    "medium": "MEDIUM", 
-    "low": "LOW",
-    "high_full": "High Priority",
-    "medium_full": "Medium Priority",
-    "low_full": "Low Priority"
+  "permissions": {
+    "read_only": "Read-only",
+    "can_write": "Can Write",
+    "cannot_post": {
+      "title": "Cannot Post Messages",
+      "description": "You do not have permission to post messages in this room.",
+      "note": "You can still view and read all messages in this room."
+    },
+    "cannot_reply": "Cannot reply",
+    "no_write_permission": "no write permission"
   },
 
-  "status_labels": {
-    "pending": "pending",
-    "answered": "answered",
-    "approved": "approved"
-  },
-
-  "empty_states": {
-    "no_questions": {
-      "title": "No questions found",
-      "description": "Try adjusting your search criteria",
-      "empty_description": "No questions have been asked yet",
-      "action": "Ask Question"
+  "messages": {
+    "post_message": {
+      "label": "Post a Message",
+      "placeholder": "Type your message here...",
+      "send": "Send Message"
+    },
+    "reply": {
+      "button": "Reply",
+      "placeholder": "Type your reply here...",
+      "send": "Send Reply",
+      "cancel": "Cancel"
+    },
+    "refresh": "Refresh",
+    "by_user": "by {{user}}",
+    "replies_count": "{{count}} replies",
+    "no_replies": "No replies",
+    "empty_state": {
+      "title": "No messages yet",
+      "description": "Be the first to start the conversation!"
     }
   },
 
-  "time": {
-    "just_now": "Just now",
-    "minutes_ago": "{{count}}m ago",
-    "hours_ago": "{{count}}h ago", 
-    "days_ago": "{{count}}d ago"
-  },
-
-  "mock_data": {
-    "questions": {
-      "1": "What is the timeline for project completion?",
-      "2": "Are there any regulatory requirements?",
-      "3": "When will the contract be finalized?",
-      "4": "What are the financial projections for next quarter?",
-      "5": "Are there any pending compliance issues?"
-    },
-    "users": {
-      "qa_observer": "Q&A Observer Full",
-      "financial_analyst": "Financial Analyst", 
-      "compliance_officer": "Compliance Officer",
-      "cfo": "CFO",
-      "legal_advisor": "Legal Advisor"
-    },
-    "rooms": {
-      "project_alpha": "Project Alpha",
-      "legal_documents": "Legal Documents",
-      "financial_reports": "Financial Reports"
-    },
-    "answers": {
-      "1": "The financial projections show a 15% growth in revenue for Q1 2026.",
-      "2": "All compliance requirements are currently met. No pending issues identified."
-    }
+  "message_types": {
+    "message": "Message"
   }
 }
