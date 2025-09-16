@@ -3,7 +3,7 @@
   "subtitle": "إدارة والوصول إلى المستندات عبر جميع غرف البيانات",
 
   "actions": {
-    "bulk_download": "تحميل مجمع",
+    "bulk_download": "تحميل ملفات متعددة",
     "generate_report": "إنشاء تقرير",
     "upload_document": "رفع مستند",
     "download_all": "تحميل الكل",

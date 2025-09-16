@@ -6,7 +6,7 @@
     "save_analysis": "حفظ التحليل",
     "export_report": "تصدير التقرير",
     "share_dashboard": "مشاركة لوحة التحكم",
-    "schedule_report": "برمجة التقرير",
+    "schedule_report": "جدولة التقرير",
     "customize_view": "تخصيص العرض",
     "export": "تصدير",
     "reset": "إعادة تعيين"
@@ -123,7 +123,7 @@
     }
   },
   "filters": {
-    "title": "المرشحات",
+    "title": "الفلاتر",
     "deal_types": "أنواع الصفقات",
     "date_range": "النطاق الزمني",
     "user_roles": "أدوار المستخدمين",
@@ -296,7 +296,7 @@
       "document_access": "الوصول للمستندات",
       "user_authentication": "مصادقة المستخدمين", 
       "data_export": "تصدير البيانات",
-      "permission_changes": "تغييرات الأذونات",
+      "permission_changes": "تغييرات الصلاحيات",
       "system_access": "الوصول للنظام"
     }
   }

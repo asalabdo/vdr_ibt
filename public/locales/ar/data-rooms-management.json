@@ -28,7 +28,7 @@
   "search": {
     "placeholder": "البحث في غرف البيانات...",
     "no_results": "لم يتم العثور على غرف بيانات",
-    "no_results_description": "جرب تعديل معايير البحث الخاصة بك",
+    "no_results_description": "يرجى تعديل معايير البحث والمحاولة مرة أخرى",
     "empty_state_description": "أنشئ غرفة البيانات الأولى للبدء"
   },
 

@@ -1,6 +1,6 @@
 {
   "title": "مراقبة الامتثال والأمان",
-  "subtitle": "مقاييس أمان شاملة، مسارات تدقيق، وتتبع الامتثال التنظيمي",
+  "subtitle": "متابعة شاملة لمؤشرات الأمن وسجلات التدقيق ورصد مستوى الامتثال للأنظمة التنظيمية",
   
   "actions": {
     "refresh_data": "تحديث البيانات",
@@ -24,19 +24,19 @@
 
   "security_metrics": {
     "overall_security_score": {
-      "title": "النتيجة الأمنية الإجمالية",
+      "title": "التقييم العام للأمان",
       "description": "تقييم شامل للوضع الأمني"
     },
     "compliance_violations": {
-      "title": "انتهاكات الامتثال النشطة", 
+      "title": "مخالفات الامتثال القائمة", 
       "description": "قضايا الامتثال التنظيمي الحالية"
     },
     "audit_trail_completeness": {
-      "title": "اكتمال مسار التدقيق",
+      "title": "اكتمال سجل التدقيق",
       "description": "نسبة الأنشطة المسجلة"
     },
     "access_anomaly_count": {
-      "title": "عدد شذوذ الوصول",
+      "title": " عدد محاولات الوصول غير الاعتيادية",
       "description": "أنماط وصول غير طبيعية مكتشفة"
     }
   },
@@ -74,10 +74,10 @@
 
   "timeline": {
     "title": "الخط الزمني الأمني",
-    "subtitle": "أحداث الأمان وأنماط الوصول في الوقت الفعلي",
+    "subtitle": "متابعة لحظية لأنماط الدخول وتغييرات الصلاحيات والتنبيهات الأمنية",
     "views": {
       "access_patterns": "أنماط الوصول",
-      "permission_changes": "تغييرات الأذونات", 
+      "permission_changes": "تغييرات الصلاحيات", 
       "security_alerts": "تنبيهات الأمان",
       "anomalies": "الشذوذ"
     },
@@ -118,12 +118,12 @@
     "categories": {
       "authentication": "مصادقة",
       "access_anomaly": "شذوذ في الوصول",
-      "permission_change": "تغيير الأذونات",
+      "permission_change": "تغيير الصلاحيات",
       "device_change": "تغيير الجهاز"
     },
     "sample_alerts": {
       "failed_login": {
-        "title": "محاولات تسجيل دخول فاشلة متعددة",
+        "title": "عدّة محاولات تسجيل دخول فاشلة متعددة",
         "description": "حساب المستخدم john.doe@company.com سجّل 5 محاولات تسجيل دخول فاشلة متتالية من عنوان IP 45.123.78.90",
         "recommended_action": "إيقاف الحساب والتحقيق في مصدر عنوان IP",
         "affected_resource": "نظام المصادقة"
@@ -135,7 +135,7 @@
         "affected_resource": "غرفة بيانات ألفا"
       },
       "permission_request": {
-        "title": "طلب رفع الأذونات",
+        "title": "طلب رفع الصلاحيات",
         "description": "المستخدم michael.chen@company.com طلب صلاحيات إدارية للوصول إلى غرفة بيانات بيتا", 
         "recommended_action": "مراجعة وموافقة/رفض الطلب",
         "affected_resource": "غرفة بيانات بيتا"
@@ -180,7 +180,7 @@
     },
     "activity_types": {
       "access_review": "مراجعة_الوصول",
-      "permission_change": "تغيير_الأذونات",
+      "permission_change": "تغيير_الصلاحيات",
       "security_scan": "مسح_أمني", 
       "compliance_report": "تقرير_امتثال"
     },
@@ -220,7 +220,7 @@
       "all": "جميع الإجراءات",
       "document_access": "الوصول للمستندات",
       "document_download": "تنزيل المستندات",
-      "permission_change": "تغيير الأذونات",
+      "permission_change": "تغيير الصلاحيات",
       "failed_login": "تسجيل دخول فاشل",
       "user_role_update": "تحديث دور المستخدم"
     },
@@ -241,7 +241,7 @@
     "sample_data": {
       "actions": {
         "document_access": "الوصول للمستندات",
-        "permission_change": "تغيير الأذونات",
+        "permission_change": "تغيير الصلاحيات",
         "failed_login": "محاولة تسجيل دخول فاشلة",
         "document_download": "تنزيل المستندات",
         "user_role_update": "تحديث دور المستخدم",

@@ -65,7 +65,7 @@
     "error": "خطأ في تحميل البيانات"
   },
   "confidence": "الثقة",
-  "participants": "مشاركين",
+  "participants": "مشاركون",
   "header": {
     "updated": "تم التحديث",
     "toggle_theme": "تبديل المظهر"
@@ -78,7 +78,7 @@
   },
   "user": {
     "profile_settings": "إعدادات الملف الشخصي",
-    "dashboard_preferences": "تفضيلات لوحة القيادة",
+    "dashboard_preferences": " تفضيلات لوحةالتحكم",
     "notification_settings": "إعدادات الإشعارات", 
     "help_support": "المساعدة والدعم",
     "sign_out": "تسجيل الخروج"
