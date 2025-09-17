@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import Icon from '@/components/AppIcon';
 import { 
   useRooms, 
@@ -105,9 +106,38 @@ const TalkQAPanel = ({ selectedRoomToken, onSelectRoom }) => {
   // Loading state
   if (roomsQuery.isLoading) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <Icon name="RefreshCcw" size={24} className="animate-spin mr-2" />
-        <span>{t('loading.rooms', { defaultValue: 'Loading rooms...' })}</span>
+      <div className="p-6">
+        <div className="space-y-6">
+          {/* Title skeleton */}
+          <div className="text-center md:text-left">
+            <Skeleton className="h-8 w-64 mb-2 mx-auto md:mx-0" />
+            <Skeleton className="h-6 w-96 mx-auto md:mx-0" />
+          </div>
+
+          {/* Room cards skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <Card key={index} className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center space-x-3 flex-1">
+                    <Skeleton className="w-10 h-10 rounded-full" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-5 w-32" />
+                      <Skeleton className="h-4 w-24" />
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Skeleton className="w-8 h-8 rounded" />
+                  </div>
+                </div>
+                <div className="mt-4 pt-3 border-t border-border/50">
+                  <Skeleton className="h-4 w-full mb-1" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
@@ -115,77 +145,114 @@ const TalkQAPanel = ({ selectedRoomToken, onSelectRoom }) => {
   // Room selection when no room selected
   if (!selectedRoomToken) {
     return (
-      <RoomSelectionInterface 
-        rooms={roomsQuery.data?.rooms || []} 
-        onRoomSelect={onSelectRoom}
-        t={t}
-      />
+      <div className="p-6">
+        <RoomSelectionInterface 
+          rooms={roomsQuery.data?.rooms || []} 
+          onRoomSelect={onSelectRoom}
+          t={t}
+        />
+      </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div>
       {/* Room Header with Permission Status */}
       {selectedRoom && roomPermissions && (
-        <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-          <div className="flex items-center space-x-3 rtl:space-x-reverse">
-            <Icon name="MessageCircle" size={20} className="text-primary" />
-            <div>
-              <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                <h3 className="font-semibold">{selectedRoom.displayName}</h3>
-                {roomPermissions.isReadOnly ? (
-                  <Badge variant="destructive" className="bg-destructive/10 text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20 dark:bg-destructive/20 dark:text-red-400 dark:border-destructive/30">
-                    <Icon name="Lock" size={12} className="mr-1 rtl:ml-1 rtl:mr-0" />
-                    {t('permissions.read_only', { defaultValue: 'Read-only' })}
-                  </Badge>
-                ) : (
-                  <Badge variant="default" className="bg-green-500/10 text-green-700 hover:bg-green-500/10 hover:text-green-700 border-green-500/20 dark:bg-green-500/20 dark:text-green-400 dark:border-green-500/30">
-                    <Icon name="Edit" size={12} className="mr-1 rtl:ml-1 rtl:mr-0" />
-                    {t('permissions.can_write', { defaultValue: 'Can Write' })}
-                  </Badge>
+        <div className="border-b border-border/50 bg-muted/20">
+          <div className="flex items-center justify-between p-4">
+            <div className="flex items-center gap-4">
+              {/* Room Avatar */}
+              <div className="w-12 h-12 bg-gradient-to-r from-primary/10 to-primary/20 rounded-full flex items-center justify-center border border-primary/20">
+                <Icon name="MessageCircle" size={20} className="text-primary" />
+              </div>
+              
+              {/* Room Info */}
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-1">
+                  <h3 className="text-lg font-semibold text-foreground">{selectedRoom.displayName}</h3>
+                  
+                  {/* Permission Status */}
+                  {roomPermissions.isReadOnly ? (
+                    <Badge variant="destructive" className="bg-destructive/10 text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20 dark:bg-destructive/20 dark:text-red-400 dark:border-destructive/30">
+                      <Icon name="Lock" size={12} className="mr-1 rtl:ml-1 rtl:mr-0" />
+                      {t('permissions.read_only', { defaultValue: 'Read-only' })}
+                    </Badge>
+                  ) : (
+                    <Badge variant="default" className="bg-green-500/10 text-green-700 hover:bg-green-500/10 hover:text-green-700 border-green-500/20 dark:bg-green-500/20 dark:text-green-400 dark:border-green-500/30">
+                      <Icon name="Edit" size={12} className="mr-1 rtl:ml-1 rtl:mr-0" />
+                      {t('permissions.can_write', { defaultValue: 'Can Write' })}
+                    </Badge>
+                  )}
+                </div>
+                
+                {selectedRoom.description && (
+                  <p className="text-sm text-muted-foreground leading-relaxed">{selectedRoom.description}</p>
                 )}
               </div>
-              {selectedRoom.description && (
-                <p className="text-sm text-muted-foreground">{selectedRoom.description}</p>
-              )}
+            </div>
+            
+            {/* Room Actions */}
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => qaQuery.refetch()}
+                disabled={qaQuery.isFetching}
+                className="h-9 px-3"
+              >
+                <Icon name="RefreshCcw" size={14} className={`mr-2 ${qaQuery.isFetching ? 'animate-spin' : ''}`} />
+                {t('messages.refresh', { defaultValue: 'Refresh' })}
+              </Button>
             </div>
           </div>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => qaQuery.refetch()}
-            disabled={qaQuery.isFetching}
-          >
-            <Icon name="RefreshCcw" size={16} className={qaQuery.isFetching ? 'animate-spin' : ''} />
-            {t('messages.refresh', { defaultValue: 'Refresh' })}
-          </Button>
         </div>
       )}
 
       {/* Message Form */}
-      <MessageForm
-        newQuestion={newQuestion}
-        setNewQuestion={setNewQuestion}
-        isAiEnabled={isAiEnabled}
-        setIsAiEnabled={setIsAiEnabled}
-        onSendQuestion={handleSendQuestion}
-        isPending={sendQuestionMutation.isPending}
-        roomPermissions={roomPermissions}
-        t={t}
-      />
+      <div className="border-b border-border/50">
+        <MessageForm
+          newQuestion={newQuestion}
+          setNewQuestion={setNewQuestion}
+          isAiEnabled={isAiEnabled}
+          setIsAiEnabled={setIsAiEnabled}
+          onSendQuestion={handleSendQuestion}
+          isPending={sendQuestionMutation.isPending}
+          roomPermissions={roomPermissions}
+          t={t}
+        />
+      </div>
 
-      {/* All Messages List */}
-      <div className="space-y-4">
+      {/* Messages Thread - Full Page Flow */}
+      <div className="space-y-6 p-4">
         {questions.length === 0 ? (
-          <Card className="p-8 text-center">
-            <Icon name="MessageCircle" size={48} className="text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">
-              {t('messages.empty_state.title', { defaultValue: 'No messages yet' })}
+          <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+            <div className="w-20 h-20 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-950/30 dark:to-purple-950/30 rounded-full flex items-center justify-center mb-6">
+              <Icon name="MessageCircle" size={32} className="text-blue-500 dark:text-blue-400" />
+            </div>
+            <h3 className="text-xl font-semibold mb-3 text-foreground">
+              {t('messages.empty_state.title', { defaultValue: 'Start the Conversation' })}
             </h3>
-            <p className="text-muted-foreground">
-              {t('messages.empty_state.description', { defaultValue: 'Be the first to start the conversation!' })}
+            <p className="text-muted-foreground mb-6 max-w-md">
+              {t('messages.empty_state.description', { 
+                defaultValue: 'This room is ready for your first message. Share your thoughts or ask the AI assistant anything!' 
+              })}
             </p>
-          </Card>
+            <div className="flex flex-wrap gap-2 justify-center">
+              <Badge variant="outline" className="text-xs">
+                <Icon name="Lightbulb" size={10} className="mr-1" />
+                {t('empty_state.suggestions.ideas', { defaultValue: 'Share ideas' })}
+              </Badge>
+              <Badge variant="outline" className="text-xs">
+                <Icon name="HelpCircle" size={10} className="mr-1" />
+                {t('empty_state.suggestions.questions', { defaultValue: 'Ask questions' })}
+              </Badge>
+              <Badge variant="outline" className="text-xs">
+                <Icon name="Bot" size={10} className="mr-1" />
+                {t('empty_state.suggestions.ai', { defaultValue: 'Talk to AI' })}
+              </Badge>
+            </div>
+          </div>
         ) : (
           questions.map((message) => (
             <MessageCard

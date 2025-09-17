@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/AppIcon';
 
 /**
@@ -20,110 +22,184 @@ const MessageForm = ({
   t
 }) => {
   return (
-    <Card className="p-4">
+    <div className="p-4">
       {roomPermissions?.canWrite ? (
-        <form onSubmit={onSendQuestion} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              {t('messages.post_message.label', { defaultValue: 'Post a Message' })}
-            </label>
-            <Textarea
-              value={newQuestion}
-              onChange={(e) => setNewQuestion(e.target.value)}
-              placeholder={
-                isAiEnabled 
-                  ? t('messages.post_message.ai_placeholder', { 
-                      defaultValue: 'Ask AI anything... (AI will automatically respond to your question)' 
-                    })
-                  : t('messages.post_message.placeholder', { 
-                      defaultValue: 'Type your message here...' 
-                    })
-              }
-              className={`min-h-[80px] transition-colors ${isAiEnabled ? 'border-primary/50 bg-primary/5' : ''}`}
-              disabled={isPending}
-            />
-          </div>
-
-          {/* AI Assistant Toggle */}
-          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border">
-            <div className="flex items-center space-x-3">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                isAiEnabled ? 'bg-primary/20 text-primary' : 'bg-muted'
-              }`}>
-                <Icon 
-                  name="Bot" 
-                  size={16} 
-                  className={isAiEnabled ? 'text-primary' : 'text-muted-foreground'} 
-                />
-              </div>
-              <div>
-                <Label htmlFor="ai-toggle" className="text-sm font-medium cursor-pointer">
-                  {t('messages.ai_assistant.label', { defaultValue: 'Ask AI Assistant' })}
-                </Label>
-                <p className="text-xs text-muted-foreground">
-                  {isAiEnabled 
-                    ? t('messages.ai_assistant.enabled_hint', { 
-                        defaultValue: 'AI will respond to your message automatically' 
-                      })
-                    : t('messages.ai_assistant.disabled_hint', { 
-                        defaultValue: 'Toggle to get AI assistance with your question' 
-                      })
-                  }
-                </p>
-              </div>
-            </div>
-            <Switch
-              id="ai-toggle"
-              checked={isAiEnabled}
-              onCheckedChange={setIsAiEnabled}
-              disabled={isPending}
-            />
-          </div>
-
-          <div className="flex justify-between items-center">
+        <div className="w-full">
+          <form onSubmit={onSendQuestion} className="space-y-4">
+            {/* AI Mode Toggle Banner */}
             {isAiEnabled && (
-              <div className="flex items-center space-x-2 text-xs text-primary">
-                <Icon name="Sparkles" size={12} />
-                <span>
-                  {t('messages.ai_assistant.will_respond', { 
-                    defaultValue: 'AI will respond automatically' 
-                  })}
-                </span>
+              <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-50/60 via-indigo-50/40 to-purple-50/60 dark:from-blue-950/40 dark:via-indigo-950/30 dark:to-purple-950/40 rounded-lg border border-blue-200/40 dark:border-blue-800/40">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <Icon name="Sparkles" size={14} className="text-white" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-700 border-blue-500/20 dark:from-blue-500/20 dark:to-purple-500/20 dark:text-blue-400 dark:border-blue-500/30 hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-purple-500/10">
+                      <Icon name="Bot" size={8} className="mr-1" />
+                      {t('messages.ai_assistant.mode_active', { defaultValue: 'AI Assistant Mode' })}
+                    </Badge>
+                    <span className="text-sm text-blue-700 dark:text-blue-300 font-medium">
+                      {t('messages.ai_assistant.will_respond', { defaultValue: 'AI will respond automatically' })}
+                    </span>
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsAiEnabled(false)}
+                  className="h-8 px-2 text-blue-600 hover:text-blue-700 hover:bg-blue-100/50 dark:text-blue-300 dark:hover:text-blue-200 dark:hover:bg-blue-800/30 transition-colors"
+                  disabled={isPending}
+                >
+                  <Icon name="X" size={14} />
+                </Button>
               </div>
             )}
-            <div className="flex-1"></div>
-            <Button 
-              type="submit" 
-              disabled={!newQuestion.trim() || isPending}
-              className={isAiEnabled ? 'bg-primary hover:bg-primary/90' : ''}
-            >
-              <Icon name={isAiEnabled ? "Sparkles" : "Send"} size={16} className="mr-2" />
-              {isAiEnabled 
-                ? t('messages.post_message.ask_ai', { defaultValue: 'Ask AI' })
-                : t('messages.post_message.send', { defaultValue: 'Send Message' })
-              }
-            </Button>
-          </div>
-        </form>
+
+            {/* Facebook-style Compose Box - Full Width */}
+            <Card className="transition-colors shadow-sm">
+              <div className="p-6">
+                <div className="flex gap-4 w-full">
+                  {/* User Avatar */}
+                  <div className="flex-shrink-0">
+                    <Avatar className="w-12 h-12 ring-1 ring-border">
+                      <AvatarFallback className="bg-gradient-to-r from-green-400 to-blue-500 text-white text-sm font-semibold">
+                        U
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+
+                  {/* Input Area - Takes full width */}
+                  <div className="flex-1 w-full">
+                    <Textarea
+                      value={newQuestion}
+                      onChange={(e) => setNewQuestion(e.target.value)}
+                      onKeyDown={(e) => {
+                        // Submit on Ctrl/Cmd + Enter
+                        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                          e.preventDefault();
+                          if (newQuestion.trim() && !isPending) {
+                            onSendQuestion(e);
+                          }
+                        }
+                      }}
+                      placeholder={
+                        isAiEnabled 
+                          ? t('messages.post_message.ai_placeholder', { 
+                              defaultValue: 'Ask AI anything... What would you like to know?' 
+                            })
+                          : t('messages.post_message.placeholder', { 
+                              defaultValue: 'What\'s on your mind?' 
+                            })
+                      }
+                      className={`min-h-[100px] resize-none text-base leading-relaxed ${
+                        isAiEnabled 
+                          ? 'border-blue-200 bg-blue-50/50 focus-visible:ring-blue-200 dark:border-blue-800 dark:bg-blue-950/30 dark:focus-visible:ring-blue-800' 
+                          : ''
+                      }`}
+                      disabled={isPending}
+                      rows={4}
+                    />
+
+                    {/* Actions Row */}
+                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/30">
+                      {/* Left Actions */}
+                      <div className="flex items-center gap-4">
+                        {/* AI Toggle Switch */}
+                        <div className="flex items-center space-x-3">
+                          <Switch
+                            id="ai-mode"
+                            checked={isAiEnabled}
+                            onCheckedChange={setIsAiEnabled}
+                            disabled={isPending}
+                            className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-blue-500 data-[state=checked]:to-purple-600"
+                          />
+                          <Label 
+                            htmlFor="ai-mode" 
+                            className={`text-sm font-medium cursor-pointer transition-colors select-none ${
+                              isAiEnabled 
+                                ? 'text-blue-700 dark:text-blue-300' 
+                                : 'text-muted-foreground hover:text-foreground'
+                            }`}
+                          >
+                            <div className="flex items-center gap-1.5">
+                              <Icon 
+                                name={isAiEnabled ? "Sparkles" : "Bot"} 
+                                size={14} 
+                                className={isAiEnabled ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground"} 
+                              />
+                              {isAiEnabled 
+                                ? t('messages.ai_assistant.mode_active_short', { defaultValue: 'AI Mode' })
+                                : t('messages.ai_assistant.ask_ai', { defaultValue: 'Ask AI' })
+                              }
+                            </div>
+                          </Label>
+                        </div>
+
+                        {newQuestion.trim() && (
+                          <div className="text-xs text-muted-foreground ml-auto">
+                            {newQuestion.trim().length} characters
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Send Button */}
+                      <Button 
+                        type="submit" 
+                        disabled={!newQuestion.trim() || isPending}
+                        size="sm"
+                        className={`h-8 px-4 font-medium transition-all ${
+                          isAiEnabled 
+                            ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0 shadow-md dark:from-blue-400 dark:to-purple-500 dark:hover:from-blue-500 dark:hover:to-purple-600' 
+                            : 'shadow-sm'
+                        }`}
+                      >
+                        {isPending ? (
+                          <Icon name="Loader2" size={14} className="animate-spin mr-1.5" />
+                        ) : (
+                          <Icon name={isAiEnabled ? "Sparkles" : "Send"} size={14} className="mr-1.5" />
+                        )}
+                        {isPending
+                          ? t('messages.post_message.sending', { defaultValue: 'Sending...' })
+                          : isAiEnabled 
+                            ? t('messages.post_message.ask_ai', { defaultValue: 'Ask AI' })
+                            : t('messages.post_message.send', { defaultValue: 'Post' })
+                        }
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </form>
+        </div>
       ) : (
-        <div className="text-center py-6">
-          <Icon name="Lock" size={48} className="text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium mb-2">
-            {t('permissions.cannot_post.title', { defaultValue: 'Cannot Post Messages' })}
-          </h3>
-          <p className="text-muted-foreground">
-            {roomPermissions?.reason || t('permissions.cannot_post.description', { 
-              defaultValue: 'You do not have permission to post messages in this room.' 
-            })}
-          </p>
-          <p className="text-sm text-muted-foreground mt-2">
-            {t('permissions.cannot_post.note', { 
-              defaultValue: 'You can still view and read all messages in this room.' 
-            })}
-          </p>
+        <div className="w-full">
+          <Card className="border-dashed border-2 border-muted-foreground/20">
+            <div className="text-center py-8 px-6">
+              <div className="w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Icon name="Lock" size={24} className="text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">
+                {t('permissions.cannot_post.title', { defaultValue: 'Cannot Post Messages' })}
+              </h3>
+              <p className="text-muted-foreground mb-2">
+                {roomPermissions?.reason || t('permissions.cannot_post.description', { 
+                  defaultValue: 'You do not have permission to post messages in this room.' 
+                })}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {t('permissions.cannot_post.note', { 
+                  defaultValue: 'You can still view and read all messages in this room.' 
+                })}
+              </p>
+            </div>
+          </Card>
         </div>
       )}
-    </Card>
+    </div>
   );
 };
 
