@@ -75,25 +75,9 @@ const TalkQAPanel = ({ selectedRoomToken, onSelectRoom }) => {
     
     // Automatically add @AI prefix if replying to an AI conversation
     let finalAnswer = answer.trim();
-    let autoAIAdded = false;
     
     if (options.replyingToAI && !finalAnswer.startsWith('@AI ')) {
       finalAnswer = `@AI ${finalAnswer}`;
-      autoAIAdded = true;
-      
-      // Show feedback that @AI was automatically added
-      toast.info(t('messages.reply.auto_ai_added', { 
-        defaultValue: '🤖 Added @AI automatically - AI will respond to your reply' 
-      }), {
-        description: t('messages.reply.auto_ai_description', { 
-          defaultValue: 'Since you\'re continuing an AI conversation, @AI was added to trigger an AI response' 
-        }),
-        duration: 3000,
-        action: {
-          label: t('messages.reply.got_it', { defaultValue: 'Got it' }),
-          onClick: () => {},
-        },
-      });
     }
     
     sendAnswerMutation.mutate({

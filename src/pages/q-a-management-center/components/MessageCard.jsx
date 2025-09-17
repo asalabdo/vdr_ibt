@@ -471,8 +471,10 @@ const MessageCard = ({
                             ? t('messages.reply.ai_placeholder', { defaultValue: 'Reply to AI (AI will respond automatically)...' })
                             : t('messages.reply.placeholder', { defaultValue: 'Type your reply here...' })
                         }
-                        className={`min-h-[80px] resize-none focus:ring-2 focus:ring-primary/20 transition-all ${
-                          isAIConversationContext ? 'border-blue-200 dark:border-blue-800 bg-blue-50/30 dark:bg-blue-950/10' : ''
+                        className={`min-h-[80px] resize-none ${
+                          isAIConversationContext 
+                            ? 'border-blue-200 bg-blue-50/50 focus-visible:ring-blue-200 dark:border-blue-800 dark:bg-blue-950/30 dark:focus-visible:ring-blue-800' 
+                            : ''
                         }`}
                         disabled={isSendingAnswer}
                         autoFocus
