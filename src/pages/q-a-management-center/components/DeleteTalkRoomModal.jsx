@@ -47,7 +47,6 @@ const DeleteTalkRoomModal = ({ isOpen, onClose, room }) => {
   const handleDelete = async () => {
     if (!room?.token) return;
 
-    console.log('🗑️ Attempting to delete Talk room:', room.token);
     deleteRoomMutation.mutate(room.token);
   };
 

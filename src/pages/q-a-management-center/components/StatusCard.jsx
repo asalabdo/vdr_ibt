@@ -1,6 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Badge } from '../../../components/ui/badge';
+import { Card, CardContent } from '../../../components/ui/card';
 import Icon from '../../../components/AppIcon';
 
 const StatusCard = ({ title, value, icon, color, description }) => {
@@ -9,32 +8,27 @@ const StatusCard = ({ title, value, icon, color, description }) => {
       case 'warning':
         return {
           bg: 'bg-warning/10',
-          icon: 'text-warning',
-          badge: 'bg-warning/20 text-warning border-warning/30'
+          icon: 'text-warning'
         };
       case 'info':
         return {
           bg: 'bg-blue-500/10',
-          icon: 'text-blue-600',
-          badge: 'bg-blue-100 text-blue-700 border-blue-200'
+          icon: 'text-blue-600'
         };
       case 'success':
         return {
           bg: 'bg-success/10',
-          icon: 'text-success',
-          badge: 'bg-success/20 text-success border-success/30'
+          icon: 'text-success'
         };
       case 'error':
         return {
           bg: 'bg-error/10',
-          icon: 'text-error',
-          badge: 'bg-error/20 text-error border-error/30'
+          icon: 'text-error'
         };
       default:
         return {
           bg: 'bg-muted',
-          icon: 'text-muted-foreground',
-          badge: 'bg-muted text-muted-foreground'
+          icon: 'text-muted-foreground'
         };
     }
   };

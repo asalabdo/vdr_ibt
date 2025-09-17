@@ -67,6 +67,7 @@
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.55.0",
     "react-i18next": "^15.7.3",
+    "react-markdown": "^10.1.0",
     "react-pdf": "^10.1.0",
     "react-player": "^3.3.2",
     "react-router-dom": "6.0.2",

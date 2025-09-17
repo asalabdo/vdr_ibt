@@ -29,8 +29,6 @@ import Icon from '@/components/AppIcon';
 const InviteUsersModal = ({ isOpen, onClose, room, t }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [errors, setErrors] = useState({});
-  const [successCount, setSuccessCount] = useState(0);
-  const [failureCount, setFailureCount] = useState(0);
   const [isInviting, setIsInviting] = useState(false);
 
   // Fetch available users
@@ -53,11 +51,10 @@ const InviteUsersModal = ({ isOpen, onClose, room, t }) => {
   // Add participant mutation
   const addParticipantMutation = useAddParticipant({
     onSuccess: () => {
-      setSuccessCount(prev => prev + 1);
+      // Success handled in handleSubmit
     },
     onError: (error, variables) => {
       console.error(`Failed to add participant ${variables.newParticipant}:`, error.message);
-      setFailureCount(prev => prev + 1);
     }
   });
 
@@ -100,8 +97,6 @@ const InviteUsersModal = ({ isOpen, onClose, room, t }) => {
     if (!validateForm() || !room || selectedUsers.length === 0) return;
 
     setIsInviting(true);
-    setSuccessCount(0);
-    setFailureCount(0);
     setErrors({});
 
     try {
@@ -180,8 +175,6 @@ const InviteUsersModal = ({ isOpen, onClose, room, t }) => {
     if (!isInviting) {
       setSelectedUsers([]);
       setErrors({});
-      setSuccessCount(0);
-      setFailureCount(0);
       onClose();
     }
   };
