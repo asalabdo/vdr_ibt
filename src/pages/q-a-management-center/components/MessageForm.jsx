@@ -37,7 +37,7 @@ const MessageForm = ({
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-700 border-blue-500/20 dark:from-blue-500/20 dark:to-purple-500/20 dark:text-blue-400 dark:border-blue-500/30 hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-purple-500/10">
-                      <Icon name="Bot" size={8} className="mr-1" />
+                      <Icon name="Bot" size={8} className="mr-1 rtl:ml-1 rtl:mr-0" />
                       {t('messages.ai_assistant.mode_active', { defaultValue: 'AI Assistant Mode' })}
                     </Badge>
                     <span className="text-sm text-blue-700 dark:text-blue-300 font-medium">
@@ -108,14 +108,16 @@ const MessageForm = ({
                       {/* Left Actions */}
                       <div className="flex items-center gap-4">
                         {/* AI Toggle Switch */}
-                        <div className="flex items-center space-x-3">
-                          <Switch
-                            id="ai-mode"
-                            checked={isAiEnabled}
-                            onCheckedChange={setIsAiEnabled}
-                            disabled={isPending}
-                            className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-blue-500 data-[state=checked]:to-purple-600"
-                          />
+                        <div className="flex items-center gap-3">
+                          <div className="[direction:ltr]">
+                            <Switch
+                              id="ai-mode"
+                              checked={isAiEnabled}
+                              onCheckedChange={setIsAiEnabled}
+                              disabled={isPending}
+                              className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-blue-500 data-[state=checked]:to-purple-600"
+                            />
+                          </div>
                           <Label 
                             htmlFor="ai-mode" 
                             className={`text-sm font-medium cursor-pointer transition-colors select-none ${
@@ -124,11 +126,11 @@ const MessageForm = ({
                                 : 'text-muted-foreground hover:text-foreground'
                             }`}
                           >
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-1.5 rtl:flex-row-reverse">
                               <Icon 
                                 name={isAiEnabled ? "Sparkles" : "Bot"} 
                                 size={14} 
-                                className={isAiEnabled ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground"} 
+                                className={`${isAiEnabled ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground"} rtl:ml-1.5 rtl:mr-0`} 
                               />
                               {isAiEnabled 
                                 ? t('messages.ai_assistant.mode_active_short', { defaultValue: 'AI Mode' })
@@ -139,7 +141,7 @@ const MessageForm = ({
                         </div>
 
                         {newQuestion.trim() && (
-                          <div className="text-xs text-muted-foreground ml-auto">
+                          <div className="text-xs text-muted-foreground ml-auto rtl:mr-auto rtl:ml-0">
                             {newQuestion.trim().length} characters
                           </div>
                         )}
@@ -157,9 +159,9 @@ const MessageForm = ({
                         }`}
                       >
                         {isPending ? (
-                          <Icon name="Loader2" size={14} className="animate-spin mr-1.5" />
+                          <Icon name="Loader2" size={14} className="animate-spin mr-1.5 rtl:ml-1.5 rtl:mr-0" />
                         ) : (
-                          <Icon name={isAiEnabled ? "Sparkles" : "Send"} size={14} className="mr-1.5" />
+                          <Icon name={isAiEnabled ? "Sparkles" : "Send"} size={14} className="mr-1.5 rtl:ml-1.5 rtl:mr-0" />
                         )}
                         {isPending
                           ? t('messages.post_message.sending', { defaultValue: 'Sending...' })

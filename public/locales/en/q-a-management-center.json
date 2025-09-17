@@ -1,6 +1,6 @@
 {
-  "title": "Talk Message Center",
-  "subtitle": "Real-time messaging powered by Nextcloud Talk",
+  "title": "Message Center",
+  "subtitle": "Real-time messaging and communication",
 
   "page": {
     "back_to_rooms": "Back to Rooms"
@@ -8,8 +8,8 @@
 
   "stats": {
     "talk_rooms": {
-      "title": "Talk Rooms",
-      "description": "Connected Talk rooms"
+      "title": "Chat Rooms",
+      "description": "Connected chat rooms"
     },
     "active_rooms": {
       "title": "Active Rooms",
@@ -26,11 +26,11 @@
   },
 
   "room_selection": {
-    "title": "Select a Talk Room",
+    "title": "Select a Chat Room",
     "description": "Choose a room to view messages and participate in discussions",
     "empty_state": {
-      "title": "No Talk Rooms Available",
-      "description": "Create a Talk room in Nextcloud first, then return here to view and participate in discussions."
+      "title": "No Chat Rooms Available",
+      "description": "Create a chat room first, then return here to view and participate in discussions."
     },
     "room_types": {
       "group_chat": "Group Chat",
@@ -52,30 +52,60 @@
   },
 
   "messages": {
+    "ai_assistant": {
+      "mode_active": "AI Assistant Mode",
+      "will_respond": "AI will respond automatically",
+      "mode_active_short": "AI Mode",
+      "ask_ai": "Ask AI"
+    },
     "post_message": {
       "label": "Post a Message",
-      "placeholder": "Type your message here...",
-      "send": "Send Message"
+      "placeholder": "What's on your mind?",
+      "ai_placeholder": "Ask AI anything... What would you like to know?",
+      "send": "Post",
+      "ask_ai": "Ask AI",
+      "sending": "Sending..."
     },
     "reply": {
       "button": "Reply",
       "placeholder": "Type your reply here...",
+      "ai_placeholder": "Reply to AI (AI will respond automatically)...",
       "send": "Send Reply",
-      "cancel": "Cancel"
+      "send_to_ai": "Ask AI",
+      "cancel": "Cancel",
+      "sending": "Sending...",
+      "ai_auto_reply_title": "🤖 AI Assistant Active",
+      "ai_auto_reply": "AI will automatically respond to your reply",
+      "ai_context_hint": "Continuing AI conversation"
     },
     "refresh": "Refresh",
     "by_user": "by {{user}}",
     "replies_count": "{{count}} replies",
     "no_replies": "No replies",
     "empty_state": {
-      "title": "No messages yet",
-      "description": "Be the first to start the conversation!"
+      "title": "Start the Conversation",
+      "description": "This room is ready for your first message. Share your thoughts or ask the AI assistant anything!"
     }
   },
 
   "message_types": {
     "message": "Message",
-    "reply": "Reply"
+    "reply": "Reply",
+    "ai_question": "AI Question",
+    "ai_response": "AI Response"
+  },
+
+  "user_types": {
+    "ai_assistant": "AI Assistant - Here to help!",
+    "user": "Team Member"
+  },
+
+  "empty_state": {
+    "suggestions": {
+      "ideas": "Share ideas",
+      "questions": "Ask questions", 
+      "ai": "Talk to AI"
+    }
   },
 
   "actions": {
@@ -83,8 +113,8 @@
   },
 
   "create_room_modal": {
-    "title": "Create Talk Room",
-    "description": "Create a new Talk room for messaging and communication.",
+    "title": "Create Chat Room",
+    "description": "Create a new chat room for messaging and communication.",
     "room_name": "Room Name",
     "room_name_placeholder": "Enter room name...",
     "room_description": "Description",
@@ -102,7 +132,7 @@
     "create": "Create Room",
     "creating": "Creating...",
     "success_title": "Room created successfully!",
-    "success_description": "Talk room \"{{roomName}}\" has been created and is ready for use.",
+    "success_description": "Chat room \"{{roomName}}\" has been created and is ready for use.",
     "error_title": "Failed to create room",
     "room_types": {
       "group": "Group Chat",
@@ -129,7 +159,7 @@
   },
 
   "edit_room_modal": {
-    "title": "Edit Talk Room",
+    "title": "Edit Chat Room",
     "description": "Update the room settings and configuration.",
     "room_name": "Room Name",
     "room_name_placeholder": "Enter room name...",
@@ -142,7 +172,7 @@
     "update": "Update Room",
     "updating": "Updating...",
     "success_title": "Room updated successfully!",
-    "success_description": "Talk room \"{{roomName}}\" has been updated.",
+    "success_description": "Chat room \"{{roomName}}\" has been updated.",
     "error_title": "Failed to update room",
     "errors": {
       "name_required": "Room name is required",
@@ -217,7 +247,7 @@
   },
 
   "delete_room_modal": {
-    "title": "Delete Talk Room",
+    "title": "Delete Chat Room",
     "description": "Are you sure you want to delete \"{{roomName}}\"? This action cannot be undone.",
     "participants_warning_title": "Warning:",
     "participants_warning": "This room has {{count}} participant(s). Deleting it will remove all access and chat history.",
@@ -228,7 +258,7 @@
     "delete": "Delete Room",
     "deleting": "Deleting...",
     "success_title": "Room deleted successfully!",
-    "success_description": "Talk room \"{{roomName}}\" has been permanently deleted.",
+    "success_description": "Chat room \"{{roomName}}\" has been permanently deleted.",
     "error_title": "Failed to delete room"
   }
 }

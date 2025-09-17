@@ -304,24 +304,14 @@ const MessageCard = ({
             </span>
 
             {/* Reply Count */}
-            <div className="ml-auto flex items-center gap-1">
-              {message.hasAnswers ? (
+            {message.hasAnswers && (
+              <div className="ml-auto flex items-center gap-1 rtl:ml-0 rtl:mr-auto">
                 <Badge variant="outline" className="bg-green-500/5 text-green-700 border-green-500/20 dark:bg-green-500/10 dark:text-green-400 dark:border-green-500/30 hover:bg-green-500/5 dark:hover:bg-green-500/10">
                   <Icon name="MessageSquare" size={10} className="mr-1 rtl:ml-1 rtl:mr-0" />
                   {t('messages.replies_count', { count: message.answersCount, defaultValue: '{{count}}' })}
                 </Badge>
-              ) : (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="h-6 px-2 text-xs hover:bg-muted/50 transition-colors"
-                  onClick={() => setShowReplyForm(true)}
-                >
-                  <Icon name="Reply" size={12} className="mr-1 rtl:ml-1 rtl:mr-0" />
-                  {t('messages.reply.button', { defaultValue: 'Reply' })}
-                </Button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Message Content */}
