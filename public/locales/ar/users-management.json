@@ -134,7 +134,10 @@
     "cancel": "إلغاء",
     "delete": "حذف",
     "click_to_view_details": "انقر على 'عرض التفاصيل' لرؤية المزيد من المعلومات",
-    "view_details": "عرض التفاصيل"
+    "view_details": "عرض التفاصيل",
+    "previous": "السابق",
+    "next": "التالي",
+    "showing_results": "عرض {{start}} إلى {{end}} من {{total}} مستخدمين"
   },
 
   "modal": {

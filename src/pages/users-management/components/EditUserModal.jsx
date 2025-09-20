@@ -208,13 +208,13 @@ const EditUserModal = ({ isOpen, onClose, userId }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto rtl:[&>button]:left-4 rtl:[&>button]:right-auto rtl:[&>button]:top-4">
         <DialogHeader className="pb-4">
           <DialogTitle className="flex items-center gap-2">
             <Icon name="Edit" size={18} />
             {user ? t('modal.edit_user_title', { username: user.username }) : t('modal.edit_user_loading')}
           </DialogTitle>
-          <DialogDescription className="text-sm">
+          <DialogDescription className="text-sm rtl:text-right">
             {t('modal.edit_user_description')}
           </DialogDescription>
         </DialogHeader>
@@ -379,11 +379,13 @@ const EditUserModal = ({ isOpen, onClose, userId }) => {
                         {t('edit.account_enabled_description')}
                       </p>
                     </div>
-                    <Switch
-                      checked={user.enabled}
-                      onCheckedChange={handleStatusToggle}
-                      disabled={enableUserMutation.isPending || disableUserMutation.isPending}
-                    />
+                    <div className="[direction:ltr]">
+                      <Switch
+                        checked={user.enabled}
+                        onCheckedChange={handleStatusToggle}
+                        disabled={enableUserMutation.isPending || disableUserMutation.isPending}
+                      />
+                    </div>
                   </div>
                 </CardContent>
               </Card>

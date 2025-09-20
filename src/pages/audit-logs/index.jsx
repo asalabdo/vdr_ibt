@@ -464,10 +464,16 @@ const AuditLogs = () => {
                               <Pagination className="mx-0 w-auto justify-end rtl:justify-start">
                                 <PaginationContent className="rtl:flex-row-reverse">
                                   <PaginationItem>
-                                    <PaginationPrevious 
+                                    <PaginationLink
                                       onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                                      className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                                    />
+                                      className={`gap-1 pl-2.5 cursor-pointer [&>svg]:rtl:rotate-180 ${
+                                        currentPage <= 1 ? "pointer-events-none opacity-50" : ""
+                                      }`}
+                                      size="default"
+                                    >
+                                      <Icon name="ChevronLeft" className="h-4 w-4" />
+                                      <span>{t('previous')}</span>
+                                    </PaginationLink>
                                   </PaginationItem>
                                 
                                 {[...Array(totalPages)].map((_, index) => {
@@ -503,10 +509,16 @@ const AuditLogs = () => {
                                 })}
                                 
                                 <PaginationItem>
-                                  <PaginationNext 
+                                  <PaginationLink
                                     onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                                    className={currentPage >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                                  />
+                                    className={`gap-1 pr-2.5 cursor-pointer [&>svg]:rtl:rotate-180 ${
+                                      currentPage >= totalPages ? "pointer-events-none opacity-50" : ""
+                                    }`}
+                                    size="default"
+                                  >
+                                    <span>{t('next')}</span>
+                                    <Icon name="ChevronRight" className="h-4 w-4" />
+                                  </PaginationLink>
                                 </PaginationItem>
                               </PaginationContent>
                             </Pagination>

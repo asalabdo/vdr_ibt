@@ -134,7 +134,10 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "click_to_view_details": "Click 'View Details' to see more information",
-    "view_details": "View Details"
+    "view_details": "View Details",
+    "previous": "Previous",
+    "next": "Next",
+    "showing_results": "Showing {{start}} to {{end}} of {{total}} users"
   },
 
   "modal": {

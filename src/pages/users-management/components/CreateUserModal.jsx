@@ -182,13 +182,13 @@ const CreateUserModal = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalClose}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto rtl:[&>button]:left-4 rtl:[&>button]:right-auto rtl:[&>button]:top-4">
         <DialogHeader className="pb-4">
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 rtl:text-right">
             <Icon name="UserPlus" size={18} />
             {t('create_user_modal.title')}
           </DialogTitle>
-          <DialogDescription className="text-sm">
+          <DialogDescription className="text-sm rtl:text-right">
             {t('create_user_modal.description')}
           </DialogDescription>
         </DialogHeader>
@@ -263,10 +263,10 @@ const CreateUserModal = ({ isOpen, onClose }) => {
                 value={formData.password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
                 placeholder={t('create_user_modal.password_placeholder')}
-                className={`text-sm ${errors.password ? 'border-destructive pr-20' : 'pr-20'}`}
+                className={`text-sm ${errors.password ? 'border-destructive pr-20 rtl:pr-2 rtl:pl-20' : 'pr-20 rtl:pr-2 rtl:pl-20'}`}
                 disabled={createUserMutation.isPending}
               />
-              <div className="absolute right-1 top-1/2 -translate-y-1/2 flex gap-1">
+              <div className="absolute right-1 rtl:right-auto rtl:left-1 top-1/2 -translate-y-1/2 flex gap-1">
                 {formData.password && (
                   <>
                     <Button
@@ -320,7 +320,7 @@ const CreateUserModal = ({ isOpen, onClose }) => {
             </Label>
             <div className="grid grid-cols-2 gap-2">
               {availableGroups.map((group) => (
-                <div key={group} className="flex items-center space-x-2">
+                <div key={group} className="flex items-center space-x-2 rtl:space-x-reverse">
                   <Checkbox
                     id={group}
                     checked={formData.groups.includes(group)}
@@ -353,7 +353,7 @@ const CreateUserModal = ({ isOpen, onClose }) => {
           )}
         </form>
 
-        <div className="flex justify-end gap-2 pt-3">
+        <DialogFooter className="rtl:flex-row-reverse">
           <Button
             type="button"
             variant="outline"
@@ -380,7 +380,7 @@ const CreateUserModal = ({ isOpen, onClose }) => {
               : t('create_user_modal.create')
             }
           </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

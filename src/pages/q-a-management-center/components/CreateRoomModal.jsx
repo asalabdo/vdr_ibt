@@ -152,13 +152,13 @@ const CreateRoomModal = ({ isOpen, onClose, t }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalClose}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto rtl:[&>button]:left-4 rtl:[&>button]:right-auto rtl:[&>button]:top-4">
         <DialogHeader className="pb-4">
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 rtl:text-right">
             <Icon name="MessageCircle" size={18} />
             {t('create_room_modal.title', { defaultValue: 'Create Talk Room' })}
           </DialogTitle>
-          <DialogDescription className="text-sm">
+          <DialogDescription className="text-sm rtl:text-right">
             {t('create_room_modal.description', { defaultValue: 'Create a new Talk room for messaging and communication.' })}
           </DialogDescription>
         </DialogHeader>

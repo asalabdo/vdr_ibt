@@ -45,7 +45,7 @@ import EditUserModal from './EditUserModal';
  * Displays and manages the list of users
  */
 const UsersTable = () => {
-  const { t } = useTranslation('users-management');
+  const { t, i18n } = useTranslation('users-management');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteDialog, setDeleteDialog] = useState({ open: false, userId: null });
@@ -383,15 +383,25 @@ const UsersTable = () => {
               {totalPages > 1 && (
                 <div className="mt-6 flex items-center justify-between">
                   <div className="text-sm text-muted-foreground">
-                    Showing {startIndex + 1} to {Math.min(endIndex, totalUsers)} of {totalUsers} users
+                    {t('table.showing_results', { 
+                      start: startIndex + 1, 
+                      end: Math.min(endIndex, totalUsers), 
+                      total: totalUsers 
+                    })}
                   </div>
                   <Pagination className="mx-0 w-auto justify-end">
                     <PaginationContent>
                       <PaginationItem>
-                        <PaginationPrevious 
+                        <PaginationLink
                           onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                          className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                        />
+                          className={`gap-1 pl-2.5 cursor-pointer [&>svg]:rtl:rotate-180 ${
+                            currentPage <= 1 ? "pointer-events-none opacity-50" : ""
+                          }`}
+                          size="default"
+                        >
+                          <Icon name="ChevronLeft" className="h-4 w-4" />
+                          <span>{t('table.previous')}</span>
+                        </PaginationLink>
                       </PaginationItem>
                       
                       {[...Array(totalPages)].map((_, index) => {
@@ -427,10 +437,16 @@ const UsersTable = () => {
                       })}
                       
                       <PaginationItem>
-                        <PaginationNext 
+                        <PaginationLink
                           onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                          className={currentPage >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                        />
+                          className={`gap-1 pr-2.5 cursor-pointer [&>svg]:rtl:rotate-180 ${
+                            currentPage >= totalPages ? "pointer-events-none opacity-50" : ""
+                          }`}
+                          size="default"
+                        >
+                          <span>{t('table.next')}</span>
+                          <Icon name="ChevronRight" className="h-4 w-4" />
+                        </PaginationLink>
                       </PaginationItem>
                     </PaginationContent>
                   </Pagination>

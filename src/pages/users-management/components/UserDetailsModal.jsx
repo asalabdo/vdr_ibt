@@ -63,13 +63,13 @@ const UserDetailsModal = ({ isOpen, onClose, userId }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto rtl:[&>button]:left-4 rtl:[&>button]:right-auto rtl:[&>button]:top-4">
         <DialogHeader className="pb-4">
           <DialogTitle className="flex items-center gap-2">
             <Icon name="User" size={18} />
             {user ? t('modal.user_details_title', { username: user.username }) : t('modal.loading_user_details')}
           </DialogTitle>
-          <DialogDescription className="text-sm">
+          <DialogDescription className="text-sm rtl:text-right">
             {user ? t('modal.user_details_description') : t('modal.loading_description')}
           </DialogDescription>
         </DialogHeader>

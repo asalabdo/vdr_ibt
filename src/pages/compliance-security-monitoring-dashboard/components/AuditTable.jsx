@@ -4,6 +4,12 @@ import Icon from '../../../components/AppIcon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/Input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from '@/components/ui/pagination';
 
 const AuditTable = () => {
   const { t } = useTranslation('compliance-security-dashboard');
@@ -338,43 +344,50 @@ const AuditTable = () => {
           })}
         </div>
         
-        <div className="flex items-center space-x-2 rtl:space-x-reverse">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
-            iconName="ChevronLeft"
-          >
-            {t('audit_table.pagination.previous')}
-          </Button>
-          
-          <div className="flex items-center space-x-1 rtl:space-x-reverse">
+        <Pagination className="mx-0 w-auto justify-end rtl:justify-start">
+          <PaginationContent className="rtl:flex-row-reverse">
+            <PaginationItem>
+              <PaginationLink
+                onClick={() => currentPage > 1 && setCurrentPage(Math.max(1, currentPage - 1))}
+                className={`gap-1 pl-2.5 cursor-pointer [&>svg]:rtl:rotate-180 ${
+                  currentPage <= 1 ? "pointer-events-none opacity-50" : ""
+                }`}
+                size="default"
+              >
+                <Icon name="ChevronLeft" className="h-4 w-4" />
+                <span>{t('audit_table.pagination.previous')}</span>
+              </PaginationLink>
+            </PaginationItem>
+            
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               const page = i + 1;
               return (
-                <Button
-                  key={page}
-                  variant={currentPage === page ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setCurrentPage(page)}
-                >
-                  {page}
-                </Button>
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    onClick={() => setCurrentPage(page)}
+                    isActive={currentPage === page}
+                    className="cursor-pointer"
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
               );
             })}
-          </div>
-          
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-            disabled={currentPage === totalPages}
-            iconName="ChevronRight"
-          >
-            {t('audit_table.pagination.next')}
-          </Button>
-        </div>
+            
+            <PaginationItem>
+              <PaginationLink
+                onClick={() => currentPage < totalPages && setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                className={`gap-1 pr-2.5 cursor-pointer [&>svg]:rtl:rotate-180 ${
+                  currentPage >= totalPages ? "pointer-events-none opacity-50" : ""
+                }`}
+                size="default"
+              >
+                <span>{t('audit_table.pagination.next')}</span>
+                <Icon name="ChevronRight" className="h-4 w-4" />
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
