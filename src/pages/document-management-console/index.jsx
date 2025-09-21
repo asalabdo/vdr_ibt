@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useListFiles, useDownloadFile, useDeleteItem } from '@/hooks/api';
 import { useAuthStatus, usePermissions } from '@/hooks/api';
-import Header from '../../components/ui/Header';
+import Header from '../../components/ui/header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
