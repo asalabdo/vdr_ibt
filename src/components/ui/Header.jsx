@@ -7,9 +7,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import LanguageToggle from './LanguageToggle';
-import DarkModeToggle from './DarkModeToggle';
-import NotificationBell from './NotificationBell';
+import LanguageToggle from './language-toggle';
+import DarkModeToggle from './dark-mode-toggle';
+import NotificationBell from './notification-bell';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAuth } from '@/hooks/api';
 
