@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../components/ui/Header';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/input';
 import Icon from '../../components/AppIcon';
 import RoleCard from './components/RoleCard';
 import CreateRoleModal from './components/CreateRoleModal';

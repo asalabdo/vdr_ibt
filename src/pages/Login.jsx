@@ -3,16 +3,16 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/api';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/Checkbox';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/AppIcon';
-import LanguageToggle from '@/components/ui/LanguageToggle';
-import DarkModeToggle from '@/components/ui/DarkModeToggle';
+import LanguageToggle from '@/components/ui/language-toggle';
+import DarkModeToggle from '@/components/ui/dark-mode-toggle';
 
 /**
  * Login Page Component

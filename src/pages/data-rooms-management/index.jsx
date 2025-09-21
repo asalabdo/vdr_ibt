@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { useDataRooms } from '@/hooks/api';
 import { usePermissions } from '@/hooks/api/useAuth';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';

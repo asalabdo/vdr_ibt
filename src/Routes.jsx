@@ -16,7 +16,7 @@ import RolesPermissions from '@/pages/roles-permissions';
 import AuditLogs from '@/pages/audit-logs';
 import Settings from '@/pages/settings';
 import NotificationsPage from '@/pages/notifications';
-import Header from '@/components/ui/Header';
+import Header from '@/components/ui/header';
 import Login from '@/pages/Login';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import PublicRoute from '@/components/auth/PublicRoute';
