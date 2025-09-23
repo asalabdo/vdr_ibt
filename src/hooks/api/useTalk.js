@@ -40,7 +40,7 @@ export const useRooms = (options = {}) => {
  * Get messages with threading support
  */
 export const useQAMessages = (roomToken, options = {}) => {
-  const { enabled = true, limit = 100, refetchInterval = 30000, ...queryOptions } = options;
+  const { enabled = true, limit = 100, refetchInterval = 5000, ...queryOptions } = options;
   
   return useQuery({
     queryKey: QUERY_KEYS.qaMessages(roomToken),

@@ -29,8 +29,7 @@ const TalkQAPanel = ({ selectedRoomToken, onSelectRoom }) => {
   // API Hooks - ALL hooks must be called before any conditional returns
   const roomsQuery = useRooms();
   const qaQuery = useQAMessages(selectedRoomToken, { 
-    enabled: !!selectedRoomToken,
-    refetchInterval: 30000
+    enabled: !!selectedRoomToken
   });
   
   const sendQuestionMutation = useSendQuestion({
