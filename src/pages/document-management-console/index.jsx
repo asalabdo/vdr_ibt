@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useListFiles, useDownloadFile, useDeleteItem } from '@/hooks/api';
 import { useAuthStatus, usePermissions } from '@/hooks/api';
@@ -26,6 +27,7 @@ import FileUploadModal from './components/FileUploadModal';
 
 const FilesManagementConsole = () => {
   const { t } = useTranslation('document-management-console');
+  const location = useLocation();
   
   // Get user permissions for document operations
   const {
@@ -45,6 +47,28 @@ const FilesManagementConsole = () => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
+
+  // Read initial path from React Router state or URL parameters (for data room navigation)
+  useEffect(() => {
+    // First check if we have room data from navigation state (clean URL approach)
+    if (location.state?.roomPath) {
+      setCurrentPath(`/${location.state.roomPath}`);
+      return;
+    }
+    
+    // Fallback to URL parameters for backward compatibility
+    const searchParams = new URLSearchParams(location.search);
+    const pathParam = searchParams.get('path');
+    if (pathParam) {
+      try {
+        const decodedPath = decodeURIComponent(pathParam);
+        setCurrentPath(decodedPath);
+      } catch (error) {
+        console.warn('Failed to decode path parameter:', pathParam);
+        setCurrentPath('/');
+      }
+    }
+  }, [location.search, location.state]);
 
   // Fetch files using the API (following the pattern from other pages)
   // Get current username from auth context or fallback to environment

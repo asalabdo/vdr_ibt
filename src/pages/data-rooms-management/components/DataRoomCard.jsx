@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { usePermissions } from '@/hooks/api/useAuth';
 import Icon from '../../../components/AppIcon';
 import { Button } from '@/components/ui/button';
@@ -19,13 +20,15 @@ import {
 const DataRoomCard = ({ room, onViewDetails, onEdit, onDelete, onManageGroups }) => {
   const { t, i18n } = useTranslation('data-rooms-management');
   const { t: tCommon } = useTranslation('common');
+  const navigate = useNavigate();
   
   // Get user permissions
   const {
     canManageDataRooms,
     canCreateDataRooms,
     isAdmin,
-    isSubadmin
+    isSubadmin,
+    hasPermission
   } = usePermissions();
 
   const getStatusColor = (isEnabled) => {
@@ -62,12 +65,29 @@ const DataRoomCard = ({ room, onViewDetails, onEdit, onDelete, onManageGroups })
     });
   };
 
+  // Navigate to document management console with the data room folder
+  const handleBrowseFiles = () => {
+    if (room?.mountPoint) {
+      // Navigate with clean URL but pass room data via state
+      navigate('/document-management-console', {
+        state: { 
+          roomPath: room.mountPoint,
+          roomName: room.roomName || room.mountPoint,
+          roomId: room.roomId
+        }
+      });
+    }
+  };
+
   return (
     <Card className="hover:shadow-md transition-all duration-200 group">
       <CardContent className="p-6">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer flex-1">
+        <div 
+          className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer flex-1"
+          onClick={hasPermission('documents.view') ? handleBrowseFiles : undefined}
+        >
           <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
             <Icon name="FolderOpen" size={24} className="text-primary" />
           </div>
@@ -92,11 +112,21 @@ const DataRoomCard = ({ room, onViewDetails, onEdit, onDelete, onManageGroups })
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
+            {/* Browse Files - Available to users with documents.view permission */}
+            {hasPermission('documents.view') && (
+              <DropdownMenuItem onClick={handleBrowseFiles}>
+                <Icon name="Folder" size={14} className="mr-2" />
+                {t('actions.browse_files', { defaultValue: 'Browse Files' })}
+              </DropdownMenuItem>
+            )}
+            
             {/* View Details - Available to all users */}
             <DropdownMenuItem onClick={() => onViewDetails?.(room.roomId)}>
               <Icon name="Eye" size={14} className="mr-2" />
               {t('actions.view_details')}
             </DropdownMenuItem>
+            
+            <DropdownMenuSeparator />
             
             {/* Edit - Only for users who can manage data rooms */}
             {canManageDataRooms && (
