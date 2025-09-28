@@ -22,6 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import AppIcon from '@/components/AppIcon';
 import { usePermissions } from '@/hooks/api/useAuth';
+import { PERMISSIONS } from '@/lib/permissions';
 
 export function AppSidebar() {
   const location = useLocation();
@@ -58,25 +59,25 @@ export function AppSidebar() {
           label: t('routes.executive_overview'), 
           path: '/executive-deal-flow-dashboard', 
           icon: 'BarChart3', 
-          requiresPermission: 'data_rooms.read' 
+          requiresPermission: PERMISSIONS.DATA_ROOMS_READ 
         },
         { 
           label: t('routes.deal_intelligence'), 
           path: '/deal-analytics-intelligence-dashboard', 
           icon: 'TrendingUp', 
-          requiresPermission: 'audit.view' 
+          requiresPermission: PERMISSIONS.AUDIT_VIEW 
         },
         { 
           label: t('routes.operations_center'), 
           path: '/vdr-operations-command-center', 
           icon: 'Monitor', 
-          requiresPermission: 'data_rooms.manage' 
+          requiresPermission: PERMISSIONS.DATA_ROOMS_MANAGE 
         },
         { 
           label: t('routes.compliance_security'), 
           path: '/compliance-security-monitoring-dashboard', 
           icon: 'Shield', 
-          requiresPermission: 'audit.view' 
+          requiresPermission: PERMISSIONS.AUDIT_VIEW 
         },
       ]
     },
@@ -95,31 +96,31 @@ export function AppSidebar() {
           label: t('routes.data_rooms'), 
           path: '/data-rooms-management', 
           icon: 'Folder', 
-          requiresPermission: 'data_rooms.read' 
+          requiresPermission: PERMISSIONS.DATA_ROOMS_READ 
         },
         { 
           label: t('routes.groups'), 
           path: '/groups-management', 
           icon: 'Users', 
-          requiresPermission: 'groups.manage' 
+          requiresPermission: PERMISSIONS.GROUPS_MANAGE 
         },
         { 
           label: t('routes.q_a_center'), 
           path: '/q-a-management-center', 
           icon: 'MessageSquare', 
-          requiresPermission: 'data_rooms.read' 
+          requiresPermission: PERMISSIONS.DATA_ROOMS_READ 
         },
         { 
           label: t('routes.document_console'), 
           path: '/document-management-console', 
           icon: 'FileText', 
-          requiresPermission: 'documents.view' 
+          requiresPermission: PERMISSIONS.DOCUMENTS_VIEW 
         },
         { 
           label: t('routes.users'), 
           path: '/users-management', 
           icon: 'UserCog', 
-          requiresPermission: 'users.manage' 
+          requiresPermission: PERMISSIONS.USERS_MANAGE 
         },
         { 
           label: t('routes.roles_permissions'), 
@@ -131,7 +132,7 @@ export function AppSidebar() {
           label: t('routes.audit_logs'), 
           path: '/audit-logs', 
           icon: 'Clipboard', 
-          requiresPermission: 'audit.view' 
+          requiresPermission: PERMISSIONS.AUDIT_VIEW 
         },
         { 
           label: t('routes.notifications'), 
@@ -169,17 +170,17 @@ export function AppSidebar() {
     // Check specific permission requirements
     if (item.requiresPermission) {
       switch (item.requiresPermission) {
-        case 'users.manage':
+        case PERMISSIONS.USERS_MANAGE:
           return canAccessUsersManagement;
-        case 'groups.manage':
-          return canAccessGroupsManagement;
-        case 'audit.view':
+        case PERMISSIONS.GROUPS_MANAGE:
+          return canAccessGroupsManagement || isSubadmin;
+        case PERMISSIONS.AUDIT_VIEW:
           return canAccessAuditLogs;
-        case 'data_rooms.manage':
+        case PERMISSIONS.DATA_ROOMS_MANAGE:
           return canManageDataRooms;
-        case 'data_rooms.read':
+        case PERMISSIONS.DATA_ROOMS_READ:
           return true; // Most users should have read access
-        case 'documents.view':
+        case PERMISSIONS.DOCUMENTS_VIEW:
           return true; // Most users should have document view access
         default:
           return true;

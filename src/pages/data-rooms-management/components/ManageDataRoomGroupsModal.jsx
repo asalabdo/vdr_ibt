@@ -8,6 +8,7 @@ import {
   useRemoveGroupFromDataRoom,
   useSetGroupPermissions 
 } from '@/hooks/api';
+import { usePermissions } from '@/hooks/api/useAuth';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -35,6 +36,9 @@ import Icon from '@/components/AppIcon';
 const ManageDataRoomGroupsModal = ({ isOpen, onClose, roomId }) => {
   const { t } = useTranslation('data-rooms-management');
   
+  // Get user permissions to filter available groups
+  const { isAdmin, isSubadmin, managedGroups, canManageAllGroups } = usePermissions();
+  
   // Get data room details
   const { 
     data: room, 
@@ -53,7 +57,16 @@ const ManageDataRoomGroupsModal = ({ isOpen, onClose, roomId }) => {
     enabled: isOpen 
   });
   
-  const availableGroups = groupsData?.groups || [];
+  // Filter groups based on user permissions
+  const allGroups = groupsData?.groups?.filter(group => group.id !== 'admin') || [];
+  
+  // Subadmins can only manage groups they are assigned to
+  const availableGroups = isAdmin || canManageAllGroups 
+    ? allGroups 
+    : allGroups.filter(group => 
+        Array.isArray(managedGroups) ? managedGroups.includes(group.id) : false
+      );
+      
   const currentGroups = room?.groupsList || [];
 
   // Mutations
@@ -188,6 +201,16 @@ const ManageDataRoomGroupsModal = ({ isOpen, onClose, roomId }) => {
           {/* Content */}
           {!isLoadingRoom && !isLoadingGroups && !roomError && !groupsError && room && (
             <>
+              {/* Information for subadmins about limited group access */}
+              {(isSubadmin && !isAdmin) && (
+                <Alert className="mb-4">
+                  <Icon name="Info" size={14} />
+                  <AlertDescription className="text-sm">
+                    As a Company Administrator, you can only manage groups for the companies you manage: {Array.isArray(managedGroups) ? managedGroups.join(', ') : 'None'}.
+                  </AlertDescription>
+                </Alert>
+              )}
+
               {/* Current Groups */}
               <Card>
                 <CardHeader className="pb-3">

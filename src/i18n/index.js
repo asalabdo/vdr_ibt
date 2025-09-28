@@ -26,7 +26,7 @@ i18n
       lookupLocalStorage: 'language',
     },
     
-    ns: ['common', 'navigation', 'dashboard', 'forms', 'errors', 'login'], // Available namespaces
+    ns: ['common', 'navigation', 'forms', 'errors', 'login'], // Available namespaces
     defaultNS: 'common',
     
     // Optional: Add loading and error handling

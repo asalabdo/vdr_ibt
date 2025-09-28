@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { usePermissions } from '../hooks/api/useAuth';
+import { PERMISSIONS } from '../lib/permissions';
 import AccessDeniedPage from './AccessDeniedPage';
 
 /**
@@ -155,16 +156,17 @@ export const SubadminGuard = ({ children, ...props }) => (
  * UsersManagementGuard - Guard for users management access
  */
 export const UsersManagementGuard = ({ children, ...props }) => (
-  <PermissionGuard permission="users.manage" {...props}>
+  <PermissionGuard permission={PERMISSIONS.USERS_MANAGE} {...props}>
     {children}
   </PermissionGuard>
 );
 
 /**
  * GroupsManagementGuard - Guard for groups management access
+ * Admins can create/manage all groups, subadmins can view/manage their assigned groups only
  */
 export const GroupsManagementGuard = ({ children, ...props }) => (
-  <PermissionGuard permission="groups.manage" {...props}>
+  <PermissionGuard requireSubadmin={true} {...props}>
     {children}
   </PermissionGuard>
 );
@@ -173,7 +175,7 @@ export const GroupsManagementGuard = ({ children, ...props }) => (
  * AuditLogsGuard - Guard for audit logs access
  */
 export const AuditLogsGuard = ({ children, ...props }) => (
-  <PermissionGuard permission="audit.view" {...props}>
+  <PermissionGuard permission={PERMISSIONS.AUDIT_VIEW} {...props}>
     {children}
   </PermissionGuard>
 );

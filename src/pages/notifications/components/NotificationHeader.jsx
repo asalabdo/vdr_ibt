@@ -149,7 +149,7 @@ const NotificationHeader = ({
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
               <Checkbox
                 checked={isAllSelected}
-                indeterminate={isIndeterminate}
+                indeterminate={isIndeterminate || undefined}
                 onCheckedChange={onSelectAll}
               />
               <span className="text-sm text-muted-foreground">

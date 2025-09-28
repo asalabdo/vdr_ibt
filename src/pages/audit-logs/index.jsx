@@ -32,6 +32,7 @@ import ExportModal from './components/ExportModal';
 
 // Hooks
 import { useAuditLogStats, useAuditLogsManagement } from '@/hooks/api/useAuditLogs';
+import { getUserInitials } from '@/lib/userFormatters';
 
 const AuditLogs = () => {
   const { t } = useTranslation('audit-logs');
@@ -131,13 +132,6 @@ const AuditLogs = () => {
     high: stats.bySeverity?.high || 0,
     medium: stats.bySeverity?.medium || 0,
     low: stats.bySeverity?.low || 0,
-  };
-
-  // Helper function to get user initials for avatar
-  const getUserInitials = (log) => {
-    if (!log || !log.user) return '?';
-    const name = log.user || '';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || '?';
   };
 
   // Helper function to format timestamp
@@ -399,7 +393,7 @@ const AuditLogs = () => {
                                     <div className="flex items-center gap-3 rtl:space-x-reverse">
                                       <Avatar className="h-8 w-8">
                                         <AvatarFallback className="bg-primary/10 text-primary font-medium text-xs">
-                                          {getUserInitials(log)}
+                                          {getUserInitials({ username: log.user || 'Unknown' })}
                                         </AvatarFallback>
                                       </Avatar>
                                       <div className="min-w-0 flex-1">

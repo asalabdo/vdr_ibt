@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { authAPI } from '../../api/auth';
+import { getUserRole, isUserAdmin, isUserSubadmin } from '../../lib/userRoles';
+import { PERMISSIONS } from '../../lib/permissions';
 
 /**
  * Authentication Hooks for React Query Integration
@@ -133,6 +135,11 @@ export const useAuth = () => {
     },
   });
 
+  // Get role information using centralized utilities
+  const roleInfo = user ? getUserRole(user) : null;
+  const isAdminUser = user ? isUserAdmin(user) : false;
+  const isSubadminUser = user ? isUserSubadmin(user) : false;
+
   return {
     // Authentication state
     user,
@@ -142,19 +149,19 @@ export const useAuth = () => {
 
     // Permission checking
     hasPermission: authAPI.hasPermission,
-    isAdmin: user?.isAdmin || false,
-    isSubadmin: user?.isSubadmin || false,
+    isAdmin: isAdminUser,
+    isSubadmin: isSubadminUser,
     permissions: user?.permissions || [],
     
     // Role information
-    role: user?.role || 'user',
-    roleLevel: user?.roleLevel || 'standard',
-    managedGroups: user?.managedGroups || [],
+    role: roleInfo?.role || 'user',
+    roleLevel: roleInfo?.level || 'standard',
+    managedGroups: roleInfo?.managedGroups || [],
     
     // Capability flags
-    canManageUsers: user?.canManageUsers || false,
-    canManageAllGroups: user?.canManageAllGroups || false,
-    canAccessSystemSettings: user?.canAccessSystemSettings || false,
+    canManageUsers: roleInfo?.canManageUsers || false,
+    canManageAllGroups: roleInfo?.canManageAllGroups || false,
+    canAccessSystemSettings: roleInfo?.canAccessSystemSettings || false,
 
     // Authentication operations
     login: loginMutation.mutate,
@@ -203,16 +210,21 @@ export const useAuthStatus = () => {
   const queryClient = useQueryClient();
   const isAuthenticated = authAPI.isAuthenticated();
   const cachedUser = queryClient.getQueryData(QUERY_KEYS.currentUser);
+  
+  // Get role information using centralized utilities
+  const roleInfo = cachedUser ? getUserRole(cachedUser) : null;
+  const isAdminUser = cachedUser ? isUserAdmin(cachedUser) : false;
+  const isSubadminUser = cachedUser ? isUserSubadmin(cachedUser) : false;
 
   return {
     isAuthenticated,
     hasUser: !!cachedUser,
     username: cachedUser?.username || cachedUser?.displayname || null,
-    isAdmin: cachedUser?.isAdmin || false,
-    isSubadmin: cachedUser?.isSubadmin || false,
-    role: cachedUser?.role || 'user',
-    canManageUsers: cachedUser?.canManageUsers || false,
-    canManageAllGroups: cachedUser?.canManageAllGroups || false,
+    isAdmin: isAdminUser,
+    isSubadmin: isSubadminUser,
+    role: roleInfo?.role || 'user',
+    canManageUsers: roleInfo?.canManageUsers || false,
+    canManageAllGroups: roleInfo?.canManageAllGroups || false,
   };
 };
 
@@ -222,35 +234,41 @@ export const useAuthStatus = () => {
  */
 export const usePermissions = () => {
   const { user, hasPermission } = useAuth();
+  
+  // Get role information using centralized utilities (already calculated in useAuth)
+  const roleInfo = user ? getUserRole(user) : null;
+  const isAdminUser = user ? isUserAdmin(user) : false;
+  const isSubadminUser = user ? isUserSubadmin(user) : false;
 
   return {
     permissions: user?.permissions || [],
-    isAdmin: user?.isAdmin || false,
-    isSubadmin: user?.isSubadmin || false,
-    role: user?.role || 'user',
-    managedGroups: user?.managedGroups || [],
+    isAdmin: isAdminUser,
+    isSubadmin: isSubadminUser,
+    role: roleInfo?.role || 'user',
+    managedGroups: roleInfo?.managedGroups || [],
     hasPermission,
     
     // Role-based capability checks
-    canManageUsers: user?.canManageUsers || false,
-    canManageAllGroups: user?.canManageAllGroups || false,
-    canAccessSystemSettings: user?.canAccessSystemSettings || false,
+    canManageUsers: roleInfo?.canManageUsers || false,
+    canManageAllGroups: roleInfo?.canManageAllGroups || false,
+    canAccessSystemSettings: roleInfo?.canAccessSystemSettings || false,
     
     // Common permission checks
-    canManageDataRooms: hasPermission('data_rooms.manage'),
-    canCreateDataRooms: hasPermission('data_rooms.create'),
-    canViewAuditLogs: hasPermission('audit.view'),
-    canExportAuditLogs: hasPermission('audit.export'),
-    canUploadDocuments: hasPermission('documents.upload'),
-    canDeleteDocuments: hasPermission('documents.delete'),
-    canManageGroups: hasPermission('groups.manage'),
-    canManageRoles: hasPermission('roles.manage'),
+    canManageDataRooms: hasPermission(PERMISSIONS.DATA_ROOMS_MANAGE),
+    canCreateDataRooms: hasPermission(PERMISSIONS.DATA_ROOMS_CREATE),
+    canViewAuditLogs: hasPermission(PERMISSIONS.AUDIT_VIEW),
+    canExportAuditLogs: hasPermission(PERMISSIONS.AUDIT_EXPORT),
+    canUploadDocuments: hasPermission(PERMISSIONS.DOCUMENTS_UPLOAD),
+    canDeleteDocuments: hasPermission(PERMISSIONS.DOCUMENTS_DELETE),
+    canManageGroups: hasPermission(PERMISSIONS.GROUPS_MANAGE),
+    canViewGroups: hasPermission(PERMISSIONS.GROUPS_VIEW) || isAdminUser || false,
+    canManageRoles: hasPermission(PERMISSIONS.ROLES_MANAGE),
     
     // UI/Navigation permissions
-    canAccessUsersManagement: hasPermission('users.manage'),
-    canAccessGroupsManagement: hasPermission('groups.manage'),
-    canAccessAuditLogs: hasPermission('audit.view'),
-    canAccessRolesPermissions: user?.isAdmin || false, // Admin only
+    canAccessUsersManagement: hasPermission(PERMISSIONS.USERS_MANAGE),
+    canAccessGroupsManagement: hasPermission(PERMISSIONS.GROUPS_MANAGE) || isSubadminUser, // Admin and subadmin access
+    canAccessAuditLogs: hasPermission(PERMISSIONS.AUDIT_VIEW),
+    canAccessRolesPermissions: isAdminUser || false, // Admin only
   };
 };
 

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { 
-  useUsers, 
-  useDeleteUser, 
-  useEnableUser, 
-  useDisableUser 
+import {
+  useUsers,
+  useDeleteUser,
+  useEnableUser,
+  useDisableUser,
 } from '@/hooks/api';
+import {
+  useMakeUserAdmin,
+  useRemoveAdminPrivileges,
+} from '@/hooks/api/useUserRoles';
+import { usePermissions } from '@/hooks/api/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,6 +22,14 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Pagination,
   PaginationContent,
@@ -37,6 +50,9 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import Icon from '@/components/AppIcon';
+import UserRoleDisplay from '@/components/UserRoleDisplay';
+import { UsersTableSkeleton, StatsGridSkeleton } from '@/components/ui/skeleton-variants';
+import { getUserInitials } from '@/lib/userFormatters';
 import UserDetailsModal from './UserDetailsModal';
 import EditUserModal from './EditUserModal';
 
@@ -51,6 +67,9 @@ const UsersTable = () => {
   const [deleteDialog, setDeleteDialog] = useState({ open: false, userId: null });
   const [userDetailsModal, setUserDetailsModal] = useState({ open: false, userId: null });
   const [editUserModal, setEditUserModal] = useState({ open: false, userId: null });
+  
+  // Get user permissions to control what actions are available
+  const { isAdmin, canManageAllGroups } = usePermissions();
   
   // Pagination constants
   const USERS_PER_PAGE = 10;
@@ -143,6 +162,35 @@ const UsersTable = () => {
       });
     }
   });
+
+  // Role management mutations
+  const makeAdminMutation = useMakeUserAdmin({
+    onSuccess: (data, userId) => {
+      toast.success('User promoted to administrator!', {
+        description: `User "${userId}" now has administrator privileges.`,
+      });
+    },
+    onError: (error) => {
+      console.error('Failed to make user admin:', error.message);
+      toast.error('Failed to promote user to administrator', {
+        description: error.message,
+      });
+    }
+  });
+
+  const removeAdminMutation = useRemoveAdminPrivileges({
+    onSuccess: (data, userId) => {
+      toast.success('Administrator privileges removed!', {
+        description: `User "${userId}" is no longer an administrator.`,
+      });
+    },
+    onError: (error) => {
+      console.error('Failed to remove admin privileges:', error.message);
+      toast.error('Failed to remove administrator privileges', {
+        description: error.message,
+      });
+    }
+  });
   
   const handleDeleteUser = (userId) => {
     setDeleteDialog({ open: true, userId });
@@ -177,13 +225,16 @@ const UsersTable = () => {
   const handleCloseEditUser = () => {
     setEditUserModal({ open: false, userId: null });
   };
-  
-  // Helper function to get user initials for avatar
-  const getUserInitials = (user) => {
-    if (!user) return '?';
-    const name = user.displayname || user.username || '';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
+  // Role management handlers
+  const handleMakeAdmin = (userId) => {
+    makeAdminMutation.mutate(userId);
   };
+
+  const handleRemoveAdmin = (userId) => {
+    removeAdminMutation.mutate(userId);
+  };
+  
   
   if (isLoading) {
     return (
@@ -196,24 +247,7 @@ const UsersTable = () => {
           <Skeleton className="h-9 w-64" />
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center justify-between py-2">
-                <div className="flex items-center space-x-3">
-                  <Skeleton className="h-9 w-9 rounded-full" />
-                  <div className="space-y-1">
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-3 w-20" />
-                  </div>
-                </div>
-                <div className="flex space-x-2">
-                  <Skeleton className="h-8 w-16" />
-                  <Skeleton className="h-8 w-20" />
-                  <Skeleton className="h-8 w-20" />
-                </div>
-              </div>
-            ))}
-          </div>
+          <UsersTableSkeleton rows={10} />
         </CardContent>
       </Card>
     );
@@ -316,7 +350,8 @@ const UsersTable = () => {
                   <TableHeader>
                     <TableRow className="hover:bg-transparent">
                       <TableHead className="text-xs font-medium text-muted-foreground">{t('table.user')}</TableHead>
-                      <TableHead className="text-xs font-medium text-muted-foreground w-[300px]">{t('table.actions')}</TableHead>
+                      <TableHead className="text-xs font-medium text-muted-foreground w-[120px]">{t('table.role', 'Role')}</TableHead>
+                      <TableHead className="text-xs font-medium text-muted-foreground w-[320px]">{t('table.actions')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -334,6 +369,9 @@ const UsersTable = () => {
                               <p className="text-muted-foreground text-xs">{t('table.click_to_view_details')}</p>
                             </div>
                           </div>
+                        </TableCell>
+                        <TableCell className="py-3">
+                          <UserRoleDisplay user={user} />
                         </TableCell>
                         <TableCell className="py-3">
                           <div className="flex items-center gap-2">
@@ -371,6 +409,86 @@ const UsersTable = () => {
                               )}
                               {t('table.delete_user')}
                             </Button>
+
+                            {/* Role Management Dropdown */}
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  className="gap-1 h-8 px-3"
+                                >
+                                  <Icon name="Shield" size={12} />
+                                  {t('table.manage_role', 'Role')}
+                                  <Icon name="ChevronDown" size={10} />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="w-48">
+                                <DropdownMenuLabel className="text-xs">
+                                  {t('table.role_management', 'Role Management')}
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                
+                                {/* Admin Actions - Only for Admins */}
+                                {isAdmin ? (
+                                  <>
+                                    {!user.groups?.includes('admin') ? (
+                                      <DropdownMenuItem 
+                                        className="gap-2 text-xs text-green-600"
+                                        onClick={() => handleMakeAdmin(user.id)}
+                                        disabled={makeAdminMutation.isPending}
+                                      >
+                                        {makeAdminMutation.isPending ? (
+                                          <Icon name="Loader2" size={12} className="animate-spin" />
+                                        ) : (
+                                          <Icon name="ShieldCheck" size={12} />
+                                        )}
+                                        {t('table.make_admin', 'Make Administrator')}
+                                      </DropdownMenuItem>
+                                    ) : (
+                                      <DropdownMenuItem 
+                                        className="gap-2 text-xs text-orange-600"
+                                        onClick={() => handleRemoveAdmin(user.id)}
+                                        disabled={removeAdminMutation.isPending}
+                                      >
+                                        {removeAdminMutation.isPending ? (
+                                          <Icon name="Loader2" size={12} className="animate-spin" />
+                                        ) : (
+                                          <Icon name="ShieldOff" size={12} />
+                                        )}
+                                        {t('table.remove_admin', 'Remove Admin')}
+                                      </DropdownMenuItem>
+                                    )}
+                                  </>
+                                ) : (
+                                  <DropdownMenuItem disabled className="text-xs text-muted-foreground">
+                                    <Icon name="Info" size={12} className="mr-2" />
+                                    Admin role management requires full administrator privileges
+                                  </DropdownMenuItem>
+                                )}
+                                
+                                <DropdownMenuSeparator />
+                                
+                                {/* Status Actions */}
+                                {user.enabled ? (
+                                  <DropdownMenuItem 
+                                    className="gap-2 text-xs text-red-600"
+                                    onClick={() => handleToggleUserStatus(user.id, true)}
+                                  >
+                                    <Icon name="UserX" size={12} />
+                                    {t('table.disable_user', 'Disable User')}
+                                  </DropdownMenuItem>
+                                ) : (
+                                  <DropdownMenuItem 
+                                    className="gap-2 text-xs text-green-600"
+                                    onClick={() => handleToggleUserStatus(user.id, false)}
+                                  >
+                                    <Icon name="UserCheck" size={12} />
+                                    {t('table.enable_user', 'Enable User')}
+                                  </DropdownMenuItem>
+                                )}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
                         </TableCell>
                       </TableRow>

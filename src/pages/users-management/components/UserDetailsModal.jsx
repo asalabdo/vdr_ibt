@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUserDetails } from '@/hooks/api';
+import { useUserRole } from '@/hooks/api/useUserRoles';
 import { 
   Dialog, 
   DialogContent, 
@@ -15,7 +16,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { UserInfoSkeleton, FormFieldSkeleton } from '@/components/ui/skeleton-variants';
+import { getUserInitials } from '@/lib/userFormatters';
 import Icon from '@/components/AppIcon';
+import UserRoleDisplay from '@/components/UserRoleDisplay';
 
 /**
  * User Details Modal Component
@@ -34,12 +38,13 @@ const UserDetailsModal = ({ isOpen, onClose, userId }) => {
     enabled: isOpen && !!userId 
   });
 
-  // Helper function to get user initials
-  const getUserInitials = (userData) => {
-    if (!userData) return '?';
-    const name = userData.displayname || userData.username || '';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-  };
+  // Get user role information using centralized hook
+  const { 
+    role: userRole, 
+    isAdmin: isUserAdmin, 
+    isSubadmin: isUserSubadmin, 
+    subadminGroups: userSubadminGroups 
+  } = useUserRole(user, userId);
 
   // Helper function to format storage size
   const formatStorageSize = (bytes) => {
@@ -78,19 +83,10 @@ const UserDetailsModal = ({ isOpen, onClose, userId }) => {
           {/* Loading State */}
           {isLoading && (
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <div className="space-y-1">
-                  <Skeleton className="h-5 w-32" />
-                  <Skeleton className="h-3 w-24" />
-                </div>
-              </div>
+              <UserInfoSkeleton showEmail showBadges />
               <div className="grid grid-cols-2 gap-3">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="space-y-1">
-                    <Skeleton className="h-3 w-16" />
-                    <Skeleton className="h-4 w-full" />
-                  </div>
+                  <FormFieldSkeleton key={i} wide />
                 ))}
               </div>
             </div>
@@ -140,12 +136,8 @@ const UserDetailsModal = ({ isOpen, onClose, userId }) => {
                       />
                       {user.enabled ? t('modal.enabled') : t('modal.disabled')}
                     </Badge>
-                    {user.isAdmin && (
-                      <Badge variant="outline" className="border-amber-200 text-amber-800 bg-amber-50 dark:border-amber-800 dark:text-amber-300 dark:bg-amber-950">
-                        <Icon name="Shield" size={10} className="mr-1" />
-                        Admin
-                      </Badge>
-                    )}
+                    {/* Role Badge */}
+                    <UserRoleDisplay user={user} userId={userId} size="sm" />
                   </div>
                 </div>
               </div>
@@ -190,6 +182,73 @@ const UserDetailsModal = ({ isOpen, onClose, userId }) => {
                         <span className="text-muted-foreground text-xs">No groups assigned</span>
                       )}
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Role Information */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <Icon name="Shield" size={14} />
+                    {t('modal.role_info', 'Role Information')}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                    <div>
+                      <label className="text-xs font-medium text-muted-foreground">{t('modal.user_role', 'User Role')}</label>
+                      <div className="mt-1">
+                        <UserRoleDisplay user={user} userId={userId} size="xs" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-muted-foreground">{t('modal.permissions_level', 'Permissions Level')}</label>
+                      <p className="text-sm mt-1">
+                        {userRole === 'admin' && t('modal.permissions_full', 'Full System Access')}
+                        {userRole === 'subadmin' && t('modal.permissions_limited', 'Company Management')}
+                        {userRole === 'user' && t('modal.permissions_basic', 'Basic User Access')}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Company Management for Subadmins */}
+                  {isUserSubadmin && (
+                    <div className="pt-2 border-t">
+                      <label className="text-xs font-medium text-muted-foreground block mb-2">
+                        {t('modal.managed_companies', 'Managed Companies')}
+                      </label>
+                      <div className="flex flex-wrap gap-1">
+                        {userSubadminGroups && userSubadminGroups.length > 0 ? (
+                          userSubadminGroups.map((groupItem) => {
+                            // Handle both string IDs and group objects
+                            const groupId = typeof groupItem === 'string' ? groupItem : groupItem.id;
+                            const groupName = typeof groupItem === 'string' ? groupItem : (groupItem.displayName || groupItem.id);
+                            
+                            return (
+                              <Badge key={groupId} variant="outline" className="text-xs py-0 px-2 border-blue-200 text-blue-800 bg-blue-50">
+                                <Icon name="Building" size={10} className="mr-1" />
+                                {groupName}
+                              </Badge>
+                            );
+                          })
+                        ) : (
+                          <span className="text-muted-foreground text-xs">No companies assigned</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Role Description */}
+                  <div className="pt-2 border-t">
+                    <label className="text-xs font-medium text-muted-foreground block mb-1">
+                      {t('modal.role_description', 'Role Description')}
+                    </label>
+                    <p className="text-xs text-muted-foreground">
+                      {userRole === 'admin' && t('modal.admin_description', 'Can manage all users, groups, and system settings. Has full access to all data rooms and system configuration.')}
+                      {userRole === 'subadmin' && t('modal.subadmin_description', 'Can manage users and data rooms for assigned companies. Has administrative privileges limited to specific company groups.')}
+                      {userRole === 'user' && t('modal.user_description', 'Standard user with access to assigned data rooms and basic system features. Cannot manage other users or system settings.')}
+                    </p>
                   </div>
                 </CardContent>
               </Card>

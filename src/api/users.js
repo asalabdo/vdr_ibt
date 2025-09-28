@@ -1,5 +1,6 @@
 import apiClient, { adminApiClient } from './client';
 import { endpoints, withJsonFormat } from './endpoints';
+import { formatUsersList, formatUserDetails } from '../lib/userFormatters';
 
 /**
  * Users Management API functions for Nextcloud
@@ -8,56 +9,8 @@ import { endpoints, withJsonFormat } from './endpoints';
 
 // ===== PURE UTILITY FUNCTIONS =====
 
-/**
- * Transform raw Nextcloud user list data into application format
- * @param {Array} usersArray - Raw users array from Nextcloud
- * @returns {Array} Formatted users array
- */
-const formatUsersList = (usersArray) => {
-  if (!Array.isArray(usersArray)) return [];
-  
-  return usersArray.map(username => ({
-    id: username,
-    username: username,
-    displayname: username, // Will be fetched separately if needed
-    email: '',
-    groups: [],
-    isAdmin: false,
-    enabled: true,
-    lastLogin: null,
-  }));
-};
-
-/**
- * Transform detailed user data from Nextcloud API
- * @param {Object} userData - Raw user data from Nextcloud
- * @param {string} userId - User ID
- * @returns {Object} Formatted user data
- */
-const formatUserDetails = (userData, userId) => ({
-  id: userData.id || userId,
-  username: userId,
-  displayname: userData.displayname || userData['display-name'] || userId,
-  email: userData.email || '',
-  groups: userData.groups || [],
-  quota: userData.quota || {},
-  isAdmin: (userData.groups || []).includes('admin'),
-  enabled: userData.enabled !== false,
-  language: userData.language || 'en',
-  locale: userData.locale || 'en',
-  lastLogin: userData.lastLogin || null,
-  backend: userData.backend || '',
-  storageLocation: userData.storageLocation || '',
-  phone: userData.phone || '',
-  address: userData.address || '',
-  website: userData.website || '',
-  twitter: userData.twitter || '',
-  fediverse: userData.fediverse || '',
-  organisation: userData.organisation || '',
-  role: userData.role || '',
-  headline: userData.headline || '',
-  biography: userData.biography || '',
-});
+// User formatting functions moved to ../lib/userFormatters.js
+// Using formatUsersList and formatUserDetails from centralized formatters
 
 // ===== API FUNCTIONS =====
 
@@ -491,6 +444,50 @@ const removeUserFromGroup = async (userId, groupId) => {
   }
 };
 
+/**
+ * Make user admin by adding them to admin group
+ * @param {string} userId - User ID
+ * @returns {Object} Operation result
+ */
+const makeUserAdmin = async (userId) => {
+  try {
+    if (!userId?.trim()) {
+      throw new Error('User ID is required');
+    }
+    
+    return await addUserToGroup(userId, 'admin');
+  } catch (error) {
+    console.error(`❌ Failed to make user ${userId} admin:`, error.message);
+    throw new Error(error.response?.data?.ocs?.meta?.message || error.message || 'Failed to make user admin');
+  }
+};
+
+/**
+ * Remove admin privileges from user
+ * @param {string} userId - User ID
+ * @returns {Object} Operation result
+ */
+const removeAdminPrivileges = async (userId) => {
+  try {
+    if (!userId?.trim()) {
+      throw new Error('User ID is required');
+    }
+    
+    return await removeUserFromGroup(userId, 'admin');
+  } catch (error) {
+    console.error(`❌ Failed to remove admin privileges from user ${userId}:`, error.message);
+    throw new Error(error.response?.data?.ocs?.meta?.message || error.message || 'Failed to remove admin privileges');
+  }
+};
+
+/**
+ * Note: Subadmin promotion/demotion functions moved to groups.js to avoid circular dependencies
+ * Use the functions from the groups API instead:
+ * - groupsAPI.promoteUserToSubadmin(userId, groupId)
+ * - groupsAPI.demoteUserFromSubadmin(userId, groupId) 
+ * - groupsAPI.getUserSubadminGroups(userId)
+ */
+
 // ===== EXPORTS =====
 
 /**
@@ -517,7 +514,7 @@ export const usersAPI = {
   addUserToGroup,
   removeUserFromGroup,
   
-  // Pure utility functions (exposed for testing and flexibility)
-  formatUsersList,
-  formatUserDetails,
+  // Role management
+  makeUserAdmin,
+  removeAdminPrivileges,
 };

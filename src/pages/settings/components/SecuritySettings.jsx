@@ -98,7 +98,8 @@ const SecuritySettings = () => {
             />
           </div>
 
-          <Button type="submit" variant="default" iconName="Key">
+          <Button type="submit" variant="default" className="gap-2">
+            <Icon name="Key" size={16} />
             {t('actions.update_password')}
           </Button>
         </form>
@@ -236,7 +237,8 @@ const SecuritySettings = () => {
       </div>
       {/* Save Button */}
       <div className="flex items-center justify-end space-x-3 rtl:space-x-reverse pt-6 border-t border-border">
-        <Button onClick={handleSave} variant="default" iconName="Save">
+        <Button onClick={handleSave} variant="default" className="gap-2">
+          <Icon name="Save" size={16} />
           {t('actions.save_changes')}
         </Button>
       </div>

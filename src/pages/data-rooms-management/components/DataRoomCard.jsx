@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { usePermissions } from '@/hooks/api/useAuth';
+import { PERMISSIONS } from '@/lib/permissions';
 import Icon from '../../../components/AppIcon';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -86,7 +87,7 @@ const DataRoomCard = ({ room, onViewDetails, onEdit, onDelete, onManageGroups })
         <div className="flex items-start justify-between mb-4">
         <div 
           className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer flex-1"
-          onClick={hasPermission('documents.view') ? handleBrowseFiles : undefined}
+          onClick={hasPermission(PERMISSIONS.DOCUMENTS_VIEW) ? handleBrowseFiles : undefined}
         >
           <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
             <Icon name="FolderOpen" size={24} className="text-primary" />

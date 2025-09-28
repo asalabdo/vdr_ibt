@@ -131,10 +131,11 @@ const RolesPermissions = () => {
             </div>
             
             <Button 
-              iconName="Plus" 
               variant="default"
               onClick={() => setIsCreateModalOpen(true)}
+              className="gap-2"
             >
+              <Icon name="Plus" size={16} />
               {t('actions.create_role')}
             </Button>
           </div>
@@ -213,10 +214,11 @@ const RolesPermissions = () => {
                 }
               </p>
               <Button 
-                iconName="Plus" 
                 variant="default"
                 onClick={() => setIsCreateModalOpen(true)}
+                className="gap-2"
               >
+                <Icon name="Plus" size={16} />
                 {t('actions.create_role')}
               </Button>
             </div>

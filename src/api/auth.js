@@ -1,5 +1,7 @@
 import apiClient, { adminApiClient, getCredentials } from './client';
 import { endpoints, withJsonFormat } from './endpoints';
+import { getUserRole, calculateUserPermissions } from '../lib/userRoles';
+import { formatAuthUser } from '../lib/userFormatters';
 
 /**
  * Authentication API functions for Nextcloud
@@ -8,168 +10,8 @@ import { endpoints, withJsonFormat } from './endpoints';
 
 // ===== PURE UTILITY FUNCTIONS =====
 
-/**
- * Determine user role based on groups and subadmin status
- * @param {Object} userData - User data from Nextcloud
- * @returns {Object} User role information
- */
-const getUserRole = (userData) => {
-  const { groups = [], subadmin = [] } = userData;
-  
-  // Check if user is admin
-  if (groups.includes('admin')) {
-    return {
-      role: 'admin',
-      level: 'full',
-      canManageUsers: true,
-      canManageAllGroups: true,
-      canAccessSystemSettings: true,
-      managedGroups: 'all'
-    };
-  }
-  
-  // Check if user is subadmin
-  if (subadmin.length > 0) {
-    return {
-      role: 'subadmin',
-      level: 'limited',
-      canManageUsers: true,
-      canManageAllGroups: false,
-      canAccessSystemSettings: false,
-      managedGroups: subadmin
-    };
-  }
-  
-  // Regular user
-  return {
-    role: 'user',
-    level: 'standard',
-    canManageUsers: false,
-    canManageAllGroups: false,
-    canAccessSystemSettings: false,
-    managedGroups: []
-  };
-};
-
-/**
- * Calculate user permissions based on groups, subadmin status, and user data
- * @param {Object} userData - User data from Nextcloud
- * @returns {Array} Array of permission strings
- */
-const calculateUserPermissions = (userData) => {
-  const permissions = ['user']; // Base permission for all users
-  const { groups = [], subadmin = [] } = userData;
-  const userRole = getUserRole(userData);
-  
-  // Admin permissions (full system access)
-  if (userRole.role === 'admin') {
-    permissions.push(
-      'admin',
-      'system.config',
-      'users.manage',
-      'groups.manage',
-      'apps.manage',
-      'data_rooms.manage',
-      'data_rooms.create',
-      'data_rooms.delete',
-      'data_rooms.write',
-      'data_rooms.read',
-      'documents.upload',
-      'documents.download',
-      'documents.delete',
-      'audit.view',
-      'audit.export',
-      'roles.manage'
-    );
-  }
-  
-  // Subadmin permissions (limited admin access)
-  if (userRole.role === 'subadmin') {
-    permissions.push(
-      'users.manage', // Can manage users in assigned groups
-      'groups.manage', // Can manage assigned groups only
-      'data_rooms.manage', // Can manage data rooms for assigned groups
-      'data_rooms.create',
-      'data_rooms.write',
-      'data_rooms.read',
-      'documents.upload',
-      'documents.download',
-      'audit.view' // Limited scope audit access
-    );
-  }
-  
-  // Manager permissions (based on groups)
-  if (groups.includes('managers')) {
-    permissions.push(
-      'data_rooms.create',
-      'data_rooms.write',
-      'data_rooms.read',
-      'users.invite',
-      'documents.upload',
-      'documents.download',
-      'audit.view'
-    );
-  }
-  
-  // Standard user permissions (always included)
-  permissions.push(
-    'data_rooms.read',
-    'documents.view',
-    'documents.download',
-    'documents.upload',    // ✅ Allow regular users to upload files
-    'profile.edit'
-  );
-  
-  // Additional permissions based on specific groups
-  if (groups.includes('editors')) {
-    permissions.push('documents.edit', 'documents.upload');
-  }
-  
-  if (groups.includes('viewers')) {
-    permissions.push('documents.view');
-  }
-  
-  return [...new Set(permissions)]; // Remove duplicates
-};
-
-/**
- * Transform raw Nextcloud user data into application user format
- * @param {Object} userData - Raw user data from Nextcloud
- * @param {string} username - Username used for login
- * @returns {Object} Formatted user data
- */
-const formatUserData = (userData, username) => {
-  const roleInfo = getUserRole(userData);
-  
-  return {
-    id: userData.id,
-    username: username,
-    displayname: userData.displayname || userData['display-name'] || username,
-    email: userData.email || '',
-    groups: userData.groups || [],
-    subadmin: userData.subadmin || [],
-    permissions: calculateUserPermissions(userData),
-    quota: userData.quota || {},
-    
-    // Role information
-    role: roleInfo.role,
-    roleLevel: roleInfo.level,
-    managedGroups: roleInfo.managedGroups,
-    
-    // Permission flags
-    isAdmin: roleInfo.role === 'admin',
-    isSubadmin: roleInfo.role === 'subadmin',
-    canManageUsers: roleInfo.canManageUsers,
-    canManageAllGroups: roleInfo.canManageAllGroups,
-    canAccessSystemSettings: roleInfo.canAccessSystemSettings,
-    
-    // User status
-    enabled: userData.enabled !== false,
-    language: userData.language || 'en',
-    locale: userData.locale || 'en',
-    lastLogin: userData.lastLogin || new Date().toISOString(),
-  };
-};
+// formatUserData function moved to ../lib/userFormatters.js
+// Using formatAuthUser from centralized formatters
 
 /**
  * Store authentication data in localStorage
@@ -266,8 +108,8 @@ const login = async (credentials) => {
     if (response.data?.ocs?.meta?.statuscode === 200) {
       const userData = response.data.ocs.data;
       
-      // Format user data using pure function
-      const formattedUser = formatUserData(userData, username);
+      // Format user data using centralized formatter
+      const formattedUser = formatAuthUser(userData, username);
       
       // Store authentication data using pure function
       storeAuthData(username, password, userData);
@@ -306,8 +148,8 @@ const getCurrentUser = async () => {
       // Update stored user data using pure function
       localStorage.setItem('user_data', JSON.stringify(userData));
       
-      // Format user data using pure function (use id as username for current user)
-      const formattedUser = formatUserData(userData, userData.id);
+      // Format user data using centralized formatter (use id as username for current user)
+      const formattedUser = formatAuthUser(userData, userData.id);
       
       return {
         ...formattedUser,
@@ -432,9 +274,6 @@ export const authAPI = {
   hasPermission,
   
   // Pure utility functions (exposed for testing and flexibility)
-  getUserRole,
-  calculateUserPermissions,
-  formatUserData,
   storeAuthData,
   clearAuthData,
 };

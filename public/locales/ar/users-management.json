@@ -6,10 +6,10 @@
     "create_user": "إنشاء مستخدم",
     "invite_user": "دعوة مستخدم",
     "export_users": "تصدير المستخدمين",
-    "edit": "تحرير",
+    "edit": "تعديل",
     "manage_permissions": "إدارة الصلاحيات",
     "cancel": "إلغاء",
-    "send_invitation": "إرسال دعوة",
+    "send_invitation": "إرسال الدعوة",
     "sending": "جاري الإرسال..."
   },
 
@@ -21,9 +21,9 @@
   },
 
   "search": {
-    "placeholder": "البحث في المستخدمين...",
+    "placeholder": "البحث عن المستخدمين...",
     "no_results_title": "لم يتم العثور على مستخدمين",
-    "no_results_description": "جرب تعديل معايير البحث الخاصة بك",
+    "no_results_description": "جرب تعديل معايير البحث",
     "empty_state_description": "ادع أول مستخدم للبدء"
   },
 
@@ -31,7 +31,7 @@
     "all_roles": "جميع الأدوار",
     "all_status": "جميع الحالات",
     "active": "نشط",
-    "inactive": "غير نشط", 
+    "inactive": "غير نشط",
     "pending": "قيد الانتظار"
   },
 
@@ -53,9 +53,9 @@
   "time": {
     "just_now": "الآن",
     "never": "أبداً",
-    "minutes_ago": "منذ {{count}} د",
-    "hours_ago": "منذ {{count}} س",
-    "days_ago": "منذ {{count}} ي"
+    "minutes_ago": "منذ {{count}} دقيقة",
+    "hours_ago": "منذ {{count}} ساعة",
+    "days_ago": "منذ {{count}} يوم"
   },
 
   "invite_modal": {
@@ -65,13 +65,13 @@
     "email_label": "عنوان البريد الإلكتروني",
     "email_placeholder": "أدخل عنوان البريد الإلكتروني",
     "role_label": "الدور",
-    "data_room_access_label": "الوصول لغرف البيانات",
+    "data_room_access_label": "وصول غرفة البيانات",
     "send_welcome_email": "إرسال بريد ترحيبي"
   },
 
   "permissions": {
     "view_questions": "عرض الأسئلة",
-    "reply_questions": "الرد على الأسئلة", 
+    "reply_questions": "الرد على الأسئلة",
     "approve_answers": "الموافقة على الإجابات",
     "upload_files": "رفع الملفات",
     "user_management": "إدارة المستخدمين"
@@ -81,9 +81,9 @@
     "title": "إنشاء مستخدم جديد",
     "description": "إضافة مستخدم جديد إلى النظام مع صلاحيات الوصول.",
     "username": "اسم المستخدم",
-    "username_placeholder": "أدخل اسم المستخدم (مثل: أحمد.محمد)",
+    "username_placeholder": "أدخل اسم المستخدم (مثل: john.doe)",
     "display_name": "الاسم المعروض",
-    "display_name_placeholder": "أدخل الاسم الكامل (مثل: أحمد محمد)",
+    "display_name_placeholder": "أدخل الاسم الكامل (مثل: John Doe)",
     "email": "عنوان البريد الإلكتروني",
     "email_placeholder": "أدخل عنوان البريد الإلكتروني",
     "password": "كلمة المرور",
@@ -92,6 +92,15 @@
     "generate_password": "توليد كلمة مرور آمنة",
     "generate_password_info": "سيتم توليد كلمة مرور آمنة تلقائياً عند إنشاء المستخدم.",
     "groups": "مجموعات المستخدم",
+    "user_role": "دور المستخدم",
+    "role_user": "مستخدم عادي",
+    "role_admin": "مشرف",
+    "role_subadmin": "مشرف الشركة",
+    "role_user_desc": "مستخدم قياسي بصلاحيات أساسية",
+    "role_admin_desc": "وصول كامل للنظام وإدارة المستخدمين",
+    "role_subadmin_desc": "يدير المستخدمين والموارد للشركات المحددة",
+    "managed_companies": "الشركات المُدارة",
+    "additional_groups": "مجموعات إضافية",
     "cancel": "إلغاء",
     "create": "إنشاء مستخدم",
     "creating": "جاري الإنشاء...",
@@ -101,7 +110,8 @@
         "username_min_length": "يجب أن يكون اسم المستخدم 3 أحرف على الأقل",
         "password_required": "كلمة المرور مطلوبة",
         "password_min_length": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
-        "email_invalid": "يرجى إدخال عنوان بريد إلكتروني صحيح"
+        "email_invalid": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+        "subadmin_groups_required": "يجب اختيار شركة واحدة على الأقل لدور مشرف الشركة"
       }
     }
   },
@@ -109,26 +119,34 @@
   "table": {
     "title": "إدارة المستخدمين",
     "users_count": "{{count}} مستخدم",
-    "users_count_plural": "{{count}} مستخدمين",
+    "users_count_plural": "{{count}} مستخدم",
     "search_placeholder": "البحث عن المستخدمين...",
     "refresh_tooltip": "تحديث قائمة المستخدمين",
     "error_loading": "خطأ في تحميل المستخدمين",
     "retry": "إعادة المحاولة",
-    "no_users_title": "لا توجد مستخدمين",
+    "no_users_title": "لم يتم العثور على مستخدمين",
     "no_users_description": "لم يتم إضافة أي مستخدمين إلى النظام بعد.",
-    "no_search_results": "لا يوجد مستخدمين يطابقون معايير البحث.",
+    "no_search_results": "لا يوجد مستخدمون يطابقون معايير البحث.",
     "clear_search": "مسح البحث",
     "user": "المستخدم",
-    "contact": "جهة الاتصال",
+    "contact": "التواصل",
     "groups": "المجموعات",
+    "role": "الدور",
     "status": "الحالة",
     "actions": "الإجراءات",
-    "enabled": "مفعل",
+    "enabled": "مُفعل",
     "disabled": "معطل",
-    "edit_user": "تحرير",
+    "edit_user": "تعديل",
     "enable_user": "تفعيل المستخدم",
-    "disable_user": "تعطيل المستخدم", 
+    "disable_user": "تعطيل المستخدم",
     "delete_user": "حذف المستخدم",
+    "manage_role": "الدور",
+    "role_management": "إدارة الأدوار",
+    "make_admin": "جعله مشرف",
+    "remove_admin": "إزالة صفة المشرف",
+    "role_admin": "مشرف",
+    "role_subadmin": "مشرف شركة",
+    "role_user": "مستخدم",
     "confirm_delete_title": "حذف المستخدم",
     "confirm_delete_description": "هل أنت متأكد من حذف المستخدم '{{userId}}'؟ لا يمكن التراجع عن هذا الإجراء.",
     "cancel": "إلغاء",
@@ -137,29 +155,43 @@
     "view_details": "عرض التفاصيل",
     "previous": "السابق",
     "next": "التالي",
-    "showing_results": "عرض {{start}} إلى {{end}} من {{total}} مستخدمين"
+    "showing_results": "عرض {{start}} إلى {{end}} من {{total}} مستخدم"
   },
 
   "modal": {
     "user_details_title": "تفاصيل المستخدم - {{username}}",
     "loading_user_details": "تحميل تفاصيل المستخدم",
-    "user_details_description": "معلومات شاملة حول حساب هذا المستخدم",
+    "user_details_description": "معلومات شاملة عن حساب هذا المستخدم",
     "loading_description": "جاري جلب معلومات المستخدم من الخادم...",
     "error_loading": "خطأ في تحميل تفاصيل المستخدم",
     "retry": "إعادة المحاولة",
-    "enabled": "مفعل",
+    "enabled": "مُفعل",
     "disabled": "معطل",
     "basic_info": "المعلومات الأساسية",
     "email": "البريد الإلكتروني",
     "language": "اللغة",
-    "backend": "المصدر الخلفي",
+    "backend": "الخلفية",
     "last_login": "آخر تسجيل دخول",
     "groups_permissions": "المجموعات والصلاحيات",
     "groups": "المجموعات",
+    "role_info": "معلومات الدور",
+    "user_role": "دور المستخدم",
+    "role_administrator": "مشرف",
+    "role_company_admin": "مشرف الشركة",
+    "role_regular_user": "مستخدم عادي",
+    "permissions_level": "مستوى الصلاحيات",
+    "permissions_full": "وصول كامل للنظام",
+    "permissions_limited": "إدارة الشركة",
+    "permissions_basic": "وصول المستخدم الأساسي",
+    "managed_companies": "الشركات المُدارة",
+    "role_description": "وصف الدور",
+    "admin_description": "يمكنه إدارة جميع المستخدمين والمجموعات وإعدادات النظام. لديه وصول كامل لجميع غرف البيانات وتكوين النظام.",
+    "subadmin_description": "يمكنه إدارة المستخدمين وغرف البيانات للشركات المُعينة. لديه صلاحيات إدارية محدودة لمجموعات شركات معينة.",
+    "user_description": "مستخدم قياسي مع وصول لغرف البيانات المُعينة وميزات النظام الأساسية. لا يمكنه إدارة مستخدمين آخرين أو إعدادات النظام.",
     "storage_info": "معلومات التخزين",
     "used_space": "المساحة المستخدمة",
     "available_space": "المساحة المتاحة",
-    "total_quota": "إجمالي الحصة",
+    "total_quota": "الحصة الإجمالية",
     "quota_usage": "استخدام الحصة",
     "contact_info": "معلومات الاتصال",
     "phone": "الهاتف",
@@ -167,9 +199,9 @@
     "website": "الموقع الإلكتروني",
     "organisation": "المنظمة",
     "close": "إغلاق",
-    "edit_user_title": "تحرير المستخدم - {{username}}",
+    "edit_user_title": "تعديل المستخدم - {{username}}",
     "edit_user_description": "تحديث معلومات وإعدادات المستخدم",
-    "edit_user_loading": "تحرير المستخدم"
+    "edit_user_loading": "تعديل المستخدم"
   },
 
   "edit": {
@@ -185,12 +217,26 @@
     "confirm_password_placeholder": "أكد كلمة المرور الجديدة",
     "password_mismatch": "كلمات المرور غير متطابقة",
     "account_status": "حالة الحساب",
-    "account_enabled": "الحساب مفعل",
-    "account_enabled_description": "عند التعطيل، لن يتمكن المستخدم من تسجيل الدخول أو الوصول إلى حسابه",
+    "account_enabled": "الحساب مُفعل",
+    "account_enabled_description": "عند التعطيل، لا يمكن للمستخدم تسجيل الدخول أو الوصول لحسابه",
     "groups_permissions": "المجموعات والصلاحيات",
-    "assigned_groups": "المجموعات المخصصة",
-    "no_groups": "لا توجد مجموعات مخصصة",
-    "groups_note": "إدارة المجموعات للصلاحيات المتقدمة ستكون متاحة في تحديث مستقبلي",
+    "assigned_groups": "المجموعات المُعينة",
+    "no_groups": "لا توجد مجموعات مُعينة",
+    "groups_note": "ستكون إدارة المجموعات للصلاحيات المتقدمة متاحة في تحديث مستقبلي",
+    "role_management": "إدارة الأدوار",
+    "current_role": "الدور الحالي",
+    "role_administrator": "مشرف",
+    "role_company_admin": "مشرف الشركة",
+    "role_regular_user": "مستخدم عادي",
+    "administrator_promotion": "ترقية المشرف",
+    "make_administrator": "ترقية إلى مشرف",
+    "admin_promotion_desc": "منح وصول كامل للنظام وصلاحيات إدارة المستخدمين",
+    "administrator_demotion": "تنزيل المشرف",
+    "remove_administrator": "إزالة صلاحيات المشرف",
+    "admin_demotion_desc": "إزالة صلاحيات المشرف وتحويل إلى مستخدم عادي",
+    "company_administrator": "مشرف الشركة",
+    "manages_companies": "يدير الشركات",
+    "add_company_management": "إضافة إدارة شركة",
     "save_changes": "حفظ التغييرات",
     "error_loading": "فشل في تحميل تفاصيل المستخدم",
     "success_display_name": "تم تحديث الاسم المعروض بنجاح",
@@ -204,27 +250,35 @@
     "error_enable": "فشل في تفعيل المستخدم",
     "success_disable": "تم تعطيل المستخدم بنجاح",
     "error_disable": "فشل في تعطيل المستخدم",
-    "success_general": "تم تحديث معلومات المستخدم بنجاح"
+    "success_general": "تم تحديث معلومات المستخدم بنجاح",
+    "success_make_admin": "تم ترقية المستخدم إلى مشرف",
+    "error_make_admin": "فشل في ترقية المستخدم إلى مشرف",
+    "success_remove_admin": "تم إزالة صلاحيات المشرف",
+    "error_remove_admin": "فشل في إزالة صلاحيات المشرف",
+    "success_promote_subadmin": "تم ترقية المستخدم إلى مشرف شركة",
+    "error_promote_subadmin": "فشل في الترقية إلى مشرف شركة",
+    "success_demote_subadmin": "تم إزالة دور مشرف الشركة",
+    "error_demote_subadmin": "فشل في إزالة دور مشرف الشركة"
   },
 
   "status": {
-    "enabled": "مفعل",
+    "enabled": "مُفعل",
     "disabled": "معطل",
-    "admin": "مدير"
+    "admin": "مشرف"
   },
 
   "mock_data": {
     "users": {
-      "admin_user": "المدير العام",
+      "admin_user": "مستخدم مشرف",
       "qa_observer_full": "مراقب الأسئلة والأجوبة الكامل",
       "financial_analyst": "محلل مالي",
       "legal_advisor": "مستشار قانوني",
       "marketing_director": "مدير التسويق"
     },
     "roles": {
-      "admin": "مدير",
-      "qa_observer_full_control": "مراقب الأسئلة والأجوبة – تحكم كامل",
-      "qa_observer_view_only": "مراقب الأسئلة والأجوبة – عرض فقط"
+      "admin": "مشرف",
+      "qa_observer_full_control": "مراقب الأسئلة والأجوبة - تحكم كامل",
+      "qa_observer_view_only": "مراقب الأسئلة والأجوبة - عرض فقط"
     },
     "data_rooms": {
       "project_alpha": "مشروع ألفا",

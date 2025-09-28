@@ -16,17 +16,31 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
+import { UserInfoSkeleton, FormFieldSkeleton } from '@/components/ui/skeleton-variants';
 import { toast } from 'sonner';
 import Icon from '@/components/AppIcon';
+import UserRoleManager from '@/components/UserRoleManager';
 import { 
   useUserDetails, 
   useUpdateUserDisplayName,
   useUpdateUserEmail,
   useUpdateUserPassword,
   useEnableUser,
-  useDisableUser
+  useDisableUser,
+  useGroups,
 } from '@/hooks/api';
+import {
+  useMakeUserAdmin,
+  useRemoveAdminPrivileges,
+  usePromoteUserToSubadmin,
+  useDemoteUserFromSubadmin,
+  useUserRole,
+} from '@/hooks/api/useUserRoles';
+import { usePermissions } from '@/hooks/api/useAuth';
+import { getUserInitials } from '@/lib/userFormatters';
 
 /**
  * Edit User Modal Component
@@ -34,6 +48,9 @@ import {
  */
 const EditUserModal = ({ isOpen, onClose, userId }) => {
   const { t } = useTranslation('users-management');
+
+  // Get user permissions to control what actions are available
+  const { isAdmin, canManageAllGroups } = usePermissions();
 
   // Form states
   const [formData, setFormData] = useState({
@@ -48,6 +65,19 @@ const EditUserModal = ({ isOpen, onClose, userId }) => {
   const { data: user, isLoading, error, refetch } = useUserDetails(userId, { 
     enabled: isOpen && !!userId 
   });
+
+  // Fetch available groups and get user role information
+  const { data: groupsData } = useGroups({ enabled: isOpen && !!userId });
+  const { 
+    role: userRole, 
+    isAdmin: isUserAdmin, 
+    isSubadmin: isUserSubadmin, 
+    subadminGroups: userSubadminGroups 
+  } = useUserRole(user, userId);
+
+  // Filter groups for different purposes
+  const availableGroups = groupsData?.groups?.filter(group => group.id !== 'admin') || [];
+  const companyGroups = availableGroups;
 
   // Mutations
   const updateDisplayNameMutation = useUpdateUserDisplayName({
@@ -111,6 +141,55 @@ const EditUserModal = ({ isOpen, onClose, userId }) => {
     }
   });
 
+  // Role management mutations
+  const makeAdminMutation = useMakeUserAdmin({
+    onSuccess: () => {
+      toast.success(t('edit.success_make_admin', 'User promoted to administrator'));
+      refetch();
+    },
+    onError: (error) => {
+      toast.error(t('edit.error_make_admin', 'Failed to promote user to administrator'), {
+        description: error.message,
+      });
+    }
+  });
+
+  const removeAdminMutation = useRemoveAdminPrivileges({
+    onSuccess: () => {
+      toast.success(t('edit.success_remove_admin', 'Administrator privileges removed'));
+      refetch();
+    },
+    onError: (error) => {
+      toast.error(t('edit.error_remove_admin', 'Failed to remove administrator privileges'), {
+        description: error.message,
+      });
+    }
+  });
+
+  const promoteSubadminMutation = usePromoteUserToSubadmin({
+    onSuccess: () => {
+      toast.success(t('edit.success_promote_subadmin', 'User promoted to company administrator'));
+      refetch();
+    },
+    onError: (error) => {
+      toast.error(t('edit.error_promote_subadmin', 'Failed to promote to company administrator'), {
+        description: error.message,
+      });
+    }
+  });
+
+  const demoteSubadminMutation = useDemoteUserFromSubadmin({
+    onSuccess: () => {
+      toast.success(t('edit.success_demote_subadmin', 'Company administrator role removed'));
+      refetch();
+    },
+    onError: (error) => {
+      toast.error(t('edit.error_demote_subadmin', 'Failed to remove company administrator role'), {
+        description: error.message,
+      });
+    }
+  });
+
   // Initialize form data when user data loads
   useEffect(() => {
     if (user) {
@@ -150,6 +229,24 @@ const EditUserModal = ({ isOpen, onClose, userId }) => {
       disableUserMutation.mutate(userId);
     }
   };
+
+  // Role management handlers
+  const handleMakeAdmin = () => {
+    makeAdminMutation.mutate(userId);
+  };
+
+  const handleRemoveAdmin = () => {
+    removeAdminMutation.mutate(userId);
+  };
+
+  const handlePromoteToSubadmin = (groupId) => {
+    promoteSubadminMutation.mutate({ userId, groupId });
+  };
+
+  const handleDemoteFromSubadmin = (groupId) => {
+    demoteSubadminMutation.mutate({ userId, groupId });
+  };
+
 
   // Handle form submission
   const handleSave = async () => {
@@ -194,17 +291,16 @@ const EditUserModal = ({ isOpen, onClose, userId }) => {
     }
   };
 
-  const getUserInitials = (userData) => {
-    if (!userData) return '?';
-    const name = userData.displayname || userData.username || '';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-  };
 
   const isLoading_mutations = updateDisplayNameMutation.isPending || 
                             updateEmailMutation.isPending || 
                             updatePasswordMutation.isPending ||
                             enableUserMutation.isPending ||
-                            disableUserMutation.isPending;
+                            disableUserMutation.isPending ||
+                            makeAdminMutation.isPending ||
+                            removeAdminMutation.isPending ||
+                            promoteSubadminMutation.isPending ||
+                            demoteSubadminMutation.isPending;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -222,19 +318,10 @@ const EditUserModal = ({ isOpen, onClose, userId }) => {
         <div className="space-y-4">
           {isLoading && (
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <div className="space-y-1">
-                  <Skeleton className="h-5 w-32" />
-                  <Skeleton className="h-3 w-24" />
-                </div>
-              </div>
+              <UserInfoSkeleton showEmail showBadges />
               <div className="grid grid-cols-2 gap-3">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="space-y-1">
-                    <Skeleton className="h-3 w-16" />
-                    <Skeleton className="h-4 w-full" />
-                  </div>
+                  <FormFieldSkeleton key={i} wide />
                 ))}
               </div>
             </div>
@@ -389,6 +476,14 @@ const EditUserModal = ({ isOpen, onClose, userId }) => {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Role Management */}
+              <UserRoleManager 
+                user={user} 
+                userId={userId} 
+                availableGroups={companyGroups} 
+                onRoleChange={() => refetch()} 
+              />
 
               {/* Groups & Permissions */}
               <Card>

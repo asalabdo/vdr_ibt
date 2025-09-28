@@ -33,6 +33,16 @@ export {
   useUsersManagement,
 } from './useUsers';
 
+// User role management hooks
+export {
+  useUserRole,
+  useMakeUserAdmin,
+  useRemoveAdminPrivileges,
+  usePromoteUserToSubadmin,
+  useDemoteUserFromSubadmin,
+  useRoleManagement,
+} from './useUserRoles';
+
 // Data Rooms management hooks
 export {
   useDataRooms,
@@ -58,8 +68,6 @@ export {
   useCreateGroup,
   useUpdateGroup,
   useDeleteGroup,
-  usePromoteUserToSubadmin,
-  useDemoteUserFromSubadmin,
   useGroupManagement,
 } from './useGroups';
 

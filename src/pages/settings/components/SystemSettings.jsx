@@ -303,7 +303,8 @@ const SystemSettings = () => {
         <Button variant="outline">
           {t('actions.reset_to_defaults')}
         </Button>
-        <Button onClick={handleSave} variant="default" iconName="Save">
+        <Button onClick={handleSave} variant="default" className="gap-2">
+          <Icon name="Save" size={16} />
           {t('actions.save_changes')}
         </Button>
       </div>

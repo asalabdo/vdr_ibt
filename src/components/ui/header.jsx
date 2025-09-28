@@ -12,6 +12,7 @@ import DarkModeToggle from './dark-mode-toggle';
 import NotificationBell from './notification-bell';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAuth } from '@/hooks/api';
+import { getUserInitials } from '@/lib/userFormatters';
 
 const Header = () => {
   const [lastDataRefresh, setLastDataRefresh] = useState(new Date());
@@ -29,17 +30,6 @@ const Header = () => {
     isLoggingOut,
     hasPermission 
   } = useAuth();
-
-  // Helper function to generate user initials for avatar
-  const getUserInitials = (user) => {
-    if (!user) return 'U';
-    const displayName = user.displayname || user.username || 'User';
-    const names = displayName.split(' ');
-    if (names.length >= 2) {
-      return (names[0][0] + names[names.length - 1][0]).toUpperCase();
-    }
-    return displayName.slice(0, 2).toUpperCase();
-  };
 
   // Helper function to get user role display
   const getUserRole = (user) => {

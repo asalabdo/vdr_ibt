@@ -127,8 +127,13 @@ const CreateRoleModal = ({ isOpen, onClose, availablePermissions }) => {
               type="submit" 
               variant="default" 
               disabled={isLoading}
-              iconName={isLoading ? 'Loader2' : 'Plus'}
+              className="gap-2"
             >
+              {isLoading ? (
+                <Icon name="Loader2" size={16} className="animate-spin" />
+              ) : (
+                <Icon name="Plus" size={16} />
+              )}
               {isLoading ? t('actions.creating') : t('actions.create')}
             </Button>
           </div>

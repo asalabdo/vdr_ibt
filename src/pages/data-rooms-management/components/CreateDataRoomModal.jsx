@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useCreateDataRoom, useAvailableGroups } from '@/hooks/api';
+import { usePermissions } from '@/hooks/api/useAuth';
+import { filterGroupsByPermissions } from '@/lib/groupFilters';
+import { validateMountpoint } from '@/lib/formValidation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -33,6 +36,9 @@ const CreateDataRoomModal = ({ isOpen, onClose }) => {
   });
   const [errors, setErrors] = useState({});
 
+  // Get user permissions to filter available groups
+  const { isAdmin, isSubadmin, managedGroups, canManageAllGroups } = usePermissions();
+
   // Fetch available groups dynamically
   const { 
     data: groupsData, 
@@ -42,7 +48,15 @@ const CreateDataRoomModal = ({ isOpen, onClose }) => {
     enabled: isOpen // Only fetch when modal is open
   });
   
-  const availableGroups = groupsData?.groups || [];
+  // Filter groups based on user permissions using centralized logic
+  const allGroups = groupsData?.groups || [];
+  const userPermissions = {
+    isAdmin,
+    canManageAllGroups,
+    managedGroups
+  };
+  
+  const availableGroups = filterGroupsByPermissions(allGroups, userPermissions);
 
   // Create data room mutation
   const createDataRoomMutation = useCreateDataRoom({
@@ -106,12 +120,10 @@ const CreateDataRoomModal = ({ isOpen, onClose }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.mountpoint.trim()) {
-      newErrors.mountpoint = t('create_modal.errors.mountpoint_required', { defaultValue: 'Mount point name is required' });
-    } else if (formData.mountpoint.length < 3) {
-      newErrors.mountpoint = t('create_modal.errors.mountpoint_min_length', { defaultValue: 'Mount point name must be at least 3 characters' });
-    } else if (!/^[a-zA-Z0-9_-]+$/.test(formData.mountpoint)) {
-      newErrors.mountpoint = t('create_modal.errors.mountpoint_invalid', { defaultValue: 'Mount point name can only contain letters, numbers, hyphens, and underscores' });
+    // Use centralized validation function
+    const mountpointError = validateMountpoint(formData.mountpoint);
+    if (mountpointError) {
+      newErrors.mountpoint = mountpointError;
     }
 
     setErrors(newErrors);
@@ -123,9 +135,21 @@ const CreateDataRoomModal = ({ isOpen, onClose }) => {
     
     if (!validateForm()) return;
 
+    // For subadmins: automatically assign to their managed groups
+    // For admins: use selected groups or empty array
+    let groupsToAssign = [];
+    
+    if (isSubadmin && !isAdmin && Array.isArray(managedGroups)) {
+      // Subadmins: automatically assign to all their managed groups
+      groupsToAssign = managedGroups.map(groupId => ({ groupId, permissions: 31 }));
+    } else {
+      // Admins: use selected groups
+      groupsToAssign = formData.groups;
+    }
+
     const roomData = {
       mountpoint: formData.mountpoint.trim(),
-      groups: formData.groups // Groups will be added via separate API calls
+      groups: groupsToAssign
     };
 
     createDataRoomMutation.mutate(roomData);
@@ -186,96 +210,129 @@ const CreateDataRoomModal = ({ isOpen, onClose }) => {
             </CardContent>
           </Card>
 
-          {/* Groups Selection */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">{t('create_modal.group_access')}</CardTitle>
-              <CardDescription>
-                {t('create_modal.groups_hint', { defaultValue: 'Select groups that will have access to this data room' })}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {/* Loading State */}
-              {isLoadingGroups && (
-                <div className="flex items-center justify-center py-6">
-                  <Icon name="Loader2" size={16} className="animate-spin mr-2" />
-                  <span className="text-sm text-muted-foreground">
-                    {t('create_modal.loading_groups', { defaultValue: 'Loading available groups...' })}
-                  </span>
-                </div>
-              )}
-              
-              {/* Error State */}
-              {groupsError && (
-                <Alert variant="destructive">
-                  <Icon name="AlertCircle" size={16} />
-                  <AlertDescription>
-                    {t('create_modal.groups_error', { defaultValue: 'Failed to load groups' })}: {groupsError.message}
+          {/* Groups Selection - Only for Admins */}
+          {isAdmin ? (
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">{t('create_modal.group_access')}</CardTitle>
+                <CardDescription>
+                  {t('create_modal.groups_hint', { defaultValue: 'Select groups that will have access to this data room' })}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Loading State */}
+                {isLoadingGroups && (
+                  <div className="flex items-center justify-center py-6">
+                    <Icon name="Loader2" size={16} className="animate-spin mr-2" />
+                    <span className="text-sm text-muted-foreground">
+                      {t('create_modal.loading_groups', { defaultValue: 'Loading available groups...' })}
+                    </span>
+                  </div>
+                )}
+                
+                {/* Error State */}
+                {groupsError && (
+                  <Alert variant="destructive">
+                    <Icon name="AlertCircle" size={16} />
+                    <AlertDescription>
+                      {t('create_modal.groups_error', { defaultValue: 'Failed to load groups' })}: {groupsError.message}
+                    </AlertDescription>
+                  </Alert>
+                )}
+                
+                {/* Groups List */}
+                {!isLoadingGroups && !groupsError && (
+                  <div className="space-y-3">
+                    {availableGroups.length > 0 ? (
+                      <ScrollArea className="h-24">
+                        <div className="space-y-2">
+                          {availableGroups.map((group) => (
+                            <div key={group.id} className="flex items-center space-x-2">
+                              <Checkbox
+                                id={group.id}
+                                checked={formData.groups.some(g => g.groupId === group.id)}
+                                onCheckedChange={() => handleGroupToggle(group.id)}
+                                disabled={createDataRoomMutation.isPending}
+                              />
+                              <Label htmlFor={group.id} className="text-sm cursor-pointer flex-1">
+                                {group.displayName || group.id}
+                              </Label>
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    ) : (
+                      <div className="text-center py-6">
+                        <Icon name="Users" size={24} className="mx-auto text-muted-foreground mb-2" />
+                        <p className="text-sm text-muted-foreground mb-3">
+                          {t('create_modal.no_groups', { defaultValue: 'No groups available' })}
+                        </p>
+                        <p className="text-xs text-muted-foreground mb-3">
+                          {t('create_modal.create_groups_hint', { defaultValue: 'Create groups first to assign access permissions to your data rooms.' })}
+                        </p>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => {
+                            window.open('/groups-management', '_blank');
+                          }}
+                        >
+                          <Icon name="Plus" size={14} />
+                          {t('create_modal.manage_groups', { defaultValue: 'Manage Groups' })}
+                        </Button>
+                      </div>
+                    )}
+                    
+                    {/* Selected Groups Preview */}
+                    {formData.groups.length > 0 && (
+                      <div className="space-y-2">
+                        <Label className="text-xs font-medium text-muted-foreground">Selected Groups</Label>
+                        <div className="flex flex-wrap gap-1">
+                          {formData.groups.map((group) => (
+                            <Badge key={group.groupId} variant="secondary" className="text-xs">
+                              {availableGroups.find(g => g.id === group.groupId)?.displayName || group.groupId}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ) : (
+            /* For Subadmins - Show automatic assignment info */
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">{t('create_modal.company_assignment', 'Company Assignment')}</CardTitle>
+                <CardDescription>
+                  {t('create_modal.auto_assignment_hint', 'This data room will automatically be assigned to your managed companies')}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Alert>
+                  <Icon name="Building" size={14} />
+                  <AlertDescription className="text-sm">
+                    <div className="space-y-2">
+                      <p><strong>Auto-assigned companies:</strong></p>
+                      {Array.isArray(managedGroups) && managedGroups.length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {managedGroups.map((groupId) => (
+                            <Badge key={groupId} variant="outline" className="text-xs">
+                              {availableGroups.find(g => g.id === groupId)?.displayName || groupId}
+                            </Badge>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-muted-foreground text-xs">No companies assigned to your account</p>
+                      )}
+                    </div>
                   </AlertDescription>
                 </Alert>
-              )}
-              
-              {/* Groups List */}
-              {!isLoadingGroups && !groupsError && (
-                <div className="space-y-3">
-                  {availableGroups.length > 0 ? (
-                    <ScrollArea className="h-24">
-                      <div className="space-y-2">
-                        {availableGroups.map((group) => (
-                          <div key={group.id} className="flex items-center space-x-2">
-                            <Checkbox
-                              id={group.id}
-                              checked={formData.groups.some(g => g.groupId === group.id)}
-                              onCheckedChange={() => handleGroupToggle(group.id)}
-                              disabled={createDataRoomMutation.isPending}
-                            />
-                            <Label htmlFor={group.id} className="text-sm cursor-pointer flex-1">
-                              {group.displayName || group.id}
-                            </Label>
-                          </div>
-                        ))}
-                      </div>
-                    </ScrollArea>
-                  ) : (
-                    <div className="text-center py-6">
-                      <Icon name="Users" size={24} className="mx-auto text-muted-foreground mb-2" />
-                      <p className="text-sm text-muted-foreground mb-3">
-                        {t('create_modal.no_groups', { defaultValue: 'No groups available' })}
-                      </p>
-                      <p className="text-xs text-muted-foreground mb-3">
-                        {t('create_modal.create_groups_hint', { defaultValue: 'Create groups first to assign access permissions to your data rooms.' })}
-                      </p>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="gap-2"
-                        onClick={() => {
-                          window.open('/groups-management', '_blank');
-                        }}
-                      >
-                        <Icon name="Plus" size={14} />
-                        {t('create_modal.manage_groups', { defaultValue: 'Manage Groups' })}
-                      </Button>
-                    </div>
-                  )}
-                  
-                  {/* Selected Groups Preview */}
-                  {formData.groups.length > 0 && (
-                    <div className="space-y-2">
-                      <Label className="text-xs font-medium text-muted-foreground">Selected Groups</Label>
-                      <div className="flex flex-wrap gap-1">
-                        {formData.groups.map((group) => (
-                          <Badge key={group.groupId} variant="secondary" className="text-xs">
-                            {availableGroups.find(g => g.id === group.groupId)?.displayName || group.groupId}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Error Display */}
           {errors.submit && (

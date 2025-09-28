@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useListFiles, useDownloadFile, useDeleteItem } from '@/hooks/api';
 import { useAuthStatus, usePermissions } from '@/hooks/api';
+import { PERMISSIONS } from '@/lib/permissions';
 import Header from '../../components/ui/header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -799,7 +800,7 @@ const FilesManagementConsole = () => {
                       <td className="py-3 px-4">
                         <div className="flex items-center space-x-2 rtl:space-x-reverse">
                           {/* Preview - Available to all users with document view access */}
-                          {!file?.isDirectory && hasPermission('documents.view') && (
+                          {!file?.isDirectory && hasPermission(PERMISSIONS.DOCUMENTS_VIEW) && (
                             <button
                               onClick={() => handleFilePreview(file)}
                               className="p-1 text-muted-foreground hover:text-primary transition-colors"
@@ -821,7 +822,7 @@ const FilesManagementConsole = () => {
                           )}
                           
                           {/* Manage Permissions - Only for users with edit/admin permissions */}
-                          {(hasPermission('documents.edit') || hasPermission('data_rooms.manage')) && (
+                          {(hasPermission(PERMISSIONS.DOCUMENTS_EDIT) || hasPermission(PERMISSIONS.DATA_ROOMS_MANAGE)) && (
                             <button
                               onClick={() => handlePermissionManager(file)}
                               className="p-1 text-muted-foreground hover:text-warning transition-colors"

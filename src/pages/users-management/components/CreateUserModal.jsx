@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useCreateUser } from '@/hooks/api';
+import { useCreateUser, useGroups, usePromoteUserToSubadmin } from '@/hooks/api';
+import { usePermissions } from '@/hooks/api/useAuth';
+import { filterGroupsByPermissions } from '@/lib/groupFilters';
+import { validateUsername, validatePassword, validateEmail } from '@/lib/formValidation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -30,18 +34,40 @@ const CreateUserModal = ({ isOpen, onClose }) => {
     password: '',
     displayName: '',
     email: '',
-    groups: []
+    role: 'user', // 'user', 'admin', or 'subadmin'
+    subadminGroups: [], // For subadmin role - which groups to manage
+    groups: [] // Regular groups (non-admin, non-subadmin)
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
 
-  // Available groups for user assignment (using common Nextcloud groups)
-  const availableGroups = ['admin'];
+  // Fetch available groups dynamically
+  // Get user permissions  
+  const { isAdmin, isSubadmin, managedGroups, canManageAllGroups } = usePermissions();
+
+  const { 
+    data: groupsData, 
+    isLoading: isLoadingGroups 
+  } = useGroups({ enabled: isOpen });
+
+  // Filter groups based on user permissions using centralized logic
+  const allGroups = groupsData?.groups || [];
+  const userPermissions = {
+    isAdmin,
+    canManageAllGroups,
+    managedGroups
+  };
+  
+  const availableGroups = filterGroupsByPermissions(allGroups, userPermissions);
+  const companyGroups = availableGroups; // Company groups for subadmin role assignment
+
+  // Subadmin promotion mutation
+  const promoteToSubadminMutation = usePromoteUserToSubadmin();
 
   // Create user mutation
   const createUserMutation = useCreateUser({
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       // Show success toast
       toast.success('User created successfully!', {
         description: `User "${data.user.displayname}" has been created and added to the system.`,
@@ -55,6 +81,41 @@ const CreateUserModal = ({ isOpen, onClose }) => {
         });
       }
       
+      // Handle subadmin promotion if needed
+      if (formData.role === 'subadmin' && formData.subadminGroups.length > 0) {
+        const promotionPromises = formData.subadminGroups.map(groupId => 
+          promoteToSubadminMutation.mutateAsync({ 
+            userId: data.user.id || data.user.username, 
+            groupId 
+          }).catch(error => {
+            console.warn(`Failed to promote to subadmin of ${groupId}:`, error.message);
+            return { error: error.message, groupId };
+          })
+        );
+        
+        try {
+          const results = await Promise.allSettled(promotionPromises);
+          const failures = results
+            .filter(result => result.status === 'fulfilled' && result.value?.error)
+            .map(result => result.value);
+          
+          if (failures.length > 0) {
+            toast.warning('Subadmin assignment warning', {
+              description: `Failed to assign subadmin role for: ${failures.map(f => f.groupId).join(', ')}`,
+            });
+          } else {
+            toast.success('Subadmin role assigned', {
+              description: `User promoted to company administrator for ${formData.subadminGroups.length} companies.`,
+            });
+          }
+        } catch (error) {
+          console.error('Subadmin promotion error:', error);
+          toast.error('Subadmin assignment failed', {
+            description: 'User was created but subadmin role assignment failed.',
+          });
+        }
+      }
+      
       handleClose();
       // Reset form
       setFormData({
@@ -62,6 +123,8 @@ const CreateUserModal = ({ isOpen, onClose }) => {
         password: '',
         displayName: '',
         email: '',
+        role: 'user',
+        subadminGroups: [],
         groups: []
       });
       setErrors({});
@@ -91,12 +154,31 @@ const CreateUserModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleRoleChange = (newRole) => {
+    setFormData(prev => ({
+      ...prev,
+      role: newRole,
+      // Clear role-specific selections when changing roles
+      subadminGroups: newRole === 'subadmin' ? prev.subadminGroups : [],
+      groups: newRole === 'user' ? prev.groups : []
+    }));
+  };
+
   const handleGroupToggle = (groupId) => {
     setFormData(prev => ({
       ...prev,
       groups: prev.groups.includes(groupId)
         ? prev.groups.filter(g => g !== groupId)
         : [...prev.groups, groupId]
+    }));
+  };
+
+  const handleSubadminGroupToggle = (groupId) => {
+    setFormData(prev => ({
+      ...prev,
+      subadminGroups: prev.subadminGroups.includes(groupId)
+        ? prev.subadminGroups.filter(g => g !== groupId)
+        : [...prev.subadminGroups, groupId]
     }));
   };
 
@@ -130,20 +212,27 @@ const CreateUserModal = ({ isOpen, onClose }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.userid.trim()) {
-      newErrors.userid = t('form.errors.username_required');
-    } else if (formData.userid.length < 3) {
-      newErrors.userid = t('form.errors.username_min_length');
+    // Use centralized validation functions
+    const usernameError = validateUsername(formData.userid);
+    if (usernameError) {
+      newErrors.userid = usernameError;
     }
 
-    if (!formData.password.trim()) {
-      newErrors.password = t('form.errors.password_required');
-    } else if (formData.password.length < 8) {
-      newErrors.password = t('form.errors.password_min_length');
+    const passwordError = validatePassword(formData.password);
+    if (passwordError) {
+      newErrors.password = passwordError;
     }
 
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = t('form.errors.email_invalid');
+    if (formData.email) {
+      const emailError = validateEmail(formData.email);
+      if (emailError) {
+        newErrors.email = emailError;
+      }
+    }
+
+    // Validate role-specific requirements
+    if (formData.role === 'subadmin' && formData.subadminGroups.length === 0) {
+      newErrors.role = t('form.errors.subadmin_groups_required', 'At least one company must be selected for Company Administrator role');
     }
 
     setErrors(newErrors);
@@ -155,12 +244,23 @@ const CreateUserModal = ({ isOpen, onClose }) => {
     
     if (!validateForm()) return;
 
+    // Prepare groups based on role selection
+    let finalGroups = [...formData.groups];
+    
+    // Add admin group if admin role is selected
+    if (formData.role === 'admin') {
+      finalGroups.push('admin');
+    }
+    
+    // For subadmin, we'll handle subadmin assignment after user creation
+    // Regular groups are handled during user creation
+
     const userData = {
       userid: formData.userid.trim(),
       password: formData.password,
       displayName: formData.displayName.trim() || formData.userid.trim(),
       email: formData.email.trim(),
-      groups: formData.groups
+      groups: finalGroups
     };
 
     createUserMutation.mutate(userData);
@@ -313,33 +413,146 @@ const CreateUserModal = ({ isOpen, onClose }) => {
 
           <Separator />
 
-          {/* Groups Section */}
-          <div className="space-y-2">
+          {/* Role Selection Section */}
+          <div className="space-y-3">
             <Label className="text-xs font-medium text-muted-foreground">
-              {t('create_user_modal.groups')}
+              {t('create_user_modal.user_role', 'User Role')} *
             </Label>
-            <div className="grid grid-cols-2 gap-2">
-              {availableGroups.map((group) => (
-                <div key={group} className="flex items-center space-x-2 rtl:space-x-reverse">
-                  <Checkbox
-                    id={group}
-                    checked={formData.groups.includes(group)}
-                    onCheckedChange={() => handleGroupToggle(group)}
-                    disabled={createUserMutation.isPending}
-                  />
-                  <Label htmlFor={group} className="text-xs cursor-pointer capitalize">
-                    {group}
+            
+            <RadioGroup 
+              value={formData.role} 
+              onValueChange={handleRoleChange}
+              disabled={createUserMutation.isPending}
+              className="space-y-2"
+            >
+              {/* Regular User */}
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                <RadioGroupItem value="user" id="role-user" />
+                <Label htmlFor="role-user" className="text-sm cursor-pointer">
+                  <div className="flex flex-col">
+                    <span className="font-medium">{t('create_user_modal.role_user', 'Regular User')}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {t('create_user_modal.role_user_desc', 'Standard user with basic permissions')}
+                    </span>
+                  </div>
+                </Label>
+              </div>
+
+              {/* Administrator - Only available to admins */}
+              {isAdmin && (
+                <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                  <RadioGroupItem value="admin" id="role-admin" />
+                  <Label htmlFor="role-admin" className="text-sm cursor-pointer">
+                    <div className="flex flex-col">
+                      <span className="font-medium">{t('create_user_modal.role_admin', 'Administrator')}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {t('create_user_modal.role_admin_desc', 'Full system access and user management')}
+                      </span>
+                    </div>
                   </Label>
                 </div>
-              ))}
-            </div>
-            {formData.groups.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-1">
-                {formData.groups.map((group) => (
-                  <Badge key={group} variant="secondary" className="text-xs py-0 px-2">
-                    {group}
-                  </Badge>
-                ))}
+              )}
+
+              {/* Company Administrator (Subadmin) */}
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                <RadioGroupItem value="subadmin" id="role-subadmin" />
+                <Label htmlFor="role-subadmin" className="text-sm cursor-pointer">
+                  <div className="flex flex-col">
+                    <span className="font-medium">{t('create_user_modal.role_subadmin', 'Company Administrator')}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {t('create_user_modal.role_subadmin_desc', 'Manages users and resources for specific companies')}
+                    </span>
+                  </div>
+                </Label>
+              </div>
+            </RadioGroup>
+
+            {/* Role validation error */}
+            {errors.role && (
+              <p className="text-xs text-destructive">{errors.role}</p>
+            )}
+
+            {/* Company Selection for Subadmin */}
+            {formData.role === 'subadmin' && (
+              <div className="space-y-2 mt-3 pl-6 border-l-2 border-primary/20">
+                <Label className="text-xs font-medium text-muted-foreground">
+                  {t('create_user_modal.managed_companies', 'Managed Companies')} *
+                </Label>
+                {isLoadingGroups ? (
+                  <div className="text-xs text-muted-foreground">Loading companies...</div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2">
+                    {companyGroups.map((group) => (
+                      <div key={group.id} className="flex items-center space-x-2 rtl:space-x-reverse">
+                        <Checkbox
+                          id={`subadmin-${group.id}`}
+                          checked={formData.subadminGroups.includes(group.id)}
+                          onCheckedChange={() => handleSubadminGroupToggle(group.id)}
+                          disabled={createUserMutation.isPending}
+                        />
+                        <Label htmlFor={`subadmin-${group.id}`} className="text-xs cursor-pointer">
+                          {group.displayName || group.id}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {formData.subadminGroups.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {formData.subadminGroups.map((groupId) => (
+                      <Badge key={groupId} variant="outline" className="text-xs py-0 px-2">
+                        {companyGroups.find(g => g.id === groupId)?.displayName || groupId}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Information for subadmins about limited group access */}
+            {(isSubadmin && !isAdmin) && (
+              <Alert className="mt-3">
+                <Icon name="Info" size={14} />
+                <AlertDescription className="text-sm">
+                  As a Company Administrator, you can only assign users to the companies you manage: {Array.isArray(managedGroups) ? managedGroups.join(', ') : 'None'}.
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {/* Regular Groups for Regular Users */}
+            {formData.role === 'user' && availableGroups.length > 0 && (
+              <div className="space-y-2 mt-3 pl-6 border-l-2 border-primary/20">
+                <Label className="text-xs font-medium text-muted-foreground">
+                  {t('create_user_modal.additional_groups', 'Additional Groups')}
+                </Label>
+                {isLoadingGroups ? (
+                  <div className="text-xs text-muted-foreground">Loading groups...</div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2">
+                    {availableGroups.map((group) => (
+                      <div key={group.id} className="flex items-center space-x-2 rtl:space-x-reverse">
+                        <Checkbox
+                          id={`group-${group.id}`}
+                          checked={formData.groups.includes(group.id)}
+                          onCheckedChange={() => handleGroupToggle(group.id)}
+                          disabled={createUserMutation.isPending}
+                        />
+                        <Label htmlFor={`group-${group.id}`} className="text-xs cursor-pointer">
+                          {group.displayName || group.id}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {formData.groups.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {formData.groups.map((groupId) => (
+                      <Badge key={groupId} variant="secondary" className="text-xs py-0 px-2">
+                        {availableGroups.find(g => g.id === groupId)?.displayName || groupId}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>

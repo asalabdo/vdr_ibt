@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useGroups, useGroupMemberCounts } from '@/hooks/api';
+import { usePermissions } from '@/hooks/api/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { StatsGridSkeleton, GroupsGridSkeleton } from '@/components/ui/skeleton-variants';
 import Icon from '../../components/AppIcon';
 import GroupCard from './components/GroupCard';
 import CreateGroupModal from './components/CreateGroupModal';
@@ -18,6 +20,9 @@ import ManageGroupMembersModal from './components/ManageGroupMembersModal';
 
 const GroupsManagement = () => {
   const { t } = useTranslation('groups-management');
+  
+  // Get user permissions to filter groups
+  const { isAdmin, isSubadmin, managedGroups, canManageAllGroups } = usePermissions();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -34,8 +39,16 @@ const GroupsManagement = () => {
     refetch 
   } = useGroups({ search: searchQuery });
 
-  // Get groups from API response
-  const groups = groupsData?.groups || [];
+  // Get groups from API response and filter based on user permissions
+  const allGroups = groupsData?.groups || [];
+  
+  // Filter groups based on user permissions
+  // Admins see all groups, subadmins see only their managed groups
+  const groups = isAdmin || canManageAllGroups 
+    ? allGroups 
+    : allGroups.filter(group => 
+        Array.isArray(managedGroups) ? managedGroups.includes(group.id) : false
+      );
   
   // Get member counts for all groups
   const groupIds = groups.map(group => group.id);
@@ -111,57 +124,28 @@ const GroupsManagement = () => {
   if (isLoading) {
     return (
       <div className="px-6 py-8">
-            {/* Header Skeleton */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
-              <div className="mb-4 lg:mb-0">
-                <Skeleton className="h-9 w-64 mb-2" />
-                <Skeleton className="h-5 w-48" />
-              </div>
-              <div className="flex items-center space-x-3">
-                <Skeleton className="h-10 w-32" />
-                <Skeleton className="h-10 w-32" />
-              </div>
-            </div>
-            
-            <Separator className="my-8" />
-            
-            {/* Stats Skeleton */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <Card key={i}>
-                  <CardContent className="p-4">
-                    <div className="flex items-center space-x-3">
-                      <Skeleton className="w-10 h-10 rounded-lg" />
-                      <div className="space-y-1">
-                        <Skeleton className="h-4 w-16" />
-                        <Skeleton className="h-6 w-8" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            
-            {/* Grid Skeleton */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Card key={i}>
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center space-x-3">
-                        <Skeleton className="w-12 h-12 rounded-lg" />
-                        <div className="space-y-1">
-                          <Skeleton className="h-5 w-32" />
-                          <Skeleton className="h-4 w-24" />
-                        </div>
-                      </div>
-                      <Skeleton className="h-16 w-full" />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+        {/* Header Skeleton */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
+          <div className="mb-4 lg:mb-0">
+            <Skeleton className="h-9 w-64 mb-2" />
+            <Skeleton className="h-5 w-48" />
           </div>
+          <div className="flex items-center space-x-3">
+            <Skeleton className="h-10 w-32" />
+            <Skeleton className="h-10 w-32" />
+          </div>
+        </div>
+        
+        <Separator className="my-8" />
+        
+        {/* Stats Skeleton */}
+        <StatsGridSkeleton count={4} />
+        
+        <div className="mb-6" />
+        
+        {/* Groups Grid Skeleton */}
+        <GroupsGridSkeleton count={6} />
+      </div>
     );
   }
 
@@ -210,15 +194,21 @@ const GroupsManagement = () => {
                 {t('title', { defaultValue: 'Groups Management' })}
               </h1>
               <p className="text-muted-foreground">
-                {t('subtitle', { defaultValue: 'Create and manage user groups for access control and collaboration' })}
+                {isAdmin 
+                  ? t('subtitle', { defaultValue: 'Create and manage user groups for access control and collaboration' })
+                  : t('subtitle_subadmin', { defaultValue: 'View and manage users in your assigned company groups' })
+                }
               </p>
             </div>
             
             <div className="flex items-center space-x-3 rtl:space-x-reverse">
-              <Button variant="default" onClick={handleCreateGroup} className="gap-2">
-                <Icon name="Plus" size={16} />
-                {t('actions.create_group', { defaultValue: 'Create Group' })}
-              </Button>
+              {/* Only admins can create groups */}
+              {isAdmin && (
+                <Button variant="default" onClick={handleCreateGroup} className="gap-2">
+                  <Icon name="Plus" size={16} />
+                  {t('actions.create_group', { defaultValue: 'Create Group' })}
+                </Button>
+              )}
               <Button 
                 variant="outline" 
                 className="gap-2"
@@ -233,6 +223,16 @@ const GroupsManagement = () => {
           </div>
           
           <Separator className="my-8" />
+
+          {/* Information for subadmins about limited group access */}
+          {(isSubadmin && !isAdmin) && (
+            <Alert className="mb-6">
+              <Icon name="Info" size={14} />
+              <AlertDescription className="text-sm">
+                As a Company Administrator, you can view and manage users in your assigned companies: {Array.isArray(managedGroups) ? managedGroups.join(', ') : 'None'}. You cannot create new groups.
+              </AlertDescription>
+            </Alert>
+          )}
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
