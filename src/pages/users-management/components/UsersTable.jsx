@@ -395,20 +395,23 @@ const UsersTable = () => {
                               {t('table.view_details')}
                             </Button>
                             
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={() => handleDeleteUser(user.id)}
-                              disabled={deleteUserMutation.isPending}
-                              className="gap-1 h-8 px-3 text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
-                            >
-                              {deleteUserMutation.isPending ? (
-                                <Icon name="Loader2" size={12} className="animate-spin" />
-                              ) : (
-                                <Icon name="Trash2" size={12} />
-                              )}
-                              {t('table.delete_user')}
-                            </Button>
+                            {/* Delete User - Only admins can delete users */}
+                            {isAdmin && (
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => handleDeleteUser(user.id)}
+                                disabled={deleteUserMutation.isPending}
+                                className="gap-1 h-8 px-3 text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
+                              >
+                                {deleteUserMutation.isPending ? (
+                                  <Icon name="Loader2" size={12} className="animate-spin" />
+                                ) : (
+                                  <Icon name="Trash2" size={12} />
+                                )}
+                                {t('table.delete_user')}
+                              </Button>
+                            )}
 
                             {/* Role Management Dropdown */}
                             <DropdownMenu>

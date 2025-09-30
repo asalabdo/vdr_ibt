@@ -16,9 +16,24 @@ export const USER_ROLES = {
 
 /**
  * Determine user role based on groups and subadmin status
+ * 
+ * IMPORTANT: Based on verified Nextcloud architecture
+ * 
+ * ADMIN (member of 'admin' group):
+ * - Full system access
+ * - Can CREATE and MANAGE all users, groups, and Group Folders
+ * 
+ * SUBADMIN (assigned to specific groups via subadmin API):
+ * - LIMITED scope to assigned groups only
+ * - canManageUsers: true means they can EDIT existing users, NOT create new ones
+ * - Cannot create new users, groups, or Group Folders
+ * - Can only add/remove existing users to/from their managed groups
+ * 
  * @param {Object} userData - User data from Nextcloud
  * @param {Array} subadminGroups - Array of subadmin groups (optional)
  * @returns {Object} User role information
+ * 
+ * Reference: Docs/nextcloud-admin-subadmin-guide.md (Verified: Sept 30, 2025)
  */
 export const getUserRole = (userData, subadminGroups = null) => {
   if (!userData) {
@@ -40,8 +55,8 @@ export const getUserRole = (userData, subadminGroups = null) => {
     return {
       role: USER_ROLES.ADMIN,
       level: 'full',
-      canManageUsers: true,
-      canManageAllGroups: true,
+      canManageUsers: true,        // ✅ Can CREATE and EDIT all users
+      canManageAllGroups: true,    // ✅ Can CREATE and EDIT all groups
       canViewGroups: true,
       canAccessSystemSettings: true,
       managedGroups: 'all'
@@ -54,11 +69,13 @@ export const getUserRole = (userData, subadminGroups = null) => {
     return {
       role: USER_ROLES.SUBADMIN,
       level: 'limited',
-      canManageUsers: true,
-      canManageAllGroups: false,
-      canViewGroups: true,
-      canAccessSystemSettings: false,
-      managedGroups: userSubadminGroups
+      canManageUsers: true,        // ⚠️ LIMITED: Can only EDIT existing users in managed groups
+                                   //    ❌ CANNOT create new users
+                                   //    ❌ CANNOT delete users
+      canManageAllGroups: false,   // ❌ Can only view/manage assigned groups
+      canViewGroups: true,         // ✅ Can view managed groups
+      canAccessSystemSettings: false, // ❌ No system settings access
+      managedGroups: userSubadminGroups  // Limited to these groups only
     };
   }
   

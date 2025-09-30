@@ -26,7 +26,7 @@ const DataRoomCard = ({ room, onViewDetails, onEdit, onDelete, onManageGroups })
   // Get user permissions
   const {
     canManageDataRooms,
-    canCreateDataRooms,
+    canDeleteDataRooms,
     isAdmin,
     isSubadmin,
     hasPermission
@@ -145,11 +145,11 @@ const DataRoomCard = ({ room, onViewDetails, onEdit, onDelete, onManageGroups })
               </DropdownMenuItem>
             )}
             
-            {/* Show separator only if user has management permissions */}
-            {canManageDataRooms && <DropdownMenuSeparator />}
+            {/* Show separator only if user can delete data rooms */}
+            {canDeleteDataRooms && <DropdownMenuSeparator />}
             
-            {/* Delete - Only for admins or users with full data room management */}
-            {canManageDataRooms && (
+            {/* Delete - Only admins can delete Group Folders (Data Rooms) */}
+            {canDeleteDataRooms && (
               <DropdownMenuItem 
                 onClick={() => onDelete?.(room)} 
                 className="text-destructive focus:text-destructive"

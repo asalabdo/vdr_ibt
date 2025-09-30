@@ -10,9 +10,9 @@ import { useAuth } from './useAuth';
  * Centralized hooks for all user role operations
  */
 
-// Query keys
+// Query keys - must match the keys used in useGroups.js
 const ROLE_QUERY_KEYS = {
-  userSubadminGroups: (userId) => ['users', 'subadminGroups', userId],
+  userSubadminGroups: (userId) => ['userSubadminGroups', userId],
 };
 
 // Note: useUserSubadminGroups is defined in useGroups.js - import it from there if needed
@@ -162,9 +162,13 @@ export const useUserRole = (userData, userId = null) => {
     (currentUser?.isAdmin || currentUser?.id === userId) && 
     !isUserAdmin(userData);
   
-  const { data: subadminGroups } = useUserSubadminGroups(userId, { 
+  const { data: subadminGroupsData } = useUserSubadminGroups(userId, { 
     enabled: canFetchSubadminGroups
   });
+  
+  // Extract the groups array from the API response object
+  const subadminGroups = subadminGroupsData?.groups || [];
+  const subadminGroupIds = subadminGroups.map(group => group.id);
   
   if (!userData) {
     return {
@@ -176,8 +180,8 @@ export const useUserRole = (userData, userId = null) => {
     };
   }
   
-  const roleInfo = getUserRole(userData, subadminGroups);
-  const displayInfo = getUserRoleDisplay(userData, subadminGroups);
+  const roleInfo = getUserRole(userData, subadminGroupIds);
+  const displayInfo = getUserRoleDisplay(userData, subadminGroupIds);
   
   return {
     role: roleInfo.role,
@@ -185,7 +189,7 @@ export const useUserRole = (userData, userId = null) => {
     isSubadmin: roleInfo.role === 'subadmin',
     roleInfo,
     display: displayInfo.display, // Extract the display object correctly
-    subadminGroups: subadminGroups || [],
+    subadminGroups: subadminGroupIds,
     canManageUsers: roleInfo.canManageUsers,
     canManageAllGroups: roleInfo.canManageAllGroups,
     canViewGroups: roleInfo.canViewGroups,

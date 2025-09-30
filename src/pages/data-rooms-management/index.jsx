@@ -211,8 +211,9 @@ const DataRoomsManagement = () => {
             </div>
             
             <div className="flex items-center space-x-3 rtl:space-x-reverse">
-              {/* Create Room - Only for users who can create data rooms */}
-              {canCreateDataRooms && (
+              {/* Create Room - Only admins can create Group Folders (Data Rooms) */}
+              {/* Sub-admins can only manage existing data rooms for their assigned groups */}
+              {isAdmin && (
                 <Button variant="default" onClick={handleCreateRoom} className="gap-2">
                   <Icon name="Plus" size={16} />
                   {t('actions.create_room')}
@@ -237,6 +238,17 @@ const DataRoomsManagement = () => {
           </div>
           
           <Separator className="my-8" />
+
+          {/* Information alert for sub-admins about their limited permissions */}
+          {isSubadmin && !isAdmin && (
+            <Alert className="mb-6">
+              <Icon name="Info" size={16} />
+              <AlertDescription>
+                <strong>Company Administrator Access:</strong> You can manage existing data rooms for your assigned companies. 
+                Only system administrators can create new Group Folders (Data Rooms). If you need a new data room, please contact your system administrator.
+              </AlertDescription>
+            </Alert>
+          )}
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
@@ -378,8 +390,8 @@ const DataRoomsManagement = () => {
                 <p className="text-muted-foreground mb-4">
                   {searchQuery ? t('search.no_results_description') : t('search.empty_state_description')}
                 </p>
-                {/* Create Room button - Only show if user has permission */}
-                {canCreateDataRooms && (
+                {/* Create Room button - Only admins can create Group Folders */}
+                {isAdmin && (
                   <Button variant="default" onClick={handleCreateRoom} className="gap-2">
                     <Icon name="Plus" size={16} />
                     {t('actions.create_room')}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePermissions } from '@/hooks/api/useAuth';
 import Icon from '../../../components/AppIcon';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,6 +18,7 @@ import {
 const GroupCard = ({ group, onViewDetails, onEdit, onDelete, onManageMembers }) => {
   const { t, i18n } = useTranslation('groups-management');
   const { t: tCommon } = useTranslation('common');
+  const { isAdmin } = usePermissions();
 
   const isProtectedGroup = group?.id?.toLowerCase() === 'admin';
 
@@ -91,7 +93,8 @@ const GroupCard = ({ group, onViewDetails, onEdit, onDelete, onManageMembers }) 
                 {t('actions.manage_members', { defaultValue: 'Manage Members' })}
               </DropdownMenuItem>
               
-              {!isProtectedGroup && (
+              {/* Delete - Only admins can delete groups */}
+              {!isProtectedGroup && isAdmin && (
                 <>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem 

@@ -169,69 +169,105 @@ const UserRoleManager = ({
           </Alert>
         )}
 
-        {/* Company Administrator (Subadmin) Controls */}
-        <div className="space-y-2">
-          <Label className="text-xs font-medium text-muted-foreground">
-            {t('edit.company_administrator', 'Company Administrator')}
-          </Label>
-          
-          {/* Current Subadmin Groups */}
-          {isUserSubadmin && (
-            <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">
-                {t('edit.manages_companies', 'Manages Companies')}:
-              </p>
-              <div className="flex flex-wrap gap-1">
-                {subadminGroups?.map((groupId) => (
-                  <div key={groupId} className="flex items-center gap-1">
-                    <Badge variant="outline" className="text-xs">
-                      {availableGroups.find(g => g.id === groupId)?.displayName || groupId}
-                    </Badge>
+        {/* Company Administrator (Subadmin) Controls - Only for Admins */}
+        {isAdmin ? (
+          <div className="space-y-2">
+            <Label className="text-xs font-medium text-muted-foreground">
+              {t('edit.company_administrator', 'Company Administrator')}
+            </Label>
+            
+            {/* Current Subadmin Groups */}
+            {isUserSubadmin && (
+              <div className="space-y-2">
+                <p className="text-xs text-muted-foreground">
+                  {t('edit.manages_companies', 'Manages Companies')}:
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {subadminGroups?.map((groupId) => (
+                    <div key={groupId} className="flex items-center gap-1">
+                      <Badge variant="outline" className="text-xs">
+                        {availableGroups.find(g => g.id === groupId)?.displayName || groupId}
+                      </Badge>
+                      {/* Remove Sub-admin - Admin Only */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDemoteFromSubadmin(groupId)}
+                        disabled={isLoading}
+                        className="h-auto p-0.5 text-red-500 hover:text-red-600"
+                        title={t('edit.remove_company_management', 'Remove company management privileges')}
+                      >
+                        <Icon name="X" size={10} />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Add Subadmin to Companies - Admin Only */}
+            {availableGroups.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-xs text-muted-foreground">
+                  {t('edit.add_company_management', 'Add Company Management')}:
+                </p>
+                <p className="text-[10px] text-muted-foreground/70 italic">
+                  {t('edit.subadmin_promotion_note', 'Note: User will be added to the group and granted management privileges')}
+                </p>
+                <div className="grid grid-cols-1 gap-1 max-h-32 overflow-y-auto">
+                  {availableGroups
+                    .filter(group => !(subadminGroups || []).includes(group.id))
+                    .map((group) => (
                     <Button
+                      key={group.id}
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleDemoteFromSubadmin(groupId)}
+                      onClick={() => handlePromoteToSubadmin(group.id)}
                       disabled={isLoading}
-                      className="h-auto p-0.5 text-red-500 hover:text-red-600"
+                      className="justify-start gap-2 h-auto py-1"
                     >
-                      <Icon name="X" size={10} />
+                      {promoteSubadminMutation.isPending ? (
+                        <Icon name="Loader2" size={10} className="animate-spin" />
+                      ) : (
+                        <Icon name="Plus" size={10} />
+                      )}
+                      <span className="text-xs">{group.displayName || group.id}</span>
                     </Button>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-
-          {/* Add Subadmin to Companies */}
-          {availableGroups.length > 0 && (
-            <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">
-                {t('edit.add_company_management', 'Add Company Management')}:
-              </p>
-              <div className="grid grid-cols-1 gap-1 max-h-32 overflow-y-auto">
-                {availableGroups
-                  .filter(group => !(subadminGroups || []).includes(group.id))
-                  .map((group) => (
-                  <Button
-                    key={group.id}
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handlePromoteToSubadmin(group.id)}
-                    disabled={isLoading}
-                    className="justify-start gap-2 h-auto py-1"
-                  >
-                    {promoteSubadminMutation.isPending ? (
-                      <Icon name="Loader2" size={10} className="animate-spin" />
-                    ) : (
-                      <Icon name="Plus" size={10} />
-                    )}
-                    <span className="text-xs">{group.displayName || group.id}</span>
-                  </Button>
-                ))}
+            )}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <Label className="text-xs font-medium text-muted-foreground">
+              {t('edit.company_administrator', 'Company Administrator')}
+            </Label>
+            
+            {/* Read-only view for non-admins */}
+            {isUserSubadmin && (
+              <div className="space-y-2">
+                <p className="text-xs text-muted-foreground">
+                  {t('edit.manages_companies', 'Manages Companies')}:
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {subadminGroups?.map((groupId) => (
+                    <Badge key={groupId} variant="outline" className="text-xs">
+                      {availableGroups.find(g => g.id === groupId)?.displayName || groupId}
+                    </Badge>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+            
+            <Alert>
+              <Icon name="Info" size={14} />
+              <AlertDescription className="text-sm">
+                {t('edit.subadmin_permission_required', 'Only system administrators can assign or remove company administrator privileges. Sub-admins can only manage existing users within their assigned companies.')}
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

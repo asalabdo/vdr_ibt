@@ -249,24 +249,40 @@ export const usePermissions = () => {
     hasPermission,
     
     // Role-based capability checks
-    canManageUsers: roleInfo?.canManageUsers || false,
+    canManageUsers: roleInfo?.canManageUsers || false, // ⚠️ For subadmins: EDIT only, not CREATE
     canManageAllGroups: roleInfo?.canManageAllGroups || false,
     canAccessSystemSettings: roleInfo?.canAccessSystemSettings || false,
     
-    // Common permission checks
-    canManageDataRooms: hasPermission(PERMISSIONS.DATA_ROOMS_MANAGE),
-    canCreateDataRooms: hasPermission(PERMISSIONS.DATA_ROOMS_CREATE),
+    // GRANULAR Creation Permissions (Admin Only - verified from Nextcloud docs)
+    canCreateUsers: isAdminUser,              // ✅ Admin only - Sub-admins CANNOT create users
+    canCreateGroups: isAdminUser,             // ✅ Admin only - Sub-admins CANNOT create groups
+    canCreateDataRooms: isAdminUser,          // ✅ Admin only - Sub-admins CANNOT create Group Folders
+    canDeleteUsers: isAdminUser,              // ✅ Admin only
+    canDeleteGroups: isAdminUser,             // ✅ Admin only
+    canDeleteDataRooms: isAdminUser,          // ✅ Admin only
+    
+    // Edit/Manage Permissions (Admin + Sub-admin for their scope)
+    canEditUsers: hasPermission(PERMISSIONS.USERS_EDIT),                    // Admin + Sub-admin (managed groups)
+    canEditGroups: hasPermission(PERMISSIONS.GROUPS_EDIT_MEMBERS),          // Admin + Sub-admin (managed groups)
+    canManageDataRooms: hasPermission(PERMISSIONS.DATA_ROOMS_MANAGE),       // Admin + Sub-admin (assigned groups)
+    canEditDataRooms: hasPermission(PERMISSIONS.DATA_ROOMS_EDIT),           // Admin + Sub-admin (assigned groups)
+    
+    // View/Read Permissions
     canViewAuditLogs: hasPermission(PERMISSIONS.AUDIT_VIEW),
     canExportAuditLogs: hasPermission(PERMISSIONS.AUDIT_EXPORT),
+    canViewGroups: hasPermission(PERMISSIONS.GROUPS_VIEW) || isAdminUser || false,
+    
+    // Document Permissions
     canUploadDocuments: hasPermission(PERMISSIONS.DOCUMENTS_UPLOAD),
     canDeleteDocuments: hasPermission(PERMISSIONS.DOCUMENTS_DELETE),
+    
+    // Legacy/Backward Compatibility
     canManageGroups: hasPermission(PERMISSIONS.GROUPS_MANAGE),
-    canViewGroups: hasPermission(PERMISSIONS.GROUPS_VIEW) || isAdminUser || false,
     canManageRoles: hasPermission(PERMISSIONS.ROLES_MANAGE),
     
     // UI/Navigation permissions
-    canAccessUsersManagement: hasPermission(PERMISSIONS.USERS_MANAGE),
-    canAccessGroupsManagement: hasPermission(PERMISSIONS.GROUPS_MANAGE) || isSubadminUser, // Admin and subadmin access
+    canAccessUsersManagement: hasPermission(PERMISSIONS.USERS_EDIT) || hasPermission(PERMISSIONS.USERS_MANAGE),
+    canAccessGroupsManagement: hasPermission(PERMISSIONS.GROUPS_VIEW) || isSubadminUser || isAdminUser,
     canAccessAuditLogs: hasPermission(PERMISSIONS.AUDIT_VIEW),
     canAccessRolesPermissions: isAdminUser || false, // Admin only
   };

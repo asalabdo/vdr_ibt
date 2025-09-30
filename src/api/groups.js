@@ -6,6 +6,7 @@
 
 import apiClient, { adminApiClient } from './client';
 import { endpoints, withJsonFormat } from './endpoints';
+import { usersAPI } from './users';
 
 // ===== UTILITY FUNCTIONS =====
 
@@ -355,20 +356,10 @@ const deleteGroup = async (groupId) => {
       throw new Error(`Cannot delete the '${groupId}' group - it is a system group`);
     }
     
-    console.log(`🗑️ Deleting group: ${groupId}`);
     const url = withJsonFormat(endpoints.groups.delete(groupId));
-    console.log(`🌐 DELETE URL: ${url}`);
-    
     const response = await adminApiClient.delete(url);
     
-    console.log(`📨 Delete response:`, {
-      status: response.status,
-      statusCode: response.data?.ocs?.meta?.statuscode,
-      message: response.data?.ocs?.meta?.message
-    });
-    
     if (response.data?.ocs?.meta?.statuscode === 200) {
-      console.log(`✅ Group '${groupId}' deleted successfully`);
       return {
         success: true,
         message: `Group '${groupId}' has been deleted successfully`
@@ -475,9 +466,23 @@ const searchGroups = async (searchTerm, options = {}) => {
 
 /**
  * Promote user to subadmin of a group
+ * 
+ * IMPORTANT: This function performs TWO operations in sequence:
+ * 1. Adds user to the group as a regular member (if not already a member)
+ * 2. Promotes user to subadmin of that group
+ * 
+ * RATIONALE: Sub-admins need to be group members to access group resources
+ * (data rooms, files, etc.). This ensures a seamless experience.
+ * 
+ * EDGE CASE HANDLING:
+ * - If user is already a member: Operation continues normally
+ * - If step 1 succeeds but step 2 fails: User remains a regular group member
+ *   (This is acceptable - admin can manually correct if needed)
+ * 
  * @param {string} userId - User ID
  * @param {string} groupId - Group ID
- * @returns {Object} Operation result
+ * @returns {Object} Operation result with success flag and addedToGroup indicator
+ * @throws {Error} If user or group doesn't exist, or promotion fails
  */
 const promoteUserToSubadmin = async (userId, groupId) => {
   try {
@@ -485,6 +490,26 @@ const promoteUserToSubadmin = async (userId, groupId) => {
       throw new Error('User ID and Group ID are required');
     }
     
+    // Step 1: Add user to group as a member first
+    // This ensures they can access the group's resources (data rooms, files, etc.)
+    try {
+      await usersAPI.addUserToGroup(userId, groupId);
+    } catch (error) {
+      // Only proceed if user is already in the group
+      const errorMessage = error.message?.toLowerCase() || '';
+      const isAlreadyMember = errorMessage.includes('already') || 
+                              errorMessage.includes('member') ||
+                              error.statuscode === 102 ||
+                              error.response?.status === 409;
+      
+      if (!isAlreadyMember) {
+        // For any other error, fail the entire operation
+        throw new Error(`Cannot add user to group: ${error.message}`);
+      }
+      // User is already a member - continue to promotion
+    }
+    
+    // Step 2: Promote user to subadmin of the group
     const formData = new FormData();
     formData.append('groupid', groupId.trim());
     
@@ -498,7 +523,8 @@ const promoteUserToSubadmin = async (userId, groupId) => {
     if (response.data?.ocs?.meta?.statuscode === 100) {
       return {
         success: true,
-        message: `User ${userId} promoted to subadmin of group ${groupId} successfully`
+        message: `User ${userId} promoted to subadmin of group ${groupId} successfully`,
+        addedToGroup: true // Indicates we also added them to the group
       };
     }
     
@@ -522,9 +548,14 @@ const promoteUserToSubadmin = async (userId, groupId) => {
 
 /**
  * Demote user from subadmin of a group
+ * 
+ * NOTE: This only removes subadmin privileges, NOT group membership.
+ * The user will remain a regular member of the group after demotion.
+ * 
  * @param {string} userId - User ID
  * @param {string} groupId - Group ID
  * @returns {Object} Operation result
+ * @throws {Error} If user or group doesn't exist, or demotion fails
  */
 const demoteUserFromSubadmin = async (userId, groupId) => {
   try {
@@ -532,16 +563,11 @@ const demoteUserFromSubadmin = async (userId, groupId) => {
       throw new Error('User ID and Group ID are required');
     }
     
-    const formData = new FormData();
-    formData.append('groupid', groupId.trim());
+    // Nextcloud OCS API expects groupId as a query parameter for DELETE requests
+    // Format: DELETE /ocs/v1.php/cloud/users/{userId}/subadmins?groupid={groupId}&format=json
+    const url = `/ocs/v1.php/cloud/users/${encodeURIComponent(userId)}/subadmins?groupid=${encodeURIComponent(groupId)}&format=json`;
     
-    const response = await adminApiClient.delete(`/ocs/v1.php/cloud/users/${userId}/subadmins`, {
-      data: formData,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'OCS-APIRequest': 'true'
-      },
-    });
+    const response = await adminApiClient.delete(url);
     
     if (response.data?.ocs?.meta?.statuscode === 100) {
       return {

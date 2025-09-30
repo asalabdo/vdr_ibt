@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import Icon from '@/components/AppIcon';
+import { usePermissions } from '@/hooks/api/useAuth';
 import UsersTable from './components/UsersTable';
 import CreateUserModal from './components/CreateUserModal';
 
 const UsersManagement = () => {
   const { t } = useTranslation('users-management');
+  const { isAdmin, isSubadmin, managedGroups } = usePermissions();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const handleCreateUser = () => {
@@ -32,17 +35,31 @@ const UsersManagement = () => {
             </div>
             
             <div className="flex items-center gap-3">
-              <Button 
-                onClick={handleCreateUser}
-                className="gap-2"
-              >
-                <Icon name="Plus" size={16} />
-                {t('actions.create_user')}
-              </Button>
+              {/* Only admins can create new users - Sub-admins can only edit existing users */}
+              {isAdmin && (
+                <Button 
+                  onClick={handleCreateUser}
+                  className="gap-2"
+                >
+                  <Icon name="Plus" size={16} />
+                  {t('actions.create_user')}
+                </Button>
+              )}
             </div>
           </div>
 
           <Separator className="my-8" />
+
+          {/* Information alert for sub-admins about their limited permissions */}
+          {isSubadmin && !isAdmin && (
+            <Alert className="mb-6">
+              <Icon name="Info" size={16} />
+              <AlertDescription>
+                <strong>Company Administrator Access:</strong> You can view and edit existing users in your assigned companies ({Array.isArray(managedGroups) ? managedGroups.join(', ') : 'None'}). 
+                Only system administrators can create new users. If you need to add a new user, please contact your system administrator.
+              </AlertDescription>
+            </Alert>
+          )}
 
           {/* Users Management Table */}
           <UsersTable />
